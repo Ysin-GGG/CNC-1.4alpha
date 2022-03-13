@@ -51,7 +51,8 @@ namespace CNC.Common.Global.Players
             this.clazz == CNCID.Clazz.Assassin,
         };
 
-        private static object[] defaults => new object[] {
+        private static object[] defaults => new object[]
+        {
             (byte)0,
             0f, 30f, 1f, 0f, 1f, false, 0, 0,
             0f, 240f, 0f, 1f, 0f, 1f, 0,
@@ -59,7 +60,8 @@ namespace CNC.Common.Global.Players
             0f, 50f, 1f / 120f, 0f, 1f,
             0f, 900f, false, 0, 1f, 0f, 1f, 1f, 0f, 1f,
         };
-        private string[] defaultTags => new string[] {
+        private string[] defaultTags => new string[]
+        {
             "class",
 
             "rage",
@@ -245,51 +247,51 @@ namespace CNC.Common.Global.Players
             base.LoadData(tag);
 
             this.clazz = tag.ContainsKey(defaultTags[0]) ? tag.Get<byte>(defaultTags[0]) : (byte)defaults[0];
-            GetTag(tag, 1, ref this.clazz_Rage);
-            GetTag(tag, 2, ref this.clazz_RageMax);
-            GetTag(tag, 3, ref this.clazz_RageSpeed);
-            GetTag(tag, 4, ref this.clazz_RageSpeedAdd);
-            GetTag(tag, 5, ref this.clazz_RageSpeedMul);
-            GetTag(tag, 6, ref this.clazz_Raged);
-            GetTag(tag, 7, ref this.clazz_RageWeak);
-            GetTag(tag, 8, ref this.clazz_RageCD);
+            this.GetTag(tag, 1, ref this.clazz_Rage);
+            this.GetTag(tag, 2, ref this.clazz_RageMax);
+            this.GetTag(tag, 3, ref this.clazz_RageSpeed);
+            this.GetTag(tag, 4, ref this.clazz_RageSpeedAdd);
+            this.GetTag(tag, 5, ref this.clazz_RageSpeedMul);
+            this.GetTag(tag, 6, ref this.clazz_Raged);
+            this.GetTag(tag, 7, ref this.clazz_RageWeak);
+            this.GetTag(tag, 8, ref this.clazz_RageCD);
             
-            GetTag(tag, 9, ref this.clazz_Power);
-            GetTag(tag, 10, ref this.clazz_PowerMax);
-            GetTag(tag, 11, ref this.clazz_PowerProgress);
-            GetTag(tag, 12, ref this.clazz_PowerSpeed);
-            GetTag(tag, 13, ref this.clazz_PowerSpeedAdd);
-            GetTag(tag, 14, ref this.clazz_PowerSpeedMul);
-            GetTag(tag, 15, ref this.clazz_PowerCD);
+            this.GetTag(tag, 9, ref this.clazz_Power);
+            this.GetTag(tag, 10, ref this.clazz_PowerMax);
+            this.GetTag(tag, 11, ref this.clazz_PowerProgress);
+            this.GetTag(tag, 12, ref this.clazz_PowerSpeed);
+            this.GetTag(tag, 13, ref this.clazz_PowerSpeedAdd);
+            this.GetTag(tag, 14, ref this.clazz_PowerSpeedMul);
+            this.GetTag(tag, 15, ref this.clazz_PowerCD);
             
-            GetTag(tag, 16, ref this.clazz_Durability);
-            GetTag(tag, 17, ref this.clazz_DurabilityOld);
-            GetTag(tag, 18, ref this.clazz_DurabilityMax);
-            GetTag(tag, 19, ref this.clazz_DurabilityReload);
-            GetTag(tag, 20, ref this.clazz_DurabilityReloadTime);
-            GetTag(tag, 21, ref this.clazz_DurabilityReloadTimeMax);
-            GetTag(tag, 22, ref this.clazz_DurabilityReloadTimeAdd);
-            GetTag(tag, 23, ref this.clazz_DurabilityReloadTimeMul);
-            GetTag(tag, 24, ref this.clazz_DurabilityReloadSpeed);
-            GetTag(tag, 25, ref this.clazz_DurabilityReloadSpeedAdd);
-            GetTag(tag, 26, ref this.clazz_DurabilityReloadSpeedMul);
+            this.GetTag(tag, 16, ref this.clazz_Durability);
+            this.GetTag(tag, 17, ref this.clazz_DurabilityOld);
+            this.GetTag(tag, 18, ref this.clazz_DurabilityMax);
+            this.GetTag(tag, 19, ref this.clazz_DurabilityReload);
+            this.GetTag(tag, 20, ref this.clazz_DurabilityReloadTime);
+            this.GetTag(tag, 21, ref this.clazz_DurabilityReloadTimeMax);
+            this.GetTag(tag, 22, ref this.clazz_DurabilityReloadTimeAdd);
+            this.GetTag(tag, 23, ref this.clazz_DurabilityReloadTimeMul);
+            this.GetTag(tag, 24, ref this.clazz_DurabilityReloadSpeed);
+            this.GetTag(tag, 25, ref this.clazz_DurabilityReloadSpeedAdd);
+            this.GetTag(tag, 26, ref this.clazz_DurabilityReloadSpeedMul);
 
-            GetTag(tag, 27, ref this.clazz_Blessing);
-            GetTag(tag, 28, ref this.clazz_BlessingMax);
-            GetTag(tag, 29, ref this.clazz_BlessingSpeed);
-            GetTag(tag, 30, ref this.clazz_BlessingSpeedAdd);
-            GetTag(tag, 31, ref this.clazz_BlessingSpeedMul);
+            this.GetTag(tag, 27, ref this.clazz_Blessing);
+            this.GetTag(tag, 28, ref this.clazz_BlessingMax);
+            this.GetTag(tag, 29, ref this.clazz_BlessingSpeed);
+            this.GetTag(tag, 30, ref this.clazz_BlessingSpeedAdd);
+            this.GetTag(tag, 31, ref this.clazz_BlessingSpeedMul);
 
-            GetTag(tag, 32, ref this.clazz_Phantom);
-            GetTag(tag, 33, ref this.clazz_PhantomMax);
-            GetTag(tag, 34, ref this.clazz_PhantomState);
-            GetTag(tag, 35, ref this.clazz_PhantomInvincible);
-            GetTag(tag, 36, ref this.clazz_PhantomSpeed);
-            GetTag(tag, 37, ref this.clazz_PhantomSpeedAdd);
-            GetTag(tag, 38, ref this.clazz_PhantomSpeedMul);
-            GetTag(tag, 39, ref this.clazz_PhantomDelSpeed);
-            GetTag(tag, 40, ref this.clazz_PhantomDelSpeedAdd);
-            GetTag(tag, 41, ref this.clazz_PhantomDelSpeedMul);
+            this.GetTag(tag, 32, ref this.clazz_Phantom);
+            this.GetTag(tag, 33, ref this.clazz_PhantomMax);
+            this.GetTag(tag, 34, ref this.clazz_PhantomState);
+            this.GetTag(tag, 35, ref this.clazz_PhantomInvincible);
+            this.GetTag(tag, 36, ref this.clazz_PhantomSpeed);
+            this.GetTag(tag, 37, ref this.clazz_PhantomSpeedAdd);
+            this.GetTag(tag, 38, ref this.clazz_PhantomSpeedMul);
+            this.GetTag(tag, 39, ref this.clazz_PhantomDelSpeed);
+            this.GetTag(tag, 40, ref this.clazz_PhantomDelSpeedAdd);
+            this.GetTag(tag, 41, ref this.clazz_PhantomDelSpeedMul);
         }
 
         public override void ResetEffects()
@@ -326,21 +328,21 @@ namespace CNC.Common.Global.Players
                 if (this._stateType.Contains(i)) this._stateTime[i - 1] = this.state[i - 1];
                 else this.state[i - 1] = 0;
             }
-            ResetClassVar(false);
-            Update();
+            this.ResetClassVar(false);
+            this.Update();
         }
 
         public void Update()
         {
-            UpdateClassVar(CNCID.Clazz.Barbarian, 1);
-            UpdateClassVar(CNCID.Clazz.Barbarian, 2);
-            UpdateClassVar(CNCID.Clazz.Crusader, 0);
-            UpdateClassVar(CNCID.Clazz.Cleric, 0);
-            UpdateClassVar(CNCID.Clazz.Ranger, 0);
-            UpdateClassVar(CNCID.Clazz.Musketeer, 0);
-            UpdateClassVar(CNCID.Clazz.Musketeer, 2);
-            UpdateClassVar(CNCID.Clazz.Assassin, 0);
-            UpdateClassVar(CNCID.Clazz.Assassin, 1);
+            this.UpdateClassVar(CNCID.Clazz.Barbarian, 1);
+            this.UpdateClassVar(CNCID.Clazz.Barbarian, 2);
+            this.UpdateClassVar(CNCID.Clazz.Crusader, 0);
+            this.UpdateClassVar(CNCID.Clazz.Cleric, 0);
+            this.UpdateClassVar(CNCID.Clazz.Ranger, 0);
+            this.UpdateClassVar(CNCID.Clazz.Musketeer, 0);
+            this.UpdateClassVar(CNCID.Clazz.Musketeer, 2);
+            this.UpdateClassVar(CNCID.Clazz.Assassin, 0);
+            this.UpdateClassVar(CNCID.Clazz.Assassin, 1);
 
             if (modPlayer.clazz == CNCID.Clazz.Barbarian)
             {
@@ -751,24 +753,24 @@ namespace CNC.Common.Global.Players
 
         public override void OnHitByNPC(NPC npc, int damage, bool crit)
         {
-            UpdateClassVar(CNCID.Clazz.Barbarian, 0);
-            UpdateClassVar(CNCID.Clazz.Assassin, 2);
+            this.UpdateClassVar(CNCID.Clazz.Barbarian, 0);
+            this.UpdateClassVar(CNCID.Clazz.Assassin, 2);
         }
 
         public override void OnHitByProjectile(Projectile proj, int damage, bool crit)
         {
-            UpdateClassVar(CNCID.Clazz.Barbarian, 0);
-            UpdateClassVar(CNCID.Clazz.Assassin, 2);
+            this.UpdateClassVar(CNCID.Clazz.Barbarian, 0);
+            this.UpdateClassVar(CNCID.Clazz.Assassin, 2);
         }
 
         public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
         {
-            if(target.type != 488) UpdateClassVar(CNCID.Clazz.Barbarian, 0);
+            if(target.type != 488) this.UpdateClassVar(CNCID.Clazz.Barbarian, 0);
         }
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
         {
-            if (target.type != 488) UpdateClassVar(CNCID.Clazz.Barbarian, 0);
+            if (target.type != 488) this.UpdateClassVar(CNCID.Clazz.Barbarian, 0);
         }
 
         public override void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit)
@@ -866,43 +868,43 @@ namespace CNC.Common.Global.Players
 
             public override void Load()
             {
-                arrowList = new List<int>();
-                bulletList = new List<int>();
+                this.arrowList = new List<int>();
+                this.bulletList = new List<int>();
                 for (int i = 0; i < ItemLoader.ItemCount; i++)
                 {
                     if (ItemLoader.GetItem(i) == null) continue;
                     if (ItemLoader.GetItem(i).Item.ammo == AmmoID.Arrow)
-                        arrowList.Add(ItemLoader.GetItem(i).Item.shoot);
+                        this.arrowList.Add(ItemLoader.GetItem(i).Item.shoot);
                     if (ItemLoader.GetItem(i).Item.ammo == AmmoID.Bullet)
-                        bulletList.Add(ItemLoader.GetItem(i).Item.shoot);
+                        this.bulletList.Add(ItemLoader.GetItem(i).Item.shoot);
                 }
                 for (int i = 0; i < Main.maxItemTypes; i++)
                 {
                     Item item = new Item();
                     item.SetDefaults(i);
-                    if (item.ammo == AmmoID.Arrow) arrowList.Add(item.shoot);
-                    if (item.ammo == AmmoID.Bullet) bulletList.Add(item.shoot);
+                    if (item.ammo == AmmoID.Arrow) this.arrowList.Add(item.shoot);
+                    if (item.ammo == AmmoID.Bullet) this.bulletList.Add(item.shoot);
                 }
             }
 
             public override void Unload()
             {
-                if (arrowList != null)
+                if (this.arrowList != null)
                 {
-                    arrowList.Clear();
-                    arrowList = null;
+                    this.arrowList.Clear();
+                    this.arrowList = null;
                 }
-                if (bulletList != null)
+                if (this.bulletList != null)
                 {
-                    bulletList.Clear();
-                    bulletList = null;
+                    this.bulletList.Clear();
+                    this.bulletList = null;
                 }
             }
 
             public override void SetDefaults(Projectile projectile)
             {
-                projectile.GetGlobalProjectile<AmmoType>().arrow = arrowList.Contains(projectile.type);
-                projectile.GetGlobalProjectile<AmmoType>().bullet = bulletList.Contains(projectile.type);
+                projectile.GetGlobalProjectile<AmmoType>().arrow = this.arrowList.Contains(projectile.type);
+                projectile.GetGlobalProjectile<AmmoType>().bullet = this.bulletList.Contains(projectile.type);
             }
         }
     }
