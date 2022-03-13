@@ -52,11 +52,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Administrator\\Desktop\\CNC\\CNC.csproj",
+      "projectUniqueName": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\CNC\\CNC.csproj",
       "projectName": "CNC",
-      "projectPath": "C:\\Users\\Administrator\\Desktop\\CNC\\CNC.csproj",
+      "projectPath": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\CNC\\CNC.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Administrator\\Desktop\\CNC\\obj\\",
+      "outputPath": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\CNC\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
