@@ -2,4 +2,14 @@
 # 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
 ################################################################################
 
-/.vs/CNC/v15/Server/sqlite3/db.lock
+.vs
+*.sln
+*.suo
+*.user
+*.csproj
+.git
+.vs
+obj
+bin
+Libraries
+Properties
