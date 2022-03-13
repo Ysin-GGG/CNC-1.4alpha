@@ -8,8 +8,6 @@ using Terraria;
 using Terraria.UI;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
-using Terraria.GameContent;
-using CNC.Content.UI;
 using CNC.Content.UI.MainBar;
 using CNC.Content.UI.ClassesMenu;
 using CNC.Content.UI.CloneGUI;
