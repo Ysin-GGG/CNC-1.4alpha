@@ -195,7 +195,7 @@ namespace CNC.Content.UI.ClassesMenu
 
         private void ResetClass(UIMouseEvent evt, Terraria.UI.UIElement e)
         {
-            int id = CNCID.Item.LegacyObject[CNCID.Item.HeroScroll];
+            int id = CNCID.Item.LegacyObject[CNCID.Item.DestineScroll];
             if (modPlayer.clazz == 0)  Main.NewText(CNCLocalization.GetText($"UI.{Name}.NoClass"), Color.Red); 
             else if (CountItem(id, player) > 0)
             {

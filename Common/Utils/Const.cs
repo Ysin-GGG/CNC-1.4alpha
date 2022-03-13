@@ -581,7 +581,7 @@ namespace CNC.Common.Utils
             public const short MaxObject = 11;
             #region ID
             public const short MiracleGem = 1;
-            public const short HeroScroll = 2;
+            public const short DestineScroll = 2;
             public const short FireGrimoire = 3;
             public const short IceTooth = 4;
             public const short Superconductor = 5;
@@ -595,7 +595,7 @@ namespace CNC.Common.Utils
             public static Dictionary<string, short> Collection => new Dictionary<string, short>()
             {
                 { "MiracleGem", MiracleGem },
-                { "HeroScroll", HeroScroll },
+                { "DestineScroll", DestineScroll },
                 { "FireGrimoire", FireGrimoire },
                 { "IceTooth", IceTooth },
                 { "Superconductor", Superconductor },
@@ -610,7 +610,7 @@ namespace CNC.Common.Utils
             public static Dictionary<string, int> LegacyCollection => new Dictionary<string, int>()
             {
                 { "MiracleGem", LegacyObject[Collection["MiracleGem"]] },
-                { "HeroScroll", LegacyObject[Collection["HeroScroll"]] },
+                { "DestineScroll", LegacyObject[Collection["DestineScroll"]] },
                 { "FireGrimoire", LegacyObject[Collection["FireGrimoire"]] },
                 { "IceTooth", LegacyObject[Collection["IceTooth"]] },
                 { "Superconductor", LegacyObject[Collection["Superconductor"]] },
@@ -626,7 +626,7 @@ namespace CNC.Common.Utils
             {
 
                 { MiracleGem, ItemType<Content.Items.MiracleGem>() },
-                { HeroScroll, ItemType<Content.Items.HeroScroll>() },
+                { DestineScroll, ItemType<Content.Items.DestineScroll>() },
                 { FireGrimoire, ItemType<Content.Items.Weapons.Magic.FireGrimoire>() },
                 { IceTooth, ItemType<Content.Items.Weapons.Magic.IceTooth>() },
                 //{ Superconductor, ItemType<Content.Items.Weapons.Magic.Superconductor>() },
