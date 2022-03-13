@@ -3,4 +3,15 @@
 ################################################################################
 
 /.vs/CNC/v15/Server/sqlite3/db.lock
-/.vs
+.vs
+Properties
+*.sln
+*.suo
+*.user
+*.csproj
+.git
+.vs
+obj
+bin
+Libraries
+Properties
