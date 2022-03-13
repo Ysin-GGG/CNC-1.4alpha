@@ -2,14 +2,9 @@
 # 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
 ################################################################################
 
-.vs
 *.sln
-*.suo
-*.user
-*.csproj
 .git
 .vs
 obj
 bin
-Libraries
 Properties
