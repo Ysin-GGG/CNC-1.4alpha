@@ -2,7 +2,7 @@ using CNC.Common.Global.Items;
 
 namespace CNC.Content.Items
 {
-	public class HeroScroll : CNCItem
+	public class DestineScroll : CNCItem
 	{
         public override int researchAmount => 5;
 

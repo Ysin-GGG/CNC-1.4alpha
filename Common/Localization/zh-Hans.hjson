@@ -42,7 +42,7 @@ Mods: {
 				HHvsHat: “灰色巫师帽！”
 				QuartzBlock: “你瞅啥？”
 				MiracleGem: 召唤可骑乘的灵狐
-				HeroScroll: 变更一次你的职业\n“读书破万卷，下笔如有神”
+				DestineScroll: 得到一次重新变更职业的机会\n“卷轴上记载了更替命定之路的上古咒文。”
 				#FireGrimoire: 
 				IceTooth: “蓝宝石中蕴含着古老的魔力”
 				#Superconductor: 
@@ -100,7 +100,7 @@ Mods: {
 				Sanctified: 圣化
 			}
 			Desc: {
-				MiracleFox: 她的身躯若隐若现
+				MiracleFox: 静谧森林里的灵狐
 				Scorched: 防御力减少8点
 				Enthused: 提高移动速度和攻击速度
 				Gelid: 移动速度大幅降低
