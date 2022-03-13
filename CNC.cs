@@ -33,7 +33,7 @@ namespace CNC
             IL.Terraria.Player.Update += new ILContext.Manipulator((il) => ResetManaMax(il, NewManaMax));
             ClassesSettings.ClassKey = KeybindLoader.RegisterKeybind(this, "Class Key", "Q");
             Instance = this;
-            #region ·´ÉäÔØÈë
+            #region 映射载入
             TmodFile modFiles = (TmodFile)typeof(Mod).GetProperty("File", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(this);
             CNCLocalization.Load("CNC", modFiles);
             Image = new Dictionary<string, Texture2D>();
