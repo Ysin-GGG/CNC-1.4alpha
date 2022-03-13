@@ -125,7 +125,7 @@ namespace CNC.Content.UI.ClassesMenu
             ResetButton(ref Confirm, new Vector2(297f, 288f) * scale, "Button1", "Box1", "Confirm", CNCLocalization.GetText("Class." + clazz[page]));
             ResetButton(ref PreviousClass, new Vector2(120f, 183f) * scale, "Button2", "Box2", "PreviousClass", CNCLocalization.GetText("Class." + clazz[(page - 1 + pageMax) % pageMax]));
             ResetButton(ref NextClass, new Vector2(MainBox.width, 0) + new Vector2(-120f - PreviousClass.icon.Width, 183f) * scale, "Button2", "Box2", "NextClass", CNCLocalization.GetText("Class." + clazz[(page + 1) % pageMax]));
-            ResetButton(ref Reset, new Vector2(483f, 96f) * scale, "Button3", "Box3", "Reset", CNCLocalization.GetText($"Item.Name.HeroScroll") + " *1");
+            ResetButton(ref Reset, new Vector2(483f, 96f) * scale, "Button3", "Box3", "Reset", CNCLocalization.GetText($"Item.Name.DestineScroll") + " *1");
 
             Preview.SetIcon(GetImage("Preview"), Color.White, new Color(128, 128, 128, 255));
             Preview.SetRect(new Vector2(228f, 105f) * scale, Preview.icon.Size() * scale);
