@@ -33,7 +33,7 @@ namespace CNC
             IL.Terraria.Player.Update += new ILContext.Manipulator((il) => ResetManaMax(il, NewManaMax));
             ClassesSettings.ClassKey = KeybindLoader.RegisterKeybind(this, "Class Key", "Q");
             Instance = this;
-            #region ·´ÉäÔØÈë
+            #region Â·Â´Ã‰Ã¤Ã”Ã˜ÃˆÃ«
             TmodFile modFiles = (TmodFile)typeof(Mod).GetProperty("File", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(this);
             CNCLocalization.Load("CNC", modFiles);
             Image = new Dictionary<string, Texture2D>();
@@ -138,7 +138,7 @@ namespace CNC
                 AppendUI(layers, UI[0], Visible[0], 33, "Function Bar");
                 AppendUI(layers, UI[1], Visible[1], -1, "Classes Menu");
                 AppendUI(layers, UI[2], Visible[2], -1, "Dark Screen Effect");
-                AppendUI(layers, UI[3], Visible[3], 33, "Clone Resource Bars");
+                AppendUI(layers, UI[3], Visible[3], 25, "Clone Resource Bars");
                 int idx = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
                 if (idx >= 0) layers[idx].Active = false; // layers.RemoveAt(idx);
             }
