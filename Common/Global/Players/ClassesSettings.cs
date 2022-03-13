@@ -307,7 +307,7 @@ namespace CNC.Common.Global.Players
             this.state_Fluster = 0;
             for (int i = 0; i < Main.maxNPCs && this.state_Fluster == 0; i++)
                 if (Main.npc[i].active)
-                    if (Main.npc[i].type != 488)
+                    if (Main.npc[i].type != 488 && !Main.npc[i].townNPC && !Main.npc[i].friendly)
                         if (Vector2.Distance(Main.npc[i].Center, player.Center) < 160.0)//range
                             this.state_Fluster = 2;
             this.state_Restoring = this.clazz_DurabilityReloadTime > 0 ? (int)this.clazz_DurabilityReloadTime : 0;
