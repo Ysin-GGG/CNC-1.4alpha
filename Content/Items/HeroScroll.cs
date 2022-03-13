@@ -11,7 +11,7 @@ namespace CNC.Content.Items
             item.height = 36;
             item.value = 250000;
             item.rare = -11;
-            item.maxStack = 11;
+            item.maxStack = 5;
         }
 	}
 }
