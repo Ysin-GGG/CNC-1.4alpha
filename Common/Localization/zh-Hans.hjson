@@ -1,0 +1,327 @@
+Mods: {
+	CNC: {
+		BiomeName: {
+			Tranquility: 静谧森林
+		}
+
+		Projectile: {
+			MentorMissile: 魔法飞弹
+			SpiritMass: 灵气团
+			SpiritArrow: 灵气矢
+		}
+
+		Tile: {
+			TranquilityDirt: \0{$Mods.CNC.Item.Name.TranquilityDirt}
+			TranquilityStone: \0{$Mods.CNC.Item.Name.TranquilityStone}
+			TranquilityGrass: 灰草
+			SpiritWood: 灵木
+			SpiritSapling: 静谧树苗
+		}
+
+		Item: {
+			Name: {
+				HHvsRobeCape: HHvs的灰袍斗篷
+				HHvsRobe: HHvs的巫师长袍
+				HHvsHat: HHvs的巫师帽
+				QuartzBlock: Quartz的头
+				MiracleGem: 静谧宝石
+				HeroScroll: 英雄卷轴
+				FireGrimoire: 火焰魔典
+				IceTooth: 寒冰之牙
+				Superconductor: 金属法杖
+				SilveryClaw: 银白之臂
+				SpiritWood: 灵木
+				TranquilityGem: 静谧能量石
+				SpiritSapling: 静谧树苗
+				TranquilityDirt: 灰泥
+				TranquilityStone: 灰岩
+			}
+			Tooltip: {
+				HHvsRobeCape: “灰色巫师斗篷！”
+				HHvsRobe: “灰色巫师长袍！”
+				HHvsHat: “灰色巫师帽！”
+				QuartzBlock: “你瞅啥？”
+				MiracleGem: 召唤可骑乘的灵狐
+				HeroScroll: 变更一次你的职业\n“读书破万卷，下笔如有神”
+				#FireGrimoire: 
+				IceTooth: “蓝宝石中蕴含着古老的魔力”
+				#Superconductor: 
+				SilveryClaw: “击穿邪恶…”
+				#SpiritWood: 
+				#TranquilityGem: 
+				#SpiritSapling: 
+				#TranquilityDirt: 
+				#TranquilityStone: 
+			}
+		}
+
+		Attribute: { 
+			Name: {
+				Fireball: 火弹
+				Incinerating: 焚焰
+				Scorching: 高温
+				Enthusiasm: 激情
+				Gelidity: 寒冷
+				Iceflake: 冰裂
+				Glacier: 冻结
+				Charging: 聚集电能
+				LightningChain: 闪电链
+				Overload: 超载
+				SilveryArrow: 银白之矢
+				Sanctity: 破空流光
+				Exorcism: 邪恶克星
+			}
+			Desc: {
+				Fireball: 发射魔法凝聚而成的烈火球
+				Incinerating: 灼烧击中的敌人，并造成一次[damage=36]魔法伤害的火焰爆炸
+				Scorching: 对被击中的敌人附加[{$Mods.CNC.Buff.Name.Scorched}]，使其减少8点防御力
+				Enthusiasm: 每次攻击有2%触发[{$Mods.CNC.Buff.Name.Enthused}]
+				Gelidity: 造成伤害时，降低敌人的移动速度
+				Iceflake: 冰齿命中时会爆炸，造成[damage=14]魔法伤害
+				Glacier: 造成伤害时，有一定概率冻结敌人
+				Charging: 发射闪电弹攻击敌人
+				LightningChain: 右键释放一道闪电，攻击至多{0}名敌人，造成[damage=50]魔法伤害
+				Overload: 命中敌人时增加3%魔法伤害，叠至10层时清零并使下次攻击释放高能闪电弹，造成4次[damage=40]范围魔法伤害
+				SilveryArrow: 将射出的木箭转变成银白之矢
+				Sanctity: 45%发射至圣之矢，对敌人造成[damage=2f]远程伤害并附加[{$Mods.CNC.Buff.Name.Sanctified}]
+				Exorcism: 敌人附着3支至圣之矢时，其身上的至圣之矢将会被引爆，造成[damage=3f]远程伤害
+			}
+		}
+
+		Buff: {
+			Name: {
+				MiracleFox: 灵狐
+				Scorched: 灼热
+				Enthused: 激情
+				Gelid: 寒霜
+				Glacial: 极寒
+				Overloaded: 超载
+				Surged: 能量涌动
+				Sanctified: 圣化
+			}
+			Desc: {
+				MiracleFox: 她的身躯若隐若现
+				Scorched: 防御力减少8点
+				Enthused: 提高移动速度和攻击速度
+				Gelid: 移动速度大幅降低
+				Glacial: 无法行动
+				Overloaded: 下次攻击发射高能闪电弹
+				Surged: 增加30%魔法伤害
+				Sanctified: 灵魂正在燃烧
+			}
+		}
+
+		Command: {
+			LvSet: {
+                Value: （级别）
+                NoLevel: 所持物品（{0}）无法升级
+                NotPositiveInt: （{0}）不是一个正整数
+                OutOfMaxLevel: 所设值（{0}）超出所持物品级别上限（{1}）
+                Success: 所持物品的级别已成功由（{0}）设置为（{1}）
+			}
+		}
+
+		Config: {
+			Client: 客户端设置
+			Server: 服务端设置
+			OnlyFor: 仅限于CNC及其拓展内容
+			UseModMusic: 替换Boss战斗BGM
+			HoverTextBox: 悬浮文本框
+			HoverTextBoxAlpha: 不透明度
+			HoverTextBoxStyle: 样式：
+			HoverTextBoxStyleNone: 透明
+			HoverTextBoxStyleOrigin: 原版
+			HoverTextBoxStyleBrown: 职业
+			HoverTextBoxType1: 功能栏
+			HoverTextBoxType2: 职业菜单
+			HoverTextBoxType3: GUI/资源条
+			CollapseBar: 功能栏
+			CloseEdge: 靠拢边缘：
+			LeftEdge: 左边框
+			RightEdge: 右边框
+			TopEdge: 上边框
+			BottomEdge: 下边框
+			Offset: 偏移
+			MovementSpeed: 折叠/展开速度
+		}
+
+		NPC: {
+			TranquilityPixie: 静谧幽灵
+			PhantomBat: 灵气蝙蝠
+			PhantomSlime: 灵气史莱姆
+			PhantomFlame: 灵火
+			SpiritBoss: 森林意志
+			SpiritCrystal: 守护水晶
+		}
+		
+		Bestiary: {
+			TranquilityPixie: ？？？
+			PhantomBat: ？？？
+			PhantomSlime: ？？？
+			PhantomFlame: ？？？
+			SpiritBoss: ？？？
+			SpiritCrystal: ？？？
+		}
+
+		TownNPC: {
+			Mentor: {
+				Name: 导师
+				Bestiary: ？？？
+			}
+		}
+
+		TownNPCName: {
+			Mentor: {
+                1: Fizban
+                2: Wier
+                3: Mantor
+				4: HHvz
+			}
+		}
+
+		TownNPCChat: {
+			Mentor: {
+                1: 很好，{0}。看来{$Mods.CNC.BiomeName.Tranquility}已经得到了解放。
+                2: 你有没有尝试开发坩埚的新用途？这真是一个有趣的想法。
+                3: 曾经我也是个巫师，直到见到了你。
+                4: 你有重来的机会，但这需要高昂的代价。
+                5: 在{$Mods.CNC.Biome.Tranquility}里，我的头脑会得到解放，也许能做点新玩意解闷。
+			}
+		}
+
+		TownNPCMood: {
+			Mentor: {
+				Content: 我并不讨厌现在的环境，但还能继续改善。
+				NoHome: 我需要一个房子，这样我才能更好地继续我的研究。
+				LoveSpace: 这个地方很好，我喜欢在这儿做我喜欢的事情。
+				FarFromHome: 在太阳下山之前，我希望我能赶回室内躲避黑暗的侵袭。
+				DislikeCrowded: 说实话，我不太喜欢拥挤的地方，太多活动的人们会打乱我的思绪。
+				HateCrowded: 这儿实在是太吵闹了，甚至比怪物来袭还要糟糕。
+				LikeBiome: "{BiomeName}里的生活还不错，钓鱼打猎对我来说再好不过。"
+				LoveBiome: "这里的生活很安逸，但{$Mods.CNC.BiomeName.Tranquility}更好，因为我无法忍受嘈杂的邻居。"
+				DislikeBiome: "{BiomeName}是个潮湿发臭的地方，在丛林里我没有任何灵感，没有人会想在那里居住。"
+				HateBiome: ""
+				LikeNPC: "哪个高贵又时尚的人会拒绝更好的衣服呢？我希望{NPCName}能把服装店开在我家门口。"
+				LoveNPC: ""
+				DislikeNPC: "巫毒魔法就像蛆虫一样，我正在研究压制它的办法。"
+				HateNPC: "我不喜欢穿紫色长袍的那个家伙，{NPCName}的三脚猫功夫有辱巫师的名号"
+			}
+		}
+
+		Class: {
+			Format: ——{0}——
+			Barbarian: 狂战士
+			Defender: 护卫
+			Crusader: 圣骑士
+			Ranger: 游侠
+			Gunman: 枪手
+			Thrower: 投手
+			Musketeer: 火枪手
+			Cleric: 牧师
+			Wizard: 巫师
+			SpellBreaker: 破法者
+			Druid: 德鲁伊
+			Shaman: 萨满
+			Warlock: 死灵法师
+			Monk: 武僧
+			Assassin: 刺杀者
+		}
+
+		ClassPreview: {
+			Barbarian: \0{$Mods.CNC.Class.Barbarian}：增加[怒气]机制\n\n[愤怒]：\n*受到敌人伤害或对敌人造成伤害时，将积累1点[怒气]，每0.4s最多触发一次\n*[怒气]达到上限时，以每秒3点的消耗速度消耗，并得到[狂怒]\n*[狂怒]状态下，若怒气低于5点，则结束[狂怒]，得到5s[泄气]\n\n[狂怒]：\n*攻击速度和移动速度提高20%\n*攻击力提高10%\n\n[泄气]：\n*攻击速度和移动速度降低20%\n*攻击力降低10%\n*无法获得怒气
+			Defender: \0
+			Crusader: \0{$Mods.CNC.Class.Crusader}：增加[神力]机制\n\n与装备不同的信仰徽章，以选择相应的[信仰]\n[神力值]能随着时间缓慢增加\n[神力值]低于20%时，得到[信仰裂痕]\n\n[战争信仰]：\n*近战伤害得到与徽章[神力值]对应的增强\n\n[光明信仰]：\n*魔法伤害得到与徽章[神力值]对应的增强\n\n[信仰裂痕]：\n*移动速度和造成的伤害降低20%\n*受到的伤害增加10%
+			Ranger: \0{$Mods.CNC.Class.Ranger}：增加[蓄力]机制\n\n[距离弱势]：\n*当有敌人近身时，进入[慌乱]状态\n\n[精准蓄力]：\n*箭矢攻击力和暴击率加成随[蓄力]提升，每次攻击发射箭矢清空[蓄力]\n*初始达到最大[蓄力]时间为4s\n*当[蓄力]达到最大时，箭矢伤害可增加60%，暴击率可增加30%\n\n[慌乱]：\n*箭矢伤害降低30%\n*暴击率降低10%
+			Gunman: \0
+			Thrower: \0
+			Musketeer: \0{$Mods.CNC.Class.Musketeer}：增加[枪动力]机制\n\n[枪动力]需花费一定时间进行填充\n可通过快捷键手动[填充]或取消[填充]\n\n[子弹动力]：\n*每次射击消耗1点[枪动力]\n*每次射击时，根据武器攻击速度叠加填充时间\n\n[弱点击破]：\n*暴击率提高10%\n*移动速度提高15%\n*对于生命大于75%的敌人，造成的伤害增加25%\n\n[填充]：\n*移动速度降低35%\n*受到的伤害增加20%\n*若[枪动力]低于35%，无法攻击或取消该状态
+			Cleric: \0{$Mods.CNC.Class.Cleric}：增加[神力]机制\n\n与装备不同的信仰徽章，以选择相应的[信仰]\n[神力值]能随着时间缓慢增加\n[神力值]低于20%时，得到[信仰裂痕]\n\n[治愈信仰]：\n*治愈能力得到与徽章[神力值]对应的增强\n\n[光明信仰]：\n*魔法伤害得到与徽章[神力值]对应的增强\n\n[信仰裂痕]：\n*移动速度和造成的伤害降低20%\n*受到的伤害增加10%
+			Wizard: \0{$Mods.CNC.Class.Wizard}：法力空虚：\0魔力容量在（100%-85%）时，暴击率+10%，伤害+15%，法术冷却时间-30%\0魔力容量（85%-50%）时，法力恢复速度+30%\0魔力容量小于50%时，受到伤害增加10%，法力恢复速度-25%\0魔力容量小于25%时，造成伤害-10%，法力恢复速度-50%\0魔力容量小于5%时，造成伤害-20%，移速-30%，受到伤害+10%,并得到[法力虚无]\0\0[法力虚无]：每秒受到10点伤害
+			SpellBreaker: \0
+			Druid: \0
+			Shaman: \0
+			Warlock: \0
+			Monk: \0
+			Assassin: \0{$Mods.CNC.Class.Assassin}：增加[幻影]机制\n\n[幻影]达到最大值时，可通过快捷键启用[隐匿]\n进入[隐匿]状态时，2s内敌人所造成的伤害降为1，且不会清空[幻影]\n\n[隐匿]：\n*持续消耗[幻影]，移动速度增加40%，穿刺伤害增加50%\n*受到敌人攻击时会清空[幻影]，[幻影]耗尽则结束[隐匿]状态
+			}
+
+		ClassAbility: {
+			Barbarian: 怒气：{0}
+			#Defender: \0
+			Crusader: 神力：{0}
+			Ranger: 蓄力：{0}
+			#Gunman: \0
+			#Thrower: \0
+			Musketeer: 枪动力：{0}
+			Cleric: 神力：{0}
+			#Wizard: \0
+			#SpellBreaker: \0
+			#Druid: \0
+			#Shaman: \0
+			#Warlock: \0
+			#Monk: \0
+			Assassin: 幻影：{0}
+		}
+
+		ClassState: {
+			Wrath: 狂怒
+			Cowardice: 泄气
+			Blasphemy: 信仰裂痕
+			Fluster: 慌乱
+			Restoring: 填充
+			Wraith: 隐匿
+		}
+
+		ClassStateDesc: {
+			Wrath: 攻击速度和移动速度提高20%\n攻击力提高10%
+			Cowardice: 攻击速度和移动速度降低20%\n攻击力降低10%\n无法获得怒气
+			Blasphemy: 移动速度和造成的伤害降低20%\n受到的伤害增加10%
+			Fluster: 箭矢伤害降低30%\n暴击率降低10%
+			Restoring: 移动速度降低35%\n受到的伤害增加20%。
+			Wraith: 移动速度增加40%\n穿刺伤害增加50%\n[幻影]持续消耗
+		}
+
+		Misc: {
+			Level: 武器级别：
+			Version: 版本号：
+			Loaded: Classes & Craft(1.4Alpha)已载入，祝您玩得愉快~
+			Unloaded: Classes & Craft(1.4Alpha)已卸载，感谢您的使用。
+		}
+
+		UI: {
+			Function: {
+				Open: 打开
+				Close: 关闭
+				Expand: 展开
+				Collapse: 收起
+				Confirm: 确认
+				Cancel: 取消
+			}
+			ClassesMenu: {
+				Name: 职业菜单
+				Confirm: 选定 [{0}] 职业
+				PreviousClass: 上一个职业：{0}
+				NextClass: 下一个职业：{0}
+				Reset: 重置职业\n需要 {0}
+				SelectClass: 职业成功选定为[{0}]
+				ResetClass: 重置职业成功
+				NeedReset: 你需要重置你的职业才能选择该职业
+				SameClass: 你已选定该职业
+				NoMoney: 没有足够的资源重置职业
+				NoClass: 你尚未选定任何职业
+			}
+			Archive: {
+				Name: 图鉴（敬请期待）
+			}
+			Enhancement: {
+				Name: 强化（敬请期待）
+			}
+		}
+
+		WorldGen: {
+			Pass: {
+				Tranquility: 正在生成静谧森林
+			}
+		}
+	}
+}

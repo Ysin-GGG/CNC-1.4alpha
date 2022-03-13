@@ -1,0 +1,8 @@
+﻿displayName = Classes & Craft (1.4Alpha CNC)
+author = HHvs & Quartz
+version = 0.0.2.3
+hideResources = false
+hideCode = false
+includeSource = true
+includePDB = true
+buildIgnore = *.sln, *.suo, *.user, .git\*, .vs\*, obj\*, bin\*, Libraries\*, Properties\*, Font\*, Icon\*,

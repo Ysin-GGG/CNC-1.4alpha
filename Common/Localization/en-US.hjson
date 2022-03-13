@@ -1,0 +1,327 @@
+Mods: {
+	CNC: {
+		BiomeName: {
+			Tranquility: Tranquility Forest
+		}
+
+		Projectile: {
+			MentorMissile: Magic Missile
+			SpiritMass: Spirit Mass
+			SpiritArrow: Spirit Arrow
+		}
+		
+		Tile: {
+			TranquilityDirt: \0{$Mods.CNC.Item.Name.TranquilityDirt}
+			TranquilityStone: \0{$Mods.CNC.Item.Name.TranquilityStone}
+			TranquilityGrass: Grey Grass
+			SpiritWood: Spirit Wood
+			SpiritSapling: Spirit Sapling
+		}
+
+		Item: {
+			Name: {
+				HHvsRobeCape: HHvs' Robe Cape
+				HHvsRobe: HHvs' Robe
+				HHvsHat: HHvs' Hat
+				QuartzBlock: Quartz's Head
+				MiracleGem: Miracle Gem
+				HeroScroll: Hero Scroll
+				FireGrimoire: Fire Grimoire
+				IceTooth: Ice Tooth
+				Superconductor: Sur-conductor staff
+				SilveryClaw: Silvery Claw
+				SpiritWood: Spirit Wood
+				TranquilityGem: Tranquility Gem
+				SpiritSapling: Spirit Sapling
+				TranquilityDirt: Grey Dirt
+				TranquilityStone: Grey Stone
+			}
+			Tooltip: {
+				HHvsRobeCape: 'A robe cape of an ashy wizard!'
+				HHvsRobe: 'A robe of an ashy wizard!'
+				HHvsHat: 'A hat of an ashy wizard!'
+				QuartzBlock: 'What are you looking at?'
+				MiracleGem: Summons a rideable miracle fox
+				HeroScroll: Changes your class once\n'Reading and reading, writing god being'
+				#FireGrimoire: 
+				IceTooth: 'The sapphire contains immemorial magic'
+				#Superconductor: 
+				SilveryClaw: 'Pierces the evil...'
+				#SpiritWood: 
+				#TranquilityGem: 
+				#SpiritSapling: 
+				#TranquilityDirt: 
+				#TranquilityStone: 
+			}
+		}
+
+		Attribute: { 
+			Name: {
+				Fireball: Fireball
+				Incinerating: Incinerating
+				Scorching: Scorching
+				Enthusiasm: Enthusiasm
+				Gelidity: Gelidity
+				Iceflake: Iceflake
+				Glacier: Glacier
+				Charging: Charging
+				LightningChain: LightningChain
+				Overload: Overload
+				SilveryArrow: SilveryArrow
+				Sanctity: Sanctity
+				Exorcism: Exorcism
+			}
+			Desc: {
+				Fireball: Shoots a fireball condensed by magic
+				Incinerating: Makes targets on fire, and generates a fire explosion, dealing [damage=36] AoE magic damage
+				Scorching: Applys [{$Mods.CNC.Buff.Name.Scorched}] to targets when strikes, decreasing target's defense by 8
+				Enthusiasm: 2% chance to trigger [{$Mods.CNC.Buff.Name.Enthused}] when you attack
+				Gelidity: Reduces target's movement speed
+				Iceflake: Generates an extra explosion, and deals [damage=14] AoE magic damage
+				Glacier: Your attacks may freeze your targets when strikes
+				Charging: Shoots a lightning missile
+				LightningChain: Right click to shoot a lightning chain, and attacks {0} targets, dealing [damage=50] magic damage
+				Overload: Increases magic damage by 3% when strikes targets, it will be cleared when increased to 30%, and shoots a overloaded missile next time, dealing [damage=40] AoE magic damage
+				SilveryArrow: Wooden arrows turn into Silvery Arrows
+				Sanctity: 45% shoots an Sanctified Arrow, making [damage=2f] ranged damage and applying [{$Mods.CNC.Buff.Name.Sanctified}] to targets
+				Exorcism: Explodes all Sanctified Arrows if the target was struck by 3 Sanctified Arrows, dealing [damage=3f] ranged damage
+			}
+		}
+
+		Buff: {
+			Name: {
+				MiracleFox: Miracle Fox
+				Scorched: Scorched
+				Enthused: Enthused
+				Gelid: Gelid
+				Glacial: Glacial
+				Overloaded: Overloaded
+				Surged: Surged
+				Sanctified: Sanctified
+			}
+			Desc: {
+				MiracleFox: Her body is indistinct
+				Scorched: Decreased defense by 8
+				Enthused: Increased your attack and movement speed
+				Gelid: Your movement speed has been reduced heavily
+				Glacial: You can not do anything!
+				Overloaded: Shoot a charged eletric projectile next time
+				Surged: 30% increased magic damage
+				Sanctified: Souls are burning!
+			}
+		}
+
+		Command: {
+			LvSet: {
+                Value: (Level)
+                NoLevel: The item ({0}) no level
+                NotPositiveInt: The value ({0}) is not a positive integer
+                OutOfMaxLevel: The value ({0}) out of the max level ({1})
+                Success: Level of the item your held has been set from ({0}) to ({1}) successfully
+			}
+		}
+
+		Config: {
+			Client: Client Config
+			Server: Server Config
+			OnlyFor: Only for CNC and extra contents
+			UseModMusic: Applying CNC music for bosses
+			HoverTextBox: Hover text boxes
+			HoverTextBoxAlpha: Opacity
+			HoverTextBoxStyle: Style:
+			HoverTextBoxStyleNone: None
+			HoverTextBoxStyleOrigin: Original
+			HoverTextBoxStyleBrown: Classical
+			HoverTextBoxType1: Collapse Bar
+			HoverTextBoxType2: Classes Menu
+			HoverTextBoxType3: GUI/Resource bars
+			CollapseBar: Collapse Bar
+			CloseEdge: Close Edge:
+			LeftEdge: Left
+			RightEdge: Right
+			TopEdge: Top
+			BottomEdge: Bottom
+			Offset: Offset
+			MovementSpeed: Movement Speed
+		}
+
+		NPC: {
+			TranquilityPixie: Tranquility Pixie
+			PhantomBat: Phantom Bat
+			PhantomSlime: Phantom Slime
+			PhantomFlame: Phantom Flame
+			SpiritBoss: Spirit of Forest
+			SpiritCrystal: Spirit Crystal
+		}
+		
+		Bestiary: {
+			TranquilityPixie: ???
+			PhantomBat: ???
+			PhantomSlime: ???
+			PhantomFlame: ???
+			SpiritBoss: ???
+			SpiritCrystal: ???
+		}
+
+		TownNPC: {
+			Mentor: {
+				Name: Mentor
+				Bestiary: ???
+			}
+		}
+
+		TownNPCName: {
+			Mentor: {
+                1: Fizban
+                2: Wier
+                3: Mantor
+				4: HHvz
+			}
+		}
+
+		TownNPCChat: {
+			Mentor: {
+                1: Well, {0}. Looks like {$Mods.CNC.Biome.Tranquility} has been liberated.
+                2: Have you try to find the new application of crucible? This is an interesting idea.
+                3: Formerly, I am a wizard too, till I meet you.
+                4: Of course you can change your class, but you need to pay a higher price.
+                5: In {$Mods.CNC.Biome.Tranquility}, my mind will be more active, maybe I can make some new things to relax.
+			}
+		}
+
+		TownNPCMood: {
+			Mentor: {
+				Content: Here is good, but can be better.
+				NoHome: I need a house so that I can better contimue my research.
+				LoveSpace: I love this place, and I love to do what I want to do in here.
+				FarFromHome: I wish I can go back to my house before sunset.
+				DislikeCrowded: Actually, I don't like crowded places, too many active people will break my thinking.
+				HateCrowded: It's so noisy here, worse than mobs attack!
+				LikeBiome: "Living in {BiomeName} is not bad, fishing and hunting are my hobits."
+				LoveBiome: "There is tranquil, but {BiomeName} more tranquil, because I can't stand those noisy neighbors."
+				DislikeBiome: "{BiomeName} is a wet and smelly place, where makes me uninspired, no one would want to live there."
+				HateBiome: 
+				LikeNPC: "People who like elegance and fashion never resist nice clothes. I wish {NPCName} can build a clothing store on my doorway."
+				LoveNPC: 
+				DislikeNPC: "Voodoo Magic is just like worm, I am researching how to suppress it."
+				HateNPC: "I don't like the guy in purple robe, {NPCName} has to recognize his foolish magic!"
+			}
+		}
+		
+		Class: {
+			Format: ----{0}----
+			Barbarian: Barbarian
+			Defender: Defender
+			Crusader: Crusader
+			Ranger: Ranger
+			Gunman: Gunman
+			Thrower: Thrower
+			Musketeer: Musketeer
+			Cleric: Cleric
+			Wizard: Wizard
+			SpellBreaker: Spell Breaker
+			Druid: Druid
+			Shaman: Shaman
+			Warlock: Warlock
+			Monk: Monk
+			Assassin: Assassin
+		}
+
+		ClassPreview: {
+			Barbarian: \0{$Mods.CNC.Class.Barbarian}: New [Rage] Ability\n\n[Resentment] Talent: \n*When taken damage from enemies or dealing damage to enemies, gains 1 [Rage] stack, this talent can be triggered once every 0.4s\n*While in possession of the maximum [Rage] stacks, enters [Wrath], and [Rage] stacks begin to lose 3 per second\n*While in [Wrath], exits [Wrath] and enters [Cowardice] for 5s if your [Rage] stacks less than 5\n\n[Wrath] State: \n*20% increased attack and movement speed\n*10% increased damage\n\n[Cowardice] State: \n*20% decreased attack and movement speed\n*10% decreased damage\n*Cannot gains any [Rage] stacks
+			Defender: \0
+			Crusader: \0{$Mods.CNC.Class.Crusader}: New [Blessing] Ability\n\nEquipping a faith emblem to trigger a [Faith] talent, [Blessing] stacks will restore continuously\nWhen [Blessing] stacks less than 20%, enters [Blasphemy]\n\n[Fanatic Faith] Talent: \n*Increases melee damage by [Blessing] stacks\n\n[Divine Faith] Talent: \n*Increases magic damage by [Blessing] stacks\n\n[Blasphemy] State: \n*20% decreased movement speed and dealt damage\n*10% increased taken damage
+			Ranger: \0{$Mods.CNC.Class.Ranger}: New [Power] Ability\n\n[Vicinity Ineptitude] Talent: \n*When any enemies close to, enters [Fluster]\n\n[Power Accumulation] Talent: \n*Increases arrow damage and critical strike chance by [Power] stacks, and shooting will exhaust [Power] stacks\n*[Power] stacks will restore continuously, its initial full restoring time is 4s\n*While in possession of the maximum [Power] stacks, increases arrow damage by 60% and increases arrow critial sprike chance by 30% currently\n\n[Fluster] State: \n*30% decreased arrow damage\n*10% decreased arrow critical strike chance
+			Gunman: \0
+			Thrower: \0
+			Musketeer: \0{$Mods.CNC.Class.Musketeer}: New [Durability] Ability\n\nSpends some time restoring [Durability] stacks when [Durability] stacks is exhausted\nPresses Class Key to enter or exit [Restoring]\n\n[Bullet Energy] Talent: \n*Requires 1 [Durability] stack every shooting, \n*Counts restoring time according to weapon use time when shooting\n\n[Precision Strike] Talent:\n*Increases critial strike chance by 10%\n*Increases movement speed by 15%\n*Increases dealt damage by 25% to enemies that life more than 75%\n\n[Restoring] State: \n*35% decreased movement speed\n*20% increased taken damage\n*If [Durability] stacks is less than 35%, cannot exit this state or shooting
+			Cleric: \0{$Mods.CNC.Class.Cleric}: New [Blessing] Ability\n\nEquipping a faith emblem to trigger a [Faith] talent, [Blessing] stacks will restore continuously\nWhen [Blessing] stacks less than 20%, enters [Blasphemy]\n\n[Angelic Faith] Talent: \n*Increases regen amount by [Blessing] stacks\n\n[Divine Faith] Talent: \n*Increases magic damage by [Blessing] stacks\n\n[Blasphemy] State: \n*20% decreased movement speed and dealt damage\n*10% increased taken damage
+			Wizard: \0
+			SpellBreaker: \0
+			Druid: \0
+			Shaman: \0
+			Warlock: \0
+			Monk: \0
+			Assassin: \0{$Mods.CNC.Class.Assassin}: New [Phantom] Ability\n\nWhile in possession of the maximum [Phantom] stacks, presses Class Key to trigger [Wraith]\nWhen [Wraith] is triggered, taken damage from enemies decrease to 1, and will not exhaust [Phantom] stacks instantly\n\n[Wraith] State: \n*40% increased movement speed, 50% increased raid damage and [Phantom] stacks lose continuously\n*If taken damage from enemies, exhausts [Phantom] stacks instantly, exits this state when [Phantom] stacks will be exhausted
+		}
+
+		ClassAbility: {
+			Barbarian: Rage: {0}
+			#Defender: \0
+			Crusader: Blessing: {0}
+			Ranger: Power: {0}
+			#Gunman: \0
+			#Thrower: \0
+			Musketeer: Durability: {0}
+			Cleric: Blessing: {0}
+			#Wizard: \0
+			#SpellBreaker: \0
+			#Druid: \0
+			#Shaman: \0
+			#Warlock: \0
+			#Monk: \0
+			Assassin: Phantom: {0}
+		}
+
+		ClassState: {
+			Wrath: Wrath
+			Cowardice: Cowardice
+			Blasphemy: Blasphemy
+			Fluster: Fluster
+			Restoring: Restoring
+			Wraith: Wraith
+		}
+
+		ClassStateDesc: {
+			Wrath: 20% increased attack and movement speed\n10% increased damage
+			Cowardice: 20% decreased attack and movement speed\n10% decreased damage\nCannot gains any [Rage] stacks
+			Blasphemy: 20% decreased movement speed and dealt damage\n10% increased taken damage
+			Fluster: 30% decreased arrow damage\n10% decreased arrow critical strike chance
+			Restoring: 35% decreased movement speed\n20% increased taken damage
+			Wraith: 40% increased movement speed\n50% increased raid damage\n[Phantom] stacks lose continuously
+		}
+
+		Misc: {
+			Level: Item level: 
+			Version: Version: 
+			Loaded: Classes & Craft(1.4Alpha) has loaded, enjoy yourself.
+			Unloaded: Classes & Craft(1.4Alpha) has unloaded, thanks for playing.
+		}
+
+		UI: {
+			Function: {
+				Open: Open
+				Close: Close
+				Expand: Expand
+				Collapse: Collapse
+				Confirm: Confirm
+				Cancel: Cancel
+			}
+			ClassesMenu: {
+				Name: Classes Menu
+				Confirm: Select [{0}] class
+				PreviousClass: Previous class: {0}
+				NextClass: Next class: {0}
+				Reset: Reset class\nRequire {0}
+				SelectClass: Your class has been set to [{0}]
+				ResetClass: Your class has been reset
+				NeedReset: You need to reset your class
+				SameClass: You have selected this class
+				NoMoney: You don't have enough resource to reset your class
+				NoClass: You have not selected any class
+			}
+			Archive: {
+				Name: Archive(Coming soon)
+			}
+			Enhancement: {
+				Name: Enhancement(Coming soon)
+			}
+		}
+
+		WorldGen: {
+			Pass: {
+				Tranquility: Tranquility Forest
+			}
+		}
+	}
+}

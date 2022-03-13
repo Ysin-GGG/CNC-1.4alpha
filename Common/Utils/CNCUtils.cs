@@ -1,0 +1,160 @@
+using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Graphics;
+using Terraria;
+using Terraria.Localization;
+using Terraria.ModLoader;
+
+using static Terraria.ModLoader.ModContent;
+
+namespace CNC.Common.Utils
+{
+    public class CNCUtils
+    {
+        /// <summary> 生成弹幕 </summary>
+        /// <param name="pos">世界坐标</param>
+        /// <param name="vel">初速度</param>
+        /// <param name="type">弹幕id</param>
+        /// <param name="dmg">伤害</param>
+        /// <param name="kb">击退</param>
+        /// <param name="owner">生成者</param>
+        /// <param name="data0">数据变量1</param>
+        /// <param name="data1">数据变量2</param>
+        /// <returns></returns>
+        public static Projectile NewProj(Terraria.DataStructures.IEntitySource source, Vector2 pos, Vector2 vel, int type, int dmg, float kb, int owner = -1, float data0 = 0, float data1 = 0)
+        {
+            if (owner < 0) { owner = Const.me; }
+            return Projectile.NewProjectileDirect(source, pos, vel, type, dmg, kb, owner, data0, data1);
+        }
+
+        public static Dust NewDust(Vector4 pos_size, int id, float angle, float scale = 1f, Vector2 range = default, Vector2 vel = default, Color color = default)
+            => NewDust(pos_size, id, angle, scale, range, color, vel);
+
+        public static Dust NewDust(Vector4 pos_size, int id, float angle, float scale = 1f, Vector2 range = default, Color color = default, Vector2 vel = default)
+        {
+            Vector2 pos = pos_size.XY();
+            int width = (int)pos_size.Z;
+            int height = (int)pos_size.W / 2;
+            vel = vel == default ? Const._02 : vel;
+            float x = Main.rand.NextFloat(-range.X, range.X);
+            float y = Main.rand.NextFloat(-range.Y, range.Y);
+            Vector2 _range = range == default ? Const._02 : new Vector2((float)(x * Math.Cos(angle) + y * Math.Sin(angle)), (float)(x * Math.Sin(angle) + y * Math.Cos(angle)));
+            return Dust.NewDustDirect(pos + _range, width, height, id, vel.X, vel.Y, color.A, color, scale);
+        }
+
+        public static Dust NewDust(Entity owner, int id, float angle, float scale = 1f, Vector2 range = default, Color color = default, Vector2 vel = default)
+            => NewDust(owner, id, angle, scale, range, vel, color);
+
+        public static Dust NewDust(Entity owner, int id, float angle, float scale = 1f, Vector2 range = default, Vector2 vel = default, Color color = default)
+        {
+            Vector2 pos = owner.position - owner.velocity;
+            int width = (int)owner.Size.X;
+            int height = (int)owner.Size.Y / 2;
+            vel = vel == default ? Const._02 : vel;
+            float x = Main.rand.NextFloat(-range.X, range.X);
+            float y = Main.rand.NextFloat(-range.Y, range.Y);
+            Vector2 _range = range == default ? Const._02 : new Vector2((float)(x * Math.Cos(angle) + y * Math.Sin(angle)), (float)(x * Math.Sin(angle) + y * Math.Cos(angle)));
+            return Dust.NewDustDirect(pos + _range, width, height, id, vel.X, vel.Y, color.A, color, scale);
+        }
+
+        public static void SetTile(Point pos, int type, bool isWall = false, bool flag = true, int size = 0)
+        {
+            if (size == 0)
+            {
+                int x = pos.X;
+                int y = pos.Y;
+                if (WorldGen.InWorld(x, y, 1))
+                {
+                    int _type = isWall ? Main.tile[x, y].WallType : Main.tile[x, y].TileType;
+                    if (!isWall && flag) Main.tile[x, y].TileType = (ushort)type;
+                    else if (_type != 0 && flag) Main.tile[x, y].WallType = (ushort)type;
+                    WorldGen.SquareWallFrame(x, y, true);
+                    NetMessage.SendTileSquare(-1, x, y, 1);
+                }
+            }
+            else for (int x = pos.X - size; x <= pos.X + size; x++)
+                {
+                    for (int y = pos.Y - size; y <= pos.Y + size; y++)
+                    {
+                        if (WorldGen.InWorld(x, y, 1) && Math.Abs(x - pos.X) + Math.Abs(y - pos.Y) < Math.Sqrt(size * size * 2))
+                        {
+                            int _type = isWall ? Main.tile[x, y].WallType : Main.tile[x, y].TileType;
+                            if (!isWall && flag) Main.tile[x, y].TileType = (ushort)type;
+                            else if (_type != 0 && flag) Main.tile[x, y].WallType = (ushort)type;
+                            WorldGen.SquareWallFrame(x, y, true);
+                            NetMessage.SendTileSquare(-1, x, y, 1);
+                        }
+                    }
+                }
+        }
+
+        /// <summary> 高精度颜色 </summary>
+        /// <param name="R">红原色</param>
+        /// <param name="G">绿原色</param>
+        /// <param name="B">蓝原色</param>
+        /// <param name="A">透明度</param>
+        /// <param name="flash">是否闪动</param>
+        public static Color AccurateColor(int R, int G, int B, int A = 0, bool flash = true)
+        {
+            var alpha = Main.mouseTextColor / 255f;
+            if (!flash) return new Color((byte)R, (byte)G, (byte)B, (byte)A);
+            else return new Color((byte)(R * alpha), (byte)(G * alpha), (byte)(B * alpha), Main.mouseTextColor);
+        }
+
+        /// <summary> 高精度颜色 </summary>
+        /// <param name="color">输入颜色</param>
+        /// <param name="flash">是否闪动</param>
+        public static Color AccurateColor(Color color, bool flash = true)
+        {
+            var alpha = Main.mouseTextColor / 255f;
+            var R = color.R;
+            var G = color.G;
+            var B = color.B;
+            var A = color.A;
+            if (!flash) return new Color((byte)R, (byte)G, (byte)B, (byte)A);
+            else return new Color((byte)(R * alpha), (byte)(G * alpha), (byte)(B * alpha), Main.mouseTextColor);
+        }
+        /// <summary> value, type, counter, min, max, addCD, delCD, num </summary>
+        public static void UpdateEffectVar(ref int[] variable)
+        {
+            if (variable[2]-- <= 0)
+            {
+                if (variable[1] < 0 && variable[0] <= variable[3])
+                {
+                    variable[1] = 1;
+                    variable[2] = variable[5];
+                }
+                if (variable[1] > 0 && variable[0] >= variable[4])
+                {
+                    variable[1] = -1;
+                    variable[2] = variable[6];
+                }
+            }
+            if (variable[2] <= 0) variable[0] += variable[1] * variable[7];
+            if (variable[0] < variable[3]) variable[0] = variable[3];
+            if (variable[0] > variable[4]) variable[0] = variable[4];
+        }
+
+        public static string ColourfulString(string text, Color[] color, int delay = 0)
+        {
+            char[] s = text.ToCharArray();
+            string res = "";
+            int idx = 0;
+            int counter = 0;
+            for (int i = 0; i < s.Length; i++)
+            {
+                res += $"[c/{color[idx].ToString()}:{s[i]}]";
+                if (s[i] != ' ')
+                {
+                    if (++counter > delay)
+                    {
+                        counter = 0;
+                        idx = (idx + 1) % color.Length;
+                    }
+                }
+            }
+            return res;
+        }
+    }
+}
