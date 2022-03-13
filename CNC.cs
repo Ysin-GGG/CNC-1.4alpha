@@ -59,6 +59,7 @@ namespace CNC
             Logger.Info(CNCLocalization.GetText("Misc.Loaded"));
             Logger.Info($"Mod {CNCLocalization.GetText("Misc.Version")}v{Version}");
             Logger.Info($"TML {CNCLocalization.GetText("Misc.Version")}v{TMLVersion}");
+
         }
 
         public override void Unload()
