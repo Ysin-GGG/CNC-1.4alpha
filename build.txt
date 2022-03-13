@@ -5,4 +5,4 @@ hideResources = false
 hideCode = false
 includeSource = true
 includePDB = true
-buildIgnore = *.sln, *.suo, *.user, .git\*, .vs\*, obj\*, bin\*, Libraries\*, Properties\*, Font\*, Icon\*,
+buildIgnore = *.sln, *.suo, *.user, *.gitignore, .git\*, .vs\*, obj\*, bin\*, Libraries\*, Properties\*,
