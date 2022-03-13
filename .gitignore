@@ -1,6 +1,6 @@
-.git
-.vs
-obj
-bin
-Properties
+.git/
+.vs/
+obj/
+bin/
+Properties/
 *.sln
