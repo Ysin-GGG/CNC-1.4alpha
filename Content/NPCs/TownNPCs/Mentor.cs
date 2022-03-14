@@ -54,7 +54,7 @@ namespace CNC.Content.NPCs.TownNPCs
         public override void NPCChat(ref WeightedRandom<string> chat)
         {
             for (int i = 1; i < 10; i++)
-               if(CNCLocalization.TextExist($"TownNPCChat.{Name}." + i.ToString()))
+               if (CNCLocalization.TextExist($"TownNPCChat.{Name}." + i.ToString()))
                     chat.Add(CNCLocalization.GetText($"TownNPCChat.{Name}." + i.ToString()));
         }
 
