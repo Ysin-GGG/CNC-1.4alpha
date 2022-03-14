@@ -280,6 +280,64 @@ Mods: {
 			Restoring: 移动速度降低35%\n受到的伤害增加20%。
 			Wraith: 移动速度增加40%\n穿刺伤害增加50%\n[幻影]持续消耗
 		}
+		
+		Inscription: {
+			Power: 伤害增幅|20%基础伤害增幅
+			Chanter: 高速咏唱|25%施法速度增幅
+			Economization: 朴素|20%魔力消耗减免
+			Arcana: 奥术掌控|13%魔法暴击率增幅
+			Charging: 充能|20%技能冷却缩减
+			Reiki: 秘法能流|25%技能魔力返还
+			Assimilation: 能量吸收|20%魔力恢复增幅
+			MagicPower: 魔力增幅|20%魔法伤害增幅
+			MagicAdept: 快速凝聚|25%攻击速度增幅
+			Saint: 治疗精通|20%治疗量增幅
+			Evangel: 绝望祈祷|生命低于15%时，治疗量增加35%
+			Destroyer: 破绽洞悉|10%暴击率增幅
+			Dexterity: 轻便|移动速度增幅25%
+			MeleeAdept: 运用自如|20%攻击速度增幅
+			Indignation: 义愤填膺|怒气上限提高20点
+			Force: 巨力|击退增加
+			Smiting: 晕眩打击|敌人眩晕时，近战伤害增幅40%
+			Shockwave: 晕眩强化|造成眩晕的时间增加1s
+			RaidAdept: 熟练|30%攻击速度增幅
+			Murder: 有效切割|15%暴击率增幅
+			Torture: 精准收割|敌人生命值低于30%时，穿刺伤害增幅30%
+			Assassination: 神锋|处于隐匿时，穿刺伤害增幅27%
+			EagleEye: 鹰眼|17%暴击率增幅
+			Penetration: 贯穿打击|攻击时有10%概率使本次伤害增加50%
+			EnchantedMagazine: 增大容量|枪动力上限增加35%
+			EnchantedBowstring: 附魔弓弦|拉弓速度增幅20%
+		}
+
+		S_Inscription: {
+			Fireball: 火弹|发射魔法凝聚而成的烈火球
+			Incinerating: 焚焰|灼烧击中的敌人，并造成一次[damage=36]魔法伤害的火焰爆炸
+			Scorching: 高温|对被击中的敌人附加[{$Mods.CNC.Buff.Name.Scorched}]，使其减少8点防御力
+			Enthusiasm: 激情|每次攻击有2%触发[{$Mods.CNC.Buff.Name.Enthused}]
+			Gelidity: 寒冷|造成伤害时，降低敌人的移动速度
+			Iceflake: 冰裂|冰齿命中时会爆炸，造成[damage=14]魔法伤害
+			Glacier: 冻结|造成伤害时，有一定概率冻结敌人
+			Charging: 聚集电能|发射闪电弹攻击敌人
+			LightningChain: 闪电链|右键释放一道闪电，攻击至多{0}名敌人，造成[damage=50]魔法伤害
+			Overload: 超载|命中敌人时增加3%魔法伤害，叠至10层时清零并使下次攻击释放高能闪电弹，造成4次[damage=40]范围魔法伤害
+			SilveryArrow: 银白之矢|将射出的木箭转变成银白之矢
+			Sanctity: 破空流光|45%发射至圣之矢，对敌人造成[damage=2f]远程伤害并附加[{$Mods.CNC.Buff.Name.Sanctified}]
+			Exorcism: 邪恶克星|敌人附着3支至圣之矢时，其身上的至圣之矢将会被引爆，造成[damage=3f]远程伤害
+			SilveryFlame: 银焰|
+			Judgement: 神圣惩戒|攻击有概率造成12（+0）的额外魔法伤害
+			SilveryShield: 银盾|造成伤害时有几率生成一个受击破碎的护盾，破碎时击退周围敌人并造成伤害
+			SilveryVow: 银白树立誓|右键消耗6点神力值，得到一个神圣护盾，在8s内得到神圣护甲buff【伤害减免70%】
+			Planet: 陨石|
+			ActiveChant: 移动施法|
+			Fragmentation: 爆裂|
+			DizzyStrike: 晕眩|攻击有10%概率使得除Boss以外的敌人晕眩，无法移动1s
+			EmberPrayer: 熔铁祷告|
+			EmberOath: 熔铁圣言|
+			TameHead: 残缺灵魂诅咒|右键召唤残缺灵魂，你和周围10格半径敌人防御降低8，持续8s，且下一次攻击为特殊攻击，附加200%的额外伤害并必定暴击
+			SoulScorching: 不灭灵魂火焰|攻击造成3s灵魂焰灼烧，敌人受到伤害增加10%，防御降低4
+			IndulgentGhost: 残缺灵魂的协助|每攻击6次，将快速发动额外的一次攻击，继承特效
+		}
 
 		Misc: {
 			Level: 武器级别：

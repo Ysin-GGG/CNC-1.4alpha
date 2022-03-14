@@ -6,6 +6,7 @@ using ReLogic.Graphics;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.GameContent;
+using CNC.Common.Global.Items;
 
 using static Terraria.ModLoader.ModContent;
 
@@ -637,12 +638,81 @@ namespace CNC.Common.Utils
                 { TranquilityDirt, ItemType<Content.Items.TranquilityDirt>() },
                 { TranquilityStone, ItemType<Content.Items.TranquilityStone>() },
             };
+
+            public static Dictionary<int, short> LegacyObjectReturn => new Dictionary<int, short>()
+            {
+
+                { LegacyObject[MiracleGem], MiracleGem },
+                { LegacyObject[DestineScroll], DestineScroll },
+                { LegacyObject[FireGrimoire], FireGrimoire },
+                { LegacyObject[IceTooth], IceTooth },
+                //{ LegacyObject[Superconductor], Superconductor },
+                { LegacyObject[SilveryClaw], SilveryClaw },
+                { LegacyObject[SpiritWood], SpiritWood },
+                { LegacyObject[TranquilityGem], TranquilityGem },
+                { LegacyObject[SpiritSapling], SpiritSapling },
+                { LegacyObject[TranquilityDirt], TranquilityDirt },
+                { LegacyObject[TranquilityStone], TranquilityStone },
+            };
         }
 
         public static class Inscription
         {
-            public const short MaxObject = 0;
+            public const short MaxObject = 52;
             #region ID
+            public static InscriptionSettings.Inscription Power = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Chanter = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Economization = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Arcana = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Charging = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Reiki = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Assimilation = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription MagicPower = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription MagicAdept = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Saint = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Evangel = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Destroyer = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Dexterity = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription MeleeAdept = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Indignation = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Force = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Smiting = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Shockwave = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription RaidAdept = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Murder = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Torture = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Assassination = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription EagleEye = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Penetration = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription EnchantedMagazine = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription EnchantedBowstring = new InscriptionSettings.Inscription(0, 0);
+
+            public static InscriptionSettings.Inscription S_Fireball = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_Incinerating = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_Scorching = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_Enthusiasm = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_Gelidity = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_Iceflake = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_Glacier = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_Charging = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_LightningChain = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_Overload = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_SilveryArrow = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_Sanctity = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_Exorcism = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_SilveryFlame = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_Judgement = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_SilveryShield = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_SilveryVow = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_Planet = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_ActiveChant = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_Fragmentation = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_DizzyStrike = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_EmberPrayer = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_EmberOath = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_TameHead = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_SoulScorching = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_IndulgentGhost = new InscriptionSettings.Inscription(0, 0);
             #endregion
             public static Dictionary<string, short> Collection => new Dictionary<string, short>()
             {
