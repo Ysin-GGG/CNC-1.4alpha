@@ -31,7 +31,7 @@ namespace CNC.Content.NPCs.TownNPCs
             attackTime = 90;
             NPCID.Sets.AttackAverageChance[Type] = 30;
             NPCID.Sets.DangerDetectRange[Type] = 640; // The amount of pixels away from the center of the npc that it tries to attack enemies.
-            NPCID.Sets.HatOffsetY[Type] = 0; // For when a party is active, the party hat spawns at a Y offset.
+            NPCID.Sets.HatOffsetY[Type] = 0;
 
             npc.Happiness.SetBiomeAffection<Biomes.Tranquility>(AffectionLevel.Love);
             npc.Happiness.SetBiomeAffection<ForestBiome>(AffectionLevel.Like);
@@ -39,14 +39,6 @@ namespace CNC.Content.NPCs.TownNPCs
             npc.Happiness.SetNPCAffection(54, AffectionLevel.Like);
             npc.Happiness.SetNPCAffection(228, AffectionLevel.Dislike);
             npc.Happiness.SetNPCAffection(108, AffectionLevel.Hate);
-            /*
-            npc.Happiness.DislikeBiome(4);
-            npc.Happiness.LikeBiome(0);
-            //npc.Happiness.LoveBiome(PrimaryBiomeID.Forest);
-            npc.Happiness.HateNPC(108);
-            npc.Happiness.DislikeNPC(228);
-            npc.Happiness.LikeNPC(54);
-            */
         }
 
 		public override void ResetDefaults()
@@ -61,7 +53,9 @@ namespace CNC.Content.NPCs.TownNPCs
 
         public override void NPCChat(ref WeightedRandom<string> chat)
         {
-            for (int i = 1; i < 6; i++) chat.Add(CNCLocalization.GetText($"TownNPCChat.{Name}." + i.ToString(), Main.LocalPlayer.name));
+            for (int i = 1; i < 10; i++)
+               if(CNCLocalization.TextExist($"TownNPCChat.{Name}." + i.ToString()))
+                    chat.Add(CNCLocalization.GetText($"TownNPCChat.{Name}." + i.ToString()));
         }
 
         public override void TownNPCAttackMagic(ref float auraLightMultiplier) => auraLightMultiplier = .5f;

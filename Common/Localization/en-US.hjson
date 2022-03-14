@@ -181,11 +181,11 @@ Mods: {
 
 		TownNPCChat: {
 			Mentor: {
-                1: Well, {0}. Looks like {$Mods.CNC.Biome.Tranquility} has been liberated.
+                1: 击败奈达楠只是第一步，它的力量早也已经接近枯竭，你需要变得更强。
                 2: Have you try to find the new application of crucible? This is an interesting idea.
-                3: Formerly, I am a wizard too, till I meet you.
-                4: Of course you can change your class, but you need to pay a higher price.
-                5: In {$Mods.CNC.Biome.Tranquility}, my mind will be more active, maybe I can make some new things to relax.
+                3: 失去了达尔庇护之后，静谧之地也不复存在，但命定的预言告诉我，新的使者已经到来了。
+                4: 树精奈达楠一直在等待着命定之人的到来，它的命运在长久的守护中消耗，已经走到了尽头。
+                5: In {$Mods.CNC.BiomeName.Tranquility}, my mind will be more active, maybe I can make some new things to relax.
 			}
 		}
 
