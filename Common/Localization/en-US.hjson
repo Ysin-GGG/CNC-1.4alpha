@@ -79,6 +79,8 @@ Mods: {
 				Gelidity: Reduces target's movement speed
 				Iceflake: Generates an extra explosion, and deals [damage=14] AoE magic damage
 				Glacier: Your attacks may freeze your targets when strikes
+				Splintering: Ice bombs do 40% more magic damage to frozen enemies
+			    FrostShield: Right click costs 20 mana per second to build expansionary chill. Enemies within your radius of 9 squares will continue to slow down and freeze for 3 seconds, but will not freeze again for a while
 				Charging: Shoots a lightning missile
 				SpellLightningChain: Right click to shoot a lightning chain, and attacks {0} targets, dealing [damage=50] magic damage
 				ArcaneOverload: Increases magic damage by 3% when strikes targets, it will be cleared when increased to 30%, and shoots a overloaded missile next time, dealing [damage=40] AoE magic damage

@@ -316,8 +316,10 @@ Mods: {
 			Scorching: 高温|对被击中的敌人附加[{$Mods.CNC.Buff.Name.Scorched}]，使其减少8点防御力
 			Enthusiasm: 激情|每次攻击有2%触发[{$Mods.CNC.Buff.Name.Enthused}]
 			Gelidity: 寒冷|造成伤害时，降低敌人的移动速度
-			Iceflake: 冰裂|冰齿命中时会爆炸，造成[damage=14]魔法伤害
-			Glacier: 冻结|造成伤害时，有一定概率冻结敌人
+			Iceflake: 冰裂|冰齿命中时会爆炸，造成[damage=14]范围魔法伤害
+			Glacier: 冻结|造成伤害时，有一定概率冻结敌人，使其无法移动
+			Splintering: 冰裂|冰弹对冻结的敌人造成的魔法伤害增加40%
+			FrostShield: 冰霜护盾|右键每秒消耗20点魔力不断构建扩张性的寒气，你半径9格内的敌人将持续减速且受到3s冻结，但在一段时间内不会再被冻结
 			Charging: 聚集电能|发射闪电弹攻击敌人
 			SpellLightningChain: 咒文闪电链|右键释放一道闪电，攻击至多{0}名敌人，造成[damage=50]魔法伤害
 			ArcaneOverload: 奥术超载|命中敌人时增加3%魔法伤害，叠至10层时清零并使下次攻击释放高能闪电弹，造成4次[damage=40]范围魔法伤害
