@@ -80,8 +80,11 @@ Mods: {
 				Iceflake: Generates an extra explosion, and deals [damage=14] AoE magic damage
 				Glacier: Your attacks may freeze your targets when strikes
 				Charging: Shoots a lightning missile
-				LightningChain: Right click to shoot a lightning chain, and attacks {0} targets, dealing [damage=50] magic damage
-				Overload: Increases magic damage by 3% when strikes targets, it will be cleared when increased to 30%, and shoots a overloaded missile next time, dealing [damage=40] AoE magic damage
+				SpellLightningChain: Right click to shoot a lightning chain, and attacks {0} targets, dealing [damage=50] magic damage
+				ArcaneOverload: Increases magic damage by 3% when strikes targets, it will be cleared when increased to 30%, and shoots a overloaded missile next time, dealing [damage=40] AoE magic damage
+				SpellReconstruction:Attacks have a 5% chance to instantly rebuild and cast the Spell Chain Lightning charm
+				SpellAugmentated:Improved spell research to increase chain lightning target by 1 and search radius by 5
+				StableSpell:Overload will be able to hold for 5s
 				SilveryArrow: Wooden arrows turn into Silvery Arrows
 				Sanctity: 45% shoots an Sanctified Arrow, making [damage=2f] ranged damage and applying [{$Mods.CNC.Buff.Name.Sanctified}] to targets
 				Exorcism: Explodes all Sanctified Arrows if the target was struck by 3 Sanctified Arrows, dealing [damage=3f] ranged damage
