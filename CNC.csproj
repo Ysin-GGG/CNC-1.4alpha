@@ -18,34 +18,34 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FNA">
-      <HintPath>bin\Debug\net452\FNA.dll</HintPath>
+      <HintPath>bin\Debug\net45\FNA.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>bin\Debug\net452\log4net.dll</HintPath>
+      <HintPath>bin\Debug\net45\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cecil">
-      <HintPath>bin\Debug\net452\Mono.Cecil.dll</HintPath>
+      <HintPath>bin\Debug\net45\Mono.Cecil.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cecil.Mdb">
-      <HintPath>bin\Debug\net452\Mono.Cecil.Mdb.dll</HintPath>
+      <HintPath>bin\Debug\net45\Mono.Cecil.Mdb.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cecil.Pdb">
-      <HintPath>bin\Debug\net452\Mono.Cecil.Pdb.dll</HintPath>
+      <HintPath>bin\Debug\net45\Mono.Cecil.Pdb.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cecil.Rocks">
-      <HintPath>bin\Debug\net452\Mono.Cecil.Rocks.dll</HintPath>
+      <HintPath>bin\Debug\net45\Mono.Cecil.Rocks.dll</HintPath>
     </Reference>
     <Reference Include="MonoMod.Utils">
-      <HintPath>bin\Debug\net452\MonoMod.Utils.dll</HintPath>
+      <HintPath>bin\Debug\net45\MonoMod.Utils.dll</HintPath>
     </Reference>
     <Reference Include="ReLogic">
-      <HintPath>bin\Debug\net452\ReLogic.dll</HintPath>
+      <HintPath>bin\Debug\net45\ReLogic.dll</HintPath>
     </Reference>
     <Reference Include="TerrariaHooks">
-      <HintPath>bin\Debug\net452\TerrariaHooks.dll</HintPath>
+      <HintPath>bin\Debug\net45\TerrariaHooks.dll</HintPath>
     </Reference>
     <Reference Include="tModLoader">
-      <HintPath>bin\Debug\net452\tModLoader.dll</HintPath>
+      <HintPath>bin\Debug\net45\tModLoader.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
