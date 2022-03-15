@@ -107,7 +107,7 @@ namespace CNC.Common.Global.Items
                         break;
                     case CNCID.Item.Superconductor:
                         break;
-                    case CNCID.Item.SilveryClaw:
+                    case CNCID.Item.ArgenteusClaw:
                         itemInscription.level = 1;
                         itemInscription.levelMax = 5;
                         itemInscription._inscription1.Add(CNCID.Inscription.S_SilveryArrow);
@@ -255,7 +255,7 @@ namespace CNC.Common.Global.Items
                         if (type == 4) _args = new object[] { 1, 5 };
                         if (type == 5) _args = new object[] { 5 };
                         break;
-                    case CNCID.Item.SilveryClaw:
+                    case CNCID.Item.ArgenteusClaw:
                         if (type == 0) _args = new object[] { };
                         if (type == 1) _args = new object[] { 0.45f, "[damage=2f]" };
                         if (type == 2) _args = new object[] { 3, "[damage=3f]" };

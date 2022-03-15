@@ -6,7 +6,7 @@ using CNC.Common.Global.Items;
 
 namespace CNC.Content.Items.Weapons.Ranged
 {
-	public class SilveryClaw : CNCItem
+	public class ArgenteusClaw : CNCItem
     {
         public override void ResetDefaults()
         {
@@ -33,8 +33,8 @@ namespace CNC.Content.Items.Weapons.Ranged
             g = item.GetGlobalItem<GItem>();
             if (id == 1) { id = proj1; }
             if (g.level > 1 && Main.rand.Next(20) < 9) { id = proj2; dmg *= 2; }
-            if (id == proj2) { CNC.PlayMySnd("SilveryClaw/Shoot2", pos); }
-            else { CNC.PlayMySnd("SilveryClaw/Shoot1", pos, 2f); }
+            if (id == proj2) { CNC.PlayMySnd("ArgenteusClaw/Shoot2", pos); }
+            else { CNC.PlayMySnd("ArgenteusClaw/Shoot1", pos, 2f); }
             if (id == proj2) { Method.NewProj(pos + vel / 4f, vel, CNC.GetType(1, 14), 0, 0); }
             if (g.level > 2 && id == proj2)
             {
