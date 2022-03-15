@@ -180,6 +180,15 @@ namespace CNC.Common.Global.Items
         {
         }
 
+        public override void UpdateInventory(Item item, Player player)
+        {
+            InscriptionSettings itemSettings = item.GetGlobalItem<InscriptionSettings>();
+            if (itemSettings.CanUpgrade)
+                for (int i = 0; i < itemSettings.inscription.Length; i++)
+                    if (itemSettings.inscription[i].spellCooldown > 0)
+                        itemSettings.inscription[i].spellCooldown--;
+        }
+
         public class Inscription
         {
             public short type;
@@ -319,22 +328,6 @@ namespace CNC.Common.Global.Items
             public bool showDetail = false;
             Player player => Player;
             InscriptionSystem modPlayer => player.GetModPlayer<InscriptionSystem>();
-
-            public override void PostUpdate()
-            {
-                for (int i = 0; i < 50; i++)
-                {
-                    Item item = player.inventory[i];
-                    if (item != null && item.type != 0)
-                    {
-                        InscriptionSettings itemSettings = item.GetGlobalItem<InscriptionSettings>();
-                        if (itemSettings.CanUpgrade)
-                            for (int j = 0; j < itemSettings.inscription.Length; j++)
-                                if (itemSettings.inscription[i].spellCooldown > 0)
-                                    itemSettings.inscription[i].spellCooldown--;
-                    }
-                }
-            }
 
             public override void ProcessTriggers(TriggersSet triggersSet)
             {

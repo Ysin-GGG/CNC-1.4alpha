@@ -92,6 +92,12 @@ namespace CNC.Content.Items.Developers.Quartz
             return true;
         }
 
+        public override void PostUpdate()
+        {
+            base.PostUpdate();
+            Main.curMusic = Main.newMusic = Terraria.ID.MusicID.EmpressOfLight;
+        }
+
         public override void DrawArmorColor(Player drawPlayer, float shadow, ref Color color, ref int glowMask, ref Color glowMaskColor)
         {
             Color c = Color.White;

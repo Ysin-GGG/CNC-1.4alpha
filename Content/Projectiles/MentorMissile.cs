@@ -47,7 +47,7 @@ namespace CNC.Content.Projectiles
             projectile.height = 48;
             projectile.timeLeft = 180;
             projectile.alpha = 255;
-            projectile.light = 0;
+            projectile.light = .2f;
             projectile.scale = 1;
             projectile.penetrate = 1;
             projectile.ignoreWater = true;
@@ -83,12 +83,14 @@ namespace CNC.Content.Projectiles
                 projectile.Size = new Vector2(14f);
                 projectile.friendly = true;
                 if(frame > 6) projectile.tileCollide = true;
+                /*
                 for (int i = 0; i < 8; i++)
                 {
                     Vector4 xywh = new Vector4(projectile.Center.X, projectile.Center.Y, projectile.width - 4f, projectile.height - 4f);
                     Dust dust = CNCUtils.NewDust(xywh, dustid2, Main.rand.NextFloat(MyMath.pi), Main.rand.NextFloat(.9f, 1.6f), new Vector2(4), color);
                     dust.noGravity = true;
                 }
+                */
             }
             AI001_RollingMissile(projectile, true, true, 90);
             UpdateOldData(projectile, projectile.velocity);
