@@ -107,7 +107,7 @@ namespace CNC.Common.Global.Items
                         break;
                     case CNCID.Item.Superconductor:
                         break;
-                    case CNCID.Item.ArgenteusClaw:
+                    case CNCID.Item.SilveryClaw:
                         itemInscription.level = 1;
                         itemInscription.levelMax = 5;
                         itemInscription._inscription1.Add(CNCID.Inscription.S_SilveryArrow);
@@ -169,7 +169,7 @@ namespace CNC.Common.Global.Items
                     string name = inscription.displayName;
                     string desc = inscription.GetTooltip();
                     TooltipLine tt = new TooltipLine(mod, name, desc) { overrideColor = Color.White };
-                    if (Main.LocalPlayer.GetModPlayer<InscriptionSystem>().showDetail) tt.text = $"Lv{i}-<{inscription.GetTooltip()}>";
+                    if (Main.LocalPlayer.GetModPlayer<InscriptionSystem>().showDetail) tt.text = $"<{inscription.GetTooltip()}>";
                     else tt.text = CNCLocalization.GetText("Misc.Inscription", inscription.displayName);
                     tooltips.Add(tt);
                 }
@@ -255,7 +255,7 @@ namespace CNC.Common.Global.Items
                         if (type == 4) _args = new object[] { 1, 5 };
                         if (type == 5) _args = new object[] { 5 };
                         break;
-                    case CNCID.Item.ArgenteusClaw:
+                    case CNCID.Item.SilveryClaw:
                         if (type == 0) _args = new object[] { };
                         if (type == 1) _args = new object[] { 0.45f, "[damage=2f]" };
                         if (type == 2) _args = new object[] { 3, "[damage=3f]" };

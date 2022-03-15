@@ -623,7 +623,7 @@ namespace CNC.Common.Utils
             public const short FireGrimoire = 3;
             public const short IceTooth = 4;
             public const short Superconductor = 5;
-            public const short ArgenteusClaw = 6;
+            public const short SilveryClaw = 6;
             public const short SpiritWood = 7;
             public const short TranquilityGem = 8;
             public const short SpiritSapling = 9;
@@ -641,7 +641,7 @@ namespace CNC.Common.Utils
                 { "FireGrimoire", FireGrimoire },
                 { "IceTooth", IceTooth },
                 { "Superconductor", Superconductor },
-                { "ArgenteusClaw", ArgenteusClaw },
+                { "SilveryClaw", SilveryClaw },
                 { "SpiritWood", SpiritWood },
                 { "TranquilityGem", TranquilityGem },
                 { "SpiritSapling", SpiritSapling },
@@ -660,7 +660,7 @@ namespace CNC.Common.Utils
                 { "FireGrimoire", LegacyObject[Collection["FireGrimoire"]] },
                 { "IceTooth", LegacyObject[Collection["IceTooth"]] },
                 { "Superconductor", LegacyObject[Collection["Superconductor"]] },
-                { "ArgenteusClaw", LegacyObject[Collection["ArgenteusClaw"]] },
+                { "SilveryClaw", LegacyObject[Collection["SilveryClaw"]] },
                 { "SpiritWood", LegacyObject[Collection["SpiritWood"]] },
                 { "TranquilityGem", LegacyObject[Collection["TranquilityGem"]] },
                 { "SpiritSapling", LegacyObject[Collection["SpiritSapling"]] },
@@ -680,7 +680,7 @@ namespace CNC.Common.Utils
                 { FireGrimoire, ItemType<Content.Items.Weapons.Magic.FireGrimoire>() },
                 { IceTooth, ItemType<Content.Items.Weapons.Magic.IceTooth>() },
                 //{ Superconductor, ItemType<Content.Items.Weapons.Magic.Superconductor>() },
-                { ArgenteusClaw, ItemType<Content.Items.Weapons.Ranged.ArgenteusClaw>() },
+                { SilveryClaw, ItemType<Content.Items.Weapons.Ranged.SilveryClaw>() },
                 { SpiritWood, ItemType<Content.Items.SpiritWood>() },
                 { TranquilityGem, ItemType<Content.Items.TranquilityGem>() },
                 { SpiritSapling, ItemType<Content.Items.SpiritSapling>() },
@@ -700,7 +700,7 @@ namespace CNC.Common.Utils
                 { LegacyObject[FireGrimoire], FireGrimoire },
                 { LegacyObject[IceTooth], IceTooth },
                 //{ LegacyObject[Superconductor], Superconductor },
-                { LegacyObject[ArgenteusClaw], ArgenteusClaw },
+                { LegacyObject[SilveryClaw], SilveryClaw },
                 { LegacyObject[SpiritWood], SpiritWood },
                 { LegacyObject[TranquilityGem], TranquilityGem },
                 { LegacyObject[SpiritSapling], SpiritSapling },
@@ -753,9 +753,9 @@ namespace CNC.Common.Utils
             public static InscriptionSettings.Inscription S_SpellReconstruction => new InscriptionSettings.Inscription(3, CNCID.Item.Superconductor);
             public static InscriptionSettings.Inscription S_SpellAugmentated => new InscriptionSettings.Inscription(4, CNCID.Item.Superconductor);
             public static InscriptionSettings.Inscription S_StableSpell => new InscriptionSettings.Inscription(5, CNCID.Item.Superconductor);
-            public static InscriptionSettings.Inscription S_SilveryArrow => new InscriptionSettings.Inscription(0, CNCID.Item.ArgenteusClaw);
-            public static InscriptionSettings.Inscription S_Sanctity => new InscriptionSettings.Inscription(1, CNCID.Item.ArgenteusClaw);
-            public static InscriptionSettings.Inscription S_Exorcism => new InscriptionSettings.Inscription(2, CNCID.Item.ArgenteusClaw);
+            public static InscriptionSettings.Inscription S_SilveryArrow => new InscriptionSettings.Inscription(0, CNCID.Item.SilveryClaw);
+            public static InscriptionSettings.Inscription S_Sanctity => new InscriptionSettings.Inscription(1, CNCID.Item.SilveryClaw);
+            public static InscriptionSettings.Inscription S_Exorcism => new InscriptionSettings.Inscription(2, CNCID.Item.SilveryClaw);
             public static InscriptionSettings.Inscription S_SilveryFlame => new InscriptionSettings.Inscription(0, CNCID.Item.SilveryTilia);
             public static InscriptionSettings.Inscription S_Judgement => new InscriptionSettings.Inscription(1, CNCID.Item.SilveryTilia);
             public static InscriptionSettings.Inscription S_SilveryShield => new InscriptionSettings.Inscription(2, CNCID.Item.SilveryTilia);
@@ -811,9 +811,9 @@ namespace CNC.Common.Utils
                 { new Point(3, CNCID.Item.Superconductor), "S_SpellReconstruction" },
                 { new Point(4, CNCID.Item.Superconductor), "S_SpellAugmentated" },
                 { new Point(5, CNCID.Item.Superconductor), "S_StableSpell" },
-                { new Point(0, CNCID.Item.ArgenteusClaw), "S_SilveryArrow" },
-                { new Point(1, CNCID.Item.ArgenteusClaw), "S_Sanctity" },
-                { new Point(2, CNCID.Item.ArgenteusClaw), "S_Exorcism" },
+                { new Point(0, CNCID.Item.SilveryClaw), "S_SilveryArrow" },
+                { new Point(1, CNCID.Item.SilveryClaw), "S_Sanctity" },
+                { new Point(2, CNCID.Item.SilveryClaw), "S_Exorcism" },
                 { new Point(0, CNCID.Item.SilveryTilia), "S_SilveryFlame" },
                 { new Point(1, CNCID.Item.SilveryTilia), "S_Judgement" },
                 { new Point(2, CNCID.Item.SilveryTilia), "S_SilveryShield" },
@@ -929,9 +929,9 @@ namespace CNC.Common.Utils
                 { new Point(3, CNCID.Item.Superconductor), S_SpellReconstruction },
                 { new Point(4, CNCID.Item.Superconductor), S_SpellAugmentated },
                 { new Point(5, CNCID.Item.Superconductor), S_StableSpell },
-                { new Point(0, CNCID.Item.ArgenteusClaw), S_SilveryArrow },
-                { new Point(1, CNCID.Item.ArgenteusClaw), S_Sanctity },
-                { new Point(2, CNCID.Item.ArgenteusClaw), S_Exorcism },
+                { new Point(0, CNCID.Item.SilveryClaw), S_SilveryArrow },
+                { new Point(1, CNCID.Item.SilveryClaw), S_Sanctity },
+                { new Point(2, CNCID.Item.SilveryClaw), S_Exorcism },
                 { new Point(0, CNCID.Item.SilveryTilia), S_SilveryFlame },
                 { new Point(1, CNCID.Item.SilveryTilia), S_Judgement },
                 { new Point(2, CNCID.Item.SilveryTilia), S_SilveryShield },

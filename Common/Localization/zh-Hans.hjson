@@ -29,7 +29,7 @@ Mods: {
 				FireGrimoire: 火焰魔典
 				IceTooth: 寒冰之牙
 				Superconductor: 金属法杖
-				ArgenteusClaw: 银白艾因缇奥
+				SilveryClaw: 银白之臂
 				SpiritWood: 灵木
 				TranquilityGem: 静谧能量石
 				SpiritSapling: 静谧树苗
@@ -44,9 +44,9 @@ Mods: {
 				MiracleGem: 召唤可骑乘的灵狐
 				DestineScroll: 得到一次重新变更职业的机会\n“卷轴上记载了更替命定之路的上古咒文。”
 				#FireGrimoire: 
-				IceTooth: 埃兹西亚巫师费兹安生前唯一的遗物。\n“作为权力的代价，埃兹西亚的英雄，"王室守护"费兹安也无法逃脱命定之死。”
+				IceTooth: “蓝宝石中蕴含着古老的魔力”
 				#Superconductor: 
-				ArgenteusClaw: “银白圣树最后的子嗣，静谧守护艾因缇奥”
+				SilveryClaw: “击穿邪恶…”
 				#SpiritWood: 
 				#TranquilityGem: 
 				#SpiritSapling: 
@@ -148,10 +148,10 @@ Mods: {
 
 		TownNPCChat: {
 			Mentor: {
-                1: 击败艾因缇奥只是第一步，它的力量早也已经接近枯竭，你需要变得更强。
+                1: 击败奈达楠只是第一步，它的力量早也已经接近枯竭，你需要变得更强。
                 2: 你有没有尝试开发坩埚的新用途？这真是一个有趣的想法。
                 3: 失去了达尔庇护之后，静谧之地也不复存在，但命定的预言告诉我，新的使者已经到来。
-                4: 树精艾因缇奥一直在等待着命定之人的到来，它的命运在长久的守护中消耗，已经走到了尽头。
+                4: 树精奈达楠一直在等待着命定之人的到来，它的命运在长久的守护中消耗，已经走到了尽头。
                 5: 在{$Mods.CNC.BiomeName.Tranquility}里，我的头脑会得到解放，也许能做点新玩意解闷。
 			}
 		}
