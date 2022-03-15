@@ -55,6 +55,47 @@ Mods: {
 			}
 		}
 
+<<<<<<< HEAD
+		Attribute: { 
+			Name: {
+				Fireball: Fireball
+				Incinerating: Incinerating
+				Scorching: Scorching
+				Enthusiasm: Enthusiasm
+				Gelidity: Gelidity
+				Iceflake: Iceflake
+				Glacier: Glacier
+				Charging: Charging
+				LightningChain: LightningChain
+				Overload: Overload
+				SilveryArrow: SilveryArrow
+				Sanctity: Sanctity
+				Exorcism: Exorcism
+			}
+			Desc: {
+				Fireball: Shoots a fireball condensed by magic
+				Incinerating: Makes targets on fire, and generates a fire explosion, dealing [damage=36] AoE magic damage
+				Scorching: Applys [{$Mods.CNC.Buff.Name.Scorched}] to targets when strikes, decreasing target's defense by 8
+				Enthusiasm: 2% chance to trigger [{$Mods.CNC.Buff.Name.Enthused}] when you attack
+				Gelidity: Reduces target's movement speed
+				Iceflake: Generates an extra explosion, and deals [damage=14] AoE magic damage
+				Glacier: Your attacks may freeze your targets when strikes
+				Splintering: Ice bombs do 40% more magic damage to frozen enemies
+			    FrostShield: Right click costs 20 mana per second to build expansionary chill. Enemies within your radius of 9 squares will continue to slow down and freeze for 3 seconds, but will not freeze again for a while
+				Charging: Shoots a lightning missile
+				SpellLightningChain: Right click to shoot a lightning chain, and attacks {0} targets, dealing [damage=50] magic damage
+				ArcaneOverload: Increases magic damage by 3% when strikes targets, it will be cleared when increased to 30%, and shoots a overloaded missile next time, dealing [damage=40] AoE magic damage
+				SpellReconstruction:Attacks have a 5% chance to instantly rebuild and cast the Spell Chain Lightning charm
+				SpellAugmentated:Improved spell research to increase chain lightning target by 1 and search radius by 5
+				StableSpell:Overload will be able to hold for 5s
+				SilveryArrow: Wooden arrows turn into Silvery Arrows
+				Sanctity: 45% shoots an Sanctified Arrow, making [damage=2f] ranged damage and applying [{$Mods.CNC.Buff.Name.Sanctified}] to targets
+				Exorcism: Explodes all Sanctified Arrows if the target was struck by 3 Sanctified Arrows, dealing [damage=3f] ranged damage
+			}
+		}
+
+=======
+>>>>>>> 搭建铭文系统�?0%�?
 		Buff: {
 			Name: {
 				MiracleFox: Miracle Fox
