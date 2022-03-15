@@ -23,10 +23,7 @@ namespace CNC.Common.Global.Items
         protected Color u => new Color(255, 255, 255, 255);
         protected Color n => new Color(64, 64, 64, 255);
         
-        public int level { get => allItem.level; set => allItem.level = value; }
-        public int levelMax { get => allItem.levelMax; set => allItem.levelMax = value; }
         public byte clazz { get => allItem.clazz; set => allItem.clazz = value; }
-        public int spellCD;
 
         public bool staff { get => Item.staff[Type]; set => Item.staff[Type] = value; }
         public virtual string[] attributeKeys => new string[0];
@@ -60,7 +57,7 @@ namespace CNC.Common.Global.Items
         public virtual void ResetDefaults() { }
         public virtual void ResetStaticDefaults() { }
         public virtual void Tooltips(List<TooltipLine> tooltips) { }
-
+        /*
         protected string GetAttribute(string name)
             => CNCLocalization.GetText($"Attribute.Name.{name}") + (CNCLocalization.isChinese ? "：" : ": ") + CNCLocalization.GetText($"Attribute.Desc.{name}");
         
@@ -160,9 +157,8 @@ namespace CNC.Common.Global.Items
                 else _text += key + line;
             }
             return _text;
-
         }
-
+        */
         protected Color DamageClassColor(int damageType, bool crit = false, bool flash = true)
         {
             Color[] color = new Color[]

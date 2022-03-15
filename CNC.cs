@@ -11,6 +11,7 @@ using Terraria.ModLoader.Core;
 using CNC.Content.UI.MainBar;
 using CNC.Content.UI.ClassesMenu;
 using CNC.Content.UI.CloneGUI;
+using CNC.Common.Global.Items;
 using CNC.Common.Global.Players;
 using CNC.Common.Localization;
 using MonoMod.Cil;
@@ -29,7 +30,8 @@ namespace CNC
         public override void Load()
         {
             IL.Terraria.Player.Update += new ILContext.Manipulator((il) => ResetManaMax(il, NewManaMax));
-            ClassesSettings.ClassKey = KeybindLoader.RegisterKeybind(this, "Class Key", "Q");
+            ClassesSettings.ClassKey = KeybindLoader.RegisterKeybind(this, "Class Key", Microsoft.Xna.Framework.Input.Keys.Q);
+            InscriptionSettings.InscriptionSystem.InscriptionKey = KeybindLoader.RegisterKeybind(this, "Inscription Key", Microsoft.Xna.Framework.Input.Keys.V);
             Instance = this;
             #region 映射载入
             TmodFile modFiles = (TmodFile)typeof(Mod).GetProperty("File", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(this);
@@ -75,6 +77,7 @@ namespace CNC
             }
             CNCLocalization.Unload();
             ClassesSettings.ClassKey = null;
+            InscriptionSettings.InscriptionSystem.InscriptionKey = null;
             Instance = null;
         }
 

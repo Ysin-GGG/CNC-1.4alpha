@@ -13,13 +13,6 @@ namespace CNC.Content.Items.Weapons.Magic
 {
     public class FireGrimoire : CNCItem
     {
-        public override string[] attributeKeys => new string[] {
-            "Fireball",
-            "Incinerating",
-            "Scorching",
-            "Enthusiasm",
-        };
-
         public override void ResetDefaults()
         {
             item.width = 24;
@@ -37,18 +30,7 @@ namespace CNC.Content.Items.Weapons.Magic
             item.autoReuse = true;
             item.DamageType = DamageClass.Magic;
             item.UseSound = SoundID.DD2_BetsyFireballShot;
-            level = 1;
-            levelMax = 3;
             clazz = 32;
-        }
-
-        public override void Tooltips(List<TooltipLine> t)
-        {
-            string name = item.Name;
-            t.Add(new TooltipLine(mod, "", GetAttribute(attributeKeys[0])) { overrideColor = level > 0 ? u : n });
-            t.Add(new TooltipLine(mod, "", GetAttribute(attributeKeys[1], item, 1)) { overrideColor = level > 0 ? u : n });
-            t.Add(new TooltipLine(mod, "", GetAttribute(attributeKeys[2])) { overrideColor = level > 1 ? u : n });
-            t.Add(new TooltipLine(mod, "", GetAttribute(attributeKeys[3])) { overrideColor = level > 2 ? u : n });
         }
         /*
         public override bool Projectile(Player owner, ref Vector2 pos, ref Vector2 vel, ref int id, ref int dmg, ref float kb)

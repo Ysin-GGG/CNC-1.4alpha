@@ -12,12 +12,6 @@ namespace CNC.Content.Items.Weapons.Magic
 {
     public class IceTooth : CNCItem
     {
-        public override string[] attributeKeys => new string[] {
-            "Gelidity",
-            "Iceflake",
-            "Glacier",
-        };
-
         public override void ResetDefaults()
         {
             item.width = 48;
@@ -35,18 +29,8 @@ namespace CNC.Content.Items.Weapons.Magic
             item.autoReuse = true;
             item.UseSound = SoundID.Item20;
             item.DamageType = DamageClass.Magic;
-            level = 1;
-            levelMax = 3;
             clazz = 32;
             staff = true;
-        }
-
-        public override void Tooltips(List<TooltipLine> t)
-        {
-            string name = item.Name;
-            t.Add(new TooltipLine(mod, name, GetAttribute(attributeKeys[0])) { overrideColor = level > 0 ? u : n });
-            t.Add(new TooltipLine(mod, name, GetAttribute(attributeKeys[1], item, 2)) { overrideColor = level > 1 ? u : n });
-            t.Add(new TooltipLine(mod, name, GetAttribute(attributeKeys[2])) { overrideColor = level > 2 ? u : n });
         }
         /*
         public override bool Projectile(Player owner, ref Vector2 pos, ref Vector2 vel, ref int id, ref int dmg, ref float kb)

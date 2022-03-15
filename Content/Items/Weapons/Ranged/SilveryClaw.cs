@@ -8,12 +8,6 @@ namespace CNC.Content.Items.Weapons.Ranged
 {
 	public class SilveryClaw : CNCItem
     {
-        public override string[] attributeKeys => new string[] {
-            "SilveryArrow",
-            "Sanctity",
-            "Exorcism",
-        };
-
         public override void ResetDefaults()
         {
             item.width = 20;
@@ -29,16 +23,7 @@ namespace CNC.Content.Items.Weapons.Ranged
             item.noMelee = true;
             item.useAmmo = AmmoID.Arrow;
             item.DamageType = DamageClass.Ranged;
-            level = 1;
-            levelMax = 3;
             clazz = 21;
-        }
-        public override void Tooltips(List<TooltipLine> t)
-        {
-            string name = item.Name;
-            t.Add(new TooltipLine(mod, name, GetAttribute(attributeKeys[0])) { overrideColor = level > 0 ? u : n });
-            t.Add(new TooltipLine(mod, name, GetAttribute(attributeKeys[1], item, 2)) { overrideColor = level > 1 ? u : n });
-            t.Add(new TooltipLine(mod, name, GetAttribute(attributeKeys[2], item, 3)) { overrideColor = level > 2 ? u : n });
         }
         /*
         public override bool Projectile(Player owner, ref Vector2 pos, ref Vector2 vel, ref int id, ref int dmg, ref float kb)

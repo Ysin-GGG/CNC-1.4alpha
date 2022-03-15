@@ -15,7 +15,7 @@ namespace CNC.Content.Buffs
             debuff = false;
             noSave = true;
         }
-
+        /*
         public override void Update(Player target, AllPlayer gt, ref int index)
         {
             Item item = target.HeldItem;
@@ -25,5 +25,6 @@ namespace CNC.Content.Buffs
             target.itemTime -= target.itemTimeMax / 20;
             target.moveSpeed *= 1.1f;
         }
+        */
     }
 }

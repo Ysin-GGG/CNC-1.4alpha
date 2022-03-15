@@ -26,9 +26,9 @@ namespace CNC.Content.Commands
         public override void Action(CommandCaller caller, string input, string[] args)
         {
             Item i = caller.Player.HeldItem;
-            AllItem ai = i.GetGlobalItem<AllItem>();
+            InscriptionSettings ai = i.GetGlobalItem<InscriptionSettings>();
             int level = 0;
-            if (!ai.levelExist)
+            if (!ai.CanUpgrade)
             { throw new UsageException(CNCLocalization.GetText("Command.LvSet.NoLevel", i.Name)); }
             if (!int.TryParse(args[0], out level))
             { throw new UsageException(CNCLocalization.GetText("Command.LvSet.NotPositiveInt", args[0])); }

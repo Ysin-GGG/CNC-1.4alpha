@@ -52,8 +52,6 @@ namespace CNC.Common.Utils
         public static Vector2 _12 => new Vector2(1f, 1f);
         public static Vector3 _13 => new Vector3(1f, 1f, 1f);
         public static Vector4 _14 => new Vector4(1f, 1f, 1f, 1f);
-        public static Color ExpertColor => Main.DiscoColor;
-        public static Color MasterColor => new Color((byte)((double)byte.MaxValue * ((float)Main.mouseTextColor / byte.MaxValue)), (byte)(Main.masterColor * 200.0 * ((float)Main.mouseTextColor / byte.MaxValue)), 0, Main.mouseTextColor);
 
         public static DynamicSpriteFont[] Font => new DynamicSpriteFont[]
         {
@@ -536,6 +534,45 @@ namespace CNC.Common.Utils
             };
         }
 
+        public static class Colors
+        {
+            public static Color Expert => Main.DiscoColor;
+            public static Color Master => new Color((byte)((double)byte.MaxValue * ((float)Main.mouseTextColor / byte.MaxValue)), (byte)(Main.masterColor * 200.0 * ((float)Main.mouseTextColor / byte.MaxValue)), 0, Main.mouseTextColor);
+            public static Color Barbarian => CNCUtils.AccurateColor(168, 61, 51, 255, false);
+            public static Color Defender => CNCUtils.AccurateColor(46, 109, 153, 255, false);
+            public static Color Crusader => CNCUtils.AccurateColor(219, 173, 89, 255, false);
+            public static Color Ranger => CNCUtils.AccurateColor(57, 153, 46, 255, false);
+            public static Color Gunman => CNCUtils.AccurateColor(126, 229, 218, 255, false);
+            public static Color Thrower => CNCUtils.AccurateColor(109, 81, 57, 255, false);
+            public static Color Musketeer => CNCUtils.AccurateColor(46, 109, 153, 255, false);
+            public static Color Cleric => CNCUtils.AccurateColor(232, 232, 11, 255, false);
+            public static Color Wizard => CNCUtils.AccurateColor(112, 45, 179, 255, false);
+            public static Color SpellBreaker => CNCUtils.AccurateColor(126, 161, 229, 255, false);
+            public static Color Druid => CNCUtils.AccurateColor(188, 242, 170, 255, false);
+            public static Color Shaman => CNCUtils.AccurateColor(122, 36, 70, 255, false);
+            public static Color Warlock => CNCUtils.AccurateColor(76, 46, 77, 255, false);
+            public static Color Monk => CNCUtils.AccurateColor(255, 255, 255, 255, false);
+            public static Color Assassin => CNCUtils.AccurateColor(31, 32, 38, 255, false);
+            public static Color Generic => CNCUtils.AccurateColor(0, 0, 0, 0, true);
+            public static Color Melee => CNCUtils.AccurateColor(217, 60, 60, 0, true);
+            public static Color Ranged => CNCUtils.AccurateColor(67, 230, 57, 0, true);
+            public static Color Magic => CNCUtils.AccurateColor(53, 157, 255, 0, true);
+            public static Color Summon => CNCUtils.AccurateColor(224, 44, 230, 0, true);
+            public static Color Throwing => CNCUtils.AccurateColor(255, 255, 255, 0, true);
+            //public static Color Generic => CNCUtils.AccurateColor(255, 196, 85, 0, true);
+            //public static Color Generic => CNCUtils.AccurateColor(179, 175, 50, 0, true);
+            //public static Color Generic => CNCUtils.AccurateColor(139, 29, 242, 0, true);
+            public static Color GenericCrit => CNCUtils.AccurateColor(0, 0, 0, 0, true);
+            public static Color MeleeCrit => CNCUtils.AccurateColor(163, 29, 29, 0, true);
+            public static Color RangedCrit => CNCUtils.AccurateColor(31, 171, 27, 0, true);
+            public static Color MagicCrit => CNCUtils.AccurateColor(61, 128, 192, 0, true);
+            public static Color SummonCrit => CNCUtils.AccurateColor(224, 44, 230, 0, true);
+            public static Color ThrowingCrit => CNCUtils.AccurateColor(255, 255, 255, 0, true);
+            //public static Color GenericCrit => CNCUtils.AccurateColor(255, 196, 85, 0, true);
+            //public static Color GenericCrit => CNCUtils.AccurateColor(179, 175, 50, 0, true);
+            //public static Color GenericCrit => CNCUtils.AccurateColor(103, 43, 159, 0, true);
+        }
+
         public static class State
         {
             public const byte MaxObject = 6;
@@ -592,6 +629,10 @@ namespace CNC.Common.Utils
             public const short SpiritSapling = 9;
             public const short TranquilityDirt = 10;
             public const short TranquilityStone = 11;
+            public const short SilveryTilia = 12;
+            public const short StarlightOfEzcia = 13;
+            public const short EmberOfNean = 14;
+            public const short CursedKnife = 15;
             #endregion
             public static Dictionary<string, short> Collection => new Dictionary<string, short>()
             {
@@ -606,6 +647,10 @@ namespace CNC.Common.Utils
                 { "SpiritSapling", SpiritSapling },
                 { "TranquilityDirt", TranquilityDirt },
                 { "TranquilityStone", TranquilityStone },
+                { "SilveryTilia", SilveryTilia },
+                { "StarlightOfEzcia", StarlightOfEzcia },
+                { "EmberOfNean", EmberOfNean },
+                { "CursedKnife", CursedKnife },
             };
 
             public static Dictionary<string, int> LegacyCollection => new Dictionary<string, int>()
@@ -621,6 +666,10 @@ namespace CNC.Common.Utils
                 { "SpiritSapling", LegacyObject[Collection["SpiritSapling"]] },
                 { "TranquilityDirt", LegacyObject[Collection["TranquilityDirt"]] },
                 { "TranquilityStone", LegacyObject[Collection["TranquilityStone"]] },
+                { "SilveryTilia", LegacyObject[Collection["SilveryTilia"]] },
+                { "StarlightOfEzcia", LegacyObject[Collection["StarlightOfEzcia"]] },
+                { "EmberOfNean", LegacyObject[Collection["EmberOfNean"]] },
+                { "CursedKnife", LegacyObject[Collection["CursedKnife"]] },
             };
 
             public static Dictionary<short, int> LegacyObject => new Dictionary<short, int>()
@@ -637,6 +686,10 @@ namespace CNC.Common.Utils
                 { SpiritSapling, ItemType<Content.Items.SpiritSapling>() },
                 { TranquilityDirt, ItemType<Content.Items.TranquilityDirt>() },
                 { TranquilityStone, ItemType<Content.Items.TranquilityStone>() },
+                //{ SilveryTilia, ItemType<Content.Items.>() },
+                //{ StarlightOfEzcia, ItemType<Content.Items.>() },
+                //{ EmberOfNean, ItemType<Content.Items.>() },
+                //{ CursedKnife, ItemType<Content.Items.>() },
             };
 
             public static Dictionary<int, short> LegacyObjectReturn => new Dictionary<int, short>()
@@ -658,72 +711,240 @@ namespace CNC.Common.Utils
 
         public static class Inscription
         {
-            public const short MaxObject = 52;
+            public const short MaxObject = 55;
             #region ID
-            public static InscriptionSettings.Inscription Power = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription Chanter = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription Economization = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription Arcana = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription Charging = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription Reiki = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription Assimilation = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription MagicPower = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription MagicAdept = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription Saint = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription Evangel = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription Destroyer = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription Dexterity = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription MeleeAdept = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription Indignation = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription Force = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription Smiting = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription Shockwave = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription RaidAdept = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription Murder = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription Torture = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription Assassination = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription EagleEye = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription Penetration = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription EnchantedMagazine = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription EnchantedBowstring = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Power => new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription Chanter => new InscriptionSettings.Inscription(1, 0);
+            public static InscriptionSettings.Inscription Economization => new InscriptionSettings.Inscription(2, 0);
+            public static InscriptionSettings.Inscription Arcana => new InscriptionSettings.Inscription(3, 0);
+            public static InscriptionSettings.Inscription Charging => new InscriptionSettings.Inscription(4, 0);
+            public static InscriptionSettings.Inscription Reiki => new InscriptionSettings.Inscription(5, 0);
+            public static InscriptionSettings.Inscription Assimilation => new InscriptionSettings.Inscription(6, 0);
+            public static InscriptionSettings.Inscription MagicPower => new InscriptionSettings.Inscription(7, 0);
+            public static InscriptionSettings.Inscription MagicAdept => new InscriptionSettings.Inscription(8, 0);
+            public static InscriptionSettings.Inscription Saint => new InscriptionSettings.Inscription(9, 0);
+            public static InscriptionSettings.Inscription Evangel => new InscriptionSettings.Inscription(10, 0);
+            public static InscriptionSettings.Inscription Destroyer => new InscriptionSettings.Inscription(11, 0);
+            public static InscriptionSettings.Inscription Dexterity => new InscriptionSettings.Inscription(12, 0);
+            public static InscriptionSettings.Inscription MeleeAdept => new InscriptionSettings.Inscription(13, 0);
+            public static InscriptionSettings.Inscription Indignation => new InscriptionSettings.Inscription(14, 0);
+            public static InscriptionSettings.Inscription Force => new InscriptionSettings.Inscription(15, 0);
+            public static InscriptionSettings.Inscription Smiting => new InscriptionSettings.Inscription(16, 0);
+            public static InscriptionSettings.Inscription Shockwave => new InscriptionSettings.Inscription(17, 0);
+            public static InscriptionSettings.Inscription RaidAdept => new InscriptionSettings.Inscription(18, 0);
+            public static InscriptionSettings.Inscription Murder => new InscriptionSettings.Inscription(19, 0);
+            public static InscriptionSettings.Inscription Torture => new InscriptionSettings.Inscription(20, 0);
+            public static InscriptionSettings.Inscription Assassination => new InscriptionSettings.Inscription(21, 0);
+            public static InscriptionSettings.Inscription EagleEye => new InscriptionSettings.Inscription(22, 0);
+            public static InscriptionSettings.Inscription Penetration => new InscriptionSettings.Inscription(23, 0);
+            public static InscriptionSettings.Inscription EnchantedMagazine => new InscriptionSettings.Inscription(24, 0);
+            public static InscriptionSettings.Inscription EnchantedBowstring => new InscriptionSettings.Inscription(25, 0);
 
-            public static InscriptionSettings.Inscription S_Fireball = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_Incinerating = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_Scorching = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_Enthusiasm = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_Gelidity = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_Iceflake = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_Glacier = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_Charging = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_LightningChain = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_Overload = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_SilveryArrow = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_Sanctity = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_Exorcism = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_SilveryFlame = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_Judgement = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_SilveryShield = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_SilveryVow = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_Planet = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_ActiveChant = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_Fragmentation = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_DizzyStrike = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_EmberPrayer = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_EmberOath = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_TameHead = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_SoulScorching = new InscriptionSettings.Inscription(0, 0);
-            public static InscriptionSettings.Inscription S_IndulgentGhost = new InscriptionSettings.Inscription(0, 0);
+            public static InscriptionSettings.Inscription S_Fireball => new InscriptionSettings.Inscription(0, CNCID.Item.FireGrimoire);
+            public static InscriptionSettings.Inscription S_Incinerating => new InscriptionSettings.Inscription(1, CNCID.Item.FireGrimoire);
+            public static InscriptionSettings.Inscription S_Scorching => new InscriptionSettings.Inscription(2, CNCID.Item.FireGrimoire);
+            public static InscriptionSettings.Inscription S_Enthusiasm => new InscriptionSettings.Inscription(3, CNCID.Item.FireGrimoire);
+            public static InscriptionSettings.Inscription S_Gelidity => new InscriptionSettings.Inscription(0, CNCID.Item.IceTooth);
+            public static InscriptionSettings.Inscription S_Iceflake => new InscriptionSettings.Inscription(1, CNCID.Item.IceTooth);
+            public static InscriptionSettings.Inscription S_Glacier => new InscriptionSettings.Inscription(2, CNCID.Item.IceTooth);
+            public static InscriptionSettings.Inscription S_Charging => new InscriptionSettings.Inscription(0, CNCID.Item.Superconductor);
+            public static InscriptionSettings.Inscription S_SpellLightningChain => new InscriptionSettings.Inscription(1, CNCID.Item.Superconductor);
+            public static InscriptionSettings.Inscription S_ArcaneOverload => new InscriptionSettings.Inscription(2, CNCID.Item.Superconductor);
+            public static InscriptionSettings.Inscription S_SpellReconstruction => new InscriptionSettings.Inscription(3, CNCID.Item.Superconductor);
+            public static InscriptionSettings.Inscription S_SpellAugmentated => new InscriptionSettings.Inscription(4, CNCID.Item.Superconductor);
+            public static InscriptionSettings.Inscription S_StableSpell => new InscriptionSettings.Inscription(5, CNCID.Item.Superconductor);
+            public static InscriptionSettings.Inscription S_SilveryArrow => new InscriptionSettings.Inscription(0, CNCID.Item.SilveryClaw);
+            public static InscriptionSettings.Inscription S_Sanctity => new InscriptionSettings.Inscription(1, CNCID.Item.SilveryClaw);
+            public static InscriptionSettings.Inscription S_Exorcism => new InscriptionSettings.Inscription(2, CNCID.Item.SilveryClaw);
+            public static InscriptionSettings.Inscription S_SilveryFlame => new InscriptionSettings.Inscription(0, CNCID.Item.SilveryTilia);
+            public static InscriptionSettings.Inscription S_Judgement => new InscriptionSettings.Inscription(1, CNCID.Item.SilveryTilia);
+            public static InscriptionSettings.Inscription S_SilveryShield => new InscriptionSettings.Inscription(2, CNCID.Item.SilveryTilia);
+            public static InscriptionSettings.Inscription S_SilveryVow => new InscriptionSettings.Inscription(3, CNCID.Item.SilveryTilia);
+            public static InscriptionSettings.Inscription S_Rock => new InscriptionSettings.Inscription(0, CNCID.Item.StarlightOfEzcia);
+            public static InscriptionSettings.Inscription S_ActiveChant => new InscriptionSettings.Inscription(1, CNCID.Item.StarlightOfEzcia);
+            public static InscriptionSettings.Inscription S_Fragmentation => new InscriptionSettings.Inscription(2, CNCID.Item.StarlightOfEzcia);
+            public static InscriptionSettings.Inscription S_DizzyStrike => new InscriptionSettings.Inscription(0, CNCID.Item.EmberOfNean);
+            public static InscriptionSettings.Inscription S_EmberPrayer => new InscriptionSettings.Inscription(1, CNCID.Item.EmberOfNean);
+            public static InscriptionSettings.Inscription S_EmberOath => new InscriptionSettings.Inscription(2, CNCID.Item.EmberOfNean);
+            public static InscriptionSettings.Inscription S_TameHead => new InscriptionSettings.Inscription(0, CNCID.Item.CursedKnife);
+            public static InscriptionSettings.Inscription S_SoulScorching => new InscriptionSettings.Inscription(1, CNCID.Item.CursedKnife);
+            public static InscriptionSettings.Inscription S_IndulgentGhost => new InscriptionSettings.Inscription(2, CNCID.Item.CursedKnife);
             #endregion
-            public static Dictionary<string, short> Collection => new Dictionary<string, short>()
+            public static Dictionary<Point, string> Collection => new Dictionary<Point, string>()
             {
+                { new Point(0, 0), "Power" },
+                { new Point(1, 0), "Chanter" },
+                { new Point(2, 0), "Economization" },
+                { new Point(3, 0), "Arcana" },
+                { new Point(4, 0), "Charging" },
+                { new Point(5, 0), "Reiki" },
+                { new Point(6, 0), "Assimilation" },
+                { new Point(7, 0), "MagicPower" },
+                { new Point(8, 0), "MagicAdept" },
+                { new Point(9, 0), "Saint" },
+                { new Point(10, 0), "Evangel" },
+                { new Point(11, 0), "Destroyer" },
+                { new Point(12, 0), "Dexterity" },
+                { new Point(13, 0), "MeleeAdept" },
+                { new Point(14, 0), "Indignation" },
+                { new Point(15, 0), "Force" },
+                { new Point(16, 0), "Smiting" },
+                { new Point(17, 0), "Shockwave" },
+                { new Point(18, 0), "RaidAdept" },
+                { new Point(19, 0), "Murder" },
+                { new Point(20, 0), "Torture" },
+                { new Point(21, 0), "Assassination" },
+                { new Point(22, 0), "EagleEye" },
+                { new Point(23, 0), "Penetration" },
+                { new Point(24, 0), "EnchantedMagazine" },
+                { new Point(25, 0), "EnchantedBowstring" },
+                { new Point(0, CNCID.Item.FireGrimoire), "S_Fireball" },
+                { new Point(1, CNCID.Item.FireGrimoire), "S_Incinerating" },
+                { new Point(2, CNCID.Item.FireGrimoire), "S_Scorching" },
+                { new Point(3, CNCID.Item.FireGrimoire), "S_Enthusiasm" },
+                { new Point(0, CNCID.Item.IceTooth), "S_Gelidity" },
+                { new Point(1, CNCID.Item.IceTooth), "S_Iceflake" },
+                { new Point(2, CNCID.Item.IceTooth), "S_Glacier" },
+                { new Point(0, CNCID.Item.Superconductor), "S_Charging" },
+                { new Point(1, CNCID.Item.Superconductor), "S_SpellLightningChain" },
+                { new Point(2, CNCID.Item.Superconductor), "S_ArcaneOverload" },
+                { new Point(3, CNCID.Item.Superconductor), "S_SpellReconstruction" },
+                { new Point(4, CNCID.Item.Superconductor), "S_SpellAugmentated" },
+                { new Point(5, CNCID.Item.Superconductor), "S_StableSpell" },
+                { new Point(0, CNCID.Item.SilveryClaw), "S_SilveryArrow" },
+                { new Point(1, CNCID.Item.SilveryClaw), "S_Sanctity" },
+                { new Point(2, CNCID.Item.SilveryClaw), "S_Exorcism" },
+                { new Point(0, CNCID.Item.SilveryTilia), "S_SilveryFlame" },
+                { new Point(1, CNCID.Item.SilveryTilia), "S_Judgement" },
+                { new Point(2, CNCID.Item.SilveryTilia), "S_SilveryShield" },
+                { new Point(3, CNCID.Item.SilveryTilia), "S_SilveryVow" },
+                { new Point(0, CNCID.Item.StarlightOfEzcia), "S_Rock" },
+                { new Point(1, CNCID.Item.StarlightOfEzcia), "S_ActiveChant" },
+                { new Point(2, CNCID.Item.StarlightOfEzcia), "S_Fragmentation" },
+                { new Point(0, CNCID.Item.EmberOfNean), "S_DizzyStrike" },
+                { new Point(1, CNCID.Item.EmberOfNean), "S_EmberPrayer" },
+                { new Point(2, CNCID.Item.EmberOfNean), "S_EmberOath" },
+                { new Point(0, CNCID.Item.CursedKnife), "S_TameHead" },
+                { new Point(1, CNCID.Item.CursedKnife), "S_SoulScorching" },
+                { new Point(2, CNCID.Item.CursedKnife), "S_IndulgentGhost" },
             };
 
-            public static Dictionary<string, int> LegacyCollection => new Dictionary<string, int>()
+            public static Dictionary<string, InscriptionSettings.Inscription> LegacyCollection => new Dictionary<string, InscriptionSettings.Inscription>()
             {
+                { "Power", Power },
+                { "Chanter", Chanter },
+                { "Economization", Economization },
+                { "Arcana", Arcana },
+                { "Charging", Charging },
+                { "Reiki", Reiki },
+                { "Assimilation", Assimilation },
+                { "MagicPower", MagicPower },
+                { "MagicAdept", MagicAdept },
+                { "Saint", Saint },
+                { "Evangel", Evangel },
+                { "Destroyer", Destroyer },
+                { "Dexterity", Dexterity },
+                { "MeleeAdept", MeleeAdept },
+                { "Indignation", Indignation },
+                { "Force", Force },
+                { "Smiting", Smiting },
+                { "Shockwave", Shockwave },
+                { "RaidAdept", RaidAdept },
+                { "Murder", Murder },
+                { "Torture", Torture },
+                { "Assassination", Assassination },
+                { "EagleEye", EagleEye },
+                { "Penetration", Penetration },
+                { "EnchantedMagazine", EnchantedMagazine },
+                { "EnchantedBowstring", EnchantedBowstring },
+                { "S_Fireball", S_Fireball },
+                { "S_Incinerating", S_Incinerating },
+                { "S_Scorching", S_Scorching },
+                { "S_Enthusiasm", S_Enthusiasm },
+                { "S_Gelidity", S_Gelidity },
+                { "S_Iceflake", S_Iceflake },
+                { "S_Glacier", S_Glacier },
+                { "S_Charging", S_Charging },
+                { "S_SpellLightningChain", S_SpellLightningChain },
+                { "S_ArcaneOverload", S_ArcaneOverload },
+                { "S_SpellReconstruction", S_SpellReconstruction },
+                { "S_SpellAugmentated", S_SpellAugmentated },
+                { "S_StableSpell", S_StableSpell },
+                { "S_SilveryArrow", S_SilveryArrow },
+                { "S_Sanctity", S_Sanctity },
+                { "S_Exorcism", S_Exorcism },
+                { "S_SilveryFlame", S_SilveryFlame },
+                { "S_Judgement", S_Judgement },
+                { "S_SilveryShield", S_SilveryShield },
+                { "S_SilveryVow", S_SilveryVow },
+                { "S_Rock", S_Rock },
+                { "S_ActiveChant", S_ActiveChant },
+                { "S_Fragmentation", S_Fragmentation },
+                { "S_DizzyStrike", S_DizzyStrike },
+                { "S_EmberPrayer", S_EmberPrayer },
+                { "S_EmberOath", S_EmberOath },
+                { "S_TameHead", S_TameHead },
+                { "S_SoulScorching", S_SoulScorching },
+                { "S_IndulgentGhost", S_IndulgentGhost },
             };
 
-            public static Dictionary<short, int> LegacyObject => new Dictionary<short, int>()
+            public static Dictionary<Point, InscriptionSettings.Inscription> LegacyObject => new Dictionary<Point, InscriptionSettings.Inscription>()
             {
+                { new Point(0, 0), Power },
+                { new Point(1, 0), Chanter },
+                { new Point(2, 0), Economization },
+                { new Point(3, 0), Arcana },
+                { new Point(4, 0), Charging },
+                { new Point(5, 0), Reiki },
+                { new Point(6, 0), Assimilation },
+                { new Point(7, 0), MagicPower },
+                { new Point(8, 0), MagicAdept },
+                { new Point(9, 0), Saint },
+                { new Point(10, 0), Evangel },
+                { new Point(11, 0), Destroyer },
+                { new Point(12, 0), Dexterity },
+                { new Point(13, 0), MeleeAdept },
+                { new Point(14, 0), Indignation },
+                { new Point(15, 0), Force },
+                { new Point(16, 0), Smiting },
+                { new Point(17, 0), Shockwave },
+                { new Point(18, 0), RaidAdept },
+                { new Point(19, 0), Murder },
+                { new Point(20, 0), Torture },
+                { new Point(21, 0), Assassination },
+                { new Point(22, 0), EagleEye },
+                { new Point(23, 0), Penetration },
+                { new Point(24, 0), EnchantedMagazine },
+                { new Point(25, 0), EnchantedBowstring },
+                { new Point(0, CNCID.Item.FireGrimoire), S_Fireball },
+                { new Point(1, CNCID.Item.FireGrimoire), S_Incinerating },
+                { new Point(2, CNCID.Item.FireGrimoire), S_Scorching },
+                { new Point(3, CNCID.Item.FireGrimoire), S_Enthusiasm },
+                { new Point(0, CNCID.Item.IceTooth), S_Gelidity },
+                { new Point(1, CNCID.Item.IceTooth), S_Iceflake },
+                { new Point(2, CNCID.Item.IceTooth), S_Glacier },
+                { new Point(0, CNCID.Item.Superconductor), S_Charging },
+                { new Point(1, CNCID.Item.Superconductor), S_SpellLightningChain },
+                { new Point(2, CNCID.Item.Superconductor), S_ArcaneOverload },
+                { new Point(3, CNCID.Item.Superconductor), S_SpellReconstruction },
+                { new Point(4, CNCID.Item.Superconductor), S_SpellAugmentated },
+                { new Point(5, CNCID.Item.Superconductor), S_StableSpell },
+                { new Point(0, CNCID.Item.SilveryClaw), S_SilveryArrow },
+                { new Point(1, CNCID.Item.SilveryClaw), S_Sanctity },
+                { new Point(2, CNCID.Item.SilveryClaw), S_Exorcism },
+                { new Point(0, CNCID.Item.SilveryTilia), S_SilveryFlame },
+                { new Point(1, CNCID.Item.SilveryTilia), S_Judgement },
+                { new Point(2, CNCID.Item.SilveryTilia), S_SilveryShield },
+                { new Point(3, CNCID.Item.SilveryTilia), S_SilveryVow },
+                { new Point(0, CNCID.Item.StarlightOfEzcia), S_Rock },
+                { new Point(1, CNCID.Item.StarlightOfEzcia), S_ActiveChant },
+                { new Point(2, CNCID.Item.StarlightOfEzcia), S_Fragmentation },
+                { new Point(0, CNCID.Item.EmberOfNean), S_DizzyStrike },
+                { new Point(1, CNCID.Item.EmberOfNean), S_EmberPrayer },
+                { new Point(2, CNCID.Item.EmberOfNean), S_EmberOath },
+                { new Point(0, CNCID.Item.CursedKnife), S_TameHead },
+                { new Point(1, CNCID.Item.CursedKnife), S_SoulScorching },
+                { new Point(2, CNCID.Item.CursedKnife), S_IndulgentGhost },
             };
         }
 

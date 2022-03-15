@@ -180,11 +180,6 @@ namespace CNC.Content.NPCs.SpiritBoss
             Attack_RadialShoot();
             Attack_MeteorShower();
             Attack_BranchGrowth();
-
-            for (int i = 0; i < ChildrenProjectile.Length; i++)
-            {
-                ChildrenProjectile[i].GetAlpha(Const.MasterColor);
-            }
         }
 
         private void Intro()

@@ -179,7 +179,7 @@ namespace CNC.Content.UI.CloneGUI
             fillHP.SetRect(rightHP.Offset + new Vector2(4f - img[1].Width * heartCount, 16f), new Vector2(img[1].Width * heartCount, fillHP.fill.Height));
             fillHP.value = player.statLife;
             fillHP.valueMax = player.statLifeMax2;
-            fillHP.color = flag ? Const.MasterColor : Color.White;
+            fillHP.color = flag ? CNCID.Colors.Master : Color.White;
             fillHP.flash = fillHP.progress < .25;
             fillHP.flashSpeed = fillHP.progress < .1f ? .05f : (float)(.005f + .045f * (fillHP.progress / .25));
             fillHP.fillCount = heart2Count;
@@ -187,7 +187,7 @@ namespace CNC.Content.UI.CloneGUI
             fillMP.SetRect(rightMP.Offset + new Vector2(4f, 12f) - new Vector2(img[3].Width * starCount, 0), new Vector2(img[3].Width * starCount, fillMP.fill.Height));
             fillMP.value = player.statMana;
             fillMP.valueMax = player.statManaMax2;
-            fillMP.color = flag ? Const.ExpertColor : Color.White;
+            fillMP.color = flag ? CNCID.Colors.Expert : Color.White;
             fillMP.flash = fillMP.progress < .25;
             fillMP.flashSpeed = fillMP.progress < .1f ? .05f : (float)(.005f + .045f * (fillMP.progress / .25));
 
