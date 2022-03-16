@@ -176,6 +176,10 @@ namespace CNC.Common.Global.Items
             }
         }
 
+        public override void RightClick(Item item, Player player)
+        {
+        }
+
         public override void PostDrawTooltipLine(Item item, DrawableTooltipLine line)
         {
         }

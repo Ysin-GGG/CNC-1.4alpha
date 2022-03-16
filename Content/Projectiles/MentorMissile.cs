@@ -31,10 +31,9 @@ namespace CNC.Content.Projectiles
                 Texture2D tail = Terraria.ModLoader.ModContent.Request<Texture2D>("CNC/Assets/Effects/Trail2").Value;
                 Texture2D glow = Terraria.ModLoader.ModContent.Request<Texture2D>("CNC/Assets/Effects/GlowTrail1").Value;
                 Color _color = color; _color.A = 0;
-                Drawing.DrawTrail(Main.spriteBatch, tail, len2, projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, _color, pointX, tail.Height / 2, new Vector2(1f, .10f), new Vector2(1f, .01f), true, 16);
-                //Drawing.DrawTrail(Main.spriteBatch, glow, len2, projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, _color, pointX, glow.Height / 2, new Vector2(1f, .05f), new Vector2(1f, .01f), true, 16);
+                Drawing.DrawTrailDirect(Main.spriteBatch, tail, len2, projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, _color, pointX, tail.Height / 2, new Vector2(1f, .10f), new Vector2(1f, .01f), true, 16);
+                //Drawing.DrawTrailDirect(Main.spriteBatch, glow, len2, projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, _color, pointX, glow.Height / 2, new Vector2(1f, .05f), new Vector2(1f, .01f), true, 16);
                 pointX = (pointX - 15 + tail.Width) % tail.Width;
-
             }
             return true;
         }
@@ -94,11 +93,11 @@ namespace CNC.Content.Projectiles
             }
             AI001_RollingMissile(projectile, true, true, 90);
             UpdateOldData(projectile, projectile.velocity);
-            Vector2 pos = (projectile.Center + projectile.Size / 2f) / 16f;
+            Vector2 pos = projectile.Center / 16f;
             float r = color.R / 255f;
             float g = color.G / 255f;
             float b = color.B / 255f;
-            //Lighting.AddLight((int)pos.X, (int)pos.Y, r, g, b);
+            Lighting.AddLight((int)pos.X, (int)pos.Y, r, g, b);
         }
         /*
         public override void ModifyDamageHitbox(ref Rectangle hitbox)

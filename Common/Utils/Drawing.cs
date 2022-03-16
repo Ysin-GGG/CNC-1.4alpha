@@ -56,19 +56,21 @@ namespace CNC.Common.Utils
             }
             return pos + new Vector2((float)(len1 * Math.Cos(rot) * _scale.X), (float)(len1 * Math.Sin(rot) * _scale.X));
         }
-
-        public static void DrawTrail(SpriteBatch spriteBatch, Texture2D image, Vector2[] oldPos, float[] oldRot, Vector2 extraPos, float extraRot, Color color, int pointX, int originY, Vector2 scale, Vector2? scale2 = null, bool fade = true, int width = 1, int bright = 1)
+        /// <summary> 简易拖尾：相当吃性能慎用！ </summary>
+        public static void DrawTrailDirect(SpriteBatch spriteBatch, Texture2D image, Vector2[] oldPos, float[] oldRot, Vector2 extraPos, float extraRot, Color color, int pointX, int originY, Vector2 scale, Vector2? scale2 = null, bool fade = true, int width = 1, int bright = 1)
         {
             int max = oldPos.Length < oldRot.Length ? oldPos.Length : oldRot.Length;
-            DrawTrail(spriteBatch, image, max, oldPos, oldRot, extraPos, extraRot, color, pointX, originY, scale, scale2, fade, width, bright);
+            DrawTrailDirect(spriteBatch, image, max, oldPos, oldRot, extraPos, extraRot, color, pointX, originY, scale, scale2, fade, width, bright);
         }
 
-        public static void DrawTrail(SpriteBatch spriteBatch, Texture2D image, int max, Vector2[] oldPos, float[] oldRot, Vector2 extraPos, float extraRot, Color color, int pointX, int originY, Vector2 scale, Vector2? scale2 = null, bool fade = true, int width = 1, int bright = 1)
+        /// <summary> 简易拖尾：相当吃性能慎用！ </summary>
+        public static void DrawTrailDirect(SpriteBatch spriteBatch, Texture2D image, int max, Vector2[] oldPos, float[] oldRot, Vector2 extraPos, float extraRot, Color color, int pointX, int originY, Vector2 scale, Vector2? scale2 = null, bool fade = true, int width = 1, int bright = 1)
         {
-            DrawTrail(spriteBatch, image, max, oldPos, oldRot, extraPos, extraRot, new Color[1] { color }, pointX, originY, scale, scale2, fade, width, bright);
+            DrawTrailDirect(spriteBatch, image, max, oldPos, oldRot, extraPos, extraRot, new Color[1] { color }, pointX, originY, scale, scale2, fade, width, bright);
         }
 
-        public static void DrawTrail(SpriteBatch spriteBatch, Texture2D image, int max, Vector2[] oldPos, float[] oldRot, Vector2 extraPos, float extraRot, Color[] color, int pointX, int originY, Vector2 scale, Vector2? scale2 = null, bool fade = true, int width = 1, int bright = 1)
+        /// <summary> 简易拖尾：相当吃性能慎用！ </summary>
+        public static void DrawTrailDirect(SpriteBatch spriteBatch, Texture2D image, int max, Vector2[] oldPos, float[] oldRot, Vector2 extraPos, float extraRot, Color[] color, int pointX, int originY, Vector2 scale, Vector2? scale2 = null, bool fade = true, int width = 1, int bright = 1)
         {
             if (max <= 1) return;
             Vector2[] pos1 = new Vector2[max];

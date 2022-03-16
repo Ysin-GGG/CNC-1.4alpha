@@ -190,6 +190,21 @@ namespace CNC.Content.Projectiles.Hostile
                     if (Math.Abs(p.velocity.X) > velMax) { p.velocity.X = (p.velocity.X < 0 ? -1 : 1) * velMax; }
                     if (Math.Abs(p.velocity.Y) > velMax) { p.velocity.Y = (p.velocity.Y < 0 ? -1 : 1) * velMax; }
                 }
+                if (len2 < 16) len2++;
+            }
+            
+            private int pointX = 0;
+            private int len2 = 0;
+
+            public override bool PreDrawExtras()
+            {
+                Texture2D slash1 = Terraria.ModLoader.ModContent.Request<Texture2D>("CNC/Assets/Effects/Slash1").Value;
+                Texture2D slash2 = Terraria.ModLoader.ModContent.Request<Texture2D>("CNC/Assets/Effects/Slash2").Value;
+                Color _color = mainColor; _color.A = 0;
+                //Drawing.DrawTrailDirect(Main.spriteBatch, slash1, len2, projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, _color, pointX, slash1.Height / 2, new Vector2(1f, .10f), new Vector2(1f, .10f), true, 16);
+                //Drawing.DrawTrailDirect(Main.spriteBatch, slash2, len2, projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, _color, pointX, slash2.Height / 2, new Vector2(1f, .10f), new Vector2(1f, .10f), true, 16);
+                //pointX = (pointX - 15 + slash1.Width) % slash1.Width;
+                return true;
             }
         }
     }
