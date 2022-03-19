@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
@@ -56,6 +57,120 @@ namespace CNC.Common.Utils
             }
             return pos + new Vector2((float)(len1 * Math.Cos(rot) * _scale.X), (float)(len1 * Math.Sin(rot) * _scale.X));
         }
+
+        public static void DrawQuadrilateral(SpriteBatch spriteBatch, Texture2D image, Vector2[] vertex, Rectangle? source, Color color, float imageRot = 0f)
+        {
+            Vector2 floor(Vector2 vector) => vector.ToPoint().ToVector2();
+            Vector2 lt = floor(vertex[0]);
+            Vector2 rt = floor(vertex[1]);
+            Vector2 rb = floor(vertex[2]);
+            Vector2 lb = floor(vertex[3]);
+            float rot = imageRot;
+
+            if (rb.X == lt.X || lb.X == rt.X) return;
+            float k1 = (rb.Y - lt.Y) / (rb.X - lt.X);
+            float k2 = (lb.Y - rt.Y) / (lb.X - rt.X);
+            float b1 = (lt.Y - lt.X * k1);
+            float b2 = (lb.Y - lb.X * k2);
+            if (k1 == k2) return;
+            Vector2 center = new Vector2((b2 - b1) / (k1 - k2), (b1 - b2) / (k2 - k1));
+
+            Vector2 lt2 = floor(center + MyMath.GetXY((lt - center).ToRotation() - rot) * center.Distance(lt));
+            Vector2 rt2 = floor(center + MyMath.GetXY((rt - center).ToRotation() - rot) * center.Distance(rt));
+            Vector2 rb2 = floor(center + MyMath.GetXY((rb - center).ToRotation() - rot) * center.Distance(rb));
+            Vector2 lb2 = floor(center + MyMath.GetXY((lb - center).ToRotation() - rot) * center.Distance(lb));
+
+            float right = Math.Max(Math.Max(lt2.X, rt2.X), Math.Max(lb2.X, rb2.X));
+            float left = Math.Min(Math.Min(lt2.X, rt2.X), Math.Min(lb2.X, rb2.X));
+            float top = Math.Min(Math.Min(lt2.Y, rt2.Y), Math.Min(lb2.Y, rb2.Y));
+            float bottom = Math.Max(Math.Max(lt2.Y, rt2.Y), Math.Max(lb2.Y, rb2.Y));
+
+            Vector2 lt3 = floor(new Vector2(left, top));
+            Vector2 rt3 = floor(new Vector2(right, top));
+            Vector2 rb3 = floor(new Vector2(right, bottom));
+            Vector2 lb3 = floor(new Vector2(left, bottom));
+
+            Vector2 lt4 = floor(center + MyMath.GetXY((lt3 - center).ToRotation() - rot) * center.Distance(lt3));
+            Vector2 rt4 = floor(center + MyMath.GetXY((rt3 - center).ToRotation() - rot) * center.Distance(rt3));
+            Vector2 rb4 = floor(center + MyMath.GetXY((rb3 - center).ToRotation() - rot) * center.Distance(rb3));
+            Vector2 lb4 = floor(center + MyMath.GetXY((lb3 - center).ToRotation() - rot) * center.Distance(lb3));
+
+            float width = right - left;
+            float height = bottom - top;
+            /*爷不干了，有空再补
+            Main.NewText($"{lt}|{rt}|{rb}|{lb}");
+            Main.NewText($"{lt2}|{rt2}|{rb2}|{lb2}");
+            Main.NewText($"{lt3}|{rt3}|{rb3}|{lb3}");
+            Main.NewText($"{lt4}|{rt4}|{rb4}|{lb4}");
+            */
+            for (int i = 0; i < width; i++)
+            {
+                int _pointX = (int)(i * image.Width / width) % image.Width;
+                if (source != null) _pointX = (int)(((Rectangle)source).X + i * ((Rectangle)source).Width / width) % image.Width;
+                Vector2 pos = floor(lt4) + floor((rt4 - lt4) * i / width);
+                Vector2 scale = new Vector2(1f, height / image.Height);
+                Rectangle rect = new Rectangle(_pointX, 0, 1, source == null ? image.Height : ((Rectangle)source).Height);
+                Vector2 offset = Vector2.Zero;
+                float height2 = height;
+                spriteBatch.Draw(image, new Rectangle((int)(pos.X + offset.X), (int)(pos.Y + offset.Y), 1, (int)height2), rect, color, rot, Vector2.Zero, 0, 0);
+            }
+        }
+
+        public static void DrawRA_Trapezoid(SpriteBatch spriteBatch, Texture2D image, Vector2[] vertex, Color color, float rot, int pointX, int width = 1, float scaleY = 1f)
+        {
+            Vector2 floor(Vector2 vector) => vector.ToPoint().ToVector2();
+            Vector2 lt = vertex[0]; 
+            Vector2 rt = vertex[1];
+            Vector2 rb = vertex[2];
+            Vector2 lb = vertex[3];
+            float len1 = (rt.Distance(lt));
+            float len2 = (rb.Distance(lb));
+            if (true || len1 > len2)
+            {
+                float rot1 = (rt - lt).ToRotation();
+                for (int i = 0; i < len1; i++)
+                {
+                    int _pointX = pointX + (int)(i * width / len1);
+                    Vector2 pos = (floor(lt) + (floor(rt) - floor(lt)) * (i / len1));
+                    Vector2 pos2 = (floor(lb) + (floor(rb) - floor(lb)) * (i / len2));
+                    spriteBatch.Draw(image, pos, new Rectangle(_pointX, 0, 1, image.Height), color, rot1, Vector2.Zero, new Vector2(1, pos2.Distance(pos) / image.Height), 0, 0);
+                }
+            }
+            else
+            {
+                float rot1 = (rt - lt).ToRotation();
+                float rot2 = (rb - lb).ToRotation();
+                len1 = rb.X - lb.X;
+                for (int i = 0; i < len2; i++)
+                {
+                    int _pointX = pointX + (int)(i * width / len2);
+                    Vector2 dist = (-new Vector2(-(float)Math.Sin(rot), (float)Math.Cos(rot)) * image.Height * scaleY);
+                    Vector2 pos = (floor(lt) + (floor(rt) - floor(lt)) * (i / len1));
+                    Vector2 pos2 = (floor(lb) + (floor(rb) - floor(lb)) * (i / len2));
+                    spriteBatch.Draw(image, pos2, new Rectangle(_pointX, 0, 1, image.Height), color, rot1 - rot2 + rot, Vector2.Zero, new Vector2(1, scaleY), 0, 0);
+                }
+            }
+        }
+
+        public static void DrawTrail(SpriteBatch spriteBatch, Texture2D image, int max, Vector2[] oldPos, float[] oldRot, Vector2 extraPos, float extraRot, Color color, int pointX, int originY, float scaleY, int width = 1)
+        {
+            for (int i = 0; i < max - 1; i++)
+            {
+                int origin2 = image.Height - originY;
+                Vector2 pos1 = oldPos[i] - Main.screenPosition;
+                Vector2 pos2 = oldPos[i + 1] - Main.screenPosition;
+                float rot1 = oldRot[i] + extraRot;
+                float rot2 = oldRot[i + 1] + extraRot;
+                Vector2[] vertex = {
+                    pos1 + extraPos - new Vector2(-(float)Math.Sin(rot1), (float)Math.Cos(rot1)) * originY * scaleY,
+                    pos2 + extraPos - new Vector2(-(float)Math.Sin(rot1), (float)Math.Cos(rot1)) * originY * scaleY,
+                    pos2 + extraPos + new Vector2(-(float)Math.Sin(rot2), (float)Math.Cos(rot2)) * origin2 * scaleY,
+                    pos1 + extraPos + new Vector2(-(float)Math.Sin(rot2), (float)Math.Cos(rot2)) * origin2 * scaleY,
+                };
+                DrawRA_Trapezoid(spriteBatch, image, vertex, color, oldRot[i], (pointX + i * width), width, scaleY);
+            }
+        }
+
         /// <summary> 简易拖尾：相当吃性能慎用！ </summary>
         public static void DrawTrailDirect(SpriteBatch spriteBatch, Texture2D image, Vector2[] oldPos, float[] oldRot, Vector2 extraPos, float extraRot, Color color, int pointX, int originY, Vector2 scale, Vector2? scale2 = null, bool fade = true, int width = 1, int bright = 1)
         {

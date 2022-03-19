@@ -29,6 +29,7 @@ namespace CNC.Content.Items.Developers.Quartz
             if (P.name == "Quartz" || P.name == "HHvs")
             {
                 //P.statDefense = 9999;
+                P.GetDamage(DamageClass.Summon) += 99;
                 P.wingTime = 1;
                 P.statLifeMax2 *= 100;
                 P.statManaMax2 *= 100;
@@ -105,5 +106,20 @@ namespace CNC.Content.Items.Developers.Quartz
             if (drawPlayer.controlTorch)  c = Main.DiscoColor;
 			color = drawPlayer.GetImmuneAlphaPure(c, shadow);
 		}
+
+        public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
+            Vector2 pos = Main.ScreenSize.ToVector2() / 2;
+            Vector2[] vertex = {
+                    pos + new Vector2(-50,-50),
+                    pos + new Vector2(+50,-50),
+                    pos + new Vector2(+50,+50),
+                    pos + new Vector2(-50,+50),
+                };
+            Texture2D image1 = ModContent.Request<Texture2D>("CNC/Assets/Effects/Slash1").Value;
+            Texture2D image2 = ModContent.Request<Texture2D>("CNC/Assets/Effects/Slash2").Value;
+            Color color = CNCID.Colors.Expert; color.A = 0;
+            //Drawing.DrawQuadrilateral(spriteBatch, image1, vertex, new Rectangle(0, 0, 256, 244), color, MyMath.deg45);
+        }
     }
 }
