@@ -15,7 +15,7 @@ using CNC.Common.Global.Players;
 
 using static CNC.Common.Utils.CNCID.Clazz;
 
-namespace CNC.Content.UI.CloneGUI
+namespace CNC.Content.UI.Clone
 {
     public class CloneGUI : UIState
     {
@@ -49,7 +49,7 @@ namespace CNC.Content.UI.CloneGUI
         public BuffShow[] buffs;
         public BuffShow[] states;
 
-        public override string Name => "CloneGUI";
+        public override string Name => "Clone";
 
         protected Texture2D[] img => new Texture2D[]
         {

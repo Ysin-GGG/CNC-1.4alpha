@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using CNC.Content.UI.MainBar;
 using CNC.Content.UI.ClassesMenu;
-using CNC.Content.UI.CloneGUI;
+using CNC.Content.UI.Clone;
 using CNC.Common.Global.Items;
 using CNC.Common.Global.Players;
 using CNC.Common.Localization;
@@ -141,6 +141,8 @@ namespace CNC
                 AppendUI(layers, UI[3], Visible[3], 25, "Clone Resource Bars");
                 int idx = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
                 if (idx >= 0) layers[idx].Active = false; // layers.RemoveAt(idx);
+                idx = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
+                //if (idx >= 0) layers[idx].Active = false; // layers.RemoveAt(idx);
             }
 
             public override void UpdateUI(GameTime gameTime)

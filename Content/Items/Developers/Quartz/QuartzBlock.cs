@@ -29,7 +29,7 @@ namespace CNC.Content.Items.Developers.Quartz
             if (P.name == "Quartz" || P.name == "HHvs")
             {
                 //P.statDefense = 9999;
-                P.GetDamage(DamageClass.Summon) += 99;
+                //P.GetDamage(DamageClass.Summon) += 99;
                 P.wingTime = 1;
                 P.statLifeMax2 *= 100;
                 P.statManaMax2 *= 100;
