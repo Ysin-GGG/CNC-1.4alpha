@@ -99,9 +99,10 @@ Mods: {
 			HoverTextBoxStyleNone: None
 			HoverTextBoxStyleOrigin: Original
 			HoverTextBoxStyleBrown: Classical
-			HoverTextBoxType1: Collapse Bar
-			HoverTextBoxType2: Classes Menu
-			HoverTextBoxType3: GUI/Resource bars
+			HoverTextBoxType1: GUI/Resource bars
+			HoverTextBoxType2: Collapse Bar
+			HoverTextBoxType3: Classes Menu
+			HoverTextBoxType4: Enhancement
 			CollapseBar: Collapse Bar
 			CloseEdge: Close Edge:
 			LeftEdge: Left
@@ -339,11 +340,11 @@ Mods: {
 				NoMoney: You don't have enough resource to reset your class
 				NoClass: You have not selected any class
 			}
+			Enhancement: {
+				Name: Enhancement
+			}
 			Archive: {
 				Name: Archive(Coming soon)
-			}
-			Enhancement: {
-				Name: Enhancement(Coming soon)
 			}
 		}
 

@@ -98,10 +98,11 @@ Mods: {
 			HoverTextBoxStyle: 样式：
 			HoverTextBoxStyleNone: 透明
 			HoverTextBoxStyleOrigin: 原版
-			HoverTextBoxStyleBrown: 职业
-			HoverTextBoxType1: 功能栏
-			HoverTextBoxType2: 职业菜单
-			HoverTextBoxType3: GUI/资源条
+			HoverTextBoxStyleBrown: 古典
+			HoverTextBoxType1: GUI/资源条
+			HoverTextBoxType2: 功能栏
+			HoverTextBoxType3: 职业菜单
+			HoverTextBoxType4: 铭文强化
 			CollapseBar: 功能栏
 			CloseEdge: 靠拢边缘：
 			LeftEdge: 左边框
@@ -339,11 +340,11 @@ Mods: {
 				NoMoney: 没有足够的资源重置职业
 				NoClass: 你尚未选定任何职业
 			}
+			Enhancement: {
+				Name: 铭文强化
+			}
 			Archive: {
 				Name: 图鉴（敬请期待）
-			}
-			Enhancement: {
-				Name: 强化（敬请期待）
 			}
 		}
 

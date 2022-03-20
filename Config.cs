@@ -15,8 +15,8 @@ namespace CNC
     public class Options
     {
         public static bool useModMusic;
-        public static BoxStyle[] hoverTextBox = new BoxStyle[3];
-        public static float[] hoverTextBoxAlpha = new float[3];
+        public static BoxStyle[] hoverTextBox = new BoxStyle[4];
+        public static float[] hoverTextBoxAlpha = new float[4];
         public static EdgeStyle closeEdge = 0;
         public static float offset = 0;
         public static float movementSpeed = 5;
@@ -44,9 +44,11 @@ namespace CNC
             Options.hoverTextBox[0] = hoverTextBox.boxStyle1;
             Options.hoverTextBox[1] = hoverTextBox.boxStyle2;
             Options.hoverTextBox[2] = hoverTextBox.boxStyle3;
+            Options.hoverTextBox[3] = hoverTextBox.boxStyle4;
             Options.hoverTextBoxAlpha[0] = hoverTextBox.alpha1;
             Options.hoverTextBoxAlpha[1] = hoverTextBox.alpha2;
             Options.hoverTextBoxAlpha[2] = hoverTextBox.alpha3;
+            Options.hoverTextBoxAlpha[3] = hoverTextBox.alpha4;
             Options.closeEdge = collapseBar.closeEdge;
             Options.offset = collapseBar.offset;
             Options.movementSpeed = collapseBar.movementSpeed;
@@ -111,7 +113,7 @@ namespace CNC
     {
         [Header("$Mods.CNC.Config.HoverTextBoxType1")]
         [Label("$Mods.CNC.Config.HoverTextBoxStyle")]
-        [DefaultValue(2)]
+        [DefaultValue(1)]
         public BoxStyle boxStyle1;
         [Label("$Mods.CNC.Config.HoverTextBoxAlpha")]
         [DefaultValue(.785f)]
@@ -135,17 +137,28 @@ namespace CNC
         [DefaultValue(.785f)]
         [Range(.2f, 1f)]
         public float alpha3;
-       
+
+        [Header("$Mods.CNC.Config.HoverTextBoxType4")]
+        [Label("$Mods.CNC.Config.HoverTextBoxStyle")]
+        [DefaultValue(2)]
+        public BoxStyle boxStyle4;
+        [Label("$Mods.CNC.Config.HoverTextBoxAlpha")]
+        [DefaultValue(.785f)]
+        [Range(.2f, 1f)]
+        public float alpha4;
+
         public override string ToString() => "";
 
         public HoverTextBox()
         {
-            boxStyle1 = (BoxStyle)2;
+            boxStyle1 = (BoxStyle)1;
             boxStyle2 = (BoxStyle)2;
-            boxStyle3 = (BoxStyle)1;
+            boxStyle3 = (BoxStyle)2;
+            boxStyle4 = (BoxStyle)2;
             alpha1 = .785f;
             alpha2 = .785f;
             alpha3 = .785f;
+            alpha4 = .785f;
         }
 
         public override bool Equals(object obj)
@@ -157,9 +170,11 @@ namespace CNC
                     boxStyle1 == other.boxStyle1,
                     boxStyle2 == other.boxStyle2,
                     boxStyle3 == other.boxStyle3,
+                    boxStyle4 == other.boxStyle4,
                     alpha1 == other.alpha1,
                     alpha2 == other.alpha2,
                     alpha3 == other.alpha3,
+                    alpha4 == other.alpha4,
                 };
                 bool flag = true;
                 for (int i = 0; i < flags.Length && flag; i++) flag = flags[i];
@@ -175,9 +190,11 @@ namespace CNC
                 boxStyle1,
                 boxStyle2,
                 boxStyle3,
+                boxStyle4,
                 alpha1,
                 alpha2,
                 alpha3,
+                alpha4,
             }.GetHashCode();
         }
     }

@@ -97,7 +97,7 @@ namespace CNC.Content.UI.Clone
             children.Add(rightMP = new UIImage());
             for (int i = 0; i < 22; i++) children.Add(buffs[i] = new BuffShow());
             for (int i = 0; i < CNCID.State.MaxObject; i++) children.Add(states[i] = new BuffShow());
-            id = 2;
+            id = 0;
         }
 
         public override void UpdateUI(GameTime gameTime)

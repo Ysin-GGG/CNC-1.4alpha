@@ -11,6 +11,7 @@ using Terraria.ModLoader.Core;
 using CNC.Content.UI.MainBar;
 using CNC.Content.UI.ClassesMenu;
 using CNC.Content.UI.Clone;
+using CNC.Content.UI.InscriptionMenu;
 using CNC.Common.Global.Items;
 using CNC.Common.Global.Players;
 using CNC.Common.Localization;
@@ -20,7 +21,7 @@ namespace CNC
 {
 	public class CNC : Mod
 	{
-        public const int NewManaMax = 400;
+        public const int NewManaMax = 1000000;
         public override Version Version => new Version(0, 0, 2, 3);
         public Version TMLVersion => TModLoaderVersion;
         public static CNC Instance;
@@ -93,13 +94,15 @@ namespace CNC
         {
             public static UIManager Instance;
 
-            public UserInterface [] UI = new UserInterface[4];
+            public UserInterface [] UI = new UserInterface[6];
             internal Content.UI.UIState[] UIState;
             public bool[] Visible => new bool[]
             {
-                !ClassesMenu.Visible,
+                !(ClassesMenu.Visible || InscriptionMenu.Visible),
                 ClassesMenu.Visible,
                 true,
+                true,
+                InscriptionMenu.Visible,
                 true,
             };
 
@@ -121,8 +124,10 @@ namespace CNC
                 {
                     new MainBar(),
                     new ClassesMenu(),
-                    new DarkScreen(),
+                    new Content.UI.ClassesMenu.DarkScreen(),
                     new CloneGUI(),
+                    new InscriptionMenu(),
+                    new Content.UI.InscriptionMenu.DarkScreen(),
                 };
                 for(int i = 0; i < UIState.Length; i++)
                 {
@@ -137,8 +142,10 @@ namespace CNC
                 base.ModifyInterfaceLayers(layers);
                 AppendUI(layers, UI[0], Visible[0], 33, "Function Bar");
                 AppendUI(layers, UI[1], Visible[1], -1, "Classes Menu");
-                AppendUI(layers, UI[2], Visible[2], -1, "Dark Screen Effect");
+                AppendUI(layers, UI[2], Visible[2], -1, "Dark Screen Effect 1");
                 AppendUI(layers, UI[3], Visible[3], 25, "Clone Resource Bars");
+                AppendUI(layers, UI[4], Visible[4], -1, "Inscription Menu");//Enhancement
+                AppendUI(layers, UI[5], Visible[5], -1, "Dark Screen Effect 2");
                 int idx = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
                 if (idx >= 0) layers[idx].Active = false; // layers.RemoveAt(idx);
                 idx = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));

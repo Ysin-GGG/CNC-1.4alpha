@@ -22,8 +22,8 @@ namespace CNC.Content.UI.MainBar
         private readonly string[] buttonName =
         {
             "ClassesMenu",
-            "Archive",
             "Enhancement",
+            "Archive",
         };
 
         public override void Initialize()
@@ -43,10 +43,11 @@ namespace CNC.Content.UI.MainBar
             children.Add(MainBox);
             children.Add(CollapseBar);
             AddButton(buttonName[0], OpenClassesMenu);
-            for (int i = 1; i < buttonName.Length; i++) AddButton(buttonName[i]);
+            AddButton(buttonName[1], OpenInscriptionMenu);
+            for (int i = 2; i < buttonName.Length; i++) AddButton(buttonName[i]);
             for (int i = buttonName.Length - 1; i >= 0; i--) MainBox.Append(FuncButton[i]);
             Size = _size;
-            id = 0;
+            id = 1;
         }
 
         private UIButton AddButton(string key, MouseEvent evt = null)
@@ -180,6 +181,11 @@ namespace CNC.Content.UI.MainBar
         private void OpenClassesMenu(UIMouseEvent evt, Terraria.UI.UIElement e)
         {
             ClassesMenu.DarkScreen.Visible = true;
+        }
+
+        private void OpenInscriptionMenu(UIMouseEvent evt, Terraria.UI.UIElement e)
+        {
+            InscriptionMenu.DarkScreen.Visible = true;
         }
     }
 }

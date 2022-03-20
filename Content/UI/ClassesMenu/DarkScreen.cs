@@ -48,7 +48,7 @@ namespace CNC.Content.UI.ClassesMenu
             }
             if (!Visible && alpha <= 0f) alpha = 0f;
             if (Visible) Main.LocalPlayer.mouseInterface = true;
-            
+            if (alpha > 0f) DrawCursor();
         }
 
         protected override void Draw(SpriteBatch spriteBatch)
@@ -58,8 +58,6 @@ namespace CNC.Content.UI.ClassesMenu
                 Color cursorColor = Main.LocalPlayer.hasRainbowCursor ? Main.DiscoColor : Main.cursorColor;
                 Vector2 bonus = Main.DrawThickCursor(false);
                 spriteBatch.Draw(GetImage("DarkScreen"), new Rectangle(0, 0, (int)screen.X, (int)screen.Y), null, Color.White * alpha);
-                spriteBatch.Draw(TextureAssets.Cursors[0].Value, Main.MouseScreen + bonus + Vector2.One, null, new Color((int)(cursorColor.R * 0.200000002980232), (int)(cursorColor.G * 0.200000002980232), (int)(cursorColor.B * 0.200000002980232), (int)(cursorColor.A * 0.5)), 0.0f, Vector2.Zero, Main.cursorScale, SpriteEffects.None, 0.0f);
-                spriteBatch.Draw(TextureAssets.Cursors[0].Value, Main.MouseScreen + bonus, null, cursorColor, 0.0f, Vector2.Zero, Main.cursorScale, SpriteEffects.None, 0.0f);
             }
         }
     }

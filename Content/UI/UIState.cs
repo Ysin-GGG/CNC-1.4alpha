@@ -31,7 +31,9 @@ namespace CNC.Content.UI
         public List<UIElement> children = new List<UIElement>();
         public List<UIElement> children2 = new List<UIElement>();
         public UIText MouseText;
-        public int id = -1;
+        public UIImage[] Cursor;
+        public int id = -1;//UI的id，mod config悬浮文本框需要
+        public Player player => Main.LocalPlayer;
         public virtual string Name => "";// System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name;
         public string mouseText { get => MouseText.text; set { if (MouseText.Visible = value.Length > 0) MouseText.text = value;else MouseText.text = ""; } }// System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name;
 
@@ -45,8 +47,10 @@ namespace CNC.Content.UI
             Scale = Vector2.One;
             CanOutScreen = CanDrag = Dragging = false;
             MouseText = new UIText();
+            Cursor = new UIImage[6];
             Initialize();
             children.Add(MouseText);
+            for (int i = 0; i < 6; i++) children2.Add(Cursor[i] = new UIImage());
             for (int i = 0; i < children.Count; i++) Append(children[i]);
             for (int i = 0; i < children2.Count; i++) Append(children2[i]);
         }
@@ -87,9 +91,36 @@ namespace CNC.Content.UI
                     MouseText.boxColor = Color.White * Options.hoverTextBoxAlpha[id];
                 }
             }
+            for (int i = 0; i < Cursor.Length; i++) Cursor[i].active = Cursor[i].Visible = false;
             Recalculate();
             UpdateUI(gameTime);
             base.Update(gameTime);
+        }
+
+        public void DrawCursor()
+        {
+            Color cursorColor = player.hasRainbowCursor ? Main.DiscoColor : Main.cursorColor;
+            Vector2 pos = Main.MouseScreen + new Vector2(2f);
+            Texture2D cursor = TextureAssets.Cursors[0].Value;
+            Vector2 size = cursor.Size() * new Vector2(Main.cursorScale);
+            for (int i = 0; i < Cursor.Length; i++) Cursor[i].active = Cursor[i].Visible = true;
+            for (int i = 0; i < 4; i++)
+            {
+                Vector2[] bonus =
+                {
+                    new Vector2(0f, 1f),
+                    new Vector2(1f, 0f),
+                    new Vector2(0f, -1f),
+                    new Vector2(-1f, 0f),
+                };
+                Cursor[i].SetImage(TextureAssets.Cursors[11].Value, Main.MouseBorderColor);
+                Cursor[i].SetRect(pos + bonus[i], Cursor[i].image.Size() * Main.cursorScale * 1.1f);
+                Cursor[i].origin = new Vector2(2f);
+            }
+            Cursor[4].SetImage(cursor, new Color((int)(cursorColor.R * 0.200000002980232), (int)(cursorColor.G * 0.200000002980232), (int)(cursorColor.B * 0.200000002980232), (int)(cursorColor.A * 0.5)));
+            Cursor[4].SetRect(pos + Vector2.One, size * 1.1f);
+            Cursor[5].SetImage(cursor, cursorColor);
+            Cursor[5].SetRect(pos, size);
         }
 
         protected sealed override void DrawSelf(SpriteBatch spriteBatch)

@@ -2,9 +2,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.UI;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using CNC.Common.Utils;
 using CNC.Common.Localization;
 using CNC.Common.Global.Players;
@@ -18,7 +16,6 @@ namespace CNC.Content.UI.ClassesMenu
 
         public UIPanel Background;
         public UIPanel MainBox;
-        public UIImage[] Cursor;
         public UIImage ClassIcon;
         public UIButton PreviousClass;
         public UIButton NextClass;
@@ -73,7 +70,6 @@ namespace CNC.Content.UI.ClassesMenu
             Offset = Vector2.Zero;
             Size = screen + Vector2.One;
             Visible = false;
-            Cursor = new UIImage[6];
             children.Add(Background = new UIPanel());
             children.Add(MainBox = new UIPanel());
             MainBox.Append(ClassIcon = new UIImage());
@@ -83,9 +79,8 @@ namespace CNC.Content.UI.ClassesMenu
             AddButton(ref Reset, new MouseEvent((evt, e) => ResetClass(evt, e)));
             AddButton(ref Preview);
             PreviousClass.iconDrawStyle = 1;
-            for (int i = 0; i < 6; i++) children2.Add(Cursor[i] = new UIImage());
             //page = clazz3[modPlayer.clazz];
-            id = 1;
+            id = 2;
         }
 
         private void AddButton(ref UIButton button, MouseEvent evt = null)
@@ -147,32 +142,12 @@ namespace CNC.Content.UI.ClassesMenu
             if (NextClass.IsMouseHovering) MouseText.text = NextClass.display;
             if (Reset.IsMouseHovering) MouseText.text = Reset.display;
 
-            Color cursorColor = player.hasRainbowCursor ? Main.DiscoColor : Main.cursorColor;
-            Vector2 pos = Main.MouseScreen + new Vector2(2f);
-            Texture2D cursor = TextureAssets.Cursors[0].Value;
-            Vector2 size = cursor.Size() * new Vector2(Main.cursorScale);
-            for (int i = 0; i < 4; i++)
-            {
-                Vector2[] bonus =
-                {
-                    new Vector2(0f, 1f),
-                    new Vector2(1f, 0f),
-                    new Vector2(0f, -1f),
-                    new Vector2(-1f, 0f),
-                };
-                Cursor[i].SetImage(TextureAssets.Cursors[11].Value, Main.MouseBorderColor);
-                Cursor[i].SetRect(pos + bonus[i], Cursor[i].image.Size() * Main.cursorScale * 1.1f);
-                Cursor[i].origin = new Vector2(2f);
-            }
-            Cursor[4].SetImage(cursor, new Color((int)(cursorColor.R * 0.200000002980232), (int)(cursorColor.G * 0.200000002980232), (int)(cursorColor.B * 0.200000002980232), (int)(cursorColor.A * 0.5)));
-            Cursor[4].SetRect(pos + Vector2.One, size * 1.1f);
-            Cursor[5].SetImage(cursor, cursorColor);
-            Cursor[5].SetRect(pos, size);
             if (Visible)
             {
                 if (Main.playerInventory && !DarkScreen.Visible) DarkScreen.Visible = true;
                 player.mouseInterface = true;
             }
+            DrawCursor();
         }
 
         private void ChangePage(UIMouseEvent evt, UIElement e, int num)
