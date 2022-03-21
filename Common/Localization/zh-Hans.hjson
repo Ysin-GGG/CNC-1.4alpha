@@ -281,11 +281,13 @@ Mods: {
 		S_Inscription: {
 			Fireball: 火弹|发射魔法凝聚而成的烈火球
 			Incinerating: 焚焰|灼烧击中的敌人，并造成一次{0}魔法伤害的火焰爆炸
-			Scorching: 高温|对被击中的敌人附加[{$Mods.CNC.Buff.Name.Scorched}]，使其减少{0}点防御力
-			Enthusiasm: 激情|每次攻击有{0}触发[{$Mods.CNC.Buff.Name.Enthused}]
+			Scorching: 熔化|对被击中的敌人附加[{$Mods.CNC.Buff.Name.Scorched}]，使其减少{0}点防御力
+			Enthusiasm: 烈焰狂热|每次攻击有{0}触发[{$Mods.CNC.Buff.Name.Enthused}]
 			Gelidity: 寒冷|造成伤害时，降低敌人的移动速度
-			Iceflake: 冰裂|冰齿命中时会爆炸，造成{0}魔法伤害
 			Glacier: 冻结|造成伤害时，有一定概率冻结敌人
+			Iceflake: 冰裂|冰齿命中时会爆炸，造成{0}魔法伤害
+			Shattering: 碎冰|冰弹对冻结的敌人造成的魔法伤害增加{0}
+			FrostWave: 霜冻环绕|右键每秒消耗{0}点魔力不断构建扩张性的寒气，你半径{1}格内的敌人将持续减速且受到{2}s冻结，被冻结的目标一段时间内不会再被冻结
 			Charging: 聚集电能|发射闪电弹攻击敌人
 			SpellLightningChain: 咒文闪电链|右键释放一道闪电，攻击至多{0}名敌人，造成{1}魔法伤害
 			ArcaneOverload: 奥术超载|命中敌人时增加{0}魔法伤害，叠至{1}层时清零并使下次攻击释放高能闪电弹，造成{2}次{3}范围魔法伤害

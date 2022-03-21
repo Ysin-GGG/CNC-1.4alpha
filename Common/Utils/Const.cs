@@ -616,7 +616,7 @@ namespace CNC.Common.Utils
 
         public static class Item
         {
-            public const short MaxObject = 11;
+            public const short MaxObject = 19;
             #region ID
             public const short MiracleGem = 1;
             public const short DestineScroll = 2;
@@ -633,6 +633,10 @@ namespace CNC.Common.Utils
             public const short StarlightOfEzcia = 13;
             public const short EmberOfNean = 14;
             public const short CursedKnife = 15;
+            public const short SpiritNachrichter = 16;
+            public const short MysticalLight = 17;
+            public const short ShortKnife = 18;
+            public const short WandOfSpiritSparking = 19;
             #endregion
             public static Dictionary<string, short> Collection => new Dictionary<string, short>()
             {
@@ -651,6 +655,10 @@ namespace CNC.Common.Utils
                 { "StarlightOfEzcia", StarlightOfEzcia },
                 { "EmberOfNean", EmberOfNean },
                 { "CursedKnife", CursedKnife },
+                { "SpiritNachrichter", SpiritNachrichter },
+                { "MysticalLight", MysticalLight },
+                { "ShortKnife", ShortKnife },
+                { "WandOfSpiritSparking", WandOfSpiritSparking },
             };
 
             public static Dictionary<string, int> LegacyCollection => new Dictionary<string, int>()
@@ -670,6 +678,10 @@ namespace CNC.Common.Utils
                 { "StarlightOfEzcia", LegacyObject[Collection["StarlightOfEzcia"]] },
                 { "EmberOfNean", LegacyObject[Collection["EmberOfNean"]] },
                 { "CursedKnife", LegacyObject[Collection["CursedKnife"]] },
+                { "SpiritNachrichter", LegacyObject[Collection["SpiritNachrichter"]] },
+                { "MysticalLight", LegacyObject[Collection["MysticalLight"]] },
+                { "ShortKnife", LegacyObject[Collection["ShortKnife"]] },
+                { "WandOfSpiritSparking", LegacyObject[Collection["WandOfSpiritSparking"]] },
             };
 
             public static Dictionary<short, int> LegacyObject => new Dictionary<short, int>()
@@ -690,6 +702,10 @@ namespace CNC.Common.Utils
                 //{ StarlightOfEzcia, ItemType<Content.Items.>() },
                 //{ EmberOfNean, ItemType<Content.Items.>() },
                 //{ CursedKnife, ItemType<Content.Items.>() },
+                //{ SpiritNachrichter, ItemType<Content.Items.>() },
+                //{ MysticalLight, ItemType<Content.Items.>() },
+                //{ ShortKnife, ItemType<Content.Items.>() },
+                //{ WandOfSpiritSparking, ItemType<Content.Items.>() },
             };
 
             public static Dictionary<int, short> LegacyObjectReturn => new Dictionary<int, short>()
@@ -706,12 +722,20 @@ namespace CNC.Common.Utils
                 { LegacyObject[SpiritSapling], SpiritSapling },
                 { LegacyObject[TranquilityDirt], TranquilityDirt },
                 { LegacyObject[TranquilityStone], TranquilityStone },
+                //{ LegacyObject[SilveryTilia], SilveryTilia },
+                //{ LegacyObject[StarlightOfEzcia], StarlightOfEzcia },
+                //{ LegacyObject[EmberOfNean], EmberOfNean },
+                //{ LegacyObject[CursedKnife], CursedKnife },
+                //{ LegacyObject[SpiritNachrichter], SpiritNachrichter },
+                //{ LegacyObject[MysticalLight], MysticalLight },
+                //{ LegacyObject[ShortKnife], ShortKnife },
+                //{ LegacyObject[WandOfSpiritSparking], WandOfSpiritSparking },
             };
         }
 
         public static class Inscription
         {
-            public const short MaxObject = 55;
+            public const short MaxObject = 57;
             #region ID
             public static InscriptionSettings.Inscription Power => new InscriptionSettings.Inscription(0, 0);
             public static InscriptionSettings.Inscription Chanter => new InscriptionSettings.Inscription(1, 0);
@@ -745,8 +769,10 @@ namespace CNC.Common.Utils
             public static InscriptionSettings.Inscription S_Scorching => new InscriptionSettings.Inscription(2, CNCID.Item.FireGrimoire);
             public static InscriptionSettings.Inscription S_Enthusiasm => new InscriptionSettings.Inscription(3, CNCID.Item.FireGrimoire);
             public static InscriptionSettings.Inscription S_Gelidity => new InscriptionSettings.Inscription(0, CNCID.Item.IceTooth);
-            public static InscriptionSettings.Inscription S_Iceflake => new InscriptionSettings.Inscription(1, CNCID.Item.IceTooth);
-            public static InscriptionSettings.Inscription S_Glacier => new InscriptionSettings.Inscription(2, CNCID.Item.IceTooth);
+            public static InscriptionSettings.Inscription S_Glacier => new InscriptionSettings.Inscription(1, CNCID.Item.IceTooth);
+            public static InscriptionSettings.Inscription S_Iceflake => new InscriptionSettings.Inscription(2, CNCID.Item.IceTooth);
+            public static InscriptionSettings.Inscription S_Shattering => new InscriptionSettings.Inscription(3, CNCID.Item.IceTooth);
+            public static InscriptionSettings.Inscription S_FrostWave => new InscriptionSettings.Inscription(4, CNCID.Item.IceTooth);
             public static InscriptionSettings.Inscription S_Charging => new InscriptionSettings.Inscription(0, CNCID.Item.Superconductor);
             public static InscriptionSettings.Inscription S_SpellLightningChain => new InscriptionSettings.Inscription(1, CNCID.Item.Superconductor);
             public static InscriptionSettings.Inscription S_ArcaneOverload => new InscriptionSettings.Inscription(2, CNCID.Item.Superconductor);
@@ -769,6 +795,9 @@ namespace CNC.Common.Utils
             public static InscriptionSettings.Inscription S_TameHead => new InscriptionSettings.Inscription(0, CNCID.Item.CursedKnife);
             public static InscriptionSettings.Inscription S_SoulScorching => new InscriptionSettings.Inscription(1, CNCID.Item.CursedKnife);
             public static InscriptionSettings.Inscription S_IndulgentGhost => new InscriptionSettings.Inscription(2, CNCID.Item.CursedKnife);
+            public static InscriptionSettings.Inscription S_Decapitation => new InscriptionSettings.Inscription(0, CNCID.Item.SpiritNachrichter);
+            public static InscriptionSettings.Inscription S_ConsciousMetal => new InscriptionSettings.Inscription(1, CNCID.Item.SpiritNachrichter);
+            public static InscriptionSettings.Inscription S_BlessingOfDahl => new InscriptionSettings.Inscription(0, CNCID.Item.MysticalLight);
             #endregion
             public static Dictionary<Point, string> Collection => new Dictionary<Point, string>()
             {
@@ -803,8 +832,10 @@ namespace CNC.Common.Utils
                 { new Point(2, CNCID.Item.FireGrimoire), "S_Scorching" },
                 { new Point(3, CNCID.Item.FireGrimoire), "S_Enthusiasm" },
                 { new Point(0, CNCID.Item.IceTooth), "S_Gelidity" },
-                { new Point(1, CNCID.Item.IceTooth), "S_Iceflake" },
-                { new Point(2, CNCID.Item.IceTooth), "S_Glacier" },
+                { new Point(1, CNCID.Item.IceTooth), "S_Glacier" },
+                { new Point(2, CNCID.Item.IceTooth), "S_Iceflake" },
+                { new Point(3, CNCID.Item.IceTooth), "S_Shattering" },
+                { new Point(4, CNCID.Item.IceTooth), "S_FrostWave" },
                 { new Point(0, CNCID.Item.Superconductor), "S_Charging" },
                 { new Point(1, CNCID.Item.Superconductor), "S_SpellLightningChain" },
                 { new Point(2, CNCID.Item.Superconductor), "S_ArcaneOverload" },
@@ -862,8 +893,10 @@ namespace CNC.Common.Utils
                 { "S_Scorching", S_Scorching },
                 { "S_Enthusiasm", S_Enthusiasm },
                 { "S_Gelidity", S_Gelidity },
-                { "S_Iceflake", S_Iceflake },
                 { "S_Glacier", S_Glacier },
+                { "S_Iceflake", S_Iceflake },
+                { "S_Shattering", S_Shattering },
+                { "S_FrostWave", S_FrostWave },
                 { "S_Charging", S_Charging },
                 { "S_SpellLightningChain", S_SpellLightningChain },
                 { "S_ArcaneOverload", S_ArcaneOverload },
@@ -921,8 +954,10 @@ namespace CNC.Common.Utils
                 { new Point(2, CNCID.Item.FireGrimoire), S_Scorching },
                 { new Point(3, CNCID.Item.FireGrimoire), S_Enthusiasm },
                 { new Point(0, CNCID.Item.IceTooth), S_Gelidity },
-                { new Point(1, CNCID.Item.IceTooth), S_Iceflake },
-                { new Point(2, CNCID.Item.IceTooth), S_Glacier },
+                { new Point(1, CNCID.Item.IceTooth), S_Glacier },
+                { new Point(2, CNCID.Item.IceTooth), S_Iceflake },
+                { new Point(3, CNCID.Item.IceTooth), S_Shattering },
+                { new Point(4, CNCID.Item.IceTooth), S_FrostWave },
                 { new Point(0, CNCID.Item.Superconductor), S_Charging },
                 { new Point(1, CNCID.Item.Superconductor), S_SpellLightningChain },
                 { new Point(2, CNCID.Item.Superconductor), S_ArcaneOverload },

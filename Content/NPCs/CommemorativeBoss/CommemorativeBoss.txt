@@ -1,0 +1,53 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Terraria;
+using Terraria.ID;
+using Terraria.Audio;
+using Terraria.ModLoader;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.UI.BigProgressBar;
+using Terraria.DataStructures;
+using CNC.Common.Utils;
+using CNC.Common.Global.NPCs;
+
+namespace CNC.Content.NPCs.CommemorativeBoss
+{
+    [AutoloadBossHead]
+    public class CommemorativeBoss : CNCNPC
+    {
+        public int stage = 0;
+        public int state = 0;
+        private int stateTick = 0;
+        private int preState = 0;
+
+        private int target { get => npc.target; set => npc.target = value; }
+
+        public bool rage = false;
+
+        public override void ResetStaticDefaults()
+        {
+            DisplayName.SetDefault("Constant");
+            DisplayName.AddTranslation("³£Á¿");
+        }
+
+        public override void ResetDefaults()
+        {
+            npc.width = Player.defaultWidth;
+            npc.height = Player.defaultHeight;
+            npc.aiStyle = -1;
+            npc.knockBackResist = 0;
+            npc.damage = 0;
+            npc.defense = 0;
+            npc.lifeMax = 130000;
+            npc.alpha = 255;
+            npc.value = 0;
+            npc.boss = true;
+            npc.noGravity = true;
+            npc.dontTakeDamageFromHostiles = true;
+            npc.HitSound = SoundID.NPCHit1;
+            npc.DeathSound = SoundID.NPCDeath7;
+        }
+	}
+}

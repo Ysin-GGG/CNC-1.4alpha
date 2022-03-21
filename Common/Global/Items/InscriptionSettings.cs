@@ -17,11 +17,12 @@ namespace CNC.Common.Global.Items
         private List<Inscription> _inscription1 = new List<Inscription>();
         private List<Inscription[]> _inscription2 = new List<Inscription[]>();
 
-        public int level = 0;
-        public int levelMax = 0;
-        public Inscription[] inscription => _inscription1.ToArray();
-        public Inscription[][] inscriptionList => _inscription2.ToArray();
-        public bool CanUpgrade => level > 0 && levelMax > 0;
+        public bool active = false;
+        public int level = -1;
+        public int levelMax = -1;
+        public Inscription[] inscription => _inscription1.ToArray();//已有铭文
+        public Inscription[][] inscriptionList => _inscription2.ToArray();//各级待定铭文
+        public bool CanUpgrade => level >= 0 && levelMax >= 0;
         public bool CanUpgrade2 => CanUpgrade && levelMax > level;
         public Mod mod => Mod;
 
@@ -29,11 +30,12 @@ namespace CNC.Common.Global.Items
 
         public InscriptionSettings()
         {
-            level = 0;
-            levelMax = 0;
-            _inscription1 = new List<Inscription>();
-            _inscription2 = new List<Inscription[]>();
-    }
+            this.level = -1;
+            this.levelMax = -1;
+            this.active = false;
+            this._inscription1 = new List<Inscription>();
+            this._inscription2 = new List<Inscription[]>();
+        }
 
         public override GlobalItem Clone(Item item, Item itemClone)
         {
@@ -50,111 +52,159 @@ namespace CNC.Common.Global.Items
 
         public override void SetDefaults(Item item)
         {
-            if (item.ModItem != null && item.ModItem.Mod == mod && CNCID.Item.LegacyObjectReturn.ContainsKey(item.type))
+            List<Inscription[]> AddInscriptionList(List<Inscription[]> origin, int begin, int end, Inscription inscription)
+            {
+                for (; begin <= end; begin++)
+                {
+                    List<Inscription> member = new List<Inscription>();
+                    member.AddRange(origin[begin]);
+                    member.Add(inscription);
+                    origin[begin] = member.ToArray();
+                }
+                return origin;
+            }
+            if (item.ModItem != null && item.ModItem.Mod == mod && item.type > 0 && CNCID.Item.LegacyObjectReturn.ContainsKey(item.type))
             {
                 short type = CNCID.Item.LegacyObjectReturn[item.type];
                 InscriptionSettings itemInscription = item.GetGlobalItem<InscriptionSettings>();
-                itemInscription._inscription1 = new List<Inscription>();
+                int level = itemInscription.level = -1;
+                int levelMax = itemInscription.levelMax = -1;
+                List<Inscription> list1 = itemInscription._inscription1 = new List<Inscription>();
+                List<Inscription[]> list2 = itemInscription._inscription2 = new List<Inscription[]>()
+                {
+                    new Inscription[0],
+                    new Inscription[0],
+                    new Inscription[0],
+                    new Inscription[0],
+                    new Inscription[0],
+                    new Inscription[0],
+                    new Inscription[0],
+                    new Inscription[0],
+                };
                 switch (type)
                 {
                     case CNCID.Item.FireGrimoire:
+                        level = 0;
+                        levelMax = 4;
+                        list1.Add(CNCID.Inscription.S_Fireball);
+                        list1.Add(CNCID.Inscription.S_Incinerating);
+                        list2 = AddInscriptionList(list2, 1, 4, CNCID.Inscription.MagicAdept);
+                        list2 = AddInscriptionList(list2, 1, 4, CNCID.Inscription.Power);
+                        list2 = AddInscriptionList(list2, 1, 4, CNCID.Inscription.Assimilation);
+                        list2 = AddInscriptionList(list2, 1, 4, CNCID.Inscription.Economization);
+                        list2 = AddInscriptionList(list2, 0, 0, CNCID.Inscription.S_Fireball);
+                        list2 = AddInscriptionList(list2, 0, 0, CNCID.Inscription.S_Incinerating);
+                        list2 = AddInscriptionList(list2, 2, 2, CNCID.Inscription.S_Scorching);
+                        list2 = AddInscriptionList(list2, 4, 4, CNCID.Inscription.S_Enthusiasm);
                         break;
                     case CNCID.Item.IceTooth:
-                        itemInscription.level = 1;
-                        itemInscription.levelMax = 5;
-                        itemInscription._inscription1.Add(CNCID.Inscription.S_Gelidity);
-                        itemInscription._inscription2 = new List<Inscription[]>
-                        {
-                            new Inscription[]
-                            {
-                                CNCID.Inscription.S_Gelidity,
-                            },
-                            new Inscription[]
-                            {
-                                CNCID.Inscription.Chanter,
-                                CNCID.Inscription.Power,
-                                CNCID.Inscription.Assimilation,
-                                CNCID.Inscription.Economization,
-                                CNCID.Inscription.Arcana,
-                                CNCID.Inscription.S_Iceflake,
-                            },
-                            new Inscription[]
-                            {
-                                CNCID.Inscription.Chanter,
-                                CNCID.Inscription.Power,
-                                CNCID.Inscription.Assimilation,
-                                CNCID.Inscription.Economization,
-                                CNCID.Inscription.Arcana,
-                            },
-                            new Inscription[]
-                            {
-                                CNCID.Inscription.Chanter,
-                                CNCID.Inscription.Power,
-                                CNCID.Inscription.Assimilation,
-                                CNCID.Inscription.Economization,
-                                CNCID.Inscription.Arcana,
-                                CNCID.Inscription.S_Glacier,
-                            },
-                            new Inscription[]
-                            {
-                                CNCID.Inscription.Chanter,
-                                CNCID.Inscription.Power,
-                                CNCID.Inscription.Assimilation,
-                                CNCID.Inscription.Economization,
-                                CNCID.Inscription.Arcana,
-                            },
-                        };
+                        level = 0;
+                        levelMax = 6;
+                        list1.Add(CNCID.Inscription.S_Gelidity);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.MagicAdept);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.Power);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.Assimilation);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.Economization);
+                        list2 = AddInscriptionList(list2, 2, 6, CNCID.Inscription.Arcana);
+                        list2 = AddInscriptionList(list2, 0, 0, CNCID.Inscription.S_Gelidity);
+                        list2 = AddInscriptionList(list2, 2, 2, CNCID.Inscription.S_Glacier);
+                        list2 = AddInscriptionList(list2, 4, 4, CNCID.Inscription.S_Iceflake);
+                        list2 = AddInscriptionList(list2, 4, 4, CNCID.Inscription.S_Shattering);
+                        list2 = AddInscriptionList(list2, 6, 6, CNCID.Inscription.S_FrostWave);
                         break;
                     case CNCID.Item.Superconductor:
+                        level = 0;
+                        levelMax = 6;
+                        list1.Add(CNCID.Inscription.S_Charging);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.MagicAdept);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.Power);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.Assimilation);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.Economization);
+                        list2 = AddInscriptionList(list2, 2, 6, CNCID.Inscription.Arcana);
+                        list2 = AddInscriptionList(list2, 0, 0, CNCID.Inscription.S_Charging);
+                        list2 = AddInscriptionList(list2, 1, 1, CNCID.Inscription.S_SpellLightningChain);
+                        list2 = AddInscriptionList(list2, 2, 2, CNCID.Inscription.S_ArcaneOverload);
+                        list2 = AddInscriptionList(list2, 4, 4, CNCID.Inscription.S_SpellReconstruction);
+                        list2 = AddInscriptionList(list2, 6, 6, CNCID.Inscription.S_SpellAugmentated);
+                        list2 = AddInscriptionList(list2, 6, 6, CNCID.Inscription.S_StableSpell);
                         break;
                     case CNCID.Item.ArgenteusClaw:
-                        itemInscription.level = 1;
-                        itemInscription.levelMax = 5;
-                        itemInscription._inscription1.Add(CNCID.Inscription.S_SilveryArrow);
-                        itemInscription._inscription2 = new List<Inscription[]>
-                        {
-                            new Inscription[]
-                            {
-                                CNCID.Inscription.S_SilveryArrow,
-                            },
-                            new Inscription[]
-                            {
-                                CNCID.Inscription.Dexterity,
-                                CNCID.Inscription.Power,
-                                CNCID.Inscription.EnchantedBowstring,
-                                CNCID.Inscription.MeleeAdept,
-                                CNCID.Inscription.EagleEye,
-                                CNCID.Inscription.S_Sanctity,
-                            },
-                            new Inscription[]
-                            {
-                                CNCID.Inscription.Dexterity,
-                                CNCID.Inscription.Power,
-                                CNCID.Inscription.EnchantedBowstring,
-                                CNCID.Inscription.MeleeAdept,
-                                CNCID.Inscription.EagleEye,
-                                CNCID.Inscription.Penetration,
-                            },
-                            new Inscription[]
-                            {
-                                CNCID.Inscription.Dexterity,
-                                CNCID.Inscription.Power,
-                                CNCID.Inscription.EnchantedBowstring,
-                                CNCID.Inscription.MeleeAdept,
-                                CNCID.Inscription.EagleEye,
-                                CNCID.Inscription.S_Exorcism,
-                            },
-                            new Inscription[]
-                            {
-                                CNCID.Inscription.Dexterity,
-                                CNCID.Inscription.Power,
-                                CNCID.Inscription.EnchantedBowstring,
-                                CNCID.Inscription.MeleeAdept,
-                                CNCID.Inscription.EagleEye,
-                            }
-                        };
+                        level = 0;
+                        levelMax = 6;
+                        list1.Add(CNCID.Inscription.S_SilveryArrow);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.Dexterity);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.Power);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.EnchantedBowstring);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.MeleeAdept);
+                        list2 = AddInscriptionList(list2, 2, 6, CNCID.Inscription.EagleEye);
+                        list2 = AddInscriptionList(list2, 3, 3, CNCID.Inscription.Penetration);
+                        list2 = AddInscriptionList(list2, 0, 0, CNCID.Inscription.S_SilveryArrow);
+                        list2 = AddInscriptionList(list2, 2, 2, CNCID.Inscription.S_Sanctity);
+                        list2 = AddInscriptionList(list2, 4, 4, CNCID.Inscription.S_Exorcism);
+                        break;
+                    case CNCID.Item.SilveryTilia:
+                        level = 0;
+                        levelMax = 6;
+                        list1.Add(CNCID.Inscription.S_SilveryFlame);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.Power);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.Dexterity);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.MeleeAdept);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.Force);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.Destroyer);
+                        list2 = AddInscriptionList(list2, 0, 0, CNCID.Inscription.S_SilveryFlame);
+                        list2 = AddInscriptionList(list2, 1, 1, CNCID.Inscription.S_Judgement);
+                        list2 = AddInscriptionList(list2, 2, 2, CNCID.Inscription.S_SilveryShield);
+                        list2 = AddInscriptionList(list2, 5, 5, CNCID.Inscription.S_SilveryVow);
+                        break;
+                    case CNCID.Item.StarlightOfEzcia:
+                        level = 0;
+                        levelMax = 3;
+                        list1.Add(CNCID.Inscription.S_Rock);
+                        list2 = AddInscriptionList(list2, 1, 3, CNCID.Inscription.Chanter);
+                        list2 = AddInscriptionList(list2, 1, 3, CNCID.Inscription.Power);
+                        list2 = AddInscriptionList(list2, 1, 3, CNCID.Inscription.Assimilation);
+                        list2 = AddInscriptionList(list2, 1, 3, CNCID.Inscription.Economization);
+                        list2 = AddInscriptionList(list2, 0, 0, CNCID.Inscription.S_Rock);
+                        list2 = AddInscriptionList(list2, 1, 1, CNCID.Inscription.S_ActiveChant);
+                        list2 = AddInscriptionList(list2, 3, 3, CNCID.Inscription.S_Fragmentation);
+                        break;
+                    case CNCID.Item.EmberOfNean:
+                        level = 0;
+                        levelMax = 5;
+                        list1.Add(CNCID.Inscription.S_DizzyStrike);
+                        list2 = AddInscriptionList(list2, 1, 5, CNCID.Inscription.Power);
+                        list2 = AddInscriptionList(list2, 1, 5, CNCID.Inscription.Dexterity);
+                        list2 = AddInscriptionList(list2, 1, 5, CNCID.Inscription.MeleeAdept);
+                        list2 = AddInscriptionList(list2, 1, 5, CNCID.Inscription.Force);
+                        list2 = AddInscriptionList(list2, 1, 5, CNCID.Inscription.Shockwave);
+                        list2 = AddInscriptionList(list2, 1, 1, CNCID.Inscription.Smiting);
+                        list2 = AddInscriptionList(list2, 2, 2, CNCID.Inscription.S_EmberPrayer);
+                        list2 = AddInscriptionList(list2, 3, 3, CNCID.Inscription.S_EmberOath);
+                        break;
+                    case CNCID.Item.CursedKnife:
+                        level = 0;
+                        levelMax = 6;
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.Power);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.RaidAdept);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.Murder);
+                        list2 = AddInscriptionList(list2, 1, 6, CNCID.Inscription.Assassination);
+                        list2 = AddInscriptionList(list2, 1, 1, CNCID.Inscription.S_TameHead);
+                        list2 = AddInscriptionList(list2, 2, 2, CNCID.Inscription.S_SoulScorching);
+                        list2 = AddInscriptionList(list2, 3, 3, CNCID.Inscription.S_IndulgentGhost);
+                        break;
+                    case CNCID.Item.SpiritNachrichter:
+                        break;
+                    case CNCID.Item.MysticalLight:
+                        break;
+                    case CNCID.Item.ShortKnife:
+                        break;
+                    case CNCID.Item.WandOfSpiritSparking:
                         break;
                 }
+                itemInscription.level = level;
+                itemInscription.levelMax = levelMax;
+                itemInscription._inscription1 = list1;
+                itemInscription._inscription2 = list2;
             }
         }
 
@@ -257,8 +307,10 @@ namespace CNC.Common.Global.Items
                         break;
                     case CNCID.Item.IceTooth:
                         if (type == 0) _args = new object[] { };
-                        if (type == 1) _args = new object[] { "[damage=14]" };
-                        if (type == 2) _args = new object[] { };
+                        if (type == 1) _args = new object[] { };
+                        if (type == 2) _args = new object[] { "[damage=14]" };
+                        if (type == 3) _args = new object[] { 0.40f };
+                        if (type == 4) _args = new object[] { 20, 9, 3 };
                         break;
                     case CNCID.Item.Superconductor:
                         if (type == 0) _args = new object[] { };
