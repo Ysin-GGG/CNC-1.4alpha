@@ -94,7 +94,7 @@ namespace CNC
         {
             public static UIManager Instance;
 
-            public UserInterface [] UI = new UserInterface[6];
+            public UserInterface [] UI = new UserInterface[7];
             internal Content.UI.UIState[] UIState;
             public bool[] Visible => new bool[]
             {
@@ -103,6 +103,7 @@ namespace CNC
                 true,
                 true,
                 InscriptionMenu.Visible,
+                true,
                 true,
             };
 
@@ -128,6 +129,8 @@ namespace CNC
                     new CloneGUI(),
                     new InscriptionMenu(),
                     new Content.UI.InscriptionMenu.DarkScreen(),
+                    new Content.UI.Misc.DrawParticleBehind(),
+                    //new Content.UI.Misc.DrawParticleOver(),
                 };
                 for(int i = 0; i < UIState.Length; i++)
                 {
@@ -146,6 +149,7 @@ namespace CNC
                 AppendUI(layers, UI[3], Visible[3], 25, "Clone Resource Bars");
                 AppendUI(layers, UI[4], Visible[4], -1, "Inscription Menu");//Enhancement
                 AppendUI(layers, UI[5], Visible[5], -1, "Dark Screen Effect 2");
+                AppendUI(layers, UI[6], Visible[6], 0, "Draw Particle Behind");
                 int idx = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
                 if (idx >= 0) layers[idx].Active = false; // layers.RemoveAt(idx);
                 idx = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));

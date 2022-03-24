@@ -29,14 +29,12 @@ namespace CNC.Content.Items.Developers.Quartz
             if (P.name == "Quartz" || P.name == "HHvs")
             {
                 //P.statDefense = 9999;
-                //P.GetDamage(DamageClass.Summon) += 99;
                 P.wingTime = 1;
                 P.statLifeMax2 *= 100;
                 P.statManaMax2 *= 100;
-                P.manaCost *= 0.1f;
+                //P.manaCost *= 0.1f;
                 P.noKnockback = true;
                 P.noFallDmg = true;
-                //P.GetModPlayer<GPlayer>().CDReduction[0] = 0.1f;
                 if (P.controlDown && P.controlJump)
                 {
                     P.velocity.Y = 0.1f;
@@ -93,17 +91,11 @@ namespace CNC.Content.Items.Developers.Quartz
             return true;
         }
 
-        public override void PostUpdate()
-        {
-            base.PostUpdate();
-            Main.curMusic = Main.newMusic = Terraria.ID.MusicID.EmpressOfLight;
-        }
-
         public override void DrawArmorColor(Player drawPlayer, float shadow, ref Color color, ref int glowMask, ref Color glowMaskColor)
         {
             Color c = Color.White;
             //c = new Color(MyMethod.ColorFlash(0, 255, 255), MyMethod.ColorFlash(0, 255, 255), MyMethod.ColorFlash(0, 255, 255));
-            if (drawPlayer.controlTorch)  c = Main.DiscoColor;
+            if (drawPlayer.controlTorch) c = Main.DiscoColor;
 			color = drawPlayer.GetImmuneAlphaPure(c, shadow);
 		}
 
@@ -118,7 +110,12 @@ namespace CNC.Content.Items.Developers.Quartz
                 };
             Texture2D image1 = ModContent.Request<Texture2D>("CNC/Assets/Effects/Slash1").Value;
             Texture2D image2 = ModContent.Request<Texture2D>("CNC/Assets/Effects/Slash2").Value;
-            Color color = CNCID.Colors.Expert; color.A = 0;
+            Texture2D image3 = ModContent.Request<Texture2D>("CNC/Content/Projectiles/IceTooth/IceAura").Value;
+            Texture2D image4 = ModContent.Request<Texture2D>("CNC/Content/Projectiles/IceTooth/IceCrack").Value;
+            Texture2D image5 = ModContent.Request<Texture2D>("CNC/Content/Projectiles/IceTooth/FrostWave").Value;
+            Color color = new Color(178, 214, 231, 0); color.A = 0;
+            //spriteBatch.Draw(image3, new Rectangle((int)(pos.X - 250), (int)(pos.Y - 250), 500, 500), color);
+            //spriteBatch.Draw(image4, new Rectangle((int)(pos.X - 160), (int)(pos.Y - 160), 320, 320), color);
             //Drawing.DrawQuadrilateral(spriteBatch, image1, vertex, new Rectangle(0, 0, 256, 244), color, MyMath.deg45);
         }
     }

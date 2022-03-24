@@ -8,8 +8,8 @@ namespace CNC.Content.Items.Developers.HHvs
     {
         public override void ResetDefaults()
         {
-            item.width = 30;
-            item.height = 28;
+            item.width = 28;
+            item.height = 30;
             item.rare = 9;
             item.vanity = true;
         }

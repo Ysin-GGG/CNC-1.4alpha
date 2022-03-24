@@ -32,6 +32,7 @@ namespace CNC.Content.Mounts
             MountData.xOffset = 0;
             MountData.yOffset = -14;
             MountData.lightColor = new Vector3(.5f);
+            MountData.spawnDust = ModContent.DustType<Dusts.Star>();
 
             // Misc
             MountData.fatigueMax = 0;//×øÆïÆ£ÀÍ
@@ -101,14 +102,24 @@ namespace CNC.Content.Mounts
             return base.Draw(playerDrawData, drawType, drawPlayer, ref texture, ref glowTexture, ref drawPosition, ref frame, ref drawColor, ref glowColor, ref rotation, ref spriteEffects, ref drawOrigin, ref drawScale, shadow);
         }
 
+        public override void UpdateEffects(Player player)
+        {
+            if (Math.Abs(player.velocity.X) >= 5f)
+            for (int i = 0; i < 3; i++)
+            {
+                Dust.NewDustPerfect(new Vector2(player.Center.X, player.position.X + Main.rand.Next(0,player.height)), MountData.spawnDust, new Vector2(-Main.rand.NextFloat(0, player.velocity.X / 2), 0));
+            }
+        }
+
         public override void SetMount(Player player, ref bool skipDust)
         {
             // mount code bypasses the normal mount spawning dust and replaces it with our own visual.
             if (!Main.dedServ)
             {
-                for (int i = 0; i < 16; i++)
+                int num = 16;
+                for (int i = 0; i < num; i++)
                 {
-                    Dust.NewDustPerfect(player.Center + new Vector2(80, 0).RotatedBy(i * Math.PI * 2 / 16f), MountData.spawnDust);
+                    Dust.NewDustPerfect(player.Center + new Vector2(80, 0).RotatedBy(i * MyMath.pi * 2 / num), MountData.spawnDust, new Vector2(Main.rand.NextFloat(-2f, 2f), Main.rand.NextFloat(-2f, 2f)));
                 }
                 skipDust = true;
             }
