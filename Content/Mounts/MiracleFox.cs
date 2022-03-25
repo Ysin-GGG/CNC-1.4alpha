@@ -113,10 +113,9 @@ namespace CNC.Content.Mounts
 
         public override void SetMount(Player player, ref bool skipDust)
         {
-            // mount code bypasses the normal mount spawning dust and replaces it with our own visual.
             if (!Main.dedServ)
             {
-                int num = 16;
+                int num = 24;
                 for (int i = 0; i < num; i++)
                 {
                     Dust.NewDustPerfect(player.Center + new Vector2(80, 0).RotatedBy(i * MyMath.pi * 2 / num), MountData.spawnDust, new Vector2(Main.rand.NextFloat(-2f, 2f), Main.rand.NextFloat(-2f, 2f)));

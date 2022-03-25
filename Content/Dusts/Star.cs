@@ -18,7 +18,7 @@ namespace CNC.Content.Dusts
                 100,
                 Vector2.One,
                 new Color(255, 255, 255, 0),
-                new Color(255, 255, 255, 5)
+                new Color(255, 255, 255, 10)
                 );
             ParticleRenderer.particle[idx].scaleAdd = new Vector2(-Main.rand.NextFloat(.05f, .01f));
             ParticleRenderer.particle[idx].rotationAdd = Common.Utils.MyMath.deg01 * Main.rand.Next(1, 16);

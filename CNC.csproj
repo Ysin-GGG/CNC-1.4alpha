@@ -56,5 +56,8 @@
       <HintPath>D:\其它\Steam\steamapps\common\tModLoader\tModLoader.exe</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\UI\Misc\" />
+  </ItemGroup>
   <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 </Project>

@@ -4,7 +4,6 @@
 
 近战
 罗马宽剑 gladius
-苏格兰双手剑 claymore
 
 长矛 Lance
 圆盾 Buckler

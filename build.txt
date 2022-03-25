@@ -2,7 +2,8 @@
 author = HHvs & Quartz
 version = 0.0.2.3
 hideResources = false
-hideCode = false
+hideCode = true
 includeSource = true
 includePDB = true
+side = Client
 buildIgnore = *.sln, *.suo, *.user, *.gitignore, .git\*, .vs\*, obj\*, bin\*, Libraries\*, Properties\*,

@@ -18,11 +18,11 @@ namespace CNC.Content
         public Vector2 velocity;
         public Texture2D texture;
         public Texture2D textureGlow;
+        public float oldRotation;
         public float rotation;
         public float rotationAdd;
         public bool active;
         public bool noGravity;
-        public bool behindPlayer;
         public int timeLeft;
         public int timeLeftMax;
         public int extraUpdate;
@@ -47,16 +47,15 @@ namespace CNC.Content
             this.rotationAdd = 0f;
             this.active = false;
             this.noGravity = false;
-            this.behindPlayer = false;
             this.timeLeft = 0;
             this.timeLeftMax = 0;
             this.extraUpdate = 0;
             this.whoAmI = -1;
         }
 
-        public void OnSpawn() { }
+        public virtual void OnSpawn() { }
 
-        public void Update() { }
+        public virtual void Update() { }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 offset = default)
         {
@@ -85,7 +84,7 @@ namespace CNC.Content
                     0);
         }
 
-        public static int NewParticle(Texture2D image, Vector2 pos, Vector2 vel, float rot, int timeLeft, Vector2 scale, Color color, Color light = default, bool noGravity = true, bool behindPlayer = true)
+        public static int NewParticle(Texture2D image, Vector2 pos, Vector2 vel, float rot, int timeLeft, Vector2 scale, Color color, Color light = default, bool noGravity = true, int extraUpdate = 0)
         {
             for (int i = 0; i < ParticleRenderer.maxParticles; i++)
             {
@@ -102,9 +101,9 @@ namespace CNC.Content
                     ParticleRenderer.particle[i].color = color;
                     ParticleRenderer.particle[i].light = light;
                     ParticleRenderer.particle[i].noGravity = noGravity;
-                    ParticleRenderer.particle[i].behindPlayer = behindPlayer;
                     ParticleRenderer.particle[i].timeLeft = timeLeft;
                     ParticleRenderer.particle[i].timeLeftMax = timeLeft;
+                    ParticleRenderer.particle[i].extraUpdate = extraUpdate;
                     ParticleRenderer.particle[i].whoAmI = i;
                     ParticleRenderer.particle[i].active = true;
                     ParticleRenderer.particle[i].OnSpawn();
