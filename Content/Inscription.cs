@@ -103,23 +103,23 @@ namespace CNC.Content
                     if (type == 1) _args = new object[] { 0.45f, "[damage2=200f]" };
                     if (type == 2) _args = new object[] { 3, "[damage2=300f]" };
                     break;
-                case CNCID.Item.SilveryTilia:
+                case CNCID.Item.ArgenteusTree:
                     if (type == 0) _args = new object[] { };
                     if (type == 1) _args = new object[] { "[damage1=12]" };
                     if (type == 2) _args = new object[] { 30, 15, "[damage1=80]", "[damage1=100]" };
                     if (type == 3) _args = new object[] { 6, 8, 0.15f, 0.15f, 10 };
                     break;
-                case CNCID.Item.StarlightOfEzcia:
+                case CNCID.Item.TheLightOfAuzzsia:
                     if (type == 0) _args = new object[] { "[damage3=50]" };
                     if (type == 1) _args = new object[] { };
                     if (type == 2) _args = new object[] { "[damage3=30]" };
                     break;
-                case CNCID.Item.EmberOfNean:
+                case CNCID.Item.EmberOfNien:
                     if (type == 0) _args = new object[] { 0.10f, 1 };
                     if (type == 1) _args = new object[] { 6, 6 };
                     if (type == 2) _args = new object[] { 5, 5, 0.10f };
                     break;
-                case CNCID.Item.CursedKnife:
+                case CNCID.Item.FragmentarySoulDagger:
                     if (type == 0) _args = new object[] { 10, 8, 8, 2.00f };
                     if (type == 1) _args = new object[] { 3, 0.10f, 4 };
                     if (type == 2) _args = new object[] { 6 };

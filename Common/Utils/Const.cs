@@ -603,14 +603,14 @@ namespace CNC.Common.Utils
             public const short SpiritSapling = 9;
             public const short TranquilityDirt = 10;
             public const short TranquilityStone = 11;
-            public const short SilveryTilia = 12;
-            public const short StarlightOfEzcia = 13;
-            public const short EmberOfNean = 14;
-            public const short CursedKnife = 15;
-            public const short SpiritNachrichter = 16;
+            public const short ArgenteusTree = 12;
+            public const short TheLightOfAuzzsia = 13;
+            public const short EmberOfNien = 14;
+            public const short FragmentarySoulDagger = 15;
+            public const short SpiritIronGreatsword = 16;
             public const short MysticalLight = 17;
-            public const short ShortKnife = 18;
-            public const short WandOfSpiritSparking = 19;
+            public const short ShortDagger = 18;
+            public const short SpiritSparkingWand = 19;
             #endregion
             public static Dictionary<string, short> Collection => new Dictionary<string, short>()
             {
@@ -625,14 +625,14 @@ namespace CNC.Common.Utils
                 { "SpiritSapling", SpiritSapling },
                 { "TranquilityDirt", TranquilityDirt },
                 { "TranquilityStone", TranquilityStone },
-                { "SilveryTilia", SilveryTilia },
-                { "StarlightOfEzcia", StarlightOfEzcia },
-                { "EmberOfNean", EmberOfNean },
-                { "CursedKnife", CursedKnife },
-                { "SpiritNachrichter", SpiritNachrichter },
+                { "ArgenteusTree", ArgenteusTree },
+                { "TheLightOfAuzzsia", TheLightOfAuzzsia },
+                { "EmberOfNien", EmberOfNien },
+                { "FragmentarySoulDagger", FragmentarySoulDagger },
+                { "SpiritIronGreatsword", SpiritIronGreatsword },
                 { "MysticalLight", MysticalLight },
-                { "ShortKnife", ShortKnife },
-                { "WandOfSpiritSparking", WandOfSpiritSparking },
+                { "ShortDagger", ShortDagger },
+                { "SpiritSparkingWand", SpiritSparkingWand },
             };
 
             public static Dictionary<string, int> LegacyCollection => new Dictionary<string, int>()
@@ -648,14 +648,14 @@ namespace CNC.Common.Utils
                 { "SpiritSapling", LegacyObject[Collection["SpiritSapling"]] },
                 { "TranquilityDirt", LegacyObject[Collection["TranquilityDirt"]] },
                 { "TranquilityStone", LegacyObject[Collection["TranquilityStone"]] },
-                { "SilveryTilia", LegacyObject[Collection["SilveryTilia"]] },
-                { "StarlightOfEzcia", LegacyObject[Collection["StarlightOfEzcia"]] },
-                { "EmberOfNean", LegacyObject[Collection["EmberOfNean"]] },
-                { "CursedKnife", LegacyObject[Collection["CursedKnife"]] },
-                { "SpiritNachrichter", LegacyObject[Collection["SpiritNachrichter"]] },
+                { "ArgenteusTree", LegacyObject[Collection["ArgenteusTree"]] },
+                { "TheLightOfAuzzsia", LegacyObject[Collection["TheLightOfAuzzsia"]] },
+                { "EmberOfNien", LegacyObject[Collection["EmberOfNien"]] },
+                { "FragmentarySoulDagger", LegacyObject[Collection["FragmentarySoulDagger"]] },
+                { "SpiritIronGreatsword", LegacyObject[Collection["SpiritIronGreatsword"]] },
                 { "MysticalLight", LegacyObject[Collection["MysticalLight"]] },
-                { "ShortKnife", LegacyObject[Collection["ShortKnife"]] },
-                { "WandOfSpiritSparking", LegacyObject[Collection["WandOfSpiritSparking"]] },
+                { "ShortDagger", LegacyObject[Collection["ShortDagger"]] },
+                { "SpiritSparkingWand", LegacyObject[Collection["SpiritSparkingWand"]] },
             };
 
             public static Dictionary<short, int> LegacyObject => new Dictionary<short, int>()
@@ -672,14 +672,14 @@ namespace CNC.Common.Utils
                 { SpiritSapling, ItemType<Content.Items.SpiritSapling>() },
                 { TranquilityDirt, ItemType<Content.Items.TranquilityDirt>() },
                 { TranquilityStone, ItemType<Content.Items.TranquilityStone>() },
-                //{ SilveryTilia, ItemType<Content.Items.>() },
-                //{ StarlightOfEzcia, ItemType<Content.Items.>() },
-                //{ EmberOfNean, ItemType<Content.Items.>() },
-                //{ CursedKnife, ItemType<Content.Items.>() },
-                //{ SpiritNachrichter, ItemType<Content.Items.>() },
+                //{ ArgenteusTree, ItemType<Content.Items.>() },
+                //{ TheLightOfAuzzsia, ItemType<Content.Items.>() },
+                //{ EmberOfNien, ItemType<Content.Items.>() },
+                //{ FragmentarySoulDagger, ItemType<Content.Items.>() },
+                //{ SpiritIronGreatsword, ItemType<Content.Items.>() },
                 //{ MysticalLight, ItemType<Content.Items.>() },
-                //{ ShortKnife, ItemType<Content.Items.>() },
-                //{ WandOfSpiritSparking, ItemType<Content.Items.>() },
+                //{ ShortDagger, ItemType<Content.Items.>() },
+                //{ SpiritSparkingWand, ItemType<Content.Items.>() },
             };
 
             public static Dictionary<int, short> LegacyObjectReturn => new Dictionary<int, short>()
@@ -696,14 +696,14 @@ namespace CNC.Common.Utils
                 { LegacyObject[SpiritSapling], SpiritSapling },
                 { LegacyObject[TranquilityDirt], TranquilityDirt },
                 { LegacyObject[TranquilityStone], TranquilityStone },
-                //{ LegacyObject[SilveryTilia], SilveryTilia },
-                //{ LegacyObject[StarlightOfEzcia], StarlightOfEzcia },
-                //{ LegacyObject[EmberOfNean], EmberOfNean },
-                //{ LegacyObject[CursedKnife], CursedKnife },
-                //{ LegacyObject[SpiritNachrichter], SpiritNachrichter },
+                //{ LegacyObject[ArgenteusTree], ArgenteusTree },
+                //{ LegacyObject[TheLightOfAuzzsia], TheLightOfAuzzsia },
+                //{ LegacyObject[EmberOfNien], EmberOfNien },
+                //{ LegacyObject[FragmentarySoulDagger], FragmentarySoulDagger },
+                //{ LegacyObject[SpiritIronGreatsword], SpiritIronGreatsword },
                 //{ LegacyObject[MysticalLight], MysticalLight },
-                //{ LegacyObject[ShortKnife], ShortKnife },
-                //{ LegacyObject[WandOfSpiritSparking], WandOfSpiritSparking },
+                //{ LegacyObject[ShortDagger], ShortDagger },
+                //{ LegacyObject[SpiritSparkingWand], SpiritSparkingWand },
             };
         }
 
@@ -756,21 +756,21 @@ namespace CNC.Common.Utils
             public static Content.Inscription S_SilveryArrow => new Content.Inscription(0, CNCID.Item.ArgenteusClaw);
             public static Content.Inscription S_Sanctity => new Content.Inscription(1, CNCID.Item.ArgenteusClaw);
             public static Content.Inscription S_Exorcism => new Content.Inscription(2, CNCID.Item.ArgenteusClaw);
-            public static Content.Inscription S_SilveryFlame => new Content.Inscription(0, CNCID.Item.SilveryTilia);
-            public static Content.Inscription S_Judgement => new Content.Inscription(1, CNCID.Item.SilveryTilia);
-            public static Content.Inscription S_SilveryShield => new Content.Inscription(2, CNCID.Item.SilveryTilia);
-            public static Content.Inscription S_SilveryVow => new Content.Inscription(3, CNCID.Item.SilveryTilia);
-            public static Content.Inscription S_Rock => new Content.Inscription(0, CNCID.Item.StarlightOfEzcia);
-            public static Content.Inscription S_ActiveChant => new Content.Inscription(1, CNCID.Item.StarlightOfEzcia);
-            public static Content.Inscription S_Fragmentation => new Content.Inscription(2, CNCID.Item.StarlightOfEzcia);
-            public static Content.Inscription S_DizzyStrike => new Content.Inscription(0, CNCID.Item.EmberOfNean);
-            public static Content.Inscription S_EmberPrayer => new Content.Inscription(1, CNCID.Item.EmberOfNean);
-            public static Content.Inscription S_EmberOath => new Content.Inscription(2, CNCID.Item.EmberOfNean);
-            public static Content.Inscription S_TameHead => new Content.Inscription(0, CNCID.Item.CursedKnife);
-            public static Content.Inscription S_SoulScorching => new Content.Inscription(1, CNCID.Item.CursedKnife);
-            public static Content.Inscription S_IndulgentGhost => new Content.Inscription(2, CNCID.Item.CursedKnife);
-            public static Content.Inscription S_Decapitation => new Content.Inscription(0, CNCID.Item.SpiritNachrichter);
-            public static Content.Inscription S_ConsciousMetal => new Content.Inscription(1, CNCID.Item.SpiritNachrichter);
+            public static Content.Inscription S_SilveryFlame => new Content.Inscription(0, CNCID.Item.ArgenteusTree);
+            public static Content.Inscription S_Judgement => new Content.Inscription(1, CNCID.Item.ArgenteusTree);
+            public static Content.Inscription S_SilveryShield => new Content.Inscription(2, CNCID.Item.ArgenteusTree);
+            public static Content.Inscription S_SilveryVow => new Content.Inscription(3, CNCID.Item.ArgenteusTree);
+            public static Content.Inscription S_Rock => new Content.Inscription(0, CNCID.Item.TheLightOfAuzzsia);
+            public static Content.Inscription S_ActiveChant => new Content.Inscription(1, CNCID.Item.TheLightOfAuzzsia);
+            public static Content.Inscription S_Fragmentation => new Content.Inscription(2, CNCID.Item.TheLightOfAuzzsia);
+            public static Content.Inscription S_DizzyStrike => new Content.Inscription(0, CNCID.Item.EmberOfNien);
+            public static Content.Inscription S_EmberPrayer => new Content.Inscription(1, CNCID.Item.EmberOfNien);
+            public static Content.Inscription S_EmberOath => new Content.Inscription(2, CNCID.Item.EmberOfNien);
+            public static Content.Inscription S_TameHead => new Content.Inscription(0, CNCID.Item.FragmentarySoulDagger);
+            public static Content.Inscription S_SoulScorching => new Content.Inscription(1, CNCID.Item.FragmentarySoulDagger);
+            public static Content.Inscription S_IndulgentGhost => new Content.Inscription(2, CNCID.Item.FragmentarySoulDagger);
+            public static Content.Inscription S_Decapitation => new Content.Inscription(0, CNCID.Item.SpiritIronGreatsword);
+            public static Content.Inscription S_ConsciousMetal => new Content.Inscription(1, CNCID.Item.SpiritIronGreatsword);
             public static Content.Inscription S_BlessingOfDahl => new Content.Inscription(0, CNCID.Item.MysticalLight);
             #endregion
             public static Dictionary<Point, string> Collection => new Dictionary<Point, string>()
@@ -819,19 +819,19 @@ namespace CNC.Common.Utils
                 { new Point(0, CNCID.Item.ArgenteusClaw), "S_SilveryArrow" },
                 { new Point(1, CNCID.Item.ArgenteusClaw), "S_Sanctity" },
                 { new Point(2, CNCID.Item.ArgenteusClaw), "S_Exorcism" },
-                { new Point(0, CNCID.Item.SilveryTilia), "S_SilveryFlame" },
-                { new Point(1, CNCID.Item.SilveryTilia), "S_Judgement" },
-                { new Point(2, CNCID.Item.SilveryTilia), "S_SilveryShield" },
-                { new Point(3, CNCID.Item.SilveryTilia), "S_SilveryVow" },
-                { new Point(0, CNCID.Item.StarlightOfEzcia), "S_Rock" },
-                { new Point(1, CNCID.Item.StarlightOfEzcia), "S_ActiveChant" },
-                { new Point(2, CNCID.Item.StarlightOfEzcia), "S_Fragmentation" },
-                { new Point(0, CNCID.Item.EmberOfNean), "S_DizzyStrike" },
-                { new Point(1, CNCID.Item.EmberOfNean), "S_EmberPrayer" },
-                { new Point(2, CNCID.Item.EmberOfNean), "S_EmberOath" },
-                { new Point(0, CNCID.Item.CursedKnife), "S_TameHead" },
-                { new Point(1, CNCID.Item.CursedKnife), "S_SoulScorching" },
-                { new Point(2, CNCID.Item.CursedKnife), "S_IndulgentGhost" },
+                { new Point(0, CNCID.Item.ArgenteusTree), "S_SilveryFlame" },
+                { new Point(1, CNCID.Item.ArgenteusTree), "S_Judgement" },
+                { new Point(2, CNCID.Item.ArgenteusTree), "S_SilveryShield" },
+                { new Point(3, CNCID.Item.ArgenteusTree), "S_SilveryVow" },
+                { new Point(0, CNCID.Item.TheLightOfAuzzsia), "S_Rock" },
+                { new Point(1, CNCID.Item.TheLightOfAuzzsia), "S_ActiveChant" },
+                { new Point(2, CNCID.Item.TheLightOfAuzzsia), "S_Fragmentation" },
+                { new Point(0, CNCID.Item.EmberOfNien), "S_DizzyStrike" },
+                { new Point(1, CNCID.Item.EmberOfNien), "S_EmberPrayer" },
+                { new Point(2, CNCID.Item.EmberOfNien), "S_EmberOath" },
+                { new Point(0, CNCID.Item.FragmentarySoulDagger), "S_TameHead" },
+                { new Point(1, CNCID.Item.FragmentarySoulDagger), "S_SoulScorching" },
+                { new Point(2, CNCID.Item.FragmentarySoulDagger), "S_IndulgentGhost" },
             };
 
             public static Dictionary<string, Content.Inscription> LegacyCollection => new Dictionary<string, Content.Inscription>()
@@ -941,19 +941,19 @@ namespace CNC.Common.Utils
                 { new Point(0, CNCID.Item.ArgenteusClaw), S_SilveryArrow },
                 { new Point(1, CNCID.Item.ArgenteusClaw), S_Sanctity },
                 { new Point(2, CNCID.Item.ArgenteusClaw), S_Exorcism },
-                { new Point(0, CNCID.Item.SilveryTilia), S_SilveryFlame },
-                { new Point(1, CNCID.Item.SilveryTilia), S_Judgement },
-                { new Point(2, CNCID.Item.SilveryTilia), S_SilveryShield },
-                { new Point(3, CNCID.Item.SilveryTilia), S_SilveryVow },
-                { new Point(0, CNCID.Item.StarlightOfEzcia), S_Rock },
-                { new Point(1, CNCID.Item.StarlightOfEzcia), S_ActiveChant },
-                { new Point(2, CNCID.Item.StarlightOfEzcia), S_Fragmentation },
-                { new Point(0, CNCID.Item.EmberOfNean), S_DizzyStrike },
-                { new Point(1, CNCID.Item.EmberOfNean), S_EmberPrayer },
-                { new Point(2, CNCID.Item.EmberOfNean), S_EmberOath },
-                { new Point(0, CNCID.Item.CursedKnife), S_TameHead },
-                { new Point(1, CNCID.Item.CursedKnife), S_SoulScorching },
-                { new Point(2, CNCID.Item.CursedKnife), S_IndulgentGhost },
+                { new Point(0, CNCID.Item.ArgenteusTree), S_SilveryFlame },
+                { new Point(1, CNCID.Item.ArgenteusTree), S_Judgement },
+                { new Point(2, CNCID.Item.ArgenteusTree), S_SilveryShield },
+                { new Point(3, CNCID.Item.ArgenteusTree), S_SilveryVow },
+                { new Point(0, CNCID.Item.TheLightOfAuzzsia), S_Rock },
+                { new Point(1, CNCID.Item.TheLightOfAuzzsia), S_ActiveChant },
+                { new Point(2, CNCID.Item.TheLightOfAuzzsia), S_Fragmentation },
+                { new Point(0, CNCID.Item.EmberOfNien), S_DizzyStrike },
+                { new Point(1, CNCID.Item.EmberOfNien), S_EmberPrayer },
+                { new Point(2, CNCID.Item.EmberOfNien), S_EmberOath },
+                { new Point(0, CNCID.Item.FragmentarySoulDagger), S_TameHead },
+                { new Point(1, CNCID.Item.FragmentarySoulDagger), S_SoulScorching },
+                { new Point(2, CNCID.Item.FragmentarySoulDagger), S_IndulgentGhost },
             };
         }
 

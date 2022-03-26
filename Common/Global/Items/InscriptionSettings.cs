@@ -163,7 +163,7 @@ namespace CNC.Common.Global.Items
                         list = AddToInscriptionList(list, 2, 2, CNCID.Inscription.S_Sanctity);
                         list = AddToInscriptionList(list, 4, 4, CNCID.Inscription.S_Exorcism);
                         break;
-                    case CNCID.Item.SilveryTilia:
+                    case CNCID.Item.ArgenteusTree:
                         level = 0;
                         levelMax = 6;
                         list = AddToInscriptionList(list, 1, 6, CNCID.Inscription.Power);
@@ -176,7 +176,7 @@ namespace CNC.Common.Global.Items
                         list = AddToInscriptionList(list, 2, 2, CNCID.Inscription.S_SilveryShield);
                         list = AddToInscriptionList(list, 5, 5, CNCID.Inscription.S_SilveryVow);
                         break;
-                    case CNCID.Item.StarlightOfEzcia:
+                    case CNCID.Item.TheLightOfAuzzsia:
                         level = 0;
                         levelMax = 3;
                         list = AddToInscriptionList(list, 1, 3, CNCID.Inscription.Chanter);
@@ -187,7 +187,7 @@ namespace CNC.Common.Global.Items
                         list = AddToInscriptionList(list, 1, 1, CNCID.Inscription.S_ActiveChant);
                         list = AddToInscriptionList(list, 3, 3, CNCID.Inscription.S_Fragmentation);
                         break;
-                    case CNCID.Item.EmberOfNean:
+                    case CNCID.Item.EmberOfNien:
                         level = 0;
                         levelMax = 5;
                         list = AddToInscriptionList(list, 1, 5, CNCID.Inscription.Power);
@@ -199,7 +199,7 @@ namespace CNC.Common.Global.Items
                         list = AddToInscriptionList(list, 2, 2, CNCID.Inscription.S_EmberPrayer);
                         list = AddToInscriptionList(list, 3, 3, CNCID.Inscription.S_EmberOath);
                         break;
-                    case CNCID.Item.CursedKnife:
+                    case CNCID.Item.FragmentarySoulDagger:
                         level = 0;
                         levelMax = 6;
                         list = AddToInscriptionList(list, 1, 6, CNCID.Inscription.Power);
@@ -210,13 +210,13 @@ namespace CNC.Common.Global.Items
                         list = AddToInscriptionList(list, 2, 2, CNCID.Inscription.S_SoulScorching);
                         list = AddToInscriptionList(list, 3, 3, CNCID.Inscription.S_IndulgentGhost);
                         break;
-                    case CNCID.Item.SpiritNachrichter:
+                    case CNCID.Item.SpiritIronGreatsword:
                         break;
                     case CNCID.Item.MysticalLight:
                         break;
-                    case CNCID.Item.ShortKnife:
+                    case CNCID.Item.ShortDagger:
                         break;
-                    case CNCID.Item.WandOfSpiritSparking:
+                    case CNCID.Item.SpiritSparkingWand:
                         break;
                 }
                 itemInscription.level = level;
