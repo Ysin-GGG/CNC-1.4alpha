@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
+using Terraria.DataStructures;
 using System.Linq;
 using System.Collections.Generic;
 using CNC.Common.Utils;
@@ -117,6 +119,19 @@ namespace CNC.Content.Items.Developers.Quartz
             //spriteBatch.Draw(image3, new Rectangle((int)(pos.X - 250), (int)(pos.Y - 250), 500, 500), color);
             //spriteBatch.Draw(image4, new Rectangle((int)(pos.X - 160), (int)(pos.Y - 160), 320, 320), color);
             //Drawing.DrawQuadrilateral(spriteBatch, image1, vertex, new Rectangle(0, 0, 256, 244), color, MyMath.deg45);
+            float num131 = 0.0f;
+            /*
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.DepthRead, RasterizerState.CullNone, null, Main.Transform);
+            Vector2 vector2_9 = Main.ScreenSize.ToVector2() / 2f - new Vector2(300f, 310f);
+            Terraria.Graphics.Effects.Filters.Scene["Nebula"].GetShader().UseIntensity(1f + num131).UseProgress(0.0f);
+            DrawData drawData2 = new DrawData(Main.Assets.Request<Texture2D>("Images/Misc/Perlin", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value, vector2_9 + new Vector2(300f, 300f), new Rectangle(0, 0, 600, 600), CNCID.Colors.Expert, 0, new Vector2(300f, 300f), 1, 0, 0);
+            GameShaders.Misc["ForceField"].UseColor(new Vector3(1f));
+            GameShaders.Misc["ForceField"].Apply(new DrawData?(drawData2));
+            drawData2.Draw(spriteBatch);
+            spriteBatch.End();
+            spriteBatch.Begin();
+            */
         }
     }
 }

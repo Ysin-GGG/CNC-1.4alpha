@@ -104,59 +104,11 @@ namespace CNC.Content.Mounts
 
         public override void UpdateEffects(Player player)
         {
-            if (Math.Abs(player.velocity.X) >= 5f)
-            for (int i = 0; i < 3; i++)
-            {
-                Dust.NewDustPerfect(new Vector2(player.Center.X, player.position.X + Main.rand.Next(0,player.height)), MountData.spawnDust, new Vector2(-Main.rand.NextFloat(0, player.velocity.X / 2), 0));
-            }
+            float vel = Math.Abs(player.velocity.X);
+            float max = 5f;
+            if (vel >= max && player.GetModPlayer<Common.Global.Players.AllPlayer>().Tick % (24 / (Math.Min(vel, max) + 1)) == 0)
+                Dust.NewDustPerfect(player.Center + new Vector2(0, Main.rand.NextFloat(-24f, 24f)), MountData.spawnDust, new Vector2(Main.rand.NextFloat(-vel, 0f), Main.rand.NextFloat(-2f, 2f)));
         }
-
-        public override void SetMount(Player player, ref bool skipDust)
-        {
-            if (!Main.dedServ)
-            {
-                int num = 24;
-                for (int i = 0; i < num; i++)
-                {
-                    Dust.NewDustPerfect(player.Center + new Vector2(80, 0).RotatedBy(i * MyMath.pi * 2 / num), MountData.spawnDust, new Vector2(Main.rand.NextFloat(-2f, 2f), Main.rand.NextFloat(-2f, 2f)));
-                }
-                skipDust = true;
-            }
-        }
-        /*
-        public override bool Draw(List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow)
-        {
-            drawColor = Lighting.GetColor((int)(drawPlayer.Center.X / 16f), (int)(drawPlayer.Center.Y / 16f));
-            /*
-            Vector2 _drawOrigin = new Vector2(0);
-            int count = 10;
-            int num = drawPlayer.shadowPos.Length > count ? count : drawPlayer.shadowPos.Length;
-            for (int i = 0; i < num; i++)
-            {
-                Vector2 drawPos = (drawPlayer.shadowPos[i] - Main.screenPosition) + drawOrigin + new Vector2(0, drawPlayer.gfxOffY);
-                Color _color = (drawColor * ((num - i) / (float)num)) * .25f;
-                Main.EntitySpriteDraw(glowTexture, drawPos, frame, _color, 0, drawOrigin, 1, (SpriteEffects)(drawPlayer.direction == -1).ToInt(), 0);
-            }
-            return base.Draw(playerDrawData, drawType, drawPlayer, ref texture, ref glowTexture, ref drawPosition, ref frame, ref drawColor, ref glowColor, ref rotation, ref spriteEffects, ref drawOrigin, ref drawScale, shadow);
-        }
-        */
-        /*
-        public override bool UpdateFrame(Player mountedPlayer, int state, Vector2 velocity)
-        {
-
-            if (Math.Abs(velocity.X) >= MountData.dashSpeed && state != 2)
-            {
-                Mount mount = mountedPlayer.mount;
-                int delay = MountData.dashingFrameDelay;
-                mount._frameCounter = 0;
-                if (frameCount % delay + 1 == delay) frameCount++;
-                else mount._frame = (mount._frame + 1) % MountData.dashingFrameCount;
-                return false;
-            }
-            else frameCount = 0;
-            return true;
-        }
-        */
     }
 
     public class MiracleFoxBuff : Common.Global.Buffs.MountBuff

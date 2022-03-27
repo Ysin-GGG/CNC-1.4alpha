@@ -58,6 +58,10 @@ namespace CNC.Common.Utils
             return pos + new Vector2((float)(len1 * Math.Cos(rot) * _scale.X), (float)(len1 * Math.Sin(rot) * _scale.X));
         }
 
+        public static void DrawRing(SpriteBatch spriteBatch, Texture2D image, Vector2 position, float radiusMax, float radiusMin, Rectangle? source, Color color, float imageRot = 0f) { }
+
+        public static void DrawTriangle(SpriteBatch spriteBatch, Texture2D image, Vector2[] vertex, Rectangle? source, Color color, float imageRot = 0f) { }
+
         public static void DrawQuadrilateral(SpriteBatch spriteBatch, Texture2D image, Vector2[] vertex, Rectangle? source, Color color, float imageRot = 0f)
         {
             Vector2 floor(Vector2 vector) => vector.ToPoint().ToVector2();
@@ -275,6 +279,36 @@ namespace CNC.Common.Utils
         public static void DrawString(string text)
         {
 
+        }
+
+        public class DrawDataSimple
+        {
+            List<Texture2D> textures;
+            int[][] range;
+            int drawType;
+            int width;
+            int height;
+
+            public enum DrawType
+            {
+                None,//（不混合）就是来源混合数为1，目标混合数为0。即后来的图像覆盖原有的图像。
+                Additive,//（添加混合）是将来源的混合参数和目标的混合参数都设置成1，这样混合白色会没有变化，其他的颜色看上去会更加明亮，黑色会更加明亮如图1，DNF的魔法阵周遍是完全的黑色所以想过是直接显示了底层的ELLY图片。这要求美工作出的图片必须符合要求。
+                AlphaBlend,//（透明度混合）是将来源的Alpha作为来源混合参数，将1-Alpha作为目标混合参数。
+            }
+
+            public DrawDataSimple(int width, int height)
+            {
+                this.textures = new List<Texture2D>();
+                this.range = new int[height][];
+                for (int i = 0; i < height; i++) this.range[i] = new int[width];
+                this.width = width;
+                this.height = height;
+            }
+
+            public void Draw(SpriteBatch spriteBatch)
+            {
+                
+            }
         }
     }
 }

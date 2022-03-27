@@ -11,16 +11,16 @@ namespace CNC.Content.Dusts
         public override void OnSpawn(Dust dust)
         {
             int idx = Particle.NewParticle(
-                ModContent.Request<Texture2D>("CNC/Content/Dusts/Star").Value,
+                Texture2D.Value,
                 dust.position,
                 dust.velocity,
                 dust.rotation,
                 100,
-                Vector2.One,
+                Vector2.One / 1.5f,
                 new Color(255, 255, 255, 0),
-                new Color(255, 255, 255, 10)
+                new Color(255, 255, 255, 5)
                 );
-            ParticleRenderer.particle[idx].scaleAdd = new Vector2(-Main.rand.NextFloat(.05f, .01f));
+            ParticleRenderer.particle[idx].scaleAdd = new Vector2(-Main.rand.NextFloat(.05f, .01f)) / 2f;
             ParticleRenderer.particle[idx].rotationAdd = Common.Utils.MyMath.deg01 * Main.rand.Next(1, 16);
             dust.scale *= 0;
             dust.active = false;
