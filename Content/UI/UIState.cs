@@ -55,6 +55,36 @@ namespace CNC.Content.UI
             for (int i = 0; i < children2.Count; i++) Append(children2[i]);
         }
 
+        protected void AddButton(ref UIPanel parent, ref UIButton button, MouseEvent evt = null)
+        {
+            button = new UIButton();
+            button.OnMouseOver += ShowText;
+            button.OnMouseOut += HideText;
+            if (evt != null) button.OnClick += evt;
+            parent.Append(button);
+        }
+
+        protected void AddButton(ref UIElement parent, ref UIButton button, MouseEvent evt = null)
+        {
+            button = new UIButton();
+            button.OnMouseOver += ShowText;
+            button.OnMouseOut += HideText;
+            if (evt != null) button.OnClick += evt;
+            parent.Append(button);
+        }
+
+        protected void ResetButton(ref UIButton button, Vector2 pos, float scale, string icon, string box, string name, string arg = "", Vector2 offset = default, string UIName = default)
+        {
+            offset = offset == default ? Vector2.Zero : offset;
+            button.SetIcon(GetImage(icon), Color.White * .8f, CNCUtils.AccurateColor(Color.White));
+            button.SetBox(GetImage(box), Color.Transparent, Color.White, 0f);
+            button.SetRect(offset + pos * scale, button.icon.Size() * scale);
+            button.SetDisplay(Common.Localization.CNCLocalization.GetText($"UI.{(UIName == default ? Name : UIName)}.{name}", arg));
+            button.transformSpeed = .15f;
+            button.text.Visible = false;
+            if (button.IsMouseHovering) mouseText = button.display;
+        }
+
         public sealed override void Update(GameTime gameTime)
         {
             if (Dragging) Offset = new Vector2(Main.mouseX, Main.mouseY) - offset;

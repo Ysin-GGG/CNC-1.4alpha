@@ -35,6 +35,14 @@ Mods: {
 				SpiritSapling: Spirit Sapling
 				TranquilityDirt: Grey Dirt
 				TranquilityStone: Grey Stone
+				ArgenteusTree: Argenteus Tree
+				TheLightOfAuzzsia: The Light of Auzzsia
+				EmberOfNien: Ember of Nien
+				FragmentarySoulDagger: Fragmentary Soul Dagger
+				SpiritIronGreatsword: Spirit Iron Greatsword
+				MysticalLight: Mystical Light
+				ShortDagger: Short Dagger
+				SpiritSparkingWand: Wand of Spirit Sparking
 			}
 			Tooltip: {
 				HHvsRobeCape: 'A robe cape of an ashy wizard!'
@@ -52,6 +60,14 @@ Mods: {
 				#SpiritSapling: 
 				#TranquilityDirt: 
 				#TranquilityStone: 
+				#ArgenteusTree: 
+				#TheLightOfAuzzsia: 
+				#EmberOfNien: 
+				#FragmentarySoulDagger: 
+				#SpiritIronGreatsword: 
+				#MysticalLight: 
+				#ShortDagger: 
+				#SpiritSparkingWand: 
 			}
 		}
 
@@ -284,8 +300,10 @@ Mods: {
 			Scorching: Scorching|Applys [{$Mods.CNC.Buff.Name.Scorched}] to targets when strikes, decreasing target's defense by {0}
 			Enthusiasm: Enthusiasm|{0} chance to trigger [{$Mods.CNC.Buff.Name.Enthused}] when you attack
 			Gelidity: Gelidity|Reduces target's movement speed
-			Iceflake: Iceflake|Generates an extra explosion, and deals {0} AoE magic damage
 			Glacier: Glacier|Your attacks may freeze your targets when strikes
+			Iceflake: Iceflake|Generates an extra explosion, and deals {0} AoE magic damage
+			Shattering: Shattering|冰弹对冻结的敌人造成的魔法伤害增加{0}
+			FrostWave: Frost Wave|右键每秒消耗{0}点魔力不断构建扩张性的寒气，你半径{1}格内的敌人将持续减速且受到{2}s冻结，被冻结的目标一段时间内不会再被冻结
 			Charging: Charging|Shoots a lightning missile
 			SpellLightningChain: Spell Lightning Chain|Right click to shoot a lightning chain, and attacks {0} targets, dealing {1} magic damage
 			ArcaneOverload: ArcaneOverload|Increases magic damage by {0} when strikes targets, it will be cleared when increased to {1}, and shoots a overloaded missile next time, dealing {2} AoE magic damage {3} times;
@@ -342,6 +360,12 @@ Mods: {
 			}
 			Enhancement: {
 				Name: Enhancement
+				EnhanceRequirement: Enhance requirement：\n{0}
+				PreviousInscription: Previous inscription
+				NextInscription: Next inscription
+				SelectWeapon: (Click to select a weapon)
+				CanEnhance: Can enhance currently!
+				CannotEnhance: Cannot enhance currently!
 			}
 			Archive: {
 				Name: Archive(Coming soon)

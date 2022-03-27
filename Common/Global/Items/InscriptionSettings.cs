@@ -11,6 +11,7 @@ using CNC.Content;
 using CNC.Common.Utils;
 using CNC.Common.Localization;
 using System.Collections.ObjectModel;
+using Terraria.ModLoader.IO;
 
 namespace CNC.Common.Global.Items
 {
@@ -18,20 +19,23 @@ namespace CNC.Common.Global.Items
     {
         private List<Inscription> _inscription1 = new List<Inscription>();
         private List<Inscription[]> _inscription2 = new List<Inscription[]>();
+        public const int maxInscriptionList = 9;
 
         public bool active = false;
+        public int innateness = 0;
         public int level = -1;
         public int levelMax = -1;
         public Inscription[] inscription => _inscription1.ToArray();//已有铭文
         public Inscription[][] inscriptionList => _inscription2.ToArray();//各级待定铭文
         public bool CanUpgrade => level >= 0 && levelMax >= 0;
-        public bool CanUpgrade2 => CanUpgrade && levelMax > level;
+        public bool CanUpgrade2 => CanUpgrade && levelMax >= level;
         public Mod mod => Mod;
 
         public override bool InstancePerEntity => true;
 
         public InscriptionSettings()
         {
+            this.innateness = 0;
             this.level = -1;
             this.levelMax = -1;
             this.active = false;
@@ -50,6 +54,20 @@ namespace CNC.Common.Global.Items
                 clone._inscription2 = this._inscription2;
             }
             return clone;
+        }
+
+        public void SetInscription(int index, Inscription newInscription)
+        {
+            if (newInscription != null)
+            {
+                if (index < 0) this._inscription1.Add(newInscription);
+                else this._inscription1[index] = newInscription;
+            }
+            else
+            {
+                if (index < 0) this._inscription1.RemoveAt(_inscription1.Count - 1);
+                else this._inscription1.RemoveAt(index);
+            }
         }
 
         public void SetInscription(int index, string name)
@@ -86,6 +104,7 @@ namespace CNC.Common.Global.Items
         {
             List<Inscription[]> AddToInscriptionList(List<Inscription[]> origin, int begin, int end, Inscription inscription)
             {
+                if (end > maxInscriptionList) end = maxInscriptionList;
                 for (; begin <= end; begin++)
                 {
                     List<Inscription> member = new List<Inscription>(origin[begin]);
@@ -101,16 +120,11 @@ namespace CNC.Common.Global.Items
                 InscriptionSettings itemInscription = item.GetGlobalItem<InscriptionSettings>();
                 int level = itemInscription.level = -1;
                 int levelMax = itemInscription.levelMax = -1;
-                List<Inscription[]> list = itemInscription._inscription2 = new List<Inscription[]>()
-                {
-                    new Inscription[0], new Inscription[0], new Inscription[0],
-                    new Inscription[0], new Inscription[0], new Inscription[0],
-                    new Inscription[0], new Inscription[0], new Inscription[0],
-                };
+                List<Inscription[]> list = itemInscription._inscription2 = new List<Inscription[]>();
+                for (int i = 0; i < maxInscriptionList; i++) itemInscription._inscription2.Add(new Inscription[0]);
                 switch (type)
                 {
                     case CNCID.Item.FireGrimoire:
-                        level = 0;
                         levelMax = 4;
                         list = AddToInscriptionList(list, 1, 4, CNCID.Inscription.MagicAdept);
                         list = AddToInscriptionList(list, 1, 4, CNCID.Inscription.Power);
@@ -122,7 +136,6 @@ namespace CNC.Common.Global.Items
                         list = AddToInscriptionList(list, 4, 4, CNCID.Inscription.S_Enthusiasm);
                         break;
                     case CNCID.Item.IceTooth:
-                        level = 0;
                         levelMax = 6;
                         list = AddToInscriptionList(list, 1, 6, CNCID.Inscription.MagicAdept);
                         list = AddToInscriptionList(list, 1, 6, CNCID.Inscription.Power);
@@ -130,13 +143,12 @@ namespace CNC.Common.Global.Items
                         list = AddToInscriptionList(list, 1, 6, CNCID.Inscription.Economization);
                         list = AddToInscriptionList(list, 2, 6, CNCID.Inscription.Arcana);
                         list = AddToInscriptionList(list, 0, 0, CNCID.Inscription.S_Gelidity);
-                        list = AddToInscriptionList(list, 0, 2, CNCID.Inscription.S_Glacier);
-                        list = AddToInscriptionList(list, 0, 4, CNCID.Inscription.S_Iceflake);
-                        list = AddToInscriptionList(list, 0, 4, CNCID.Inscription.S_Shattering);
-                        list = AddToInscriptionList(list, 0, 6, CNCID.Inscription.S_FrostWave);
+                        list = AddToInscriptionList(list, 2, 2, CNCID.Inscription.S_Glacier);
+                        list = AddToInscriptionList(list, 4, 4, CNCID.Inscription.S_Iceflake);
+                        list = AddToInscriptionList(list, 4, 4, CNCID.Inscription.S_Shattering);
+                        list = AddToInscriptionList(list, 6, 6, CNCID.Inscription.S_FrostWave);
                         break;
                     case CNCID.Item.Superconductor:
-                        level = 0;
                         levelMax = 6;
                         list = AddToInscriptionList(list, 1, 6, CNCID.Inscription.MagicAdept);
                         list = AddToInscriptionList(list, 1, 6, CNCID.Inscription.Power);
@@ -151,7 +163,6 @@ namespace CNC.Common.Global.Items
                         list = AddToInscriptionList(list, 6, 6, CNCID.Inscription.S_StableSpell);
                         break;
                     case CNCID.Item.ArgenteusClaw:
-                        level = 0;
                         levelMax = 6;
                         list = AddToInscriptionList(list, 1, 6, CNCID.Inscription.Dexterity);
                         list = AddToInscriptionList(list, 1, 6, CNCID.Inscription.Power);
@@ -164,7 +175,6 @@ namespace CNC.Common.Global.Items
                         list = AddToInscriptionList(list, 4, 4, CNCID.Inscription.S_Exorcism);
                         break;
                     case CNCID.Item.ArgenteusTree:
-                        level = 0;
                         levelMax = 6;
                         list = AddToInscriptionList(list, 1, 6, CNCID.Inscription.Power);
                         list = AddToInscriptionList(list, 1, 6, CNCID.Inscription.Dexterity);
@@ -177,7 +187,6 @@ namespace CNC.Common.Global.Items
                         list = AddToInscriptionList(list, 5, 5, CNCID.Inscription.S_SilveryVow);
                         break;
                     case CNCID.Item.TheLightOfAuzzsia:
-                        level = 0;
                         levelMax = 3;
                         list = AddToInscriptionList(list, 1, 3, CNCID.Inscription.Chanter);
                         list = AddToInscriptionList(list, 1, 3, CNCID.Inscription.Power);
@@ -188,7 +197,6 @@ namespace CNC.Common.Global.Items
                         list = AddToInscriptionList(list, 3, 3, CNCID.Inscription.S_Fragmentation);
                         break;
                     case CNCID.Item.EmberOfNien:
-                        level = 0;
                         levelMax = 5;
                         list = AddToInscriptionList(list, 1, 5, CNCID.Inscription.Power);
                         list = AddToInscriptionList(list, 1, 5, CNCID.Inscription.Dexterity);
@@ -200,7 +208,6 @@ namespace CNC.Common.Global.Items
                         list = AddToInscriptionList(list, 3, 3, CNCID.Inscription.S_EmberOath);
                         break;
                     case CNCID.Item.FragmentarySoulDagger:
-                        level = 0;
                         levelMax = 6;
                         list = AddToInscriptionList(list, 1, 6, CNCID.Inscription.Power);
                         list = AddToInscriptionList(list, 1, 6, CNCID.Inscription.RaidAdept);
@@ -219,7 +226,8 @@ namespace CNC.Common.Global.Items
                     case CNCID.Item.SpiritSparkingWand:
                         break;
                 }
-                itemInscription.level = level;
+                itemInscription.innateness = list[0].Length;
+                itemInscription.level = (list[0].Length > 0).ToInt();
                 itemInscription.levelMax = levelMax;
                 itemInscription._inscription1 = new List<Inscription>(list[0]);
                 itemInscription._inscription2 = list;
@@ -243,19 +251,6 @@ namespace CNC.Common.Global.Items
                     else tt.text = CNCLocalization.GetText("Misc.Inscription", name);
                     tooltips.Add(tt);
                 }
-                /*
-                for (int i = 0; i < itemInscription.inscriptionList.Length; i++)
-                {
-                    TooltipLine tt = new TooltipLine(mod, i.ToString(), "") { overrideColor = Color.White };
-                    for (int j = 0; j < itemInscription.inscriptionList[i].Length; j++)
-                    {
-                        if (itemInscription.inscriptionList[i][j] == null || itemInscription.inscriptionList[i][j].displayName == "") continue;
-                        Inscription inscription = itemInscription.inscriptionList[i][j];
-                        tt.text += inscription.displayName + ' ';
-                    }
-                    tooltips.Add(tt);
-                }
-                */
             }
         }
 

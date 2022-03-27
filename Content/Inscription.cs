@@ -13,13 +13,13 @@ namespace CNC.Content
     {
         public short type;
         public short style;//专有铭文类型，0则通用
-        public string name => _name;//铭文内部文件名
+        public string Name => _name;//铭文内部文件名
         private string _name;
         public string displayName;//铭文名
         public string description;//铭文描述
         public int spellCooldown;
         public int spellCooldownMax;
-        public object[] args => _args;
+        public object[] Args => _args;
         private object[] _args = new object[99];
 
         public Inscription() => this.SetDefaults(0, -1);
@@ -143,7 +143,7 @@ namespace CNC.Content
 
         public string GetTooltip(object[] args = default)
         {
-            string tt = GetDesc(args == default ? this.args : args);
+            string tt = GetDesc(args == default ? this.Args : args);
             return tt;
         }
 
@@ -207,6 +207,26 @@ namespace CNC.Content
             float basicDamage = (damage + (damage * ip.spellDamageAdd)) * ip.spellDamageMul;
             float extraDamage = basicDamage * (damageAdd[0] + damageAdd[type] - 2) * (damageMul[0] * damageMul[type]);
             text = text.Substring(0, begin) + ColorDamage((int)basicDamage, (int)extraDamage, damageColor[type]) + text.Substring(end + 1);
+        }
+
+        public static void GetFirstDamageCommon(ref string text)
+        {
+            int type = 0;
+            text = text.Replace("[Damage", "[damage");
+            if (text.IndexOf("[damage") < 0) return;
+            int _begin = text.IndexOf("[damage");
+            int _end = _begin + text.Substring(_begin).IndexOf("=");
+            for (int j = _begin + "[damage".Length; j < _end; j++) if ('0' <= text[j] && text[j] <= '9') type = type * 10 + text[j] - '0';
+            if (text.IndexOf($"[damage{type}=") < 0) return;
+            int begin = text.IndexOf($"[damage{type}=");
+            if (text.Substring(begin).IndexOf("]") < 0) return;
+            int end = begin + text.Substring(begin).IndexOf("]");
+            int index = $"[damage{type}=".Length;
+            int damage = 0;
+            string extra = "";
+            for (int j = begin + index; j < end; j++) if ('0' <= text[j] && text[j] <= '9') damage = damage * 10 + text[j] - '0';
+            if (text[end - 1] == 'f') extra = "%";
+            text = text.Substring(0, begin) + damage + extra + text.Substring(end + 1);
         }
 
         public static string ColorDamage(int basicDamage, int extraDamage, Color color)

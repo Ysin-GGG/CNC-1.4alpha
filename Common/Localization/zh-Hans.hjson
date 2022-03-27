@@ -35,6 +35,14 @@ Mods: {
 				SpiritSapling: 静谧树苗
 				TranquilityDirt: 灰泥
 				TranquilityStone: 灰岩
+				ArgenteusTree: 银树
+				TheLightOfAuzzsia: 埃兹西亚之光
+				EmberOfNien: 熔铁尼安
+				FragmentarySoulDagger: 残缺灵魂之匕
+				SpiritIronGreatsword: 灵金属巨剑
+				MysticalLight: 灵光
+				ShortDagger: 短匕首
+				SpiritSparkingWand: 灵木魔杖
 			}
 			Tooltip: {
 				HHvsRobeCape: “灰色巫师斗篷！”
@@ -52,6 +60,14 @@ Mods: {
 				#SpiritSapling: 
 				#TranquilityDirt: 
 				#TranquilityStone: 
+				#ArgenteusTree: 
+				#TheLightOfAuzzsia: 
+				#EmberOfNien: 
+				#FragmentarySoulDagger: 
+				#SpiritIronGreatsword: 
+				#MysticalLight: 
+				#ShortDagger: 
+				#SpiritSparkingWand: 
 			}
 		}
 
@@ -344,6 +360,12 @@ Mods: {
 			}
 			Enhancement: {
 				Name: 铭文强化
+				EnhanceRequirement: 强化需求：\n{0}
+				PreviousInscription: 上一个铭文
+				NextInscription: 下一个铭文
+				SelectWeapon: （点击选择物品）
+				CanEnhance: 当前状态：可强化！
+				CannotEnhance: 当前状态：不可强化！
 			}
 			Archive: {
 				Name: 图鉴（敬请期待）

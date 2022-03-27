@@ -26,7 +26,8 @@ namespace CNC
         public const int newStatManaMax2 = 1000000;
         public const int maxParticle = Content.ParticleRenderer.maxParticles;
         public const int maxClassTypes = CNCID.Clazz.MaxObject;
-        public const int maxInscriptionTypes =CNCID.Inscription.MaxObject;
+        public const int maxInscriptions = CNCGlobal.Items.InscriptionSettings.maxInscriptionList;
+        public const int maxInscriptionTypes = CNCID.Inscription.MaxObject;
         public const int maxStateTypes = CNCID.State.MaxObject;
 
         public static Dictionary<string, Texture2D> Image;

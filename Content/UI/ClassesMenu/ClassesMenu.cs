@@ -11,7 +11,6 @@ namespace CNC.Content.UI.ClassesMenu
 {
     public class ClassesMenu : UIState
     {
-        private Player player => Main.LocalPlayer;
         private ClassesSettings modPlayer => player.GetModPlayer<ClassesSettings>();
 
         public UIPanel Background;
@@ -73,34 +72,14 @@ namespace CNC.Content.UI.ClassesMenu
             children.Add(Background = new UIPanel());
             children.Add(MainBox = new UIPanel());
             MainBox.Append(ClassIcon = new UIImage());
-            AddButton(ref Confirm, new MouseEvent((evt, e) => SelectClass(evt, e)));
-            AddButton(ref PreviousClass, new MouseEvent((evt, e) => ChangePage(evt, (UIElement)e, -1)));
-            AddButton(ref NextClass, new MouseEvent((evt, e) => ChangePage(evt, (UIElement)e, 1)));
-            AddButton(ref Reset, new MouseEvent((evt, e) => ResetClass(evt, e)));
-            AddButton(ref Preview);
+            AddButton(ref MainBox, ref Confirm, new MouseEvent((evt, e) => SelectClass(evt, e)));
+            AddButton(ref MainBox, ref PreviousClass, new MouseEvent((evt, e) => ChangePage(evt, (UIElement)e, -1)));
+            AddButton(ref MainBox, ref NextClass, new MouseEvent((evt, e) => ChangePage(evt, (UIElement)e, 1)));
+            AddButton(ref MainBox, ref Reset, new MouseEvent((evt, e) => ResetClass(evt, e)));
+            AddButton(ref MainBox, ref Preview);
             PreviousClass.iconDrawStyle = 1;
             //page = clazz3[modPlayer.clazz];
             id = 2;
-        }
-
-        private void AddButton(ref UIButton button, MouseEvent evt = null)
-        {
-            button = new UIButton();
-            button.OnMouseOver += ShowText;
-            button.OnMouseOut += HideText;
-            if (evt != null) button.OnClick += evt;
-            MainBox.Append(button);
-        }
-
-        private void ResetButton(ref UIButton button, Vector2 pos, string icon, string box, string name, string arg = "")
-        {
-            float scale = MathHelper.Min((rect.Width - blackSize) / GetImage("Windows").Width, (rect.Height - blackSize) / GetImage("Windows").Height);
-            button.SetIcon(GetImage(icon), Color.White * .8f, CNCUtils.AccurateColor(Color.White));
-            button.SetBox(GetImage(box), Color.Transparent, Color.White, 0f);
-            button.SetRect(pos, button.icon.Size() * scale);
-            button.SetDisplay(CNCLocalization.GetText($"UI.{Name}.{name}", arg));
-            button.transformSpeed = .15f;
-            button.text.Visible = false;
         }
 
         public override void UpdateUI(GameTime gameTime)
@@ -117,10 +96,10 @@ namespace CNC.Content.UI.ClassesMenu
             MainBox.Size = MainBox.image.Size() * scale;
             MainBox.Center = rect.Center();
 
-            ResetButton(ref Confirm, new Vector2(297f, 288f) * scale, "Button1", "Box1", "Confirm", CNCLocalization.GetText("Class." + clazz[page]));
-            ResetButton(ref PreviousClass, new Vector2(120f, 183f) * scale, "Button2", "Box2", "PreviousClass", CNCLocalization.GetText("Class." + clazz[(page - 1 + pageMax) % pageMax]));
-            ResetButton(ref NextClass, new Vector2(MainBox.width, 0) + new Vector2(-120f - PreviousClass.icon.Width, 183f) * scale, "Button2", "Box2", "NextClass", CNCLocalization.GetText("Class." + clazz[(page + 1) % pageMax]));
-            ResetButton(ref Reset, new Vector2(483f, 96f) * scale, "Button3", "Box3", "Reset", CNCLocalization.GetText($"Item.Name.DestineScroll") + " *1");
+            ResetButton(ref Confirm, new Vector2(297f, 288f), scale, "Button1", "Box1", "Confirm", CNCLocalization.GetText("Class." + clazz[page]));
+            ResetButton(ref PreviousClass, new Vector2(120f, 183f), scale, "Button2", "Box2", "PreviousClass", CNCLocalization.GetText("Class." + clazz[(page - 1 + pageMax) % pageMax]));
+            ResetButton(ref NextClass, new Vector2(-120f - PreviousClass.icon.Width, 183f), scale, "Button2", "Box2", "NextClass", CNCLocalization.GetText("Class." + clazz[(page + 1) % pageMax]), new Vector2(MainBox.width, 0));
+            ResetButton(ref Reset, new Vector2(483f, 96f), scale, "Button3", "Box3", "Reset", CNCLocalization.GetText($"Item.Name.DestineScroll") + " *1");
 
             Preview.SetIcon(GetImage("Preview"), Color.White, new Color(128, 128, 128, 255));
             Preview.SetRect(new Vector2(228f, 105f) * scale, Preview.icon.Size() * scale);
