@@ -366,6 +366,8 @@ Mods: {
 				SelectWeapon: (Click to select a weapon)
 				CanEnhance: Can enhance currently!
 				CannotEnhance: Cannot enhance currently!
+				NoLevel: (This item cannot be enhanced!)
+				MaxLevel: (This item has already no available inscriptions to select!)
 			}
 			Archive: {
 				Name: Archive(Coming soon)

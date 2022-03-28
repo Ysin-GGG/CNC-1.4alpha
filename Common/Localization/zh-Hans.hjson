@@ -366,6 +366,8 @@ Mods: {
 				SelectWeapon: （点击选择物品）
 				CanEnhance: 当前状态：可强化！
 				CannotEnhance: 当前状态：不可强化！
+				NoLevel: （该物品无法强化！）
+				MaxLevel: （该物品已无可镶嵌的铭文！）
 			}
 			Archive: {
 				Name: 图鉴（敬请期待）

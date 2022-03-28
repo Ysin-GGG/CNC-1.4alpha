@@ -18,7 +18,7 @@ namespace CNC
 {
 	public class CNC : Mod
 	{
-        public override Version Version => new Version(0, 0, 2, 3);
+        public override Version Version => new Version(0, 0, 3, 0);
         public Version TMLVersion => TModLoaderVersion;
         public static CNC Instance;
         public static int me => Const.me;
@@ -98,7 +98,7 @@ namespace CNC
         {
             public static UIManager Instance;
 
-            public UserInterface [] UI = new UserInterface[7];
+            public UserInterface [] UI = new UserInterface[8];
             internal CNCUI.UIState[] UIState;
             public bool[] Visible => new bool[]
             {
@@ -107,6 +107,7 @@ namespace CNC
                 true,
                 true,
                 CNCUI.InscriptionMenu.InscriptionMenu.Visible,
+                CNCUI.InscriptionMenu.WeaponList.Visible,
                 true,
                 CNCUI.Misc.DrawParticle.Visible,
             };
@@ -132,6 +133,7 @@ namespace CNC
                     new CNCUI.ClassesMenu.DarkScreen(),
                     new CNCUI.Clone.CloneGUI(),
                     new CNCUI.InscriptionMenu.InscriptionMenu(),
+                    new CNCUI.InscriptionMenu.WeaponList(),
                     new CNCUI.InscriptionMenu.DarkScreen(),
                     new CNCUI.Misc.DrawParticle(),
                 };
@@ -145,14 +147,14 @@ namespace CNC
 
             public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
             {
-                base.ModifyInterfaceLayers(layers);
                 AppendUI(layers, UI[0], Visible[0], 33, "Function Bar");
                 AppendUI(layers, UI[1], Visible[1], -1, "Classes Menu");
                 AppendUI(layers, UI[2], Visible[2], -1, "Dark Screen Effect 1");
                 AppendUI(layers, UI[3], Visible[3], 25, "Clone Resource Bars");
                 AppendUI(layers, UI[4], Visible[4], -1, "Inscription Menu");//Enhancement
-                AppendUI(layers, UI[5], Visible[5], -1, "Dark Screen Effect 2");
-                AppendUI(layers, UI[6], Visible[6], 0, "Draw Particle");
+                AppendUI(layers, UI[5], Visible[5], -1, "Weapon List");
+                AppendUI(layers, UI[6], Visible[6], -1, "Dark Screen Effect 2");
+                AppendUI(layers, UI[7], Visible[7], 0, "Draw Particle");
                 int idx = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
                 if (idx >= 0) layers[idx].Active = false; // layers.RemoveAt(idx);
                 idx = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
@@ -161,7 +163,6 @@ namespace CNC
 
             public override void UpdateUI(GameTime gameTime)
             {
-                base.UpdateUI(gameTime);
                 for (int i = 0; i < UIState.Length; i++)
                     if (UI[i] != null && Visible[i]) UI[i].Update(gameTime);
             }

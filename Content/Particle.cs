@@ -116,7 +116,7 @@ namespace CNC.Content
 
     public class ParticleRenderer : ModSystem
     {
-        public const int maxParticles = 1000;
+        public const int maxParticles = 10000;
         public static Particle[] particle = new Particle[maxParticles + 1];
 
         public override void PreUpdateDusts() => this.UpdateParticle();

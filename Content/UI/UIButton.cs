@@ -14,6 +14,9 @@ namespace CNC.Content.UI
         public Texture2D icon;
         public Color iconColor;
         public Color iconColorOver;
+        public Vector2 iconOffset;
+        public Vector2 iconSize;
+        public Rectangle? iconDrawRect;
         public Texture2D box;
         public Color boxColor;
         public Color boxColorOver;
@@ -33,6 +36,9 @@ namespace CNC.Content.UI
             icon = null;
             iconColor = Color.White;
             iconColorOver = Color.White;
+            iconOffset = Vector2.Zero;
+            iconSize = Vector2.Zero;
+            iconDrawRect = null;
             box = null;
             boxColor = Color.Transparent;
             boxColorOver = Color.White;
@@ -121,7 +127,8 @@ namespace CNC.Content.UI
             if (icon != null)
             {
                 Color _color = Color.Lerp(iconColor, iconColorOver, _alpha);
-                spriteBatch.Draw(icon, rect, null, _color, 0, Vector2.Zero, (SpriteEffects)iconDrawStyle, 0);
+                Rectangle rect2 = new Rectangle((int)(rect.X + iconOffset.X), (int)(rect.Y + iconOffset.Y), (int)(iconSize.X > 0 ? iconSize.X : rect.Width), (int)(iconSize.Y > 0 ? iconSize.Y : rect.Height));
+                spriteBatch.Draw(icon, rect2, iconDrawRect, _color, 0, Vector2.Zero, (SpriteEffects)iconDrawStyle, 0);
             }
             if (display != "" && IsMouseHovering)
             {
@@ -139,22 +146,15 @@ namespace CNC.Content.UI
 
         public override void UpdateUI(GameTime gameTime)
         {
+            if (MouseDead) return;
             _alpha += (IsMouseHovering ? 1 : -1) * transformSpeed;
             if (_alpha > 1f) _alpha = 1f;
             if (_alpha < 0f) _alpha = 0f;
-            /*
-            if (text.Visible = IsMouseHovering)
-            {
-                Main.LocalPlayer.mouseInterface = true;
-                text.text = display;
-                text.textColor = displayColor;
-                text.textOffset = displayOffset;
-            }
-            */
         }
 
         public override void MouseCheck(UIMouseEvent evt, bool over, ref bool basic)
         {
+            //if (MouseDead) return;
             Rectangle rect = new Rectangle(0, 0, (int)screen.X, (int)screen.Y);
             if (basic = !rect.Contains(Main.MouseScreen.ToPoint())) return;
             basic = true;
@@ -163,10 +163,11 @@ namespace CNC.Content.UI
 
         public override void Click(UIMouseEvent evt, ref bool basic)
         {
+            //if (MouseDead) return;
             Rectangle rect = new Rectangle(0, 0, (int)screen.X, (int)screen.Y);
             if (basic = !rect.Contains(Main.MouseScreen.ToPoint())) return;
             basic = true;
-            SoundEngine.PlaySound(soundClick);
+            if (soundClick >= 0) SoundEngine.PlaySound(soundClick);
         }
     }
 }

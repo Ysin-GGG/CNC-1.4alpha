@@ -40,6 +40,8 @@ namespace CNC.Content.UI.InscriptionMenu
                     Visible = false;
                     blackTime = 0;
                     InscriptionMenu.Visible = !InscriptionMenu.Visible;
+                    WeaponList.Visible = false;
+                    WeaponList.index = -1;
                 }
             }
             if (Visible)

@@ -324,7 +324,7 @@ namespace CNC.Content.UI.Clone
             }
         }
 
-        private void DrawBreath()
+        private void DrawBreath()//这里是直接搬源码的
         {
             bool flag = false;
             if (player.dead) return;
@@ -536,6 +536,7 @@ namespace CNC.Content.UI.Clone
             public bool show;
             private float alpha;
             private Player player => Main.LocalPlayer;
+            public bool active;
 
             public BuffShow()
             {
@@ -550,6 +551,7 @@ namespace CNC.Content.UI.Clone
                 desc = "";
                 index = 0;
                 time = 0;
+                active = true;
                 showTime = false;
                 alpha = 0f;
                 mouseOver = false;

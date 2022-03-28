@@ -55,7 +55,7 @@ namespace CNC.Content.UI
             for (int i = 0; i < children2.Count; i++) Append(children2[i]);
         }
 
-        protected void AddButton(ref UIPanel parent, ref UIButton button, MouseEvent evt = null)
+        protected virtual void AddButton(ref UIPanel parent, ref UIButton button, MouseEvent evt = null)
         {
             button = new UIButton();
             button.OnMouseOver += ShowText;
@@ -64,7 +64,7 @@ namespace CNC.Content.UI
             parent.Append(button);
         }
 
-        protected void AddButton(ref UIElement parent, ref UIButton button, MouseEvent evt = null)
+        protected virtual void AddButton(ref UIElement parent, ref UIButton button, MouseEvent evt = null)
         {
             button = new UIButton();
             button.OnMouseOver += ShowText;
@@ -73,7 +73,7 @@ namespace CNC.Content.UI
             parent.Append(button);
         }
 
-        protected void ResetButton(ref UIButton button, Vector2 pos, float scale, string icon, string box, string name, string arg = "", Vector2 offset = default, string UIName = default)
+        protected virtual void ResetButton(ref UIButton button, Vector2 pos, float scale, string icon, string box, string name, string arg = "", Vector2 offset = default, string UIName = default)
         {
             offset = offset == default ? Vector2.Zero : offset;
             button.SetIcon(GetImage(icon), Color.White * .8f, CNCUtils.AccurateColor(Color.White));
@@ -95,6 +95,7 @@ namespace CNC.Content.UI
                 if (Offset.X + Size.X > screen.X) left = screen.X - Size.X;
                 if (Offset.Y + Size.Y > screen.Y) top = screen.Y - Size.Y;
             }
+            MouseText.Offset = Vector2.Zero;
             MouseText.boxColor = Color.Transparent;
             MouseText.textBorder = new Vector2(12f, 8f);
             MouseText.textPosition = Main.MouseScreen.ToPoint().ToVector2();
@@ -121,7 +122,7 @@ namespace CNC.Content.UI
                     MouseText.boxColor = Color.White * Options.hoverTextBoxAlpha[id];
                 }
             }
-            for (int i = 0; i < Cursor.Length; i++) Cursor[i].active = Cursor[i].Visible = false;
+            for (int i = 0; i < Cursor.Length; i++) Cursor[i].Dead = true;
             Recalculate();
             UpdateUI(gameTime);
             base.Update(gameTime);
@@ -133,7 +134,7 @@ namespace CNC.Content.UI
             Vector2 pos = Main.MouseScreen + new Vector2(2f);
             Texture2D cursor = TextureAssets.Cursors[0].Value;
             Vector2 size = cursor.Size() * new Vector2(Main.cursorScale);
-            for (int i = 0; i < Cursor.Length; i++) Cursor[i].active = Cursor[i].Visible = true;
+            for (int i = 0; i < Cursor.Length; i++) Cursor[i].Dead = false;
             for (int i = 0; i < 4; i++)
             {
                 Vector2[] bonus =
