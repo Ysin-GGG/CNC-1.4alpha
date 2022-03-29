@@ -169,7 +169,7 @@ namespace CNC.Common.Global.Items
                         AddToInscriptionList(ref list, ref levelMax, 2, 2, CNCID.Inscription.S_Scorching);
                         AddToInscriptionList(ref list, ref levelMax, 4, 4, CNCID.Inscription.S_Enthusiasm);
                         AddToInscriptionList(ref list, ref levelMax, 3, 4, CNCID.Inscription.Arcane);
-                        AddToInscriptionList(ref list, ref levelMax, 3, 4, CNCID.Inscription.Reiki);
+                        AddToInscriptionList(ref list, ref levelMax, 3, 3, CNCID.Inscription.Reiki);
                         break;
                     case CNCID.Item.IceTooth:
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.MagicAdept);
@@ -177,6 +177,8 @@ namespace CNC.Common.Global.Items
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.Assimilation);
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.Economization);
                         AddToInscriptionList(ref list, ref levelMax, 2, 6, CNCID.Inscription.Arcana);
+                        AddToInscriptionList(ref list, ref levelMax, 4, 6, CNCID.Inscription.MagicPower);
+                        AddToInscriptionList(ref list, ref levelMax, 5, 6, CNCID.Inscription.Charging);
                         AddToInscriptionList(ref list, ref levelMax, 0, 0, CNCID.Inscription.S_Gelidity);
                         AddToInscriptionList(ref list, ref levelMax, 2, 2, CNCID.Inscription.S_Glacier);
                         AddToInscriptionList(ref list, ref levelMax, 4, 4, CNCID.Inscription.S_Iceflake);
@@ -189,6 +191,9 @@ namespace CNC.Common.Global.Items
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.Assimilation);
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.Economization);
                         AddToInscriptionList(ref list, ref levelMax, 2, 6, CNCID.Inscription.Arcana);
+                        AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.Charging);
+                        AddToInscriptionList(ref list, ref levelMax, 3, 6, CNCID.Inscription.MagicPower);
+                        AddToInscriptionList(ref list, ref levelMax, 3, 3, CNCID.Inscription.Reiki);
                         AddToInscriptionList(ref list, ref levelMax, 0, 0, CNCID.Inscription.S_Charging);
                         AddToInscriptionList(ref list, ref levelMax, 1, 1, CNCID.Inscription.S_SpellLightningChain);
                         AddToInscriptionList(ref list, ref levelMax, 2, 2, CNCID.Inscription.S_ArcaneOverload);
@@ -213,6 +218,8 @@ namespace CNC.Common.Global.Items
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.MeleeAdept);
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.Force);
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.Destroyer);
+                        AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.MagicPower);
+                        AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.Charging);
                         AddToInscriptionList(ref list, ref levelMax, 0, 0, CNCID.Inscription.S_SilveryFlame);
                         AddToInscriptionList(ref list, ref levelMax, 1, 1, CNCID.Inscription.S_Judgement);
                         AddToInscriptionList(ref list, ref levelMax, 2, 2, CNCID.Inscription.S_SilveryShield);
@@ -223,6 +230,9 @@ namespace CNC.Common.Global.Items
                         AddToInscriptionList(ref list, ref levelMax, 1, 3, CNCID.Inscription.Power);
                         AddToInscriptionList(ref list, ref levelMax, 1, 3, CNCID.Inscription.Assimilation);
                         AddToInscriptionList(ref list, ref levelMax, 1, 3, CNCID.Inscription.Economization);
+                        AddToInscriptionList(ref list, ref levelMax, 1, 3, CNCID.Inscription.MagicPower);
+                        AddToInscriptionList(ref list, ref levelMax, 1, 3, CNCID.Inscription.Arcana);
+                        AddToInscriptionList(ref list, ref levelMax, 1, 1, CNCID.Inscription.Reiki);
                         AddToInscriptionList(ref list, ref levelMax, 0, 0, CNCID.Inscription.S_Rock);
                         AddToInscriptionList(ref list, ref levelMax, 1, 1, CNCID.Inscription.S_ActiveChant);
                         AddToInscriptionList(ref list, ref levelMax, 3, 3, CNCID.Inscription.S_Fragmentation);
@@ -234,6 +244,7 @@ namespace CNC.Common.Global.Items
                         AddToInscriptionList(ref list, ref levelMax, 1, 5, CNCID.Inscription.Force);
                         AddToInscriptionList(ref list, ref levelMax, 1, 5, CNCID.Inscription.Shockwave);
                         AddToInscriptionList(ref list, ref levelMax, 1, 1, CNCID.Inscription.Smiting);
+                        AddToInscriptionList(ref list, ref levelMax, 2, 5, CNCID.Inscription.Charging);
                         AddToInscriptionList(ref list, ref levelMax, 2, 2, CNCID.Inscription.S_EmberPrayer);
                         AddToInscriptionList(ref list, ref levelMax, 3, 3, CNCID.Inscription.S_EmberOath);
                         break;
