@@ -594,13 +594,17 @@ namespace CNC.Common.Utils
 
         public static class Projectile
         {
-            public const short MaxObject = 5;
+            public const short MaxObject = 9;
             #region ID
             public const short MentorMissile = 1;
             public const short SpiritMass = 2;
             public const short SpiritArrowV1 = 3;
             public const short SpiritArrowV2 = 4;
             public const short SpiritArrowV3 = 5;
+            public const short FireBall = 6;
+            public const short FireBallExplosion = 7;
+            public const short DentateIce = 8;
+            public const short DentateIceExplosion = 9;
             #endregion
             public static Dictionary<string, short> Collection => new Dictionary<string, short>()
             {
@@ -609,6 +613,10 @@ namespace CNC.Common.Utils
                 { "SpiritArrowV1", SpiritArrowV1 },
                 { "SpiritArrowV2", SpiritArrowV2 },
                 { "SpiritArrowV3", SpiritArrowV3 },
+                { "FireBall", FireBall },
+                { "FireBallExplosion", FireBallExplosion },
+                { "DentateIce", DentateIce },
+                { "DentateIceExplosion", DentateIceExplosion },
             };
 
             public static Dictionary<string, int> LegacyCollection => new Dictionary<string, int>()
@@ -618,6 +626,10 @@ namespace CNC.Common.Utils
                 { "SpiritArrowV1", LegacyObject[Collection["SpiritArrowV1"]] },
                 { "SpiritArrowV2", LegacyObject[Collection["SpiritArrowV2"]] },
                 { "SpiritArrowV3", LegacyObject[Collection["SpiritArrowV3"]] },
+                { "FireBall", LegacyObject[Collection["FireBall"]] },
+                { "FireBallExplosion", LegacyObject[Collection["FireBallExplosion"]] },
+                { "DentateIce", LegacyObject[Collection["DentateIce"]] },
+                { "DentateIceExplosion", LegacyObject[Collection["DentateIceExplosion"]] },
             };
 
             public static Dictionary<short, int> LegacyObject => new Dictionary<short, int>()
@@ -627,6 +639,10 @@ namespace CNC.Common.Utils
                 { SpiritArrowV1, ProjectileType<Content.Projectiles.Hostile.SpiritArrow.V1>() },
                 { SpiritArrowV2, ProjectileType<Content.Projectiles.Hostile.SpiritArrow.V2>() },
                 { SpiritArrowV3, ProjectileType<Content.Projectiles.Hostile.SpiritArrow.V3>() },
+                { FireBall, ProjectileType<Content.Projectiles.FireGrimoire.FireBall>() },
+                { FireBallExplosion, ProjectileType<Content.Projectiles.FireGrimoire.FireBallExplosion>() },
+                { DentateIce, ProjectileType<Content.Projectiles.IceTooth.DentateIce>() },
+                { DentateIceExplosion, ProjectileType<Content.Projectiles.IceTooth.DentateIceExplosion>() },
             };
         }
 

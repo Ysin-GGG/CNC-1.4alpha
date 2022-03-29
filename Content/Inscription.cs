@@ -81,7 +81,7 @@ namespace CNC.Content
                     if (type == 0) _args = new object[] { };
                     if (type == 1) _args = new object[] { "[damage3=36]" };
                     if (type == 2) _args = new object[] { 8 };
-                    if (type == 3) _args = new object[] { 0.02f };
+                    if (type == 3) _args = new object[] { 0.05f };
                     break;
                 case CNCID.Item.IceTooth:
                     if (type == 0) _args = new object[] { };
@@ -227,6 +227,16 @@ namespace CNC.Content
             for (int j = begin + index; j < end; j++) if ('0' <= text[j] && text[j] <= '9') damage = damage * 10 + text[j] - '0';
             if (text[end - 1] == 'f') extra = "%";
             text = text.Substring(0, begin) + damage + extra + text.Substring(end + 1);
+        }
+
+        public static int JustGetDamage(int originalDamage, string arg)
+        {
+            int damage = 0;
+            int begin = arg.IndexOf('=');
+            int end = arg.IndexOf(']');
+            for (int j = begin; j < end; j++) if ('0' <= arg[j] && arg[j] <= '9') damage = damage * 10 + arg[j] - '0';
+            if (arg[end - 1] == 'f') damage = (int)(originalDamage * (damage * .01f));
+            return damage;
         }
 
         public static string ColorDamage(int basicDamage, int extraDamage, Color color)

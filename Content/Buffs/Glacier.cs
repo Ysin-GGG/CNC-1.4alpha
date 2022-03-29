@@ -10,7 +10,6 @@ namespace CNC.Content.Buffs
     {
         public override void ResetStaticDefaults()
         {
-            cid = CNCID.Buff.Glacier;
             longer = false;
             debuff = true;
             noClearedByNurse = true;

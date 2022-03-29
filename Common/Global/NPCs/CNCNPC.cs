@@ -63,12 +63,13 @@ namespace CNC.Common.Global.NPCs
         public NPC NewNPC(int x, int y, int type, int start = 0)
             => NewNPC(npc, x, y, type, start);
 
-        public NPC NewNPC(NPC npc, int x, int y, short CNCtype, int start = 0)
+        public static NPC NewNPC(NPC npc, int x, int y, short CNCtype, int start = 0)
             => NewNPC(npc, x, y, CNCID.NPC.LegacyObject[CNCtype], start);
 
-        public NPC NewNPC(NPC npc, int x, int y, int type, int start = 0)
+        public static NPC NewNPC(NPC npc, int x, int y, int type, int start = 0)
         {
             int whoAmI = NPC.NewNPC(npc.GetSpawnSourceForNPCFromNPCAI(), x, y, type, start);
+            Main.npc[whoAmI].Center = new Vector2(x, y);
             Main.npc[whoAmI].GetGlobalNPC<NPCRelation>().SetParent(npc, true);
             Main.npc[whoAmI].GetGlobalNPC<NPCRelation>().SetRoot(npc, true);
             if (Main.npc[npc.whoAmI].GetGlobalNPC<NPCRelation>().ChildrenNPC != null)
@@ -88,9 +89,10 @@ namespace CNC.Common.Global.NPCs
         public Projectile NewProjectile(Vector2 pos, Vector2 vel, int type, float damage)
             => NewProjectile(npc, pos, vel, type, damage);
 
-        public Projectile NewProjectile(NPC npc, Vector2 pos, Vector2 vel, int type, float damage)
+        public static Projectile NewProjectile(NPC npc, Vector2 pos, Vector2 vel, int type, float damage)
         {
             int whoAmI = Projectile.NewProjectile(npc.GetSpawnSourceForNPCFromNPCAI(), pos, vel, type, (int)damage, 0, Main.myPlayer);
+            Main.projectile[whoAmI].Center = pos;
             Main.projectile[whoAmI].GetGlobalProjectile<ProjectileRelation>().SetParent(npc, true);
             Main.projectile[whoAmI].GetGlobalProjectile<ProjectileRelation>().SetRoot(npc, true);
             if (Main.npc[npc.whoAmI].GetGlobalNPC<NPCRelation>().ChildrenProjectile != null)

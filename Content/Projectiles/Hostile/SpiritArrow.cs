@@ -74,7 +74,7 @@ namespace CNC.Content.Projectiles.Hostile
             hitbox = new Rectangle(pos.X, pos.Y, p.width - size * 2, p.height - size * 2);
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void HitPlayer(Player target, int damage, bool crit)
         {
             if (rage)
             {

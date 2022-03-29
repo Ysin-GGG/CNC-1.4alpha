@@ -10,21 +10,22 @@ namespace CNC.Content.Buffs
     {
         public override void ResetStaticDefaults()
         {
-            cid = CNCID.Buff.Enthused;
             longer = false;
             debuff = false;
             noSave = true;
         }
-        /*
+
         public override void Update(Player target, AllPlayer gt, ref int index)
         {
             Item item = target.HeldItem;
-            if (item.type != CNCID.Item.LegacyObject[CNCID.Item.FireGrimoire] || item.GetGlobalItem<AllItem>().level < 3)
-            { target.ClearBuff(Type); gt.buff[cid] = false; return; }
-            target.itemAnimation -= target.itemAnimationMax / 20;
-            target.itemTime -= target.itemTimeMax / 20;
-            target.moveSpeed *= 1.1f;
+            if (item.type != CNCID.Item.LegacyObject[CNCID.Item.FireGrimoire] || !item.GetGlobalItem<InscriptionSettings>().HasInscription(CNCID.Inscription.S_Enthusiasm))
+            { target.ClearBuff(Type); return; }
+            if (target.GetModPlayer<AllPlayer>().Tick % 5 == 0)
+            {
+                if(target.itemAnimation > 0) target.itemAnimation--;
+                if(target.itemTime > 0) target.itemTime--;
+            }
+            target.moveSpeed += .2f;
         }
-        */
     }
 }

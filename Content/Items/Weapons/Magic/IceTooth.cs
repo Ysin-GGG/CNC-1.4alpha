@@ -1,11 +1,9 @@
-﻿
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.DataStructures;
+using CNC.Common.Utils;
 using CNC.Common.Global.Items;
 
 namespace CNC.Content.Items.Weapons.Magic
@@ -29,18 +27,18 @@ namespace CNC.Content.Items.Weapons.Magic
             item.autoReuse = true;
             item.UseSound = SoundID.Item20;
             item.DamageType = DamageClass.Magic;
+            item.shoot = CNCID.Projectile.LegacyObject[CNCID.Projectile.DentateIce];
+            item.shootSpeed = 16f;
             clazz = 32;
             staff = true;
         }
-        /*
-        public override bool Projectile(Player owner, ref Vector2 pos, ref Vector2 vel, ref int id, ref int dmg, ref float kb)
+
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            id = 0;
-            GItem g = item.GetGlobalItem<GItem>();
-            Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/Custom/IcyTooth/Shoot"), 1f);
-            Method.NewProj(pos, vel, proj, dmg, kb, -1, g.level);
-            return base.Projectile(owner, ref pos, ref vel, ref id, ref dmg, ref kb);
+            CNCUtils.PlaySound("IceTooth/Shoot", player, 1f);
+            Projectile projectile = CNCUtils.NewProj(source, position, velocity, type, damage, knockback);
+            if (item.GetGlobalItem<InscriptionSettings>().HasInscription(CNCID.Inscription.S_Iceflake)) projectile.GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().data["level"] = 1;
+            return false;
         }
-        */
     }
 }

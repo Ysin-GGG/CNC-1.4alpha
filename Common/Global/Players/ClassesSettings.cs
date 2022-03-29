@@ -32,6 +32,17 @@ namespace CNC.Common.Global.Players
         public float takenDamage = 0f;
         public float takenDamageFromEnemies = 0f;
 
+        public float block;// 当前格挡值
+        public float blockMax;// 最大格挡值
+        public float blockCooldown;// 当前格挡值补充冷却
+        public float blockSpeed = 1;// 格挡值补充速度/举盾速度（时间单位：tick/帧）
+        public float blockSpeedAdd;// 格挡值补充速度加成/举盾速度加成（加）
+        public float blockSpeedMul;// 格挡值补充速度加成/举盾速度加成（乘）
+        public float blockExhaustAdd;// 格挡消耗倍率（加）
+        public float blockExhaustMul;// 格挡消耗倍率（乘）
+        public float blockDamageReductionAdd;// 格挡减伤倍率（加）
+        public float blockDamageReductionMul;// 格挡减伤倍率（乘）
+
         public bool[] IsClazz => new bool[]
         {
             this.clazz == CNCID.Clazz.Barbarian,

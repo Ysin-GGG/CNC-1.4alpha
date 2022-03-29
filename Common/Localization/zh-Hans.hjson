@@ -8,6 +8,10 @@ Mods: {
 			MentorMissile: 魔法飞弹
 			SpiritMass: 灵气团
 			SpiritArrow: 灵气矢
+            FireBall: 火球
+            FireBallExplosion: 炎爆
+            DentateIce: 冰牙
+            DentateIceExplosion: 冰花
 		}
 
 		Tile: {

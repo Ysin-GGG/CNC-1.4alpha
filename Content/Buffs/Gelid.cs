@@ -10,7 +10,6 @@ namespace CNC.Content.Buffs
     {
         public override void ResetStaticDefaults()
         {
-            cid = CNCID.Buff.Gelid;
             longer = false;
             debuff = true;
             noSave = false;

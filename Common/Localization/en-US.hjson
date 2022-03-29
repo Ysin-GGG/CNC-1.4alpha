@@ -8,6 +8,10 @@ Mods: {
 			MentorMissile: Magic Missile
 			SpiritMass: Spirit Mass
 			SpiritArrow: Spirit Arrow
+            FireBall: Fire Ball
+            FireBallExplosion: Fire Explosion
+            DentateIce: Dentate Ice
+            DentateIceExplosion: Ice Flake
 		}
 		
 		Tile: {

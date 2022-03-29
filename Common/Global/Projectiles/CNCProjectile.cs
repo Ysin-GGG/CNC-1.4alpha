@@ -21,6 +21,7 @@ namespace CNC.Common.Global.Projectiles
         public Projectile RootProjectile => projectile.GetGlobalProjectile<ProjectileRelation>().RootProjectile;
         public Projectile ParentProjectile => projectile.GetGlobalProjectile<ProjectileRelation>().ParentProjectile;
         public Projectile[] ChildrenProjectile => projectile.GetGlobalProjectile<ProjectileRelation>().ChildrenProjectile;
+        public Dictionary<string, object> data { get => projectile.GetGlobalProjectile<AllProjectile>().data; set => projectile.GetGlobalProjectile<AllProjectile>().data = value; }
 
         public Mod mod => Mod;
         public Projectile projectile => Projectile;
@@ -32,6 +33,63 @@ namespace CNC.Common.Global.Projectiles
         public float velY { get => projectile.velocity.Y; set => projectile.velocity.Y = value; }
         public int frame { get => projectile.frame; set => projectile.frame = value; }
         public int frameTick { get => projectile.frameCounter; set => projectile.frameCounter = value; }
+
+
+        public NPC NewNPC(short CNCtype, int start = 0)
+            => NewNPC(projectile, (int)projectile.Center.X, (int)projectile.Center.Y, CNCID.NPC.LegacyObject[CNCtype], start);
+
+        public NPC NewNPC(int type, int start = 0)
+            => NewNPC(projectile, (int)projectile.Center.X, (int)projectile.Center.Y, type, start);
+
+        public NPC NewNPC(Vector2 pos, short CNCtype, int start = 0)
+            => NewNPC(projectile, (int)pos.X, (int)pos.Y, CNCID.NPC.LegacyObject[CNCtype], start);
+
+        public NPC NewNPC(Vector2 pos, int type, int start = 0)
+            => NewNPC(projectile, (int)pos.X, (int)pos.Y, type, start);
+
+        public NPC NewNPC(int x, int y, short CNCtype, int start = 0)
+            => NewNPC(projectile, x, y, CNCID.NPC.LegacyObject[CNCtype], start);
+
+        public NPC NewNPC(int x, int y, int type, int start = 0)
+            => NewNPC(projectile, x, y, type, start);
+
+        public NPC NewNPC(Projectile projectile, int x, int y, short CNCtype, int start = 0)
+            => NewNPC(projectile, x, y, CNCID.NPC.LegacyObject[CNCtype], start);
+
+        public NPC NewNPC(Projectile projectile, int x, int y, int type, int start = 0)
+        {
+            int whoAmI = NPC.NewNPC(projectile.GetNPCSource_FromThis(), x, y, type, start);
+            Main.npc[whoAmI].Center = new Vector2(x, y);
+            Main.npc[whoAmI].GetGlobalNPC<NPCRelation>().SetParent(projectile, true);
+            Main.npc[whoAmI].GetGlobalNPC<NPCRelation>().SetRoot(projectile, true);
+            if (Main.projectile[projectile.whoAmI].GetGlobalProjectile<ProjectileRelation>().ChildrenNPC != null)
+                Main.projectile[projectile.whoAmI].GetGlobalProjectile<ProjectileRelation>().AddChild(Main.npc[whoAmI]);
+            return Main.npc[whoAmI];
+        }
+
+        public Projectile NewProjectile(float vel, float rot, int type, float knockback = 0f)
+            => NewProjectile(projectile, projectile.Center, new Vector2(vel), type, projectile.damage);
+
+        public Projectile NewProjectile(float vel, float rot, int type, float damage, float knockback = 0f)
+            => NewProjectile(projectile, projectile.Center, MyMath.GetXY(rot) * vel, type, damage);
+
+        public Projectile NewProjectile(Vector2 vel, int type, float damage, float knockback = 0f)
+            => NewProjectile(projectile, projectile.Center, vel, type, damage);
+
+        public Projectile NewProjectile(Vector2 pos, Vector2 vel, int type, float damage, float knockback = 0f)
+            => NewProjectile(projectile, pos, vel, type, damage);
+
+        public Projectile NewProjectile(Projectile projectile, Vector2 pos, Vector2 vel, int type, float damage, float knockBack = 0f)
+        {
+            int whoAmI = Projectile.NewProjectile(projectile.GetProjectileSource_FromThis(), pos, vel, type, (int)damage, knockBack, projectile.owner);
+            Main.projectile[whoAmI].Center = pos;
+            Main.projectile[whoAmI].GetGlobalProjectile<ProjectileRelation>().SetParent(projectile, true);
+            Main.projectile[whoAmI].GetGlobalProjectile<ProjectileRelation>().SetRoot(projectile, true);
+            if (Main.projectile[projectile.whoAmI].GetGlobalProjectile<ProjectileRelation>().ChildrenProjectile != null)
+                Main.projectile[projectile.whoAmI].GetGlobalProjectile<ProjectileRelation>().AddChild(Main.projectile[whoAmI]);
+            this.OnSpawn();
+            return Main.projectile[whoAmI];
+        }
 
         public float[] var = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
@@ -140,11 +198,45 @@ namespace CNC.Common.Global.Projectiles
         {
             int maxFrame = Main.projFrames[p.type];
             int count = tick[p.frame];
-            if ((p.frameCounter++ % count) + 1 == count) p.frame++;
+            if (p.frameCounter % count == count - 1) p.frame++;
+            p.frameCounter++;
             if (p.frame >= maxFrame) p.frame = start;
+        }
+
+        public sealed override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        {
+            HitNPC(target, damage, knockback, crit);
+            OnHit(target, damage, knockback, crit);
+        }
+
+        public sealed override void OnHitPlayer(Player target, int damage, bool crit)
+        {
+            HitPlayer(target, damage, crit);
+            OnHit(target, damage, 0f, crit);
+        }
+        
+
+        public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        {
+            HitNPC(target, ref damage, ref knockback, ref crit);
+            ModifyHit(target, ref damage, ref knockback, ref crit);
+        }
+
+        public sealed override void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
+        {
+            float knockback = 0f;
+            HitPlayer(target, ref damage, ref crit);
+            ModifyHit(target, ref damage, ref knockback, ref crit);
         }
 
         public virtual void ResetDefaults() { }
         public virtual void ResetStaticDefaults() { }
+        public virtual void OnSpawn() { }
+        public virtual void HitNPC(NPC target, int damage, float knockback, bool crit) { }
+        public virtual void HitNPC(NPC target, ref int damage, ref float knockback, ref bool crit) { }
+        public virtual void HitPlayer(Player target, int damage, bool crit) { }
+        public virtual void HitPlayer(Player target, ref int damage, ref bool crit) { }
+        public virtual void OnHit(Entity target, int damage, float knockback, bool crit) { }
+        public virtual void ModifyHit(Entity target, ref int damage, ref float knockback, ref bool crit) { }
     }
 }

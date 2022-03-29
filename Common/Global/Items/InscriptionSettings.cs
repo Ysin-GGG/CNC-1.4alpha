@@ -88,6 +88,8 @@ namespace CNC.Common.Global.Items
             item.GetGlobalItem<InscriptionSettings>()._inscription1 = list;
         }
 
+        public bool HasInscription(Inscription inscription) => this._inscription1.Contains(inscription);
+
         public void SetInscription(int index, Inscription newInscription)
         {
             if (newInscription != null)

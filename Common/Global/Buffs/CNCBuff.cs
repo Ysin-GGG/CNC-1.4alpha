@@ -12,8 +12,6 @@ namespace CNC.Common.Global.Buffs
 {
     public abstract class CNCBuff : ModBuff
     {
-        private int _cid = 0;
-        public int cid { get => _cid; set => _cid = value; }
         private int _damage = 0;
         public int damage { get => _damage; set => _damage = value; }
         public bool pvp { get => Main.pvpBuff[Type]; set => Main.pvpBuff[Type] = value; }
@@ -37,7 +35,7 @@ namespace CNC.Common.Global.Buffs
         public sealed override void Update(Player target, ref int buffIndex)
         {
             AllPlayer gt = target.GetModPlayer<AllPlayer>();
-            gt.buff[cid] = true;
+            //gt.buff[cid] = true;
             Update(target, gt, ref buffIndex);
             if (_damage > 0)
             {
@@ -66,7 +64,7 @@ namespace CNC.Common.Global.Buffs
         public sealed override void Update(NPC target, ref int buffIndex)
         {
             AllNPC gt = target.GetGlobalNPC<AllNPC>();
-            gt.buff[cid] = true;
+            //gt.buff[cid] = true;
             Update(target, gt, ref buffIndex);
             if (_damage > 0)
             {

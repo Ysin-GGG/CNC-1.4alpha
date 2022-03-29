@@ -10,7 +10,6 @@ namespace CNC.Content.Buffs
     {
         public override void ResetStaticDefaults()
         {
-            cid = CNCID.Buff.Scorched;
             longer = false;
             debuff = true;
             noSave = false;
@@ -18,12 +17,12 @@ namespace CNC.Content.Buffs
 
         public override void Update(Player target, AllPlayer gt, ref int index)
         {
-            target.statDefense -= 8;
+            target.statDefense -= (int)CNCID.Inscription.S_Scorching.Args[0];
         }
 
         public override void Update(NPC target, AllNPC gt, ref int index)
         {
-            target.defense -= 8;
+            target.defense -= (int)CNCID.Inscription.S_Scorching.Args[0];
         }
     }
 }

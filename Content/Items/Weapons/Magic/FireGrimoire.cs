@@ -1,12 +1,9 @@
-﻿
-using System;
-using Terraria;
-using Terraria.Localization;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using CNC.Common.Localization;
+using CNC.Common.Utils;
 using CNC.Common.Global.Items;
 
 namespace CNC.Content.Items.Weapons.Magic
@@ -30,19 +27,20 @@ namespace CNC.Content.Items.Weapons.Magic
             item.autoReuse = true;
             item.DamageType = DamageClass.Magic;
             item.UseSound = SoundID.DD2_BetsyFireballShot;
+            item.shoot = CNCID.Projectile.LegacyObject[CNCID.Projectile.FireBall];
+            item.shootSpeed = 16f;
             clazz = 32;
         }
-        /*
-        public override bool Projectile(Player owner, ref Vector2 pos, ref Vector2 vel, ref int id, ref int dmg, ref float kb)
+
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            id = 0;
-            int lv = item.GetGlobalItem<GItem>().level;
-            int proj = CNC.GetType(1, 6);
-            if (Main.rand.Next(49) < 1 && lv > 2) { owner.AddBuff(CNC.GetType(2, 4), 300); }
-            Method.NewProj(pos, vel, proj, dmg, kb, -1, lv > 1 ? lv : 0f);
-            return base.Projectile(owner, ref pos, ref vel, ref id, ref dmg, ref kb);
+            Projectile projectile = CNCUtils.NewProj(source, position, velocity, type, damage, knockback);
+            if (item.GetGlobalItem<InscriptionSettings>().HasInscription(CNCID.Inscription.S_Scorching))
+                projectile.GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().data["level"] = 1;
+            if (item.GetGlobalItem<InscriptionSettings>().HasInscription(CNCID.Inscription.S_Enthusiasm) && Main.rand.Next(100) < ((float)CNCID.Inscription.S_Enthusiasm.Args[0] * 100f))
+                player.AddBuff(CNCID.Buff.LegacyObject[CNCID.Buff.Enthused], 300);
+            return false;
         }
-        */
 
         public override Vector2? HoldoutOffset() => Vector2.One;
     }

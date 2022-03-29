@@ -3,8 +3,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using Terraria;
-using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.Localization;
+using CNC.Common.Global.Projectiles;
 
 using static Terraria.ModLoader.ModContent;
 
@@ -22,10 +23,12 @@ namespace CNC.Common.Utils
         /// <param name="data0">数据变量1</param>
         /// <param name="data1">数据变量2</param>
         /// <returns></returns>
-        public static Projectile NewProj(Terraria.DataStructures.IEntitySource source, Vector2 pos, Vector2 vel, int type, int dmg, float kb, int owner = -1, float data0 = 0, float data1 = 0)
+        public static Projectile NewProj(Terraria.DataStructures.IEntitySource source, Vector2 position, Vector2 velocity, int type, int dmg, float kb, int owner = -1, float ai0 = 0, float ai1 = 0)
         {
             if (owner < 0) { owner = Const.me; }
-            return Projectile.NewProjectileDirect(source, pos, vel, type, dmg, kb, owner, data0, data1);
+            int whoAmI = Projectile.NewProjectile(source, position, velocity, type, dmg, kb, owner, ai0, ai1);
+            if (Main.projectile[whoAmI].ModProjectile != null && (CNCProjectile)Main.projectile[whoAmI].ModProjectile != null) ((CNCProjectile)Main.projectile[whoAmI].ModProjectile).OnSpawn();
+            return Main.projectile[whoAmI];
         }
 
         public static Dust NewDust(Vector4 pos_size, int id, float angle, float scale = 1f, Vector2 range = default, Vector2 vel = default, Color color = default)
@@ -58,12 +61,36 @@ namespace CNC.Common.Utils
             return Dust.NewDustDirect(pos + _range, width, height, id, vel.X, vel.Y, color.A, color, scale);
         }
 
-        public static void SetTile(Point pos, int type, bool isWall = false, bool flag = true, int size = 0)
+        public static void PlaySound(string path, Entity target, Mod mod = default)
+            => PlaySound(path, target.position, 1f, mod);
+
+        public static void PlaySound(string path, Entity target, float volume, Mod mod = default)
+            => PlaySound(path, target.position, volume, mod);
+
+        public static void PlaySound(string path, Vector2 position, Mod mod = default)
+            => PlaySound(path, position, 1f, mod);
+
+        public static void PlaySound(string path, Vector2 position, float volume, Mod mod = default)
+        {
+            if (!path.StartsWith("Content/Sounds/Custom/")) path = "Content/Sounds/Custom/" + path;
+            Terraria.Audio.SoundEngine.PlaySound(SoundLoader.CustomSoundType, (int)position.X, (int)position.Y, SoundLoader.GetSoundSlot(mod == default ? CNC.Instance : mod, path), volume);
+        }
+
+        public static void AddLight(Vector2 position, Color color, float light = .5f)
+        {
+            float a = color.A / (float)byte.MaxValue * light;
+            float r = color.R / (float)byte.MaxValue * light;
+            float g = color.G / (float)byte.MaxValue * light;
+            float b = color.B / (float)byte.MaxValue * light;
+            Lighting.AddLight((int)position.X, (int)position.Y, r, g, b);
+        }
+
+        public static void SetTile(Point position, int type, bool isWall = false, bool flag = true, int size = 0)
         {
             if (size == 0)
             {
-                int x = pos.X;
-                int y = pos.Y;
+                int x = position.X;
+                int y = position.Y;
                 if (WorldGen.InWorld(x, y, 1))
                 {
                     int _type = isWall ? Main.tile[x, y].WallType : Main.tile[x, y].TileType;
@@ -73,11 +100,11 @@ namespace CNC.Common.Utils
                     NetMessage.SendTileSquare(-1, x, y, 1);
                 }
             }
-            else for (int x = pos.X - size; x <= pos.X + size; x++)
+            else for (int x = position.X - size; x <= position.X + size; x++)
                 {
-                    for (int y = pos.Y - size; y <= pos.Y + size; y++)
+                    for (int y = position.Y - size; y <= position.Y + size; y++)
                     {
-                        if (WorldGen.InWorld(x, y, 1) && Math.Abs(x - pos.X) + Math.Abs(y - pos.Y) < Math.Sqrt(size * size * 2))
+                        if (WorldGen.InWorld(x, y, 1) && Math.Abs(x - position.X) + Math.Abs(y - position.Y) < Math.Sqrt(size * size * 2))
                         {
                             int _type = isWall ? Main.tile[x, y].WallType : Main.tile[x, y].TileType;
                             if (!isWall && flag) Main.tile[x, y].TileType = (ushort)type;
