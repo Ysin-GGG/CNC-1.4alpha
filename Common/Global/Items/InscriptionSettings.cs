@@ -168,6 +168,8 @@ namespace CNC.Common.Global.Items
                         AddToInscriptionList(ref list, ref levelMax, 0, 0, CNCID.Inscription.S_Incinerating);
                         AddToInscriptionList(ref list, ref levelMax, 2, 2, CNCID.Inscription.S_Scorching);
                         AddToInscriptionList(ref list, ref levelMax, 4, 4, CNCID.Inscription.S_Enthusiasm);
+                        AddToInscriptionList(ref list, ref levelMax, 3, 4, CNCID.Inscription.Arcane);
+                        AddToInscriptionList(ref list, ref levelMax, 3, 4, CNCID.Inscription.Reiki);
                         break;
                     case CNCID.Item.IceTooth:
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.MagicAdept);
