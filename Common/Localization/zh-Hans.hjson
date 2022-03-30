@@ -24,9 +24,9 @@ Mods: {
 
 		Item: {
 			Name: {
-				HHvsRobeCape: HHvs的灰袍斗篷
-				HHvsRobe: HHvs的巫师长袍
-				HHvsHat: HHvs的巫师帽
+				HHvsRobeCape: 至高斗篷
+				HHvsRobe: 至高巫师法袍
+				HHvsHat: 至高巫师帽
 				QuartzBlock: Quartz的头
 				MiracleGem: 静谧宝石
 				DestineScroll: 命定卷轴
