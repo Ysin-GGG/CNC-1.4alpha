@@ -14,12 +14,13 @@ namespace CNC.Content.Projectiles.IceTooth
 {
     public class FrostWave : CNCProjectile
     {
-        public Vector2 center => data.ContainsKey("center") ? (Vector2)data["center"] : -Vector2.One;
+        public Vector2 center = -Vector2.One;
         private int stage = 0;
+        private int alpha = 0;
 
         public override void ResetDefaults()
         {
-            data["center"] = -Vector2.One;
+            center = -Vector2.One;
             stage = 0;
             projectile.width = 1;
             projectile.height = 1;
@@ -38,6 +39,14 @@ namespace CNC.Content.Projectiles.IceTooth
         {
             int buff1 = CNCID.Buff.LegacyObject[CNCID.Buff.Gelid];
             int buff2 = CNCID.Buff.LegacyObject[CNCID.Buff.Glacier];
+            target.AddBuff(buff1, 60 * 15);
+            if (this.stage == 1) target.AddBuff(buff2, 60 * 3 + projectile.timeLeft); 
+        }
+
+        public override void OnSpawn()
+        {
+            projectile.rotation = 0f;// Main.rand.NextFloat(MyMath.pi2);
+            projectile.Center = center = projectile.position;
         }
 
         public override void AI()
@@ -47,7 +56,7 @@ namespace CNC.Content.Projectiles.IceTooth
                 projectile.scale = 0f;
                 if (projectile.timeLeft <= 1)
                 {
-                    projectile.timeLeft = 15;
+                    projectile.timeLeft = 10;
                     this.stage = 1;
                 }
             }
@@ -62,7 +71,7 @@ namespace CNC.Content.Projectiles.IceTooth
                                  MyMath.deg01 * Main.rand.Next(359),
                                  500,
                                  Vector2.One * .1f,
-                                 new Color(112, 196, 255, 0), //new Color(178, 214, 231, 0);
+                                 new Color(112, 196, 255, 0),
                                  new Color(0, 170, 255, 5)
                                  );
                     ParticleRenderer.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.001f, .002f));
@@ -70,21 +79,23 @@ namespace CNC.Content.Projectiles.IceTooth
                     ParticleRenderer.particle[idx].velocityMul = new Vector2(.975f);
                 }
                 projectile.friendly = true;
-                projectile.scale = (15 - projectile.timeLeft) / 15f;
+                projectile.scale = (10 - projectile.timeLeft) / 10f;
                 projectile.Size = Vector2.One * 14 * 16 * projectile.scale * 2;
                 if (projectile.timeLeft <= 1)
                 {
+                    projectile.friendly = false;
                     projectile.timeLeft = 180;
                     this.stage = 2;
                 }
             }
             if (this.stage == 2)//¹Ì¶¨
             {
-                projectile.friendly = false;
-                projectile.scale = 1f;
-                if(projectile.timeLeft == 60) SoundEngine.PlaySound(SoundID.Item27, projectile.Center);
+                alpha = alpha < 45 ? alpha + 1 : 45;
+                projectile.scale = 1f; 
+                if (projectile.timeLeft == 60) SoundEngine.PlaySound(SoundID.Item27, projectile.Center);
                 if (projectile.timeLeft <= 1)
                 {
+                    projectile.friendly = true;
                     SoundEngine.PlaySound(SoundID.Item107, projectile.Center);
                     CNCUtils.PlaySound("IceTooth/Hit", projectile.position);
                     for (int i = 0; i < 60; i++)
@@ -108,15 +119,15 @@ namespace CNC.Content.Projectiles.IceTooth
                         float rot = MyMath.deg01;
                         Vector2[] offset = new Vector2[]
                         {
-                            MyMath.GetXY(-37f * rot) * .73f,
-                            MyMath.GetXY(-84f * rot) * .45f,
-                            MyMath.GetXY(-116f * rot) * .62f,
-                            MyMath.GetXY(-162f * rot) * .42f,
-                            MyMath.GetXY(-200f * rot) * .58f,
-                            MyMath.GetXY(-232f * rot) * .80f,
-                            MyMath.GetXY(-285f * rot) * .38f,
-                            MyMath.GetXY(-311f * rot) * .63f,
-                            MyMath.GetXY(-340f * rot) * .52f,
+                            MyMath.GetXY(-37f * rot + projectile.rotation) * .73f,
+                            MyMath.GetXY(-84f * rot + projectile.rotation) * .45f,
+                            MyMath.GetXY(-116f * rot + projectile.rotation) * .62f,
+                            MyMath.GetXY(-162f * rot + projectile.rotation) * .42f,
+                            MyMath.GetXY(-200f * rot + projectile.rotation) * .58f,
+                            MyMath.GetXY(-232f * rot + projectile.rotation) * .80f,
+                            MyMath.GetXY(-285f * rot + projectile.rotation) * .38f,
+                            MyMath.GetXY(-311f * rot + projectile.rotation) * .63f,
+                            MyMath.GetXY(-340f * rot + projectile.rotation) * .52f,
                         };
                         int idx = Particle.NewParticle(
                                      ModContent.Request<Texture2D>("CNC/Assets/Effects/Snowflake" + Main.rand.Next(1, 5).ToString()).Value,
@@ -135,7 +146,7 @@ namespace CNC.Content.Projectiles.IceTooth
                     }
                 }
             }
-            projectile.Center = (Vector2)data["center"];
+            projectile.Center = center;
         }
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
@@ -151,7 +162,7 @@ namespace CNC.Content.Projectiles.IceTooth
 
             Vector2 size1 = new Vector2(500) * projectile.scale;
             Vector2 size2 = new Vector2(320) * projectile.scale;
-            Vector2 size3 = new Vector2(500) * projectile.scale;
+            Vector2 size3 = new Vector2(448) * projectile.scale;
             Vector2 pos1 = projectile.Center - size1 / 2 - Main.screenPosition;
             Vector2 pos2 = projectile.Center - size2 / 2 - Main.screenPosition;
             Vector2 pos3 = projectile.Center - size3 / 2 - Main.screenPosition;
@@ -160,8 +171,8 @@ namespace CNC.Content.Projectiles.IceTooth
             Rectangle rect3 = new Rectangle((int)pos3.X, (int)pos3.Y, (int)size3.X, (int)size3.Y);
             Color color = new Color(112, 196, 255, 0);
             if (stage == 2) Main.spriteBatch.Draw(image1, rect1, color);
-            if (stage == 2 && projectile.timeLeft < 60) Main.spriteBatch.Draw(image2, rect2, color);
-            if (stage == 1) Main.spriteBatch.Draw(image3, rect3, color);
+            if (stage == 2 && projectile.timeLeft < 60) Main.spriteBatch.Draw(image2, rect2, color);//, null, color, projectile.rotation, rect2.Center.ToVector2(), 0, 0);
+            if (stage >= 1) Main.spriteBatch.Draw(image3, rect3, color * ((50 - alpha) / 50f));
             return false;
         }
     }

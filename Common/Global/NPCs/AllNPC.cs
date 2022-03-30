@@ -25,6 +25,7 @@ namespace CNC.Common.Global.NPCs
     {
         public bool[] buff = new bool[CNCID.Buff.MaxObject];
         public int SanctifiedLevel;
+        public int lastFrame = 0;
 
         public int lifeRegenCount;
         public int lifeRegen;
@@ -37,6 +38,24 @@ namespace CNC.Common.Global.NPCs
 
             if (lifeRegen > 0) { lifeRegenCount = 0; }
             lifeRegen = 0;
+        }
+
+        public override void FindFrame(NPC npc, int frameHeight)
+        {
+            if (npc.GetGlobalNPC<AllNPC>().buff[CNCID.Buff.Glacier]) npc.frameCounter = 0;
+        }
+
+        public override bool PreAI(NPC npc)
+        {
+            if (npc.GetGlobalNPC<AllNPC>().buff[CNCID.Buff.Glacier])
+            {
+                npc.position = npc.oldPosition;
+                //npc.velocity.X = 0;
+                //npc.noGravity = false;
+                //npc.color = new Color(96, 129, 192);
+                return false;
+            }
+            return base.PreAI(npc);
         }
     }
 }

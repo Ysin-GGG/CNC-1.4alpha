@@ -41,7 +41,6 @@ namespace CNC.Content.Items.Weapons.Magic
             {
                 CNCUtils.PlaySound("IceTooth/FrostWave", player, 1f);
                 Projectile projectile = CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.FrostWave], damage, knockback);
-                projectile.GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().data["center"] = position;
             }
             else
             {

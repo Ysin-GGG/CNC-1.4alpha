@@ -52,13 +52,7 @@ namespace CNC.Content.Buffs
 
         public override void Update(NPC target, AllNPC gt, ref int index)
         {
-            if (!target.boss)
-            {
-                target.velocity.X = 0;
-                target.noGravity = false;
-                target.color = new Microsoft.Xna.Framework.Color(96, 129, 192);
-                //target.aiStyle = -1;
-            }
+            target.GetGlobalNPC<AllNPC>().buff[CNCID.Buff.Glacier] = true;
         }
     }
 }
