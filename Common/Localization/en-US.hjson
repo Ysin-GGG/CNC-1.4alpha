@@ -270,66 +270,67 @@ Mods: {
 		}
 		
 		Inscription: {
-			Power: Power|{0}基础伤害增幅
-			Chanter: Chanter|{0}施法速度增幅
-			Economization: Economization|{0}魔力消耗减免
-			Arcana: Arcana|{0}魔法暴击率增幅
-			Charging: Charging|{0}技能冷却缩减
-			Reiki: Reiki|{0}技能魔力返还
-			Assimilation: Assimilation|{0}魔力恢复增幅
-			MagicPower: MagicPower|{0}魔法伤害增幅
-			MagicAdept: MagicAdept|{0}攻击速度增幅
-			Saint: Saint|{0}治疗量增幅
-			Evangel: Evangel|生命低于{0}时，治疗量增加{1}
-			Destroyer: Destroyer|{0}暴击率增幅
-			Dexterity: Dexterity|移动速度增幅{0}
-			MeleeAdept: Melee Adept|{0}攻击速度增幅
-			Indignation: Indignation|怒气上限提高{0}点
-			Force: Force|击退增加
-			Smiting: Smiting|敌人眩晕时，近战伤害增幅{0}
-			Shockwave: Shockwave|造成眩晕的时间增加{0}s
-			RaidAdept: Raid Adept|{0}攻击速度增幅
-			Murder: Murder|{0}暴击率增幅
-			Torture: Torture|敌人生命值低于{0}时，穿刺伤害增幅{1}
-			Assassination: Assassination|处于隐匿时，穿刺伤害增幅{0}
-			EagleEye: Eagle Eye|{0}暴击率增幅
-			Penetration: Penetration|攻击时有{0}概率使本次伤害增加{1}
-			EnchantedMagazine: Enchanted Magazine|枪动力上限增加{0}
-			EnchantedBowstring: Enchanted Bowstring|拉弓速度增幅{0}
-		}
-
-		S_Inscription: {
-			Fireball: Fireball|Shoots a fireball condensed by magic
-			Incinerating: Incinerating|Makes targets on fire, and generates a fire explosion, dealing {0} AoE magic damage
-			Scorching: Scorching|Applys [{$Mods.CNC.Buff.Name.Scorched}] to targets when strikes, decreasing target's defense by {0}
-			Enthusiasm: Enthusiasm|{0} chance to trigger [{$Mods.CNC.Buff.Name.Enthused}] when you attack
-			Gelidity: Gelidity|Reduces target's movement speed
-			Glacier: Glacier|Your attacks may freeze your targets when strikes
-			Iceflake: Iceflake|Generates an extra explosion, and deals {0} AoE magic damage
-			Shattering: Shattering|冰弹对冻结的敌人造成的魔法伤害增加{0}
-			FrostWave: Frost Wave|右键每秒消耗{0}点魔力不断构建扩张性的寒气，你半径{1}格内的敌人将持续减速且受到{2}s冻结，被冻结的目标一段时间内不会再被冻结
-			Charging: Charging|Shoots a lightning missile
-			SpellLightningChain: Spell Lightning Chain|Right click to shoot a lightning chain, and attacks {0} targets, dealing {1} magic damage
-			ArcaneOverload: ArcaneOverload|Increases magic damage by {0} when strikes targets, it will be cleared when increased to {1}, and shoots a overloaded missile next time, dealing {2} AoE magic damage {3} times;
-			SpellReconstruction: Spell Reconstruction|Attacks have a {0} chance to instantly rebuild and cast the Spell Chain Lightning charm
-			SpellAugmentated: Spell Augmentated|Improved spell research to increase chain lightning target by {0} and search radius by {1}
-			StableSpell: Stable Spell|Overload will be able to hold for {0}s
-			SilveryArrow: Silvery Arrow|Wooden arrows turn into Silvery Arrows
-			Sanctity: Sanctity|{0} shoots an Sanctified Arrow, making {1} ranged damage and applying [{$Mods.CNC.Buff.Name.Sanctified}] to targets
-			Exorcism: Exorcism|Explodes all Sanctified Arrows if the target was struck by {0} Sanctified Arrows, dealing {1} ranged damage
-			SilveryFlame: Silvery Flame|污秽之物将被银白圣树的力量烧灼，造成一定的持续伤害
-			Judgement: Judgement|攻击有概率造成{0}的额外魔法伤害
-			SilveryShield: Silvery Shield|每造成{0}次伤害，获得持续{1}s充满神圣能量的护盾，抵挡{2}点伤害，被击破或持续时间结束后爆炸造成{3}点范围魔法伤害
-			SilveryVow: Silvery Vow|右键消耗{0}点神力值，获得持续{1}s的神圣护盾，期间所受伤害减免{2}，神圣惩戒触发概率提高{3}，每次触发神圣惩戒效果获得{4}护盾值
-			Rock: Rock|使用远古埃兹西亚咒文吟唱，从地面抬起巨岩掷向对手，造成{0}魔法伤害并产生极强击退
-			ActiveChant: Active Chant|你不再需要完全专注于吟唱，将能以缓慢移动进行施法
-			Fragmentation: Fragmentation|向岩石中注入庞大魔力，岩石击中敌人时将爆炸并产生{0}范围魔法伤害
-			DizzyStrike: Dizzy Strike|攻击有{0}概率使得除Boss以外的敌人晕眩，无法移动{1}s
-			EmberPrayer: Ember Prayer|消耗{0}点神力值使用信仰之力，构筑起一道持续{1}秒的符文防御屏障，任何接近你的攻击将熔化
-			EmberOath: Ember Oath|右键消耗{0}点神力值为自身附魔上圣火，下{1}次攻击将额外造成神力值上限{2}的近战伤害
-			TameHead: Tame Head|右键召唤残缺灵魂，你和周围{0}格半径敌人防御降低{1}，持续{2}s，且下一次攻击为特殊攻击，附加{3}的额外伤害并必定暴击
-			SoulScorching: Soul Scorching|攻击造成{0}s灵魂焰灼烧，敌人受到伤害增加{1}，防御降低{2}
-			IndulgentGhost: Indulgent Ghost|每攻击{0}次，将快速发动额外的一次攻击，继承攻击特效
+			Common: {
+				Power: Power|{0}基础伤害增幅
+				Chanter: Chanter|{0}施法速度增幅
+				Economization: Economization|{0}魔力消耗减免
+				Arcane: Arcane|{0}魔法暴击率增幅
+				Charging: Charging|{0}技能冷却缩减
+				Reiki: Reiki|{0}技能魔力返还
+				Assimilation: Assimilation|{0}魔力恢复增幅
+				MagicPower: MagicPower|{0}魔法伤害增幅
+				MagicAdept: MagicAdept|{0}攻击速度增幅
+				Saint: Saint|{0}治疗量增幅
+				Evangel: Evangel|生命低于{0}时，治疗量增加{1}
+				Destroyer: Destroyer|{0}暴击率增幅
+				Dexterity: Dexterity|移动速度增幅{0}
+				MeleeAdept: Melee Adept|{0}攻击速度增幅
+				Indignation: Indignation|怒气上限提高{0}点
+				Force: Force|击退增加
+				Smiting: Smiting|敌人眩晕时，近战伤害增幅{0}
+				Shockwave: Shockwave|造成眩晕的时间增加{0}s
+				RaidAdept: Raid Adept|{0}攻击速度增幅
+				Murder: Murder|{0}暴击率增幅
+				Torture: Torture|敌人生命值低于{0}时，穿刺伤害增幅{1}
+				Assassination: Assassination|处于隐匿时，穿刺伤害增幅{0}
+				EagleEye: Eagle Eye|{0}暴击率增幅
+				Penetration: Penetration|攻击时有{0}概率使本次伤害增加{1}
+				EnchantedMagazine: Enchanted Magazine|枪动力上限增加{0}
+				EnchantedBowstring: Enchanted Bowstring|拉弓速度增幅{0}
+			}
+			Special: {
+				Fireball: Fireball|Shoots a fireball condensed by magic
+				Incinerating: Incinerating|Makes targets on fire, and generates a fire explosion, dealing {0} AoE magic damage
+				Scorching: Scorching|Applys [{$Mods.CNC.Buff.Name.Scorched}] to targets when strikes, decreasing target's defense by {0}
+				Enthusiasm: Enthusiasm|{0} chance to trigger [{$Mods.CNC.Buff.Name.Enthused}] when you attack
+				Gelidity: Gelidity|Reduces target's movement speed
+				Glacier: Glacier|Your attacks may freeze your targets when strikes
+				Iceflake: Iceflake|Generates an extra explosion, and deals {0} AoE magic damage
+				Shattering: Shattering|冰弹对冻结的敌人造成的魔法伤害增加{0}
+				FrostWave: Frost Wave|右键每秒消耗{0}点魔力不断构建扩张性的寒气，你半径{1}格内的敌人将持续减速且受到{2}s冻结，被冻结的目标一段时间内不会再被冻结
+				Charging: Charging|Shoots a lightning missile
+				SpellLightningChain: Spell Lightning Chain|Right click to shoot a lightning chain, and attacks {0} targets, dealing {1} magic damage
+				ArcaneOverload: ArcaneOverload|Increases magic damage by {0} when strikes targets, it will be cleared when increased to {1}, and shoots a overloaded missile next time, dealing {2} AoE magic damage {3} times;
+				SpellReconstruction: Spell Reconstruction|Attacks have a {0} chance to instantly rebuild and cast the Spell Chain Lightning charm
+				SpellAugmentated: Spell Augmentated|Improved spell research to increase chain lightning target by {0} and search radius by {1}
+				StableSpell: Stable Spell|Overload will be able to hold for {0}s
+				SilveryArrow: Silvery Arrow|Wooden arrows turn into Silvery Arrows
+				Sanctity: Sanctity|{0} shoots an Sanctified Arrow, making {1} ranged damage and applying [{$Mods.CNC.Buff.Name.Sanctified}] to targets
+				Exorcism: Exorcism|Explodes all Sanctified Arrows if the target was struck by {0} Sanctified Arrows, dealing {1} ranged damage
+				SilveryFlame: Silvery Flame|污秽之物将被银白圣树的力量烧灼，造成一定的持续伤害
+				Judgement: Judgement|攻击有概率造成{0}的额外魔法伤害
+				SilveryShield: Silvery Shield|每造成{0}次伤害，获得持续{1}s充满神圣能量的护盾，抵挡{2}点伤害，被击破或持续时间结束后爆炸造成{3}点范围魔法伤害
+				SilveryVow: Silvery Vow|右键消耗{0}点神力值，获得持续{1}s的神圣护盾，期间所受伤害减免{2}，神圣惩戒触发概率提高{3}，每次触发神圣惩戒效果获得{4}护盾值
+				Rock: Rock|使用远古埃兹西亚咒文吟唱，从地面抬起巨岩掷向对手，造成{0}魔法伤害并产生极强击退
+				ActiveChant: Active Chant|你不再需要完全专注于吟唱，将能以缓慢移动进行施法
+				Fragmentation: Fragmentation|向岩石中注入庞大魔力，岩石击中敌人时将爆炸并产生{0}范围魔法伤害
+				DizzyStrike: Dizzy Strike|攻击有{0}概率使得除Boss以外的敌人晕眩，无法移动{1}s
+				EmberPrayer: Ember Prayer|消耗{0}点神力值使用信仰之力，构筑起一道持续{1}秒的符文防御屏障，任何接近你的攻击将熔化
+				EmberOath: Ember Oath|右键消耗{0}点神力值为自身附魔上圣火，下{1}次攻击将额外造成神力值上限{2}的近战伤害
+				TameHead: Tame Head|右键召唤残缺灵魂，你和周围{0}格半径敌人防御降低{1}，持续{2}s，且下一次攻击为特殊攻击，附加{3}的额外伤害并必定暴击
+				SoulScorching: Soul Scorching|攻击造成{0}s灵魂焰灼烧，敌人受到伤害增加{1}，防御降低{2}
+				IndulgentGhost: Indulgent Ghost|每攻击{0}次，将快速发动额外的一次攻击，继承攻击特效
+			}
 		}
 
 		Misc: {
@@ -338,6 +339,7 @@ Mods: {
 			Loaded: Classes & Craft(1.4Alpha) has loaded, enjoy yourself.
 			Unloaded: Classes & Craft(1.4Alpha) has unloaded, thanks for playing.
 			Inscription: Inscription-<{0}>
+			InscriptionSpecial: <Special Inscription>
 		}
 
 		UI: {

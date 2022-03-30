@@ -84,6 +84,21 @@ namespace CNC.Content.Projectiles.IceTooth
                 dust.noGravity = true;
                 dust.velocity *= 8f;
                 dust.scale -= .01f;
+                /*Ñ©»¨Á£×Ó
+                int idx = Particle.NewParticle(
+                             ModContent.Request<Texture2D>("CNC/Assets/Effects/Snowflake" + Main.rand.Next(1, 5).ToString()).Value,
+                             projectile.Center,
+                             new Vector2(Main.rand.NextFloat(-2f, 2f), Main.rand.NextFloat(-4f, 1f)),
+                             MyMath.deg01 * Main.rand.Next(359),
+                             50,
+                             Vector2.One * .09f,
+                             new Color(112, 196, 255, 0),
+                             new Color(0, 170, 255, 5),
+                             false
+                             );
+                ParticleRenderer.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.0015f, .0025f));
+                ParticleRenderer.particle[idx].rotationAdd = Main.rand.NextFloat(0, MyMath.deg30 / 10f);
+                */
             }
         }
     }

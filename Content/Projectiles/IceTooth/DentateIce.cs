@@ -42,7 +42,7 @@ namespace CNC.Content.Projectiles.IceTooth
 
         public override void AI()
         {
-            AI001_RollingMissile(projectile, true, true, 90f);
+            AI001_RollingMissile(projectile, false, true, 90f);
             Dust dust = Dust.NewDustDirect(projectile.position, 14, 14, DustID.IceTorch, 0f, 0f, 100, Color.LightBlue, 1f);
             dust.noGravity = true;
             CNCUtils.AddLight(projectile.position, new Color(0, 170, 255), 1f);
@@ -63,7 +63,7 @@ namespace CNC.Content.Projectiles.IceTooth
                 for (int i = 0; i < 16; i++)
                 {
                     Vector2 dustPos = new Vector2(projectile.Center.X - projectile.width, projectile.Center.Y);
-                    Dust.NewDust(projectile.Center, projectile.width, projectile.height, DustID.IceTorch, projectile.oldVelocity.X / -2f, projectile.oldVelocity.Y * 2f, 100, Color.LightBlue, 1.5f);
+                    Dust.NewDust(projectile.Center, projectile.width, projectile.height, DustID.IceTorch, projectile.oldVelocity.X / -2f, projectile.oldVelocity.Y * -2f, 100, Color.LightBlue, 1.5f);
                 }
                 if (this.level > 1)
                 {
@@ -93,7 +93,7 @@ namespace CNC.Content.Projectiles.IceTooth
             if (this.level > 0)
             {
                 int type = CNCID.Projectile.LegacyObject[CNCID.Projectile.DentateIceExplosion];
-                Projectile proj = this.NewProjectile(0, MyMath.deg01 * Main.rand.Next(0, 359), type, Inscription.JustGetDamage(projectile.damage, (string)CNCID.Inscription.S_Iceflake.Args[0]), projectile.knockBack);
+                Projectile proj = this.NewProjectile(0f, 0f, type, Inscription.JustGetDamage(projectile.damage, (string)CNCID.Inscription.S_Iceflake.Data[0]), projectile.knockBack, Main.rand.NextFloat(0, MyMath.pi * 2));
                 proj.GetGlobalProjectile<AllProjectile>().data["target"] = npc != null ? npc.whoAmI : -1;
                 proj.owner = this.projectile.owner;
             }
