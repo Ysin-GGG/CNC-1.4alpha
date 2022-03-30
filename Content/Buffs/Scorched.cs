@@ -17,12 +17,12 @@ namespace CNC.Content.Buffs
 
         public override void Update(Player target, AllPlayer gt, ref int index)
         {
-            target.statDefense -= (int)CNCID.Inscription.S_Scorching.Args[0];
+            target.statDefense -= (int)CNCID.Inscription.S_Scorching.Data[0];
         }
 
         public override void Update(NPC target, AllNPC gt, ref int index)
         {
-            target.defense -= (int)CNCID.Inscription.S_Scorching.Args[0];
+            target.defense -= (int)CNCID.Inscription.S_Scorching.Data[0];
         }
     }
 }

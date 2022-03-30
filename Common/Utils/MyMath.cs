@@ -11,15 +11,19 @@ namespace CNC.Common.Utils
 {
     public class MyMath
     {
+        public const double G = 9.8061905036721905;
         public const double E = 2.7182818284590451;
         public const double Pi = 3.1415926535897931;
+        public const double Pi2 = pi * 2;
         public const double Deg01 = Pi / 180;
         public const double Deg30 = Pi / 6;
         public const double Deg45 = Pi / 4;
         public const double Deg60 = Pi / 3;
         public const double Deg90 = Pi / 2;
+        public const float g = 9.8066500f;
         public const float e = 2.7182818f;
         public const float pi = 3.1415927f;
+        public const float pi2 = pi * 2;
         public const float deg01 = pi / 180;
         public const float deg30 = pi / 6;
         public const float deg45 = pi / 4;

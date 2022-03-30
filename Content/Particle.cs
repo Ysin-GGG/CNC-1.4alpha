@@ -13,20 +13,26 @@ namespace CNC.Content
         public Vector2 scale;
         public Vector2 scaleAdd;
         public Vector2 scaleMul;
+        public Vector2 scaleGlow;
         public Vector2 oldPosition;
         public Vector2 position;
         public Vector2 velocity;
+        public Vector2 velocityAdd;
+        public Vector2 velocityMul;
         public Texture2D texture;
         public Texture2D textureGlow;
         public float oldRotation;
         public float rotation;
         public float rotationAdd;
+        public float alpha;
+        public float alphaAdd;
         public bool active;
         public bool noGravity;
         public int timeLeft;
         public int timeLeftMax;
         public int extraUpdate;
         public int whoAmI;
+        public string tag;
 
         public Particle() => this.SetDefaults();
 
@@ -38,51 +44,65 @@ namespace CNC.Content
             this.scale = Vector2.One;
             this.scaleAdd = Vector2.Zero;
             this.scaleMul = Vector2.One;
+            this.scaleGlow = Vector2.One;
             this.oldPosition = Vector2.Zero;
             this.position = Vector2.Zero;
             this.velocity = Vector2.Zero;
+            this.velocityAdd = Vector2.Zero;
+            this.velocityMul = Vector2.One;
             this.texture = null;
             this.textureGlow = null;
             this.rotation = 0f;
             this.rotationAdd = 0f;
+            this.alpha = 1f;
+            this.alphaAdd = 0f;
             this.active = false;
             this.noGravity = false;
             this.timeLeft = 0;
             this.timeLeftMax = 0;
             this.extraUpdate = 0;
             this.whoAmI = -1;
+            this.tag = null;
         }
-
-        public virtual void OnSpawn() { }
-
-        public virtual void Update() { }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 offset = default)
         {
             if (!this.active) return;
-            if (this.textureGlow != null)
-                spriteBatch.Draw(
-                    this.textureGlow,
-                    this.position + offset - Main.screenPosition,
-                    null,
-                    this.color,
-                    this.rotation,
-                    this.texture.Size() / 2,
-                    this.scale,
-                    0,
-                    0);
-            if (this.texture != null)
-                spriteBatch.Draw(
-                    this.texture,
-                    this.position + offset - Main.screenPosition,
-                    null,
-                    this.color,
-                    this.rotation,
-                    this.texture.Size() / 2,
-                    this.scale,
-                    0,
-                    0);
+            if (PreDraw(spriteBatch, offset))
+            {
+                if (this.textureGlow != null)
+                    spriteBatch.Draw(
+                        this.textureGlow,
+                        this.position + offset - Main.screenPosition,
+                        null,
+                        this.color * this.alpha,
+                        this.rotation,
+                        this.textureGlow.Size() / 2,
+                        this.scale * this.scaleGlow,
+                        0,
+                        0);
+                if (this.texture != null)
+                    spriteBatch.Draw(
+                        this.texture,
+                        this.position + offset - Main.screenPosition,
+                        null,
+                        this.color * this.alpha,
+                        this.rotation,
+                        this.texture.Size() / 2,
+                        this.scale,
+                        0,
+                        0);
+            }
+            PostDraw(spriteBatch, offset);
         }
+
+        public virtual void OnSpawn() { }
+
+        public virtual bool PreUpdate() => true;
+        public virtual void PostUpdate() { }
+
+        public virtual bool PreDraw(SpriteBatch spriteBatch, Vector2 offset = default) => true;
+        public virtual void PostDraw(SpriteBatch spriteBatch, Vector2 offset = default) { }
 
         public static int NewParticle(Texture2D image, Vector2 pos, Vector2 vel, float rot, int timeLeft, Vector2 scale, Color color, Color light = default, bool noGravity = true, int extraUpdate = 0)
         {
@@ -126,27 +146,33 @@ namespace CNC.Content
             for (int i = 0; i < maxParticles; i++)
             {
                 if (particle[i] == null) particle[i] = new Particle();
-                for (int j = 0; j <= particle[i].extraUpdate; j++) 
-                if (particle[i].active = particle[i].timeLeft-- > 0)
+                for (int j = 0; j <= particle[i].extraUpdate; j++)
                 {
-                    particle[i].oldPosition = particle[i].position;
-                    particle[i].position += particle[i].velocity;
-                    particle[i].rotation += particle[i].rotationAdd;
-                    particle[i].scale += particle[i].scaleAdd;
-                    particle[i].scale *= particle[i].scaleMul;
-                    if (particle[i].scale.X < 0) particle[i].scale.X = 0;
-                    if (particle[i].scale.Y < 0) particle[i].scale.Y = 0;
-                    if (!particle[i].noGravity) particle[i].velocity.Y += .0980f;
-                    if (particle[i].light != Color.Transparent)
+                    if (particle[i].active = particle[i].timeLeft-- > 0)
                     {
-                        Point pos = (particle[i].position / 16f).ToPoint();
-                        Color light = particle[i].light;
-                        float r = light.R * light.A / 255f * particle[i].lightAlpha * (particle[i].scale.X + particle[i].scale.Y) / 2f;
-                        float g = light.G * light.A / 255f * particle[i].lightAlpha * (particle[i].scale.X + particle[i].scale.Y) / 2f;
-                        float b = light.B * light.A / 255f * particle[i].lightAlpha * (particle[i].scale.X + particle[i].scale.Y) / 2f;
-                        Lighting.AddLight(pos.X, pos.Y, r, g, b);
+                        if (particle[i].PreUpdate())
+                        {
+                            particle[i].oldPosition = particle[i].position;
+                            particle[i].position += particle[i].velocity;
+                            particle[i].rotation += particle[i].rotationAdd;
+                            particle[i].scale += particle[i].scaleAdd;
+                            particle[i].scale *= particle[i].scaleMul;
+                            particle[i].velocity = (particle[i].velocity + particle[i].velocityAdd) * particle[i].velocityMul;
+                            if (particle[i].scale.X < 0) particle[i].scale.X = 0;
+                            if (particle[i].scale.Y < 0) particle[i].scale.Y = 0;
+                            if (!particle[i].noGravity) particle[i].velocity.Y += Common.Utils.MyMath.g * .01f;
+                            if (particle[i].light != Color.Transparent)
+                            {
+                                Point pos = (particle[i].position / 16f).ToPoint();
+                                Color light = particle[i].light;
+                                float r = light.R * light.A / 255f * particle[i].lightAlpha * (particle[i].scale.X + particle[i].scale.Y) / 2f;
+                                float g = light.G * light.A / 255f * particle[i].lightAlpha * (particle[i].scale.X + particle[i].scale.Y) / 2f;
+                                float b = light.B * light.A / 255f * particle[i].lightAlpha * (particle[i].scale.X + particle[i].scale.Y) / 2f;
+                                Lighting.AddLight(pos.X, pos.Y, r, g, b);
+                            }
+                        }
+                        particle[i].PostUpdate();
                     }
-                    particle[i].Update();
                 }
             }
         }

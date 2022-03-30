@@ -77,26 +77,28 @@ namespace CNC.Common.Global.NPCs
             return Main.npc[whoAmI];
         }
 
-        public Projectile NewProjectile(float vel, float rot, int type)
-            => NewProjectile(npc, npc.Center, new Vector2(vel), type, npc.damage);
+        public Projectile NewProjectile(float velocity, float velocityRot, int type, float rotation = 0f)
+            => NewProjectile(npc, npc.Center, MyMath.GetXY(velocityRot) * velocity, type, npc.damage, rotation);
 
-        public Projectile NewProjectile(float vel, float rot, int type, float damage)
-            => NewProjectile(npc, npc.Center, MyMath.GetXY(rot) * vel, type, damage);
+        public Projectile NewProjectile(float velocity, float velocityRot, int type, float damage, float rotation = 0f)
+            => NewProjectile(npc, npc.Center, MyMath.GetXY(velocityRot) * velocity, type, damage, rotation);
 
-        public Projectile NewProjectile(Vector2 vel, int type, float damage)
-            => NewProjectile(npc, npc.Center, vel, type, damage);
+        public Projectile NewProjectile(Vector2 velocity, int type, float damage, float rotation = 0f)
+            => NewProjectile(npc, npc.Center, velocity, type, damage, rotation);
 
-        public Projectile NewProjectile(Vector2 pos, Vector2 vel, int type, float damage)
-            => NewProjectile(npc, pos, vel, type, damage);
+        public Projectile NewProjectile(Vector2 position, Vector2 velocity, int type, float damage, float rotation = 0f)
+            => NewProjectile(npc, position, velocity, type, damage, rotation);
 
-        public static Projectile NewProjectile(NPC npc, Vector2 pos, Vector2 vel, int type, float damage)
+        public static Projectile NewProjectile(NPC npc, Vector2 position, Vector2 velocity, int type, float damage, float rotation = 0f)
         {
-            int whoAmI = Projectile.NewProjectile(npc.GetSpawnSourceForNPCFromNPCAI(), pos, vel, type, (int)damage, 0, Main.myPlayer);
-            Main.projectile[whoAmI].Center = pos;
+            int whoAmI = Projectile.NewProjectile(npc.GetSpawnSourceForNPCFromNPCAI(), position, velocity, type, (int)damage, 0, Main.myPlayer);
+            Main.projectile[whoAmI].Center = position;
+            Main.projectile[whoAmI].rotation = rotation;
             Main.projectile[whoAmI].GetGlobalProjectile<ProjectileRelation>().SetParent(npc, true);
             Main.projectile[whoAmI].GetGlobalProjectile<ProjectileRelation>().SetRoot(npc, true);
             if (Main.npc[npc.whoAmI].GetGlobalNPC<NPCRelation>().ChildrenProjectile != null)
                 Main.npc[npc.whoAmI].GetGlobalNPC<NPCRelation>().AddChild(Main.projectile[whoAmI]);
+            if (Main.projectile[whoAmI].ModProjectile != null && (CNCProjectile)Main.projectile[whoAmI].ModProjectile != null) ((CNCProjectile)Main.projectile[whoAmI].ModProjectile).OnSpawn();
             return Main.projectile[whoAmI];
         }
 

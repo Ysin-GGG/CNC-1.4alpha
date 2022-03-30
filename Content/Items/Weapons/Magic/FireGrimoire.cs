@@ -13,7 +13,7 @@ namespace CNC.Content.Items.Weapons.Magic
         public override void ResetDefaults()
         {
             item.width = 24;
-            item.height = 24;
+            item.height = 30;
             item.useTime = 30;
             item.useAnimation = 30;
             item.rare = 3;
@@ -29,6 +29,7 @@ namespace CNC.Content.Items.Weapons.Magic
             item.UseSound = SoundID.DD2_BetsyFireballShot;
             item.shoot = CNCID.Projectile.LegacyObject[CNCID.Projectile.FireBall];
             item.shootSpeed = 16f;
+            staff = true;
             clazz = 32;
         }
 
@@ -37,11 +38,9 @@ namespace CNC.Content.Items.Weapons.Magic
             Projectile projectile = CNCUtils.NewProj(source, position, velocity, type, damage, knockback);
             if (item.GetGlobalItem<InscriptionSettings>().HasInscription(CNCID.Inscription.S_Scorching))
                 projectile.GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().data["level"] = 1;
-            if (item.GetGlobalItem<InscriptionSettings>().HasInscription(CNCID.Inscription.S_Enthusiasm) && Main.rand.Next(100) < ((float)CNCID.Inscription.S_Enthusiasm.Args[0] * 100f))
+            if (item.GetGlobalItem<InscriptionSettings>().HasInscription(CNCID.Inscription.S_Enthusiasm) && Main.rand.Next(100) < ((float)CNCID.Inscription.S_Enthusiasm.Data[0] * 100f))
                 player.AddBuff(CNCID.Buff.LegacyObject[CNCID.Buff.Enthused], 300);
             return false;
         }
-
-        public override Vector2? HoldoutOffset() => Vector2.One;
     }
 }

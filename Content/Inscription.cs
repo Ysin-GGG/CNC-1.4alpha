@@ -17,10 +17,10 @@ namespace CNC.Content
         private string _name;
         public string displayName;//ÃúÎÄÃû
         public string description;//ÃúÎÄÃèÊö
-        public int spellCooldown;
-        public int spellCooldownMax;
-        public object[] Args => _args;
-        private object[] _args = new object[99];
+        public int cooldown;
+        public int cooldownMax;
+        public object[] Data => args;
+        private object[] args = new object[99];
 
         public Inscription() => this.SetDefaults(0, -1);
 
@@ -35,98 +35,100 @@ namespace CNC.Content
                 this._name = "None";
                 this.displayName = "";
                 this.description = "";
-                this.spellCooldown = 0;
-                this.spellCooldownMax = 0;
-                this._args = new object[99];
+                this.cooldown = 0;
+                this.cooldownMax = 0;
+                this.args = new object[0];
                 return;
             }
             this.type = type;
             this.style = style;
             this._name = "Inscription." + CNCID.Inscription.Collection[new Point(type, style)];
-            string[] tt = CNCLocalization.GetText(_name.Replace("Inscription.S_", "S_Inscription.")).Split('|');
+            this._name = this._name.Replace("Inscription.C_", "Inscription.Common.");
+            this._name = this._name.Replace("Inscription.S_", "Inscription.Special.");
+            string[] tt = CNCLocalization.GetText(_name).Split('|');
             this._name = CNCID.Inscription.Collection[new Point(type, style)];
-            this.spellCooldown = 0;
-            this.spellCooldownMax = 0;
+            this.cooldown = 0;
+            this.cooldownMax = 0;
+            this.displayName = tt[0];
+            this.description = tt[1];
             switch (style)
             {
                 case 0:
-                    if (type == 0) _args = new object[] { 0.20f };
-                    if (type == 1) _args = new object[] { 0.25f };
-                    if (type == 2) _args = new object[] { 0.20f };
-                    if (type == 3) _args = new object[] { 0.13f };
-                    if (type == 4) _args = new object[] { 0.20f };
-                    if (type == 5) _args = new object[] { 0.25f };
-                    if (type == 6) _args = new object[] { 0.20f };
-                    if (type == 7) _args = new object[] { 0.20f };
-                    if (type == 8) _args = new object[] { 0.25f };
-                    if (type == 9) _args = new object[] { 0.20f };
-                    if (type == 10) _args = new object[] { 0.15f, 0.35f };
-                    if (type == 11) _args = new object[] { 0.10f };
-                    if (type == 12) _args = new object[] { 0.25f };
-                    if (type == 13) _args = new object[] { 0.20f };
-                    if (type == 14) _args = new object[] { 20 };
-                    if (type == 15) _args = new object[] { };
-                    if (type == 16) _args = new object[] { 0.40f };
-                    if (type == 17) _args = new object[] { 1 };
-                    if (type == 18) _args = new object[] { 0.30f };
-                    if (type == 19) _args = new object[] { 0.15f, };
-                    if (type == 20) _args = new object[] { 0.30f, 0.30f };
-                    if (type == 21) _args = new object[] { 0.27f };
-                    if (type == 22) _args = new object[] { 0.17f };
-                    if (type == 23) _args = new object[] { 0.10f, 0.50f };
-                    if (type == 24) _args = new object[] { 0.35f };
-                    if (type == 25) _args = new object[] { 0.20f };
+                    if (type == 0) { this.args = new object[] { 0.20f }; }
+                    if (type == 1) { this.args = new object[] { 0.25f }; }
+                    if (type == 2) { this.args = new object[] { 0.20f }; }
+                    if (type == 3) { this.args = new object[] { 0.13f }; }
+                    if (type == 4) { this.args = new object[] { 0.20f }; }
+                    if (type == 5) { this.args = new object[] { 0.25f }; }
+                    if (type == 6) { this.args = new object[] { 0.20f }; }
+                    if (type == 7) { this.args = new object[] { 0.20f }; }
+                    if (type == 8) { this.args = new object[] { 0.25f }; }
+                    if (type == 9) { this.args = new object[] { 0.20f }; }
+                    if (type == 10) { this.args = new object[] { 0.15f, 0.35f }; }
+                    if (type == 11) { this.args = new object[] { 0.10f }; }
+                    if (type == 12) { this.args = new object[] { 0.25f }; }
+                    if (type == 13) { this.args = new object[] { 0.20f }; }
+                    if (type == 14) { this.args = new object[] { 20 }; }
+                    if (type == 15) { this.args = new object[] { }; }
+                    if (type == 16) { this.args = new object[] { 0.40f }; }
+                    if (type == 17) { this.args = new object[] { 1 }; }
+                    if (type == 18) { this.args = new object[] { 0.30f }; }
+                    if (type == 19) { this.args = new object[] { 0.15f, }; }
+                    if (type == 20) { this.args = new object[] { 0.30f, 0.30f }; }
+                    if (type == 21) { this.args = new object[] { 0.27f }; }
+                    if (type == 22) { this.args = new object[] { 0.17f }; }
+                    if (type == 23) { this.args = new object[] { 0.10f, 0.50f }; }
+                    if (type == 24) { this.args = new object[] { 0.35f }; }
+                    if (type == 25) { this.args = new object[] { 0.20f }; }
                     break;
                 case CNCID.Item.FireGrimoire:
-                    if (type == 0) _args = new object[] { };
-                    if (type == 1) _args = new object[] { "[damage3=36]" };
-                    if (type == 2) _args = new object[] { 8 };
-                    if (type == 3) _args = new object[] { 0.05f };
+                    if (type == 0) { this.args = new object[] { }; }
+                    if (type == 1) { this.args = new object[] { "[damage3=36]" }; }
+                    if (type == 2) { this.args = new object[] { 8 }; }
+                    if (type == 3) { this.args = new object[] { 0.05f }; }
                     break;
                 case CNCID.Item.IceTooth:
-                    if (type == 0) _args = new object[] { };
-                    if (type == 1) _args = new object[] { };
-                    if (type == 2) _args = new object[] { "[damage3=14]" };
-                    if (type == 3) _args = new object[] { 0.40f };
-                    if (type == 4) _args = new object[] { 20, 9, 3 };
+                    if (type == 0) { this.args = new object[] { }; }
+                    if (type == 1) { this.args = new object[] { }; }
+                    if (type == 2) { this.args = new object[] { "[damage3=14]" }; }
+                    if (type == 3) { this.args = new object[] { 0.40f }; }
+                    if (type == 4) { this.args = new object[] { 20, 9, 3 }; this.SetCooldown(0, 10); }
                     break;
                 case CNCID.Item.Superconductor:
-                    if (type == 0) _args = new object[] { };
-                    if (type == 1) _args = new object[] { "[damage3=36]" };
-                    if (type == 2) _args = new object[] { 0.03f, 10, 4, "[damage3=40]" };
-                    if (type == 3) _args = new object[] { 0.05f };
-                    if (type == 4) _args = new object[] { 1, 5 };
-                    if (type == 5) _args = new object[] { 5 };
+                    if (type == 0) { this.args = new object[] { }; }
+                    if (type == 1) { this.args = new object[] { "[damage3=36]" }; }
+                    if (type == 2) { this.args = new object[] { 0.03f, 10, 4, "[damage3=40]" }; }
+                    if (type == 3) { this.args = new object[] { 0.05f }; }
+                    if (type == 4) { this.args = new object[] { 1, 5 }; }
+                    if (type == 5) { this.args = new object[] { 5 }; }
                     break;
                 case CNCID.Item.ArgenteusClaw:
-                    if (type == 0) _args = new object[] { };
-                    if (type == 1) _args = new object[] { 0.45f, "[damage2=200f]" };
-                    if (type == 2) _args = new object[] { 3, "[damage2=300f]" };
+                    if (type == 0) { this.args = new object[] { }; }
+                    if (type == 1) { this.args = new object[] { 0.45f, "[damage2=200f]" }; }
+                    if (type == 2) { this.args = new object[] { 3, "[damage2=300f]" }; }
                     break;
                 case CNCID.Item.ArgenteusTree:
-                    if (type == 0) _args = new object[] { };
-                    if (type == 1) _args = new object[] { "[damage1=12]" };
-                    if (type == 2) _args = new object[] { 30, 15, "[damage1=80]", "[damage1=100]" };
-                    if (type == 3) _args = new object[] { 6, 8, 0.15f, 0.15f, 10 };
+                    if (type == 0) { this.args = new object[] { }; }
+                    if (type == 1) { this.args = new object[] { "[damage1=12]" }; }
+                    if (type == 2) { this.args = new object[] { 30, 15, "[damage1=80]", "[damage1=100]" }; }
+                    if (type == 3) { this.args = new object[] { 6, 8, 0.15f, 0.15f, 10 }; }
                     break;
                 case CNCID.Item.TheLightOfAuzzsia:
-                    if (type == 0) _args = new object[] { "[damage3=50]" };
-                    if (type == 1) _args = new object[] { };
-                    if (type == 2) _args = new object[] { "[damage3=30]" };
+                    if (type == 0) { this.args = new object[] { "[damage3=50]" }; }
+                    if (type == 1) { this.args = new object[] { }; }
+                    if (type == 2) { this.args = new object[] { "[damage3=30]" }; }
                     break;
                 case CNCID.Item.EmberOfNien:
-                    if (type == 0) _args = new object[] { 0.10f, 1 };
-                    if (type == 1) _args = new object[] { 6, 6 };
-                    if (type == 2) _args = new object[] { 5, 5, 0.10f };
+                    if (type == 0) { this.args = new object[] { 0.10f, 1 }; }
+                    if (type == 1) { this.args = new object[] { 6, 6 }; }
+                    if (type == 2) { this.args = new object[] { 5, 5, 0.10f }; }
                     break;
                 case CNCID.Item.FragmentarySoulDagger:
-                    if (type == 0) _args = new object[] { 10, 8, 8, 2.00f };
-                    if (type == 1) _args = new object[] { 3, 0.10f, 4 };
-                    if (type == 2) _args = new object[] { 6 };
+                    if (type == 0) { this.args = new object[] { 10, 8, 8, 2.00f }; }
+                    if (type == 1) { this.args = new object[] { 3, 0.10f, 4 }; }
+                    if (type == 2) { this.args = new object[] { 6 }; }
                     break;
             }
-            this.displayName = tt[0];
-            this.description = tt[1];
         }
 
         private string GetDesc(object[] args)
@@ -141,9 +143,15 @@ namespace CNC.Content
             return string.Format(this.description, args);
         }
 
-        public string GetTooltip(object[] args = default)
+        public void SetCooldown(int newCooldown = -1, int newCooldownMax = -1)
         {
-            string tt = GetDesc(args == default ? this.Args : args);
+            if (newCooldownMax >= 0) this.cooldownMax = newCooldownMax;
+            if (newCooldown >= 0) this.cooldown = newCooldown;
+        }
+
+        public string GetTooltip(object[] data = default)
+        {
+            string tt = GetDesc(data == default ? this.Data : data);
             return tt;
         }
 

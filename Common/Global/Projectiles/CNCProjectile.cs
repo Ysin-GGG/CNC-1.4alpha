@@ -67,27 +67,28 @@ namespace CNC.Common.Global.Projectiles
             return Main.npc[whoAmI];
         }
 
-        public Projectile NewProjectile(float vel, float rot, int type, float knockback = 0f)
-            => NewProjectile(projectile, projectile.Center, new Vector2(vel), type, projectile.damage);
+        public Projectile NewProjectile(float velocity, float velocityRot, int type, float knockback = 0f, float rotation = 0f)
+            => NewProjectile(projectile, projectile.Center, MyMath.GetXY(velocityRot) * velocity, type, projectile.damage, rotation);
 
-        public Projectile NewProjectile(float vel, float rot, int type, float damage, float knockback = 0f)
-            => NewProjectile(projectile, projectile.Center, MyMath.GetXY(rot) * vel, type, damage);
+        public Projectile NewProjectile(float velocity, float velocityRot, int type, float damage, float knockback = 0f, float rotation = 0f)
+            => NewProjectile(projectile, projectile.Center, MyMath.GetXY(velocityRot) * velocity, type, damage, rotation);
 
-        public Projectile NewProjectile(Vector2 vel, int type, float damage, float knockback = 0f)
-            => NewProjectile(projectile, projectile.Center, vel, type, damage);
+        public Projectile NewProjectile(Vector2 velocity, int type, float damage, float knockback = 0f, float rotation = 0f)
+            => NewProjectile(projectile, projectile.Center, velocity, type, damage, rotation);
 
-        public Projectile NewProjectile(Vector2 pos, Vector2 vel, int type, float damage, float knockback = 0f)
-            => NewProjectile(projectile, pos, vel, type, damage);
+        public Projectile NewProjectile(Vector2 position, Vector2 velocity, int type, float damage, float knockback = 0f, float rotation = 0f)
+            => NewProjectile(projectile, position, velocity, type, damage, rotation);
 
-        public Projectile NewProjectile(Projectile projectile, Vector2 pos, Vector2 vel, int type, float damage, float knockBack = 0f)
+        public Projectile NewProjectile(Projectile projectile, Vector2 position, Vector2 velocity, int type, float damage, float knockBack = 0f, float rotation = 0f)
         {
-            int whoAmI = Projectile.NewProjectile(projectile.GetProjectileSource_FromThis(), pos, vel, type, (int)damage, knockBack, projectile.owner);
-            Main.projectile[whoAmI].Center = pos;
+            int whoAmI = Projectile.NewProjectile(projectile.GetProjectileSource_FromThis(), position, velocity, type, (int)damage, knockBack, projectile.owner);
+            Main.projectile[whoAmI].Center = position;
+            Main.projectile[whoAmI].rotation = rotation;
             Main.projectile[whoAmI].GetGlobalProjectile<ProjectileRelation>().SetParent(projectile, true);
             Main.projectile[whoAmI].GetGlobalProjectile<ProjectileRelation>().SetRoot(projectile, true);
             if (Main.projectile[projectile.whoAmI].GetGlobalProjectile<ProjectileRelation>().ChildrenProjectile != null)
                 Main.projectile[projectile.whoAmI].GetGlobalProjectile<ProjectileRelation>().AddChild(Main.projectile[whoAmI]);
-            this.OnSpawn();
+            if (Main.projectile[whoAmI].ModProjectile != null && (CNCProjectile)Main.projectile[whoAmI].ModProjectile != null) ((CNCProjectile)Main.projectile[whoAmI].ModProjectile).OnSpawn();
             return Main.projectile[whoAmI];
         }
 

@@ -7,6 +7,7 @@ using Terraria.Audio;
 using Terraria.ModLoader;
 using CNC.Common.Utils;
 using CNC.Common.Global.Projectiles;
+using System.Collections.Generic;
 
 namespace CNC.Content.Projectiles.FireGrimoire
 {
@@ -48,7 +49,7 @@ namespace CNC.Content.Projectiles.FireGrimoire
 
         public override void AI()
         {
-            AI001_RollingMissile(projectile, true, true, 90f);
+            AI001_RollingMissile(projectile, false, true, 90f);
             Anim001_Loop(projectile, tpf);
             UpdateOldData(projectile, projectile.velocity);
             projectile.velocity = projectile.oldVelocity;
@@ -77,7 +78,7 @@ namespace CNC.Content.Projectiles.FireGrimoire
                 dust.noGravity = true;
                 dust.velocity = projectile.velocity / 8f;
             }
-            Projectile proj = this.NewProjectile(0, MyMath.deg01 * Main.rand.Next(0, 359), CNCID.Projectile.LegacyObject[CNCID.Projectile.FireBallExplosion], Inscription.JustGetDamage(projectile.damage, (string)CNCID.Inscription.S_Incinerating.Args[0]), projectile.knockBack);
+            Projectile proj = this.NewProjectile(0f, 0f, CNCID.Projectile.LegacyObject[CNCID.Projectile.FireBallExplosion], Inscription.JustGetDamage(projectile.damage, (string)CNCID.Inscription.S_Incinerating.Data[0]), projectile.knockBack, MyMath.deg01 * Main.rand.Next(0, 359));
             proj.GetGlobalProjectile<AllProjectile>().data["level"] = level;
             proj.owner = this.projectile.owner;
             SoundEngine.PlaySound(SoundID.Item100, projectile.position);
