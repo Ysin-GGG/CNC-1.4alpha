@@ -42,20 +42,34 @@ namespace CNC.Common.Global.NPCs
 
         public override void FindFrame(NPC npc, int frameHeight)
         {
-            if (npc.GetGlobalNPC<AllNPC>().buff[CNCID.Buff.Glacier]) npc.frameCounter = 0;
+            if (npc.GetGlobalNPC<AllNPC>().buff[CNCID.Buff.Glacier] && !npc.boss) npc.frameCounter = 0;
         }
 
         public override bool PreAI(NPC npc)
         {
-            if (npc.GetGlobalNPC<AllNPC>().buff[CNCID.Buff.Glacier])
+            if (npc.GetGlobalNPC<AllNPC>().buff[CNCID.Buff.Glacier] && !npc.boss)
             {
-                npc.position = npc.oldPosition;
-                //npc.velocity.X = 0;
-                //npc.noGravity = false;
-                //npc.color = new Color(96, 129, 192);
+                npc.position = npc.oldPosition.ToPoint().ToVector2();
+                npc.velocity = npc.oldVelocity.ToPoint().ToVector2();
+                npc.CheckActive();
+                npc.checkDead();
                 return false;
             }
             return base.PreAI(npc);
+        }
+
+        public override void DrawEffects(NPC npc, ref Color drawColor)
+        {
+            if (npc.GetGlobalNPC<AllNPC>().buff[CNCID.Buff.Glacier] && !npc.boss)
+            {
+                Texture2D frozen = Terraria.GameContent.TextureAssets.Frozen.Value;
+                float scale = 1f;
+                Vector2 size = npc.frame.Size();
+                if (size.X > frozen.Width * scale - 16f) scale = size.X / (frozen.Width * scale - 16f);
+                if (size.Y > frozen.Height * scale - 16f) scale = size.Y / (frozen.Height * scale - 16f);
+                Vector2 pos = npc.Center - frozen.Size() * scale / 2f - Main.screenPosition;
+                Main.spriteBatch.Draw(frozen, pos, null, Color.White * .5f, 0, Vector2.Zero, scale, 0, 0);
+            }
         }
     }
 }

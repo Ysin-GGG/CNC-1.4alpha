@@ -40,12 +40,12 @@ namespace CNC.Content.Projectiles.IceTooth
             int buff1 = CNCID.Buff.LegacyObject[CNCID.Buff.Gelid];
             int buff2 = CNCID.Buff.LegacyObject[CNCID.Buff.Glacier];
             target.AddBuff(buff1, 60 * 15);
-            if (this.stage == 1) target.AddBuff(buff2, 60 * 3 + projectile.timeLeft); 
+            if (this.stage == 1 && !target.HasBuff(buff2)) target.AddBuff(buff2, 60 * 3 + projectile.timeLeft - 1); 
         }
 
         public override void OnSpawn()
         {
-            projectile.rotation = 0f;// Main.rand.NextFloat(MyMath.pi2);
+            projectile.rotation = Main.rand.NextFloat(MyMath.pi2);
             projectile.Center = center = projectile.position;
         }
 
@@ -56,7 +56,7 @@ namespace CNC.Content.Projectiles.IceTooth
                 projectile.scale = 0f;
                 if (projectile.timeLeft <= 1)
                 {
-                    projectile.timeLeft = 10;
+                    projectile.timeLeft = 5;
                     this.stage = 1;
                 }
             }
@@ -79,8 +79,10 @@ namespace CNC.Content.Projectiles.IceTooth
                     ParticleRenderer.particle[idx].velocityMul = new Vector2(.975f);
                 }
                 projectile.friendly = true;
-                projectile.scale = (10 - projectile.timeLeft) / 10f;
+                projectile.scale = (6 - projectile.timeLeft) / 5f;
                 projectile.Size = Vector2.One * 14 * 16 * projectile.scale * 2;
+                if (projectile.timeLeft == 2)
+                    projectile.Size = Vector2.One * 14 * 16 * 2;
                 if (projectile.timeLeft <= 1)
                 {
                     projectile.friendly = false;
@@ -91,7 +93,8 @@ namespace CNC.Content.Projectiles.IceTooth
             if (this.stage == 2)//¹Ì¶¨
             {
                 alpha = alpha < 45 ? alpha + 1 : 45;
-                projectile.scale = 1f; 
+                projectile.scale = 1f;
+                projectile.Size = Vector2.One * 14 * 16 * 2;
                 if (projectile.timeLeft == 60) SoundEngine.PlaySound(SoundID.Item27, projectile.Center);
                 if (projectile.timeLeft <= 1)
                 {
@@ -112,7 +115,7 @@ namespace CNC.Content.Projectiles.IceTooth
                                      false
                                      );
                         ParticleRenderer.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.0005f, .0010f));
-                        ParticleRenderer.particle[idx].rotationAdd = Main.rand.NextFloat(0, MyMath.deg30 / 10f);
+                        ParticleRenderer.particle[idx].rotation = Main.rand.NextFloat(0, MyMath.deg30 / 2);
                     }
                     for (int i = 0; i < 90; i++)
                     {
@@ -164,14 +167,14 @@ namespace CNC.Content.Projectiles.IceTooth
             Vector2 size2 = new Vector2(320) * projectile.scale;
             Vector2 size3 = new Vector2(448) * projectile.scale;
             Vector2 pos1 = projectile.Center - size1 / 2 - Main.screenPosition;
-            Vector2 pos2 = projectile.Center - size2 / 2 - Main.screenPosition;
+            Vector2 pos2 = projectile.Center - Main.screenPosition;
             Vector2 pos3 = projectile.Center - size3 / 2 - Main.screenPosition;
             Rectangle rect1 = new Rectangle((int)pos1.X, (int)pos1.Y, (int)size1.X, (int)size1.Y);
             Rectangle rect2 = new Rectangle((int)pos2.X, (int)pos2.Y, (int)size2.X, (int)size2.Y);
             Rectangle rect3 = new Rectangle((int)pos3.X, (int)pos3.Y, (int)size3.X, (int)size3.Y);
             Color color = new Color(112, 196, 255, 0);
             if (stage == 2) Main.spriteBatch.Draw(image1, rect1, color);
-            if (stage == 2 && projectile.timeLeft < 60) Main.spriteBatch.Draw(image2, rect2, color);//, null, color, projectile.rotation, rect2.Center.ToVector2(), 0, 0);
+            if (stage == 2 && projectile.timeLeft < 60) Main.spriteBatch.Draw(image2, rect2, null, color, projectile.rotation, image2.Size() / 2f, 0, 0);
             if (stage >= 1) Main.spriteBatch.Draw(image3, rect3, color * ((50 - alpha) / 50f));
             return false;
         }

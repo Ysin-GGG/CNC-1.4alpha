@@ -35,5 +35,19 @@ namespace CNC.Common.Utils
         public static float pow(double x, double a) => (float)Math.Pow(x, a);
         public static float GetZ(double x, double y) => (float)Math.Sqrt(x * x + y * y);
         public static Vector2 GetXY(double degree) => new Vector2(cos(degree), sin(degree));
+        public static int Lerp(int value1, int value2, float percentage) => (int)(value1 * (1f - MyMath.Clamp(percentage, 0, 1)) + value2 * MyMath.Clamp(percentage, 0, 1));
+        public static float Lerp(float value1, float value2, float percentage) => (float)(value1 * (1f - MyMath.Clamp(percentage, 0, 1)) + value2 * MyMath.Clamp(percentage, 0, 1));
+        public static Point Lerp(Point value1, Point value2, float percentage) => MyMath.Lerp(value1, value2, new Vector2(percentage));
+        public static Vector2 Lerp(Vector2 value1, Vector2 value2, float percentage) => MyMath.Lerp(value1, value2, new Vector2(percentage));
+        public static Point Lerp(Point value1, Point value2, Vector2 percentage) => new Point((int)MyMath.Lerp(value1.X, value2.X, percentage.X), (int)MyMath.Lerp(value1.X, value2.X, percentage.Y));
+        public static Vector2 Lerp(Vector2 value1, Vector2 value2, Vector2 percentage) => new Vector2((float)MyMath.Lerp(value1.X, value2.X, percentage.X), (float)MyMath.Lerp(value1.X, value2.X, percentage.Y));
+        public static int Clamp(int value, int min, int max) => Math.Min(Math.Max(min, value), max);
+        public static int Clamp(int value, int min, int max, out int extra) => MyMath.Clamp((extra = value - (value = MyMath.Clamp(value, min, max))) + value, min, max);
+        public static float Clamp(float value, float min, float max) => Math.Min(Math.Max(min, value), max);
+        public static float Clamp(float value, float min, float max, out float extra) => MyMath.Clamp((extra = value - (value = MyMath.Clamp(value, min, max))) + value, min, max);
+        public static Point Clamp(Point value, Point min, Point max) => new Point(MyMath.Clamp(value.X, min.X, max.X), MyMath.Clamp(value.Y, min.Y, max.Y));
+        public static Point Clamp(Point value, Point min, Point max, out Point extra) => MyMath.Clamp((extra = value - (value = MyMath.Clamp(value, min, max))) + value, min, max);
+        public static Vector2 Clamp(Vector2 value, Vector2 min, Vector2 max) => new Vector2(MyMath.Clamp(value.X, min.X, max.X), MyMath.Clamp(value.Y, min.Y, max.Y));
+        public static Vector2 Clamp(Vector2 value, Vector2 min, Vector2 max, out Vector2 extra) => MyMath.Clamp((extra = value - (value = MyMath.Clamp(value, min, max))) + value, min, max);
     }
 }

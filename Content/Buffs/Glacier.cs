@@ -52,7 +52,7 @@ namespace CNC.Content.Buffs
 
         public override void Update(NPC target, AllNPC gt, ref int index)
         {
-            target.GetGlobalNPC<AllNPC>().buff[CNCID.Buff.Glacier] = true;
+            if(!target.boss) target.GetGlobalNPC<AllNPC>().buff[CNCID.Buff.Glacier] = true;
         }
     }
 }

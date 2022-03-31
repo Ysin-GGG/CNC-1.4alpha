@@ -67,6 +67,7 @@ namespace CNC.Content.UI.Clone
             GetImage("Power_Fill"),
             GetImage("Durability_Fill"),
             GetImage("Blessing_Fill"),
+            GetImage("Sanity_Fill"),
             GetImage("Phantom_Fill"),
         };
 
@@ -225,9 +226,20 @@ namespace CNC.Content.UI.Clone
                 fillExtra.flash = fillExtra.progress <= .2;
                 arg = (int)modPlayer.clazz_Blessing + "/" + (int)modPlayer.clazz_BlessingMax;
             }
-            else if (modPlayer.clazz == CNCID.Clazz.Assassin)
+            else if (modPlayer.clazz == CNCID.Clazz.Wizard)
             {
                 fillExtra.fill = img[14];
+                fillExtra.value = modPlayer.clazz_Sanity;
+                fillExtra.valueMax = modPlayer.clazz_SanityMax;
+                fillExtra.flash = fillExtra.progress < .5f;
+                if (fillExtra.progress < .50f) fillExtra.flashSpeed = .05f;
+                if (fillExtra.progress < .25f) fillExtra.flashSpeed = .03f;
+                if (fillExtra.progress < .05f) fillExtra.flashSpeed = .01f;
+                arg = Math.Round(modPlayer.clazz_Sanity, 1).ToString() + "/" + Math.Round(modPlayer.clazz_SanityMax, 1).ToString();
+            }
+            else if (modPlayer.clazz == CNCID.Clazz.Assassin)
+            {
+                fillExtra.fill = img[15];
                 fillExtra.value = modPlayer.clazz_Phantom;
                 fillExtra.valueMax = modPlayer.clazz_PhantomMax;
                 fillExtra.flash = fillExtra.progress == 1 || modPlayer.clazz_PhantomState;

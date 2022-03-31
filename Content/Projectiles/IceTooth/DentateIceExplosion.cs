@@ -14,8 +14,8 @@ namespace CNC.Content.Projectiles.IceTooth
 {
     public class DentateIceExplosion : CNCProjectile
     {
-        public int level => data.ContainsKey("level") ? (int)data["level"] : 0;
         public int target => data.ContainsKey("target") ? (int)data["target"] : -1;
+        public bool frozen => data.ContainsKey("frozen") ? (bool)data["frozen"] : false;
         private int stage = 0;
         private const int tpf = 3;//Tick Per Frame
 
@@ -23,8 +23,8 @@ namespace CNC.Content.Projectiles.IceTooth
 
         public override void ResetDefaults()
         {
-            data["level"] = 0;
             data["target"] = -1;
+            data["frozen"] = false;
             projectile.width = 58;
             projectile.height = 50;
             projectile.timeLeft = 45;
@@ -42,11 +42,7 @@ namespace CNC.Content.Projectiles.IceTooth
         {
             int buff1 = CNCID.Buff.LegacyObject[CNCID.Buff.Gelid];
             int buff2 = CNCID.Buff.LegacyObject[CNCID.Buff.Glacier];
-            if (target.HasBuff(buff1) && Main.rand.Next(9) == 0 && level > 1)
-            {
-                target.AddBuff(buff1, 0);
-                target.AddBuff(buff2, 90);
-            }
+            if (target.HasBuff(buff1) && !target.HasBuff(buff2) && Main.rand.Next(10) == 0 && this.frozen) target.AddBuff(buff2, 90);
             else target.AddBuff(buff1, 300);
         }
 

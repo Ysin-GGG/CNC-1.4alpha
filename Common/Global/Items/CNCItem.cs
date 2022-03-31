@@ -11,6 +11,7 @@ using Terraria.Localization;
 using Terraria.GameContent.Creative;
 using CNC.Common.Utils;
 using CNC.Common.Localization;
+using CNC.Common.Global.Players;
 
 namespace CNC.Common.Global.Items
 {
@@ -24,8 +25,46 @@ namespace CNC.Common.Global.Items
         protected Color n => new Color(64, 64, 64, 255);
         
         public byte clazz { get => allItem.clazz; set => allItem.clazz = value; }
-
         public bool staff { get => Item.staff[Type]; set => Item.staff[Type] = value; }
+
+        public bool ConsumeSanity(Player player, int amount, float ignoreCost = 0, bool? convert = null)
+        {
+            ignoreCost = MyMath.Clamp(ignoreCost, 0, 1);
+            ClassesSettings modPlayer = player.GetModPlayer<ClassesSettings>();
+            float value = modPlayer.clazz_Sanity;
+            float max = modPlayer.clazz_SanityMax;
+            float add = modPlayer.clazz_SanityCostAdd;
+            float mul = modPlayer.clazz_SanityCostMul;
+            float damage = 0;
+            float newValue = MyMath.Clamp(value - ((amount + amount * MyMath.Lerp(add, 0, ignoreCost)) * MyMath.Lerp(mul, 1, ignoreCost)), 0, max, out damage);
+            damage *= -1;
+            if ((convert ?? true) || (bool)convert)//前面的true要改成判定有无某个饰品
+            {
+                if (modPlayer.clazz_SanityLethal || (!modPlayer.clazz_SanityLethal && damage < player.statLife))
+                {
+                    player.statLife -= (int)(damage * modPlayer.clazz_SanityRatioToLife);
+                    player.lifeRegenTime = 0;
+                    modPlayer.clazz_Sanity = newValue;
+                    if (damage > 0) CombatText.NewText(player.getRect(), CombatText.LifeRegen, (int)(damage * modPlayer.clazz_SanityRatioToLife), false, true);
+                    if (player.statLife <= 0 && player.whoAmI == Const.me)
+                    {
+                        string tt = CNCLocalization.GetText("DeathText.LostSanity");
+                        tt = tt.Replace("[player]", player.name);
+                        tt = tt.Replace("[Player]", player.name);
+                        player.KillMe(Terraria.DataStructures.PlayerDeathReason.ByCustomReason(tt), int.MaxValue, player.direction);
+                    }
+                    return true;
+                }
+                return false;
+            }
+            else if (amount <= value)
+            {
+                if (damage <= 0) modPlayer.clazz_Sanity = newValue;
+                return damage <= 0;
+            }
+            return false;
+        }
+
         public virtual string[] attributeKeys => new string[0];
         public virtual int countFrame => 1;
         public virtual int ticksPerFrame => 30;

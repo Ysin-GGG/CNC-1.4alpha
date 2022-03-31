@@ -90,6 +90,22 @@ namespace CNC.Common.Global.Items
 
         public bool HasInscription(Inscription inscription) => this._inscription1.Contains(inscription);
 
+        public void SetInscriptionCooldown(Inscription inscription, int newCooldown = -1, int newCooldownMax = -1)
+        {
+            for (int i = 0; i < this._inscription1.Count; i++)
+                if (this._inscription1[i].type == inscription.type && this._inscription1[i].style == inscription.style)
+                    this._inscription1[i].SetCooldown(newCooldown, newCooldownMax);
+        }
+
+        public bool GetInscriptionCooldown(Inscription inscription)
+        {
+            bool flag = false;
+            for (int i = 0; i < this._inscription1.Count; i++)
+                if (this._inscription1[i].type == inscription.type && this._inscription1[i].style == inscription.style)
+                    flag = this._inscription1[i].cooldown <= 0;
+            return flag;
+        }
+
         public void SetInscription(int index, Inscription newInscription)
         {
             if (newInscription != null)
@@ -310,6 +326,8 @@ namespace CNC.Common.Global.Items
                     if (itemSettings.inscription[i].cooldown > 0)
                         itemSettings.inscription[i].cooldown--;
         }
+
+    
 
         public class InscriptionSystem : ModPlayer
         {

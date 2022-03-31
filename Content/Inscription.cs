@@ -92,7 +92,7 @@ namespace CNC.Content
                     if (type == 1) { this.args = new object[] { }; }
                     if (type == 2) { this.args = new object[] { "[damage3=14]" }; }
                     if (type == 3) { this.args = new object[] { 0.40f }; }
-                    if (type == 4) { this.args = new object[] { 20, 9, 3 }; this.SetCooldown(0, 10); }
+                    if (type == 4) { this.args = new object[] { 10, 14, "[damage3=80]", 15, 10 }; this.SetCooldown(0, 600); }
                     break;
                 case CNCID.Item.Superconductor:
                     if (type == 0) { this.args = new object[] { }; }
@@ -147,6 +147,7 @@ namespace CNC.Content
         {
             if (newCooldownMax >= 0) this.cooldownMax = newCooldownMax;
             if (newCooldown >= 0) this.cooldown = newCooldown;
+            else this.cooldown = this.cooldownMax;
         }
 
         public string GetTooltip(object[] data = default)
@@ -239,12 +240,52 @@ namespace CNC.Content
 
         public static int JustGetDamage(int originalDamage, string arg)
         {
+            Player p = Main.LocalPlayer;
+            InscriptionPlayer ip = p.GetModPlayer<InscriptionPlayer>();
+            float[] damageAdd = new float[]
+            {
+                    p.GetDamage(DamageClass.Generic).Additive,
+                    p.GetDamage(DamageClass.Melee).Additive,
+                    p.GetDamage(DamageClass.Ranged).Additive,
+                    p.GetDamage(DamageClass.Magic).Additive,
+                    p.GetDamage(DamageClass.Summon).Additive,
+                    p.GetDamage(DamageClass.Throwing).Additive,
+            };
+            float[] damageMul = new float[]
+            {
+                    p.GetDamage(DamageClass.Generic).Multiplicative,
+                    p.GetDamage(DamageClass.Melee).Multiplicative,
+                    p.GetDamage(DamageClass.Ranged).Multiplicative,
+                    p.GetDamage(DamageClass.Magic).Multiplicative,
+                    p.GetDamage(DamageClass.Summon).Multiplicative,
+                    p.GetDamage(DamageClass.Throwing).Multiplicative,
+            };
+            Color[] damageColor = new Color[]
+            {
+                    CNCUtils.AccurateColor(0  ,0  ,0  ,0,true),
+                    CNCUtils.AccurateColor(217,60 ,60 ,0,true),
+                    CNCUtils.AccurateColor(67 ,230,57 ,0,true),
+                    CNCUtils.AccurateColor(53 ,157,255,0,true),
+                    CNCUtils.AccurateColor(224,44 ,230,0,true),
+                    CNCUtils.AccurateColor(255,255,255,0,true),
+                    CNCUtils.AccurateColor(255,196,85 ,0,true),
+                    CNCUtils.AccurateColor(179,175,50 ,0,true),
+                    CNCUtils.AccurateColor(139,29 ,242,0,true),
+            };
+            int type = 0;
+            arg = arg.Replace("[Damage", "[damage");
+            if (arg.IndexOf("[damage") < 0) return 0;
+            int _begin = arg.IndexOf("[damage");
+            int _end = _begin + arg.Substring(_begin).IndexOf("=");
+            for (int j = _begin + "[damage".Length; j < _end; j++) if ('0' <= arg[j] && arg[j] <= '9') type = type * 10 + arg[j] - '0';
             int damage = 0;
             int begin = arg.IndexOf('=');
             int end = arg.IndexOf(']');
             for (int j = begin; j < end; j++) if ('0' <= arg[j] && arg[j] <= '9') damage = damage * 10 + arg[j] - '0';
             if (arg[end - 1] == 'f') damage = (int)(originalDamage * (damage * .01f));
-            return damage;
+            float basicDamage = (damage + (damage * ip.spellDamageAdd)) * ip.spellDamageMul;
+            float extraDamage = basicDamage * (damageAdd[0] + damageAdd[type] - 2) * (damageMul[0] * damageMul[type]);
+            return (int)(basicDamage + extraDamage);
         }
 
         public static string ColorDamage(int basicDamage, int extraDamage, Color color)

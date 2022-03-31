@@ -133,6 +133,10 @@ Mods: {
 			MovementSpeed: Movement Speed
 		}
 
+		DeathText: {
+			LostSanity: \0[player] lost the mind
+		}
+
 		NPC: {
 			TranquilityPixie: Tranquility Pixie
 			PhantomBat: Phantom Bat
@@ -216,15 +220,15 @@ Mods: {
 		}
 
 		ClassPreview: {
-			Barbarian: \0{$Mods.CNC.Class.Barbarian}: New [Rage] Ability\n\n[Resentment] Talent: \n*When taken damage from enemies or dealing damage to enemies, gains 1 [Rage] stack, this talent can be triggered once every 0.4s\n*While in possession of the maximum [Rage] stacks, enters [Wrath], and [Rage] stacks begin to lose 3 per second\n*While in [Wrath], exits [Wrath] and enters [Cowardice] for 5s if your [Rage] stacks less than 5\n\n[Wrath] State: \n*20% increased attack and movement speed\n*10% increased damage\n\n[Cowardice] State: \n*20% decreased attack and movement speed\n*10% decreased damage\n*Cannot gains any [Rage] stacks
+			Barbarian: \0{$Mods.CNC.Class.Barbarian}: New [Fury] Ability\n\n[Resentment] Talent: \n*When taken damage from enemies or dealing damage to enemies, gains 1 [Fury] stack, this talent can be triggered once every 0.4s\n*While in possession of the maximum [Fury] stacks, enters [Wrath], and [Fury] stacks begin to lose 3 per second\n*While in [Wrath], exits [Wrath] and enters [Cowardice] for 5s if your [Fury] stacks less than 5\n\n[Wrath] State: \n*20% increased attack and movement speed\n*10% increased damage\n\n[Cowardice] State: \n*20% decreased attack and movement speed\n*10% decreased damage\n*Cannot gains any [Fury] stacks
 			Defender: \0
-			Crusader: \0{$Mods.CNC.Class.Crusader}: New [Blessing] Ability\n\nEquipping a faith emblem to trigger a [Faith] talent, [Blessing] stacks will restore continuously\nWhen [Blessing] stacks less than 20%, enters [Blasphemy]\n\n[Fanatic Faith] Talent: \n*Increases melee damage by [Blessing] stacks\n\n[Divine Faith] Talent: \n*Increases magic damage by [Blessing] stacks\n\n[Blasphemy] State: \n*20% decreased movement speed and dealt damage\n*10% increased taken damage
-			Ranger: \0{$Mods.CNC.Class.Ranger}: New [Power] Ability\n\n[Vicinity Ineptitude] Talent: \n*When any enemies close to, enters [Fluster]\n\n[Power Accumulation] Talent: \n*Increases arrow damage and critical strike chance by [Power] stacks, and shooting will exhaust [Power] stacks\n*[Power] stacks will restore continuously, its initial full restoring time is 4s\n*While in possession of the maximum [Power] stacks, increases arrow damage by 60% and increases arrow critial sprike chance by 30% currently\n\n[Fluster] State: \n*30% decreased arrow damage\n*10% decreased arrow critical strike chance
+			Crusader: \0{$Mods.CNC.Class.Crusader}: New [Divine Energy] Ability\n\nEquipping a faith emblem to trigger a [Faith] talent, [Divine Energy] stacks will restore continuously\nWhen [Divine Energy] stacks less than 20%, enters [Blasphemy]\n\n[Fanatic Faith] Talent: \n*Increases melee damage by [Divine Energy] stacks\n\n[Divine Faith] Talent: \n*Increases magic damage by [Divine Energy] stacks\n\n[Blasphemy] State: \n*20% decreased movement speed and dealt damage\n*10% increased taken damage
+			Ranger: \0{$Mods.CNC.Class.Ranger}: New [Bow Power] Ability\n\n[Vicinity Ineptitude] Talent: \n*When any enemies close to, enters [Fluster]\n\n[Power Accumulation] Talent: \n*Increases arrow damage and critical strike chance by [Bow Power] stacks, and shooting will exhaust [Bow Power] stacks\n*[Bow Power] stacks will restore continuously, its initial full restoring time is 4s\n*While in possession of the maximum [Bow Power] stacks, increases arrow damage by 60% and increases arrow critial sprike chance by 30% currently\n\n[Fluster] State: \n*30% decreased arrow damage\n*10% decreased arrow critical strike chance
 			Gunman: \0
 			Thrower: \0
 			Musketeer: \0{$Mods.CNC.Class.Musketeer}: New [Durability] Ability\n\nSpends some time restoring [Durability] stacks when [Durability] stacks is exhausted\nPresses Class Key to enter or exit [Restoring]\n\n[Bullet Energy] Talent: \n*Requires 1 [Durability] stack every shooting, \n*Counts restoring time according to weapon use time when shooting\n\n[Precision Strike] Talent:\n*Increases critial strike chance by 10%\n*Increases movement speed by 15%\n*Increases dealt damage by 25% to enemies that life more than 75%\n\n[Restoring] State: \n*35% decreased movement speed\n*20% increased taken damage\n*If [Durability] stacks is less than 35%, cannot exit this state or shooting
-			Cleric: \0{$Mods.CNC.Class.Cleric}: New [Blessing] Ability\n\nEquipping a faith emblem to trigger a [Faith] talent, [Blessing] stacks will restore continuously\nWhen [Blessing] stacks less than 20%, enters [Blasphemy]\n\n[Angelic Faith] Talent: \n*Increases regen amount by [Blessing] stacks\n\n[Divine Faith] Talent: \n*Increases magic damage by [Blessing] stacks\n\n[Blasphemy] State: \n*20% decreased movement speed and dealt damage\n*10% increased taken damage
-			Wizard: \0
+			Cleric: \0{$Mods.CNC.Class.Cleric}: New [Divine Energy] Ability\n\nEquipping a faith emblem to trigger a [Faith] talent, [Divine Energy] stacks will restore continuously\nWhen [Divine Energy] stacks less than 20%, enters [Blasphemy]\n\n[Angelic Faith] Talent: \n*Increases regen amount by [Divine Energy] stacks\n\n[Divine Faith] Talent: \n*Increases magic damage by [Divine Energy] stacks\n\n[Blasphemy] State: \n*20% decreased movement speed and dealt damage\n*10% increased taken damage
+			Wizard: \0{$Mods.CNC.Class.Wizard}: New [Spell Mana] Ability\n\n法力空虚：魔力容量在（100%-85%）时，暴击率+10%，伤害+15%，法术冷却时间-30%\n魔力容量（85%-50%）时，法力恢复速度+30%\n魔力容量小于50%时，受到伤害增加10%，法力恢复速度-25%\n魔力容量小于25%时，造成伤害-10%，法力恢复速度-50%\n魔力容量小于5%时，造成伤害-20%，移速-30%，受到伤害+10%,并得到[法力虚无]\n\n[法力虚无]：每秒受到10点伤害
 			SpellBreaker: \0
 			Druid: \0
 			Shaman: \0
@@ -234,15 +238,15 @@ Mods: {
 		}
 
 		ClassAbility: {
-			Barbarian: Rage: {0}
+			Barbarian: Fury: {0}
 			#Defender: \0
-			Crusader: Blessing: {0}
-			Ranger: Power: {0}
+			Crusader: Divine Energy: {0}
+			Ranger: Bow Power: {0}
 			#Gunman: \0
 			#Thrower: \0
 			Musketeer: Durability: {0}
-			Cleric: Blessing: {0}
-			#Wizard: \0
+			Cleric: Divine Energy: {0}
+			Wizard: Spell Mana: {0}
 			#SpellBreaker: \0
 			#Druid: \0
 			#Shaman: \0
@@ -307,7 +311,7 @@ Mods: {
 				Glacier: Glacier|Your attacks may freeze your targets when strikes
 				Iceflake: Iceflake|Generates an extra explosion, and deals {0} AoE magic damage
 				Shattering: Shattering|冰弹对冻结的敌人造成的魔法伤害增加{0}
-				FrostWave: Frost Wave|右键每秒消耗{0}点魔力不断构建扩张性的寒气，你半径{1}格内的敌人将持续减速且受到{2}s冻结，被冻结的目标一段时间内不会再被冻结
+				FrostWave: Frost Wave|右键消耗{0}点咒能，爆发出一阵扩张性的寒气，冻结你半径{1}格内的敌人并造成{2}魔法伤害，凝结寒气破碎时再次造成伤害并施加{3}s减速
 				Charging: Charging|Shoots a lightning missile
 				SpellLightningChain: Spell Lightning Chain|Right click to shoot a lightning chain, and attacks {0} targets, dealing {1} magic damage
 				ArcaneOverload: ArcaneOverload|Increases magic damage by {0} when strikes targets, it will be cleared when increased to {1}, and shoots a overloaded missile next time, dealing {2} AoE magic damage {3} times;

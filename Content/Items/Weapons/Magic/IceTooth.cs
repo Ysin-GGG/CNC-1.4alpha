@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -10,7 +11,8 @@ namespace CNC.Content.Items.Weapons.Magic
 {
     public class IceTooth : CNCItem
     {
-        public bool FrostWaveEnable => item.GetGlobalItem<InscriptionSettings>().HasInscription(CNCID.Inscription.S_FrostWave);
+        public InscriptionSettings modItem => item.GetGlobalItem<InscriptionSettings>();
+        public bool FrostWaveEnable => modItem.HasInscription(CNCID.Inscription.S_FrostWave) && modItem.GetInscriptionCooldown(CNCID.Inscription.S_FrostWave);
 
         public override void ResetDefaults()
         {
@@ -39,40 +41,46 @@ namespace CNC.Content.Items.Weapons.Magic
         {
             if (player.altFunctionUse == 2 && this.FrostWaveEnable)
             {
-                CNCUtils.PlaySound("IceTooth/FrostWave", player, 1f);
-                Projectile projectile = CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.FrostWave], damage, knockback);
+                CNCUtils.PlaySound("IceTooth/FrostWave", player, .5f);
+                Projectile projectile = CNCUtils.NewProj(source, position - new Vector2(6 * player.direction, 52f), velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.FrostWave], Inscription.JustGetDamage(-1, (string)CNCID.Inscription.S_FrostWave.Data[2]), knockback);
+                modItem.SetInscriptionCooldown(CNCID.Inscription.S_FrostWave);
             }
             else
             {
                 CNCUtils.PlaySound("IceTooth/Shoot", player, 1f);
                 Projectile projectile = CNCUtils.NewProj(source, position, velocity, type, damage, knockback);
-                if (item.GetGlobalItem<InscriptionSettings>().HasInscription(CNCID.Inscription.S_Iceflake)) projectile.GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().data["level"] = 1;
+                if (modItem.HasInscription(CNCID.Inscription.S_Iceflake)) projectile.GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().data["flake"] = true;
+                if (modItem.HasInscription(CNCID.Inscription.S_Glacier)) projectile.GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().data["frozen"] = true;
             }
             return false;
         }
 
         public override bool AltFunctionUse(Player player)
-            => this.FrostWaveEnable;// && CheckCD(player, 2);
+            => this.FrostWaveEnable;
 
         public override bool CanUseItem(Player player)
         {
+            bool result = base.CanUseItem(player);
+            if (player.altFunctionUse == 2)
+            {
+                int cost = (int)(player.manaCost * 300);
+                player.itemRotation = -MyMath.deg90 * player.direction;
+                player.itemLocation += new Vector2(0, 6f);
+                result = ConsumeSanity(player, (int)CNCID.Inscription.S_FrostWave.Data[0]);
+            }
+            return result;
+        }
+
+        public override void ModifyManaCost(Player player, ref float reduce, ref float mult)
+        {
             bool flag = player.altFunctionUse == 2;
-            item.mana = flag ? 30 : 9;
-            item.useTime = flag ? 15 : 30;
-            item.useAnimation = flag ? 15 : 30;
-            item.useStyle = flag ? 4 : 5;
-            if (flag) player.itemRotation = -90f * player.direction;
-            return base.CanUseItem(player);
+            if (flag) mult = 0;
         }
 
         public override void HoldItem(Player player)
         {
             if (player.altFunctionUse == 2)
-            {
-                var num1 = 45f * (player.Center.X - Main.MouseWorld.X < 0 ? -1 : 1);
-                var num2 = 45f * -player.direction;
-                player.itemRotation = player.itemTime > 0 ? num2 : num1;//细节待优化:使用时有转身延迟
-            }
+                player.itemRotation = -MyMath.deg90 * player.direction;
         }
     }
 }

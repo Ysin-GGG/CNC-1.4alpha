@@ -70,6 +70,7 @@ namespace CNC.Common.Global.Players
             30, 30, 30, false, 0f, 0f, 0f, 1f, 1f, 0f, 1f,
             0f, 50f, 1f / 120f, 0f, 1f,
             0f, 900f, false, 0, 1f, 0f, 1f, 1f, 0f, 1f,
+            0f, 50f, 0f, 1f, 0.1f, 0f, 1f, 15f, true, true, 0
         };
         private string[] defaultTags => new string[]
         {
@@ -120,6 +121,18 @@ namespace CNC.Common.Global.Players
             "phantomDelSpeed",
             "phantomDelSpeedAdd",
             "phantomDelSpeedMul",
+
+            "sanity",
+            "sanityMax",
+            "sanityCostAdd",
+            "sanityCostMul",
+            "sanityRegen",
+            "sanityRegenAdd",
+            "sanityRegenMul",
+            "sanityRatioToLife",
+            "sanityBeReplacedByLife",
+            "sanityLethal",
+            "sanityState",
         };
 
         public short[] stateType => _stateType.ToArray();
@@ -191,7 +204,19 @@ namespace CNC.Common.Global.Players
         public float clazz_PhantomDelSpeed = (float)defaults[39];
         public float clazz_PhantomDelSpeedAdd = (float)defaults[40];
         public float clazz_PhantomDelSpeedMul = (float)defaults[41];
-        
+
+        public float clazz_Sanity = (float)defaults[42];
+        public float clazz_SanityMax = (float)defaults[43];
+        public float clazz_SanityCostAdd = (float)defaults[44];
+        public float clazz_SanityCostMul = (float)defaults[45];
+        public float clazz_SanityRegen = (float)defaults[46];
+        public float clazz_SanityRegenAdd = (float)defaults[47];
+        public float clazz_SanityRegenMul = (float)defaults[48];
+        public float clazz_SanityRatioToLife = (float)defaults[49];
+        public bool clazz_SanityBeReplacedByLife = (bool)defaults[50];
+        public bool clazz_SanityLethal = (bool)defaults[51];
+        public int clazz_SanityState = (int)defaults[52];
+
         private void GetTag(TagCompound tag, int index, ref int target)
             => target = tag.ContainsKey(defaultTags[index]) ? tag.GetInt(defaultTags[index]) : (int)defaults[index];
 
@@ -251,6 +276,18 @@ namespace CNC.Common.Global.Players
             tag[defaultTags[39]] = this.clazz_PhantomDelSpeed;
             tag[defaultTags[40]] = this.clazz_PhantomDelSpeedAdd;
             tag[defaultTags[41]] = this.clazz_PhantomDelSpeedMul;
+
+            tag[defaultTags[42]] = this.clazz_Sanity;
+            tag[defaultTags[43]] = this.clazz_SanityMax;
+            tag[defaultTags[44]] = this.clazz_SanityCostAdd;
+            tag[defaultTags[45]] = this.clazz_SanityCostMul;
+            tag[defaultTags[46]] = this.clazz_SanityRegen;
+            tag[defaultTags[47]] = this.clazz_SanityRegenAdd;
+            tag[defaultTags[48]] = this.clazz_SanityRegenMul;
+            tag[defaultTags[49]] = this.clazz_SanityRatioToLife;
+            tag[defaultTags[50]] = this.clazz_SanityBeReplacedByLife;
+            tag[defaultTags[51]] = this.clazz_SanityLethal;
+            tag[defaultTags[52]] = this.clazz_SanityState;
         }
         
         public override void LoadData(TagCompound tag)
@@ -303,6 +340,18 @@ namespace CNC.Common.Global.Players
             this.GetTag(tag, 39, ref this.clazz_PhantomDelSpeed);
             this.GetTag(tag, 40, ref this.clazz_PhantomDelSpeedAdd);
             this.GetTag(tag, 41, ref this.clazz_PhantomDelSpeedMul);
+            
+            this.GetTag(tag, 42, ref this.clazz_Sanity);
+            this.GetTag(tag, 43, ref this.clazz_SanityMax);
+            this.GetTag(tag, 44, ref this.clazz_SanityCostAdd);
+            this.GetTag(tag, 45, ref this.clazz_SanityCostMul);
+            this.GetTag(tag, 46, ref this.clazz_SanityRegen);
+            this.GetTag(tag, 47, ref this.clazz_SanityRegenAdd);
+            this.GetTag(tag, 48, ref this.clazz_SanityRegenMul);
+            this.GetTag(tag, 49, ref this.clazz_SanityRatioToLife);
+            this.GetTag(tag, 50, ref this.clazz_SanityBeReplacedByLife);
+            this.GetTag(tag, 51, ref this.clazz_SanityLethal);
+            this.GetTag(tag, 52, ref this.clazz_SanityState);
         }
 
         public override void ResetEffects()
@@ -352,6 +401,7 @@ namespace CNC.Common.Global.Players
             this.UpdateClassVar(CNCID.Clazz.Ranger, 0);
             this.UpdateClassVar(CNCID.Clazz.Musketeer, 0);
             this.UpdateClassVar(CNCID.Clazz.Musketeer, 2);
+            this.UpdateClassVar(CNCID.Clazz.Wizard, 0);
             this.UpdateClassVar(CNCID.Clazz.Assassin, 0);
             this.UpdateClassVar(CNCID.Clazz.Assassin, 1);
 
@@ -467,104 +517,154 @@ namespace CNC.Common.Global.Players
             }
         }
 
-        public void ResetClassVar(bool all = false, Player player = null)
+        public void ResetClassVar(bool all = false, bool ignoreClass = true, Player player = null)
         {
             if (player == null)
             {
-                if (all) this.clazz_Rage = (float)defaults[1];
-                this.clazz_RageMax = (float)defaults[2];
-                this.clazz_RageSpeed = (float)defaults[3];
-                this.clazz_RageSpeedAdd = (float)defaults[4];
-                this.clazz_RageSpeedMul = (float)defaults[5];
-                if (all) this.clazz_Raged = (bool)defaults[6];
-                if (all) this.clazz_RageWeak = (int)defaults[7];
-                if (all) this.clazz_RageCD = (int)defaults[8];
-
-                if (all) this.clazz_Power = (float)defaults[9];
-                this.clazz_PowerMax = (float)defaults[10];
-                if (all) this.clazz_PowerProgress = (float)defaults[11];
-                this.clazz_PowerSpeed = (float)defaults[12];
-                this.clazz_PowerSpeedAdd = (float)defaults[13];
-                this.clazz_PowerSpeedMul = (float)defaults[14];
-                if (all) this.clazz_PowerCD = (int)defaults[15];
-
-                if (all) this.clazz_Durability = (int)defaults[16];
-                if (all) this.clazz_DurabilityOld = (int)defaults[17];
-                this.clazz_DurabilityMax = (int)defaults[18];
-                if (all) this.clazz_DurabilityReload = (bool)defaults[19];
-                if (all) this.clazz_DurabilityReloadTime = (float)defaults[20];
-                if (all) this.clazz_DurabilityReloadTimeMax = (float)defaults[21];
-                this.clazz_DurabilityReloadTimeAdd = (float)defaults[22];
-                this.clazz_DurabilityReloadTimeMul = (float)defaults[23];
-                this.clazz_DurabilityReloadSpeed = (float)defaults[24];
-                this.clazz_DurabilityReloadSpeedAdd = (float)defaults[25];
-                this.clazz_DurabilityReloadSpeedMul = (float)defaults[26];
-
-                if (all) this.clazz_Blessing = (float)defaults[27];
-                this.clazz_BlessingMax = (float)defaults[28];
-                this.clazz_BlessingSpeed = (float)defaults[29];
-                this.clazz_BlessingSpeedAdd = (float)defaults[30];
-                this.clazz_BlessingSpeedMul = (float)defaults[31];
-
-                if (all) this.clazz_Phantom = (float)defaults[32];
-                this.clazz_PhantomMax = (float)defaults[33];
-                if (all) this.clazz_PhantomState = (bool)defaults[34];
-                if (all) this.clazz_PhantomInvincible = (int)defaults[35];
-                this.clazz_PhantomSpeed = (float)defaults[36];
-                this.clazz_PhantomSpeedAdd = (float)defaults[37];
-                this.clazz_PhantomSpeedMul = (float)defaults[38];
-                this.clazz_PhantomDelSpeed = (float)defaults[39];
-                this.clazz_PhantomDelSpeedAdd = (float)defaults[40];
-                this.clazz_PhantomDelSpeedMul = (float)defaults[41];
+                if (ignoreClass || this.clazz == CNCID.Clazz.Barbarian)
+                {
+                    if (all) this.clazz_Rage = (float)defaults[1];
+                    this.clazz_RageMax = (float)defaults[2];
+                    this.clazz_RageSpeed = (float)defaults[3];
+                    this.clazz_RageSpeedAdd = (float)defaults[4];
+                    this.clazz_RageSpeedMul = (float)defaults[5];
+                    if (all) this.clazz_Raged = (bool)defaults[6];
+                    if (all) this.clazz_RageWeak = (int)defaults[7];
+                    if (all) this.clazz_RageCD = (int)defaults[8];
+                }
+                if (ignoreClass || this.clazz == CNCID.Clazz.Ranger)
+                {
+                    if (all) this.clazz_Power = (float)defaults[9];
+                    this.clazz_PowerMax = (float)defaults[10];
+                    if (all) this.clazz_PowerProgress = (float)defaults[11];
+                    this.clazz_PowerSpeed = (float)defaults[12];
+                    this.clazz_PowerSpeedAdd = (float)defaults[13];
+                    this.clazz_PowerSpeedMul = (float)defaults[14];
+                    if (all) this.clazz_PowerCD = (int)defaults[15];
+                }
+                if (ignoreClass || this.clazz == CNCID.Clazz.Musketeer)
+                {
+                    if (all) this.clazz_Durability = (int)defaults[16];
+                    if (all) this.clazz_DurabilityOld = (int)defaults[17];
+                    this.clazz_DurabilityMax = (int)defaults[18];
+                    if (all) this.clazz_DurabilityReload = (bool)defaults[19];
+                    if (all) this.clazz_DurabilityReloadTime = (float)defaults[20];
+                    if (all) this.clazz_DurabilityReloadTimeMax = (float)defaults[21];
+                    this.clazz_DurabilityReloadTimeAdd = (float)defaults[22];
+                    this.clazz_DurabilityReloadTimeMul = (float)defaults[23];
+                    this.clazz_DurabilityReloadSpeed = (float)defaults[24];
+                    this.clazz_DurabilityReloadSpeedAdd = (float)defaults[25];
+                    this.clazz_DurabilityReloadSpeedMul = (float)defaults[26];
+                }
+                if (ignoreClass || this.clazz == CNCID.Clazz.Crusader || this.clazz == CNCID.Clazz.Cleric)
+                {
+                    if (all) this.clazz_Blessing = (float)defaults[27];
+                    this.clazz_BlessingMax = (float)defaults[28];
+                    this.clazz_BlessingSpeed = (float)defaults[29];
+                    this.clazz_BlessingSpeedAdd = (float)defaults[30];
+                    this.clazz_BlessingSpeedMul = (float)defaults[31];
+                }
+                if (ignoreClass || this.clazz == CNCID.Clazz.Assassin)
+                {
+                    if (all) this.clazz_Phantom = (float)defaults[32];
+                    this.clazz_PhantomMax = (float)defaults[33];
+                    if (all) this.clazz_PhantomState = (bool)defaults[34];
+                    if (all) this.clazz_PhantomInvincible = (int)defaults[35];
+                    this.clazz_PhantomSpeed = (float)defaults[36];
+                    this.clazz_PhantomSpeedAdd = (float)defaults[37];
+                    this.clazz_PhantomSpeedMul = (float)defaults[38];
+                    this.clazz_PhantomDelSpeed = (float)defaults[39];
+                    this.clazz_PhantomDelSpeedAdd = (float)defaults[40];
+                    this.clazz_PhantomDelSpeedMul = (float)defaults[41];
+                }
+                if (ignoreClass || this.clazz == CNCID.Clazz.Wizard)
+                {
+                    if (all) this.clazz_Sanity = (float)defaults[42];
+                    this.clazz_SanityMax = (float)defaults[43];
+                    this.clazz_SanityCostAdd = (float)defaults[44];
+                    this.clazz_SanityCostMul = (float)defaults[45];
+                    this.clazz_SanityRegen = (float)defaults[46];
+                    this.clazz_SanityRegenAdd = (float)defaults[47];
+                    this.clazz_SanityRegenMul = (float)defaults[48];
+                    if (all) this.clazz_SanityRatioToLife = (float)defaults[49];
+                    this.clazz_SanityBeReplacedByLife = (bool)defaults[50];
+                    this.clazz_SanityLethal = (bool)defaults[51];
+                    this.clazz_SanityState = (int)defaults[52];
+                }
             }
             else
             {
                 ClassesSettings modP = player.GetModPlayer<ClassesSettings>();
-                if (all) modP.clazz_Rage = (float)defaults[1];
-                modP.clazz_RageMax = (float)defaults[2];
-                modP.clazz_RageSpeed = (float)defaults[3];
-                modP.clazz_RageSpeedAdd = (float)defaults[4];
-                modP.clazz_RageSpeedMul = (float)defaults[5];
-                if (all) modP.clazz_Raged = (bool)defaults[6];
-                if (all) modP.clazz_RageWeak = (int)defaults[7];
-                if (all) modP.clazz_RageCD = (int)defaults[8];
-
-                if (all) modP.clazz_Power = (float)defaults[9];
-                modP.clazz_PowerMax = (float)defaults[10];
-                if (all) modP.clazz_PowerProgress = (float)defaults[11];
-                modP.clazz_PowerSpeed = (float)defaults[12];
-                modP.clazz_PowerSpeedAdd = (float)defaults[13];
-                modP.clazz_PowerSpeedMul = (float)defaults[14];
-                if (all) modP.clazz_PowerCD = (int)defaults[15];
-
-                if (all) modP.clazz_Durability = (int)defaults[16];
-                if (all) modP.clazz_DurabilityOld = (int)defaults[17];
-                modP.clazz_DurabilityMax = (int)defaults[18];
-                if (all) modP.clazz_DurabilityReload = (bool)defaults[19];
-                if (all) modP.clazz_DurabilityReloadTime = (float)defaults[20];
-                if (all) modP.clazz_DurabilityReloadTimeMax = (float)defaults[21];
-                modP.clazz_DurabilityReloadTimeAdd = (float)defaults[22];
-                modP.clazz_DurabilityReloadTimeMul = (float)defaults[23];
-                modP.clazz_DurabilityReloadSpeed = (float)defaults[24];
-                modP.clazz_DurabilityReloadSpeedAdd = (float)defaults[25];
-                modP.clazz_DurabilityReloadSpeedMul = (float)defaults[26];
-
-                if (all) modP.clazz_Blessing = (float)defaults[27];
-                modP.clazz_BlessingMax = (float)defaults[28];
-                modP.clazz_BlessingSpeed = (float)defaults[29];
-                modP.clazz_BlessingSpeedAdd = (float)defaults[30];
-                modP.clazz_BlessingSpeedMul = (float)defaults[31];
-
-                if (all) modP.clazz_Phantom = (float)defaults[32];
-                modP.clazz_PhantomMax = (float)defaults[33];
-                if (all) modP.clazz_PhantomState = (bool)defaults[34];
-                if (all) modP.clazz_PhantomInvincible = (int)defaults[35];
-                modP.clazz_PhantomSpeed = (float)defaults[36];
-                modP.clazz_PhantomSpeedAdd = (float)defaults[37];
-                modP.clazz_PhantomSpeedMul = (float)defaults[38];
-                modP.clazz_PhantomDelSpeed = (float)defaults[39];
-                modP.clazz_PhantomDelSpeedAdd = (float)defaults[40];
-                modP.clazz_PhantomDelSpeedMul = (float)defaults[41];
+                if (ignoreClass || modP.clazz == CNCID.Clazz.Barbarian)
+                {
+                    if (all) modP.clazz_Rage = (float)defaults[1];
+                    modP.clazz_RageMax = (float)defaults[2];
+                    modP.clazz_RageSpeed = (float)defaults[3];
+                    modP.clazz_RageSpeedAdd = (float)defaults[4];
+                    modP.clazz_RageSpeedMul = (float)defaults[5];
+                    if (all) modP.clazz_Raged = (bool)defaults[6];
+                    if (all) modP.clazz_RageWeak = (int)defaults[7];
+                    if (all) modP.clazz_RageCD = (int)defaults[8];
+                }
+                if (ignoreClass || modP.clazz == CNCID.Clazz.Ranger)
+                {
+                    if (all) modP.clazz_Power = (float)defaults[9];
+                    modP.clazz_PowerMax = (float)defaults[10];
+                    if (all) modP.clazz_PowerProgress = (float)defaults[11];
+                    modP.clazz_PowerSpeed = (float)defaults[12];
+                    modP.clazz_PowerSpeedAdd = (float)defaults[13];
+                    modP.clazz_PowerSpeedMul = (float)defaults[14];
+                    if (all) modP.clazz_PowerCD = (int)defaults[15];
+                }
+                if (ignoreClass || modP.clazz == CNCID.Clazz.Musketeer)
+                {
+                    if (all) modP.clazz_Durability = (int)defaults[16];
+                    if (all) modP.clazz_DurabilityOld = (int)defaults[17];
+                    modP.clazz_DurabilityMax = (int)defaults[18];
+                    if (all) modP.clazz_DurabilityReload = (bool)defaults[19];
+                    if (all) modP.clazz_DurabilityReloadTime = (float)defaults[20];
+                    if (all) modP.clazz_DurabilityReloadTimeMax = (float)defaults[21];
+                    modP.clazz_DurabilityReloadTimeAdd = (float)defaults[22];
+                    modP.clazz_DurabilityReloadTimeMul = (float)defaults[23];
+                    modP.clazz_DurabilityReloadSpeed = (float)defaults[24];
+                    modP.clazz_DurabilityReloadSpeedAdd = (float)defaults[25];
+                    modP.clazz_DurabilityReloadSpeedMul = (float)defaults[26];
+                }
+                if (ignoreClass || modP.clazz == CNCID.Clazz.Crusader || modP.clazz == CNCID.Clazz.Cleric)
+                {
+                    if (all) modP.clazz_Blessing = (float)defaults[27];
+                    modP.clazz_BlessingMax = (float)defaults[28];
+                    modP.clazz_BlessingSpeed = (float)defaults[29];
+                    modP.clazz_BlessingSpeedAdd = (float)defaults[30];
+                    modP.clazz_BlessingSpeedMul = (float)defaults[31];
+                }
+                if (ignoreClass || modP.clazz == CNCID.Clazz.Assassin)
+                {
+                    if (all) modP.clazz_Phantom = (float)defaults[32];
+                    modP.clazz_PhantomMax = (float)defaults[33];
+                    if (all) modP.clazz_PhantomState = (bool)defaults[34];
+                    if (all) modP.clazz_PhantomInvincible = (int)defaults[35];
+                    modP.clazz_PhantomSpeed = (float)defaults[36];
+                    modP.clazz_PhantomSpeedAdd = (float)defaults[37];
+                    modP.clazz_PhantomSpeedMul = (float)defaults[38];
+                    modP.clazz_PhantomDelSpeed = (float)defaults[39];
+                    modP.clazz_PhantomDelSpeedAdd = (float)defaults[40];
+                    modP.clazz_PhantomDelSpeedMul = (float)defaults[41];
+                }
+                if (ignoreClass || modP.clazz == CNCID.Clazz.Wizard)
+                {
+                    if (all) modP.clazz_Sanity = (float)defaults[42];
+                    modP.clazz_SanityMax = (float)defaults[43];
+                    modP.clazz_SanityCostAdd = (float)defaults[44];
+                    modP.clazz_SanityCostMul = (float)defaults[45];
+                    modP.clazz_SanityRegen = (float)defaults[46];
+                    modP.clazz_SanityRegenAdd = (float)defaults[47];
+                    modP.clazz_SanityRegenMul = (float)defaults[48];
+                    if (all) modP.clazz_SanityRatioToLife = (float)defaults[49];
+                    modP.clazz_SanityBeReplacedByLife = (bool)defaults[50];
+                    modP.clazz_SanityLethal = (bool)defaults[51];
+                    modP.clazz_SanityState = (int)defaults[52];
+                }
             }
         }
 
@@ -686,6 +786,27 @@ namespace CNC.Common.Global.Players
                         modPlayer.clazz_DurabilityReloadTimeMax = 0;
                         SoundEngine.PlaySound(40, player.position, 1);
                     }
+                }
+            }
+            if (clazz == CNCID.Clazz.Wizard)
+            {
+                if (style == 0)//³£¹æ
+                {
+                    max = modPlayer.clazz_SanityMax;
+                    value = modPlayer.clazz_SanityRegen / 60f;
+                    add = modPlayer.clazz_SanityRegenAdd;
+                    mul = modPlayer.clazz_SanityRegenMul;
+                    modPlayer.clazz_Sanity = MyMath.Clamp(modPlayer.clazz_Sanity + (value + value * add) * mul, 0, modPlayer.clazz_SanityMax);
+                    modPlayer.clazz_SanityMax = MyMath.Clamp(modPlayer.clazz_SanityMax, 0, 100);
+                    modPlayer.clazz_SanityCostAdd = 0;
+                    modPlayer.clazz_SanityCostMul = 1;
+                    modPlayer.clazz_SanityRegen = 0.1f;
+                    modPlayer.clazz_SanityRegenAdd = 0;
+                    modPlayer.clazz_SanityRegenMul = 1;
+                    modPlayer.clazz_SanityRatioToLife = 15;//1:15
+                    modPlayer.clazz_SanityBeReplacedByLife = true;
+                    modPlayer.clazz_SanityLethal = true;
+                    modPlayer.clazz_SanityState = 0;
                 }
             }
             if (clazz == CNCID.Clazz.Assassin)

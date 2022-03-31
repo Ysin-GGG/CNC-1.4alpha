@@ -14,14 +14,16 @@ namespace CNC.Content.Projectiles.IceTooth
 {
     public class DentateIce : CNCProjectile
     {
-        public int level => data.ContainsKey("level") ? (int)data["level"] : 0;
+        public bool flake => data.ContainsKey("flake") ? (bool)data["flake"] : false;
+        public bool frozen => data.ContainsKey("frozen") ? (bool)data["frozen"] : false;
         NPC npc = null;
 
         public override int countFrame => 5;
 
         public override void ResetDefaults()
         {
-            data["level"] = 0;
+            data["flake"] = false;
+            data["frozen"] = false;
             projectile.width = 20;
             projectile.height = 10;
             projectile.timeLeft = 600;
@@ -52,9 +54,8 @@ namespace CNC.Content.Projectiles.IceTooth
         {
             int buff1 = CNCID.Buff.LegacyObject[CNCID.Buff.Gelid];
             int buff2 = CNCID.Buff.LegacyObject[CNCID.Buff.Glacier];
-            target.AddBuff(buff1, 300);
             projectile.velocity = projectile.oldVelocity;
-            if (this.level > 0)
+            if (this.flake)
             {
                 projectile.friendly = false;
                 projectile.tileCollide = false;
@@ -65,20 +66,14 @@ namespace CNC.Content.Projectiles.IceTooth
                     Vector2 dustPos = new Vector2(projectile.Center.X - projectile.width, projectile.Center.Y);
                     Dust.NewDust(projectile.Center, projectile.width, projectile.height, DustID.IceTorch, projectile.oldVelocity.X / -2f, projectile.oldVelocity.Y * -2f, 100, Color.LightBlue, 1.5f);
                 }
-                if (this.level > 1)
-                {
-                    if (target.HasBuff(buff1) && Main.rand.Next(10) == 0)
-                    {
-                        target.AddBuff(buff1, 0);
-                        target.AddBuff(buff2, 90);
-                    }
-                }
+                if (target.HasBuff(buff1) && !target.HasBuff(buff2) && Main.rand.Next(10) == 0 && this.frozen) target.AddBuff(buff2, 90);
+                else target.AddBuff(buff1, 300);
             }
         }
         
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            if (level > 0) NewProjectile(0f, 0f, 0, projectile.damage, projectile.knockBack);
+            if (this.flake) NewProjectile(0f, 0f, 0, projectile.damage, projectile.knockBack);
             return base.OnTileCollide(oldVelocity);
         }
         
@@ -90,11 +85,12 @@ namespace CNC.Content.Projectiles.IceTooth
                 Vector2 dustPos = new Vector2(projectile.Center.X - projectile.width, projectile.Center.Y);
                 Dust.NewDust(dustPos, projectile.width, projectile.height, DustID.IceTorch, projectile.oldVelocity.X / -2f, projectile.oldVelocity.Y * 2f, 100, Color.LightBlue, 1.5f);
             }
-            if (this.level > 0)
+            if (this.flake)
             {
                 int type = CNCID.Projectile.LegacyObject[CNCID.Projectile.DentateIceExplosion];
                 Projectile proj = this.NewProjectile(0f, 0f, type, Inscription.JustGetDamage(projectile.damage, (string)CNCID.Inscription.S_Iceflake.Data[0]), projectile.knockBack, Main.rand.NextFloat(0, MyMath.pi * 2));
                 proj.GetGlobalProjectile<AllProjectile>().data["target"] = npc != null ? npc.whoAmI : -1;
+                proj.GetGlobalProjectile<AllProjectile>().data["frozen"] = this.frozen;
                 proj.owner = this.projectile.owner;
             }
         }

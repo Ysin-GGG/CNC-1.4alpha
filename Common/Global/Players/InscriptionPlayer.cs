@@ -7,7 +7,9 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.DataStructures;
+using CNC.Content;
 using CNC.Common.Utils;
+using CNC.Common.Global.Items;
 
 namespace CNC.Common.Global.Players
 {
@@ -46,5 +48,51 @@ namespace CNC.Common.Global.Players
         }
 
         public override float UseSpeedMultiplier(Item item) => modPlayer.attackSpeed;
+
+        public override void ModifyWeaponDamage(Item item, ref StatModifier damage, ref float flat)
+        {
+            InscriptionSettings modItem = item.GetGlobalItem<InscriptionSettings>();
+            float add = 0;
+            float mul = 1;
+            for (int i = 0; i < modItem.inscription.Length; i++)
+            {
+                if (modItem.inscription[i].Equals(CNCID.Inscription.C_Power))
+                    add += (float)CNCID.Inscription.C_Power.Data[0];
+            }
+            damage += add;
+            damage *= mul;
+        }
+
+        public override float UseTimeMultiplier(Item item)
+        {
+            InscriptionSettings modItem = item.GetGlobalItem<InscriptionSettings>();
+            float add = 0;
+            float add2 = 0;
+            float mul = 1;
+            float mul2 = 1;
+            for (int i = 0; i < modItem.inscription.Length; i++)
+            {
+                if (modItem.inscription[i].Equals(CNCID.Inscription.C_MagicAdept))
+                    add2 += (add2 == 0 ? 1 : add2) * (float)CNCID.Inscription.C_MagicAdept.Data[0];
+            }
+            add += add2;
+            return (base.UseTimeMultiplier(item) - 1 * add) * mul;
+        }
+
+        public override float UseAnimationMultiplier(Item item)
+        {
+            InscriptionSettings modItem = item.GetGlobalItem<InscriptionSettings>();
+            float add = 0;
+            float add2 = 0;
+            float mul = 1;
+            float mul2 = 1;
+            for (int i = 0; i < modItem.inscription.Length; i++)
+            {
+                if (modItem.inscription[i].Equals(CNCID.Inscription.C_MagicAdept))
+                    add2 += (add2 == 0 ? 1 : add2) * (float)CNCID.Inscription.C_MagicAdept.Data[0];
+            }
+            add += add2;
+            return (base.UseAnimationMultiplier(item) - 1 * add) * mul;
+        }
     }
 }

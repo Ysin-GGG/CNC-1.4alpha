@@ -24,7 +24,7 @@ namespace CNC.Content.UI.ClassesMenu
 
         private Rectangle rect => new Rectangle(0, 0, (int)screen.X + 1, (int)screen.Y + 1);
         private const float blackSize = 200f;
-        private const int pageMax = 6;
+        private const int pageMax = 7;
         private static int page = 0;
         private string[] clazz => new string[pageMax]
         {
@@ -33,7 +33,7 @@ namespace CNC.Content.UI.ClassesMenu
             CNCID.Clazz.Collection[CNCID.Clazz.Ranger],
             CNCID.Clazz.Collection[CNCID.Clazz.Musketeer],
             CNCID.Clazz.Collection[CNCID.Clazz.Cleric],
-            //CNCID.Clazz.Collection[CNCID.Clazz.Wizard],
+            CNCID.Clazz.Collection[CNCID.Clazz.Wizard],
             CNCID.Clazz.Collection[CNCID.Clazz.Assassin],
         };
         private byte[] clazz2 => new byte[pageMax]
@@ -43,10 +43,9 @@ namespace CNC.Content.UI.ClassesMenu
             CNCID.Clazz.Ranger,
             CNCID.Clazz.Musketeer,
             CNCID.Clazz.Cleric,
-            //CNCID.Clazz.Wizard,
+            CNCID.Clazz.Wizard,
             CNCID.Clazz.Assassin,
         };
-
         private Dictionary<byte, short> clazz3 => new Dictionary<byte, short>()
         {
             { CNCID.Clazz.Barbarian, 0 },
@@ -54,7 +53,7 @@ namespace CNC.Content.UI.ClassesMenu
             { CNCID.Clazz.Ranger, 2 },
             { CNCID.Clazz.Musketeer, 3 },
             { CNCID.Clazz.Cleric, 4 },
-            //{ CNCID.Clazz.Wizard, 5 },
+            { CNCID.Clazz.Wizard, 5 },
             { CNCID.Clazz.Assassin, 5 },
         };
 
@@ -166,7 +165,7 @@ namespace CNC.Content.UI.ClassesMenu
             Player p = player;
             ClassesSettings ap = modPlayer;
             ap.clazz = clazz;
-            ap.ResetClassVar(true, p);
+            ap.ResetClassVar(true, true, p);
         }
 
         private static void ReduceItem(int type, int amount, Player player = null)
