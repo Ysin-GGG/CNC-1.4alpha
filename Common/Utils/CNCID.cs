@@ -342,7 +342,7 @@ namespace CNC.Common.Utils
             public static Content.Inscription C_Reiki => new Content.Inscription(5, 0);
             /// <summary> 能量吸收 </summary>
             public static Content.Inscription C_Assimilation => new Content.Inscription(6, 0);
-            /// <summary> 魔力增幅 </summary>
+            /// <summary> 技能增幅 </summary>
             public static Content.Inscription C_SkillPower => new Content.Inscription(7, 0);
             /// <summary> 快速凝聚 </summary>
             public static Content.Inscription C_MagicAdept => new Content.Inscription(8, 0);

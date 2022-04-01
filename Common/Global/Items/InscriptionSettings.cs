@@ -275,7 +275,7 @@ namespace CNC.Common.Global.Items
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.C_Assimilation);
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.C_Economization);
                         AddToInscriptionList(ref list, ref levelMax, 2, 6, CNCID.Inscription.C_Arcane);
-                        AddToInscriptionList(ref list, ref levelMax, 4, 6, CNCID.Inscription.C_SkillPower);
+                        AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.C_SkillPower);
                         AddToInscriptionList(ref list, ref levelMax, 5, 6, CNCID.Inscription.C_Charging);
                         AddToInscriptionList(ref list, ref levelMax, 0, 0, CNCID.Inscription.S_Gelidity);
                         AddToInscriptionList(ref list, ref levelMax, 2, 2, CNCID.Inscription.S_Glacier);
