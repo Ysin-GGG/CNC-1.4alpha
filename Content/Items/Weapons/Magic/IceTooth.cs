@@ -16,8 +16,8 @@ namespace CNC.Content.Items.Weapons.Magic
 
         public override void ResetDefaults()
         {
-            item.width = 48;
-            item.height = 48;
+            item.width = 54;
+            item.height = 54;
             item.useTime = 30;
             item.useAnimation = 30;
             item.rare = 3;
@@ -81,6 +81,11 @@ namespace CNC.Content.Items.Weapons.Magic
         {
             if (player.altFunctionUse == 2)
                 player.itemRotation = -MyMath.deg90 * player.direction;
+        }
+        
+        public override Vector2? HoldoutOrigin()
+        {
+            return new Vector2(55,55);
         }
     }
 }
