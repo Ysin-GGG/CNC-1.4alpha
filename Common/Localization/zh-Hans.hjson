@@ -278,25 +278,25 @@ Mods: {
 				Power: 伤害增幅|{0}基础伤害增幅
 				Chanter: 高速咏唱|{0}施法速度增幅
 				Economization: 朴素|{0}魔力消耗减免
-				Arcane: 奥术掌控|{0}魔法暴击率增幅
+				Arcane: 奥术掌控|{0}暴击率增幅
 				Charging: 充能|{0}技能冷却缩减
-				Reiki: 秘法能流|{0}技能魔力返还
+				Reiki: 秘法能流|{0}魔力返还
 				Assimilation: 能量吸收|{0}魔力恢复增幅
-				MagicPower: 魔力增幅|{0}魔法伤害增幅
+				SkillPower: 技能增幅|{0}技能伤害增幅
 				MagicAdept: 快速凝聚|{0}攻击速度增幅
 				Saint: 治疗精通|{0}治疗量增幅
 				Evangel: 绝望祈祷|生命低于{0}时，治疗量增加{1}
 				Destroyer: 破绽洞悉|{0}暴击率增幅
-				Dexterity: 轻便|移动速度增幅{0}
+				Dexterity: 轻便|{0}移动速度增幅
 				MeleeAdept: 运用自如|{0}攻击速度增幅
 				Indignation: 义愤填膺|怒气上限提高{0}点
 				Force: 巨力|击退增加
-				Smiting: 晕眩打击|敌人眩晕时，近战伤害增幅{0}
-				Shockwave: 晕眩强化|造成眩晕的时间增加{0}s
+				Smiting: 晕眩打击|对于处于[眩晕]状态的敌人，造成的伤害增幅{0}
+				Shockwave: 晕眩强化|对敌人造成[眩晕]的时间增加{0}s
 				RaidAdept: 熟练|{0}攻击速度增幅
 				Murder: 有效切割|{0}暴击率增幅
-				Torture: 精准收割|敌人生命值低于{0}时，穿刺伤害增幅{1}
-				Assassination: 神锋|处于隐匿时，穿刺伤害增幅{0}
+				Torture: 精准收割|对于生命值低于{0}的敌人，造成的伤害增幅{1}
+				Assassination: 神锋|处于隐匿时，造成的伤害增幅{0}
 				EagleEye: 鹰眼|{0}暴击率增幅
 				Penetration: 贯穿打击|攻击时有{0}概率使本次伤害增加{1}
 				EnchantedMagazine: 增大容量|枪动力上限增加{0}

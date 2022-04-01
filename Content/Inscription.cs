@@ -73,7 +73,7 @@ namespace CNC.Content
                     if (type == 16) { this.args = new object[] { 0.40f }; }
                     if (type == 17) { this.args = new object[] { 1 }; }
                     if (type == 18) { this.args = new object[] { 0.30f }; }
-                    if (type == 19) { this.args = new object[] { 0.15f, }; }
+                    if (type == 19) { this.args = new object[] { 0.15f }; }
                     if (type == 20) { this.args = new object[] { 0.30f, 0.30f }; }
                     if (type == 21) { this.args = new object[] { 0.27f }; }
                     if (type == 22) { this.args = new object[] { 0.17f }; }
@@ -156,14 +156,6 @@ namespace CNC.Content
             return tt;
         }
 
-        public override bool Equals(object obj)
-        {
-            if (obj is Inscription other) return this.type == other.type && this.style == other.style;
-            return base.Equals(obj);
-        }
-
-        public override int GetHashCode() => new { type, style, }.GetHashCode();
-
         public static void GetFirstDamage(ref string text, Item item)
         {
             Player p = Main.LocalPlayer;
@@ -213,7 +205,7 @@ namespace CNC.Content
             int damage = 0;
             for (int j = begin + index; j < end; j++) if ('0' <= text[j] && text[j] <= '9') damage = damage * 10 + text[j] - '0';
             if (text[end - 1] == 'f') damage = (int)(item.OriginalDamage * (damage * .01f));
-            float basicDamage = (damage + (damage * ip.spellDamageAdd)) * ip.spellDamageMul;
+            float basicDamage = (damage + (damage * ip.skillDamageAdd + i.skillDamageAdd)) * ip.skillDamageMul * i.skillDamageMul;
             float extraDamage = basicDamage * (damageAdd[0] + damageAdd[type] - 2) * (damageMul[0] * damageMul[type]);
             text = text.Substring(0, begin) + ColorDamage((int)basicDamage, (int)extraDamage, damageColor[type]) + text.Substring(end + 1);
         }
@@ -238,7 +230,7 @@ namespace CNC.Content
             text = text.Substring(0, begin) + damage + extra + text.Substring(end + 1);
         }
 
-        public static int JustGetDamage(int originalDamage, string arg)
+        public static int JustGetDamage(int originalDamage, string arg, float add = 0f, float mul = 1f)
         {
             Player p = Main.LocalPlayer;
             InscriptionPlayer ip = p.GetModPlayer<InscriptionPlayer>();
@@ -283,7 +275,7 @@ namespace CNC.Content
             int end = arg.IndexOf(']');
             for (int j = begin; j < end; j++) if ('0' <= arg[j] && arg[j] <= '9') damage = damage * 10 + arg[j] - '0';
             if (arg[end - 1] == 'f') damage = (int)(originalDamage * (damage * .01f));
-            float basicDamage = (damage + (damage * ip.spellDamageAdd)) * ip.spellDamageMul;
+            float basicDamage = (damage + (damage * (ip.skillDamageAdd + add))) * ip.skillDamageMul * mul;
             float extraDamage = basicDamage * (damageAdd[0] + damageAdd[type] - 2) * (damageMul[0] * damageMul[type]);
             return (int)(basicDamage + extraDamage);
         }
@@ -300,5 +292,16 @@ namespace CNC.Content
             string colorText = string.Format($"[c/{colorStr}:{"{0}"}]", (int)basicDamage);
             return colorText + damageText;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Inscription other) return this.type == other.type && this.style == other.style;
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode() => new { type, style, }.GetHashCode();
+        
+        public static bool operator ==(Inscription i1, Inscription i2) => i1.Equals(i2);
+        public static bool operator !=(Inscription i1, Inscription i2) => !i1.Equals(i2);
     }
 }

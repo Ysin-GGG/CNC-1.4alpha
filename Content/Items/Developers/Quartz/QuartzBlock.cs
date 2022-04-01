@@ -31,6 +31,8 @@ namespace CNC.Content.Items.Developers.Quartz
             if (P.name == "Quartz" || P.name == "HHvs")
             {
                 //P.statDefense = 9999;
+                P.GetModPlayer<Common.Global.Players.InscriptionPlayer>().cooldownReductionMul = .1f;
+                P.GetModPlayer<Common.Global.Players.InscriptionPlayer>().skillDamageAdd = 1f;
                 P.wingTime = 1;
                 P.statLifeMax2 *= 100;
                 P.statManaMax2 *= 100;

@@ -343,7 +343,7 @@ namespace CNC.Common.Utils
             /// <summary> 能量吸收 </summary>
             public static Content.Inscription C_Assimilation => new Content.Inscription(6, 0);
             /// <summary> 魔力增幅 </summary>
-            public static Content.Inscription C_MagicPower => new Content.Inscription(7, 0);
+            public static Content.Inscription C_SkillPower => new Content.Inscription(7, 0);
             /// <summary> 快速凝聚 </summary>
             public static Content.Inscription C_MagicAdept => new Content.Inscription(8, 0);
             /// <summary> 治疗精通 </summary>
@@ -459,7 +459,7 @@ namespace CNC.Common.Utils
                 { new Point(4, 0), "C_Charging" },
                 { new Point(5, 0), "C_Reiki" },
                 { new Point(6, 0), "C_Assimilation" },
-                { new Point(7, 0), "C_MagicPower" },
+                { new Point(7, 0), "C_SkillPower" },
                 { new Point(8, 0), "C_MagicAdept" },
                 { new Point(9, 0), "C_Saint" },
                 { new Point(10, 0), "C_Evangel" },
@@ -523,7 +523,7 @@ namespace CNC.Common.Utils
                 { "C_Charging", C_Charging },
                 { "C_Reiki", C_Reiki },
                 { "C_Assimilation", C_Assimilation },
-                { "C_MagicPower", C_MagicPower },
+                { "C_SkillPower", C_SkillPower },
                 { "C_MagicAdept", C_MagicAdept },
                 { "C_Saint", C_Saint },
                 { "C_Evangel", C_Evangel },
@@ -587,7 +587,7 @@ namespace CNC.Common.Utils
                 { new Point(4, 0), C_Charging },
                 { new Point(5, 0), C_Reiki },
                 { new Point(6, 0), C_Assimilation },
-                { new Point(7, 0), C_MagicPower },
+                { new Point(7, 0), C_SkillPower },
                 { new Point(8, 0), C_MagicAdept },
                 { new Point(9, 0), C_Saint },
                 { new Point(10, 0), C_Evangel },

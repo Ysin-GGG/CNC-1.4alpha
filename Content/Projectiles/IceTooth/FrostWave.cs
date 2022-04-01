@@ -56,7 +56,7 @@ namespace CNC.Content.Projectiles.IceTooth
                 projectile.scale = 0f;
                 if (projectile.timeLeft <= 1)
                 {
-                    projectile.timeLeft = 5;
+                    projectile.timeLeft = 10;
                     this.stage = 1;
                 }
             }
@@ -79,7 +79,7 @@ namespace CNC.Content.Projectiles.IceTooth
                     ParticleRenderer.particle[idx].velocityMul = new Vector2(.975f);
                 }
                 projectile.friendly = true;
-                projectile.scale = (6 - projectile.timeLeft) / 5f;
+                projectile.scale = (float)Math.Tan(MyMath.deg01 * (45f - projectile.timeLeft * 4.5f));//45 40.5
                 projectile.Size = Vector2.One * 14 * 16 * projectile.scale * 2;
                 if (projectile.timeLeft == 2)
                     projectile.Size = Vector2.One * 14 * 16 * 2;

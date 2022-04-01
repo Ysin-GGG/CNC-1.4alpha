@@ -278,25 +278,25 @@ Mods: {
 				Power: Power|{0}基础伤害增幅
 				Chanter: Chanter|{0}施法速度增幅
 				Economization: Economization|{0}魔力消耗减免
-				Arcane: Arcane|{0}魔法暴击率增幅
+				Arcane: Arcane|{0}暴击率增幅
 				Charging: Charging|{0}技能冷却缩减
-				Reiki: Reiki|{0}技能魔力返还
+				Reiki: Reiki|{0}魔力返还
 				Assimilation: Assimilation|{0}魔力恢复增幅
-				MagicPower: MagicPower|{0}魔法伤害增幅
+				SkillPower: SkillPower|{0}技能伤害增幅
 				MagicAdept: MagicAdept|{0}攻击速度增幅
 				Saint: Saint|{0}治疗量增幅
 				Evangel: Evangel|生命低于{0}时，治疗量增加{1}
 				Destroyer: Destroyer|{0}暴击率增幅
-				Dexterity: Dexterity|移动速度增幅{0}
+				Dexterity: Dexterity|{0}移动速度增幅
 				MeleeAdept: Melee Adept|{0}攻击速度增幅
 				Indignation: Indignation|怒气上限提高{0}点
 				Force: Force|击退增加
-				Smiting: Smiting|敌人眩晕时，近战伤害增幅{0}
-				Shockwave: Shockwave|造成眩晕的时间增加{0}s
+				Smiting: Smiting|对于处于[眩晕]状态的敌人，造成的伤害增幅{0}
+				Shockwave: Shockwave|对敌人造成[眩晕]的时间增加{0}s
 				RaidAdept: Raid Adept|{0}攻击速度增幅
 				Murder: Murder|{0}暴击率增幅
-				Torture: Torture|敌人生命值低于{0}时，穿刺伤害增幅{1}
-				Assassination: Assassination|处于隐匿时，穿刺伤害增幅{0}
+				Torture: Torture|对于生命值低于{0}的敌人，造成的伤害增幅{1}
+				Assassination: Assassination|处于[隐匿]时，造成的伤害增幅{0}
 				EagleEye: Eagle Eye|{0}暴击率增幅
 				Penetration: Penetration|攻击时有{0}概率使本次伤害增加{1}
 				EnchantedMagazine: Enchanted Magazine|枪动力上限增加{0}

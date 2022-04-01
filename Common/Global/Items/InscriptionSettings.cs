@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -19,17 +20,42 @@ namespace CNC.Common.Global.Items
     {
         private List<Inscription> _inscription1 = new List<Inscription>();
         private List<Inscription[]> _inscription2 = new List<Inscription[]>();
-        public const int maxInscriptionList = 9;
 
-        public bool active = false;
-        public int innateness = 0;
-        public int level = -1;
-        public int levelMax = -1;
+        public const int maxInscriptionList = 9;
         public Inscription[] inscription => _inscription1.ToArray();//已有铭文
         public Inscription[][] inscriptionList => _inscription2.ToArray();//各级待定铭文
         public bool CanUpgrade => level >= 0 && levelMax >= 0;
         public bool CanUpgrade2 => CanUpgrade && levelMax > level;
         public Mod mod => Mod;
+
+        public bool active = false;
+        public int level = -1;
+        public int levelMax = -1;
+        public int innateness = 0;
+        public float attackSpeed = 0f;
+        public float cooldownSpeedAdd = 0f;
+        public float cooldownSpeedMul = 1f;
+        public float cooldownReductionAdd = 0f;
+        public float cooldownReductionMul = 1f;
+        public float chantingSpeedAdd = 0f;
+        public float chantingSpeedMul = 1f;
+        public float chantingReductionAdd = 0f;
+        public float chantingReductionMul = 0f;
+        public float skillDamageAdd = 0f;
+        public float skillDamageMul = 1f;
+        public int weaponCritAdd = 0;
+        public float weaponDamageAdd = 0f;
+        public float weaponDamageMul = 1f;
+        public float dealtDamageAdd = 0f;
+        public float dealtDamageMul = 0f;
+        public float manaCostAdd = 0f;
+        public float manaCostMul = 1f;
+        public float manaReturn = 0f;
+
+        public StatData weaponDamage = new StatData(0, 1, "WeaponDamage");
+        public StatData dealtDamage = new StatData(0, 1, "DealtDamage");
+
+        public Dictionary<string, StatData> data = new Dictionary<string, StatData>();
 
         private string[] defaultTags => new string[]
         {
@@ -42,12 +68,62 @@ namespace CNC.Common.Global.Items
 
         public InscriptionSettings()
         {
-            this.innateness = 0;
-            this.level = -1;
-            this.levelMax = -1;
-            this.active = false;
             this._inscription1 = new List<Inscription>();
             this._inscription2 = new List<Inscription[]>();
+            this.active = false;
+            this.level = -1;
+            this.levelMax = -1;
+            this.innateness = 0;
+            this.ResetEffects();
+        }
+
+        public void ResetEffects(Item item = null)
+        {
+            if (item == null)
+            {
+                this.attackSpeed = 0f;
+                this.cooldownSpeedAdd = 0f;
+                this.cooldownSpeedMul = 1f;
+                this.cooldownReductionAdd = 0f;
+                this.cooldownReductionMul = 1f;
+                this.chantingSpeedAdd = 0f;
+                this.chantingSpeedMul = 1f;
+                this.chantingReductionAdd = 0f;
+                this.chantingReductionMul = 0f;
+                this.skillDamageAdd = 0f;
+                this.skillDamageMul = 1f;
+                this.weaponCritAdd = 0;
+                this.weaponDamageAdd = 0f;
+                this.weaponDamageMul = 1f;
+                this.dealtDamageAdd = 0f;
+                this.dealtDamageMul = 0f;
+                this.manaCostAdd = 0f;
+                this.manaCostMul = 1f;
+                this.manaReturn = 0f;
+            }
+            else
+            {
+                InscriptionSettings modItem = item.GetGlobalItem<InscriptionSettings>();
+                modItem.attackSpeed = 0f;
+                modItem.cooldownSpeedAdd = 0f;
+                modItem.cooldownSpeedMul = 1f;
+                modItem.cooldownReductionAdd = 0f;
+                modItem.cooldownReductionMul = 1f;
+                modItem.chantingSpeedAdd = 0f;
+                modItem.chantingSpeedMul = 1f;
+                modItem.chantingReductionAdd = 0f;
+                modItem.chantingReductionMul = 0f;
+                modItem.skillDamageAdd = 0f;
+                modItem.skillDamageMul = 1f;
+                modItem.weaponCritAdd = 0;
+                modItem.weaponDamageAdd = 0f;
+                modItem.weaponDamageMul = 1f;
+                modItem.dealtDamageAdd = 0f;
+                modItem.dealtDamageMul = 0f;
+                modItem.manaCostAdd = 0;
+                modItem.manaCostMul = 0;
+                modItem.manaReturn = 0;
+            }
         }
 
         public override GlobalItem Clone(Item item, Item itemClone)
@@ -62,8 +138,7 @@ namespace CNC.Common.Global.Items
             }
             return clone;
         }
-
-
+        
         public override void SaveData(Item item, TagCompound tag)
         {
             int[] type = new int[this.inscription.Length];
@@ -90,11 +165,18 @@ namespace CNC.Common.Global.Items
 
         public bool HasInscription(Inscription inscription) => this._inscription1.Contains(inscription);
 
-        public void SetInscriptionCooldown(Inscription inscription, int newCooldown = -1, int newCooldownMax = -1)
+        public void SetInscriptionCooldown(Inscription inscription, int newCooldown = -1, int newCooldownMax = -1, Player player = null)
         {
+            float add = 0; 
+            float mul = 1;
+            if(player != null)
+            {
+                add = player.GetModPlayer<Players.InscriptionPlayer>().cooldownReductionAdd;
+                mul = player.GetModPlayer<Players.InscriptionPlayer>().cooldownReductionMul;
+            }
             for (int i = 0; i < this._inscription1.Count; i++)
                 if (this._inscription1[i].type == inscription.type && this._inscription1[i].style == inscription.style)
-                    this._inscription1[i].SetCooldown(newCooldown, newCooldownMax);
+                    this._inscription1[i].SetCooldown((int)((newCooldown + newCooldown * (this.cooldownReductionAdd + add)) * this.cooldownReductionMul * mul), newCooldownMax);
         }
 
         public bool GetInscriptionCooldown(Inscription inscription)
@@ -193,7 +275,7 @@ namespace CNC.Common.Global.Items
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.C_Assimilation);
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.C_Economization);
                         AddToInscriptionList(ref list, ref levelMax, 2, 6, CNCID.Inscription.C_Arcane);
-                        AddToInscriptionList(ref list, ref levelMax, 4, 6, CNCID.Inscription.C_MagicPower);
+                        AddToInscriptionList(ref list, ref levelMax, 4, 6, CNCID.Inscription.C_SkillPower);
                         AddToInscriptionList(ref list, ref levelMax, 5, 6, CNCID.Inscription.C_Charging);
                         AddToInscriptionList(ref list, ref levelMax, 0, 0, CNCID.Inscription.S_Gelidity);
                         AddToInscriptionList(ref list, ref levelMax, 2, 2, CNCID.Inscription.S_Glacier);
@@ -208,7 +290,7 @@ namespace CNC.Common.Global.Items
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.C_Economization);
                         AddToInscriptionList(ref list, ref levelMax, 2, 6, CNCID.Inscription.C_Arcane);
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.C_Charging);
-                        AddToInscriptionList(ref list, ref levelMax, 3, 6, CNCID.Inscription.C_MagicPower);
+                        AddToInscriptionList(ref list, ref levelMax, 3, 6, CNCID.Inscription.C_SkillPower);
                         AddToInscriptionList(ref list, ref levelMax, 3, 3, CNCID.Inscription.C_Reiki);
                         AddToInscriptionList(ref list, ref levelMax, 0, 0, CNCID.Inscription.S_Charging);
                         AddToInscriptionList(ref list, ref levelMax, 1, 1, CNCID.Inscription.S_SpellLightningChain);
@@ -234,7 +316,7 @@ namespace CNC.Common.Global.Items
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.C_MeleeAdept);
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.C_Force);
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.C_Destroyer);
-                        AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.C_MagicPower);
+                        AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.C_SkillPower);
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.C_Charging);
                         AddToInscriptionList(ref list, ref levelMax, 0, 0, CNCID.Inscription.S_SilveryFlame);
                         AddToInscriptionList(ref list, ref levelMax, 1, 1, CNCID.Inscription.S_Judgement);
@@ -246,7 +328,7 @@ namespace CNC.Common.Global.Items
                         AddToInscriptionList(ref list, ref levelMax, 1, 3, CNCID.Inscription.C_Power);
                         AddToInscriptionList(ref list, ref levelMax, 1, 3, CNCID.Inscription.C_Assimilation);
                         AddToInscriptionList(ref list, ref levelMax, 1, 3, CNCID.Inscription.C_Economization);
-                        AddToInscriptionList(ref list, ref levelMax, 1, 3, CNCID.Inscription.C_MagicPower);
+                        AddToInscriptionList(ref list, ref levelMax, 1, 3, CNCID.Inscription.C_SkillPower);
                         AddToInscriptionList(ref list, ref levelMax, 1, 3, CNCID.Inscription.C_Arcane);
                         AddToInscriptionList(ref list, ref levelMax, 1, 1, CNCID.Inscription.C_Reiki);
                         AddToInscriptionList(ref list, ref levelMax, 0, 0, CNCID.Inscription.S_Rock);
@@ -320,14 +402,36 @@ namespace CNC.Common.Global.Items
 
         public override void UpdateInventory(Item item, Player player)
         {
-            InscriptionSettings itemSettings = item.GetGlobalItem<InscriptionSettings>();
-            if (itemSettings.CanUpgrade)
-                for (int i = 0; i < itemSettings.inscription.Length; i++)
-                    if (itemSettings.inscription[i].cooldown > 0)
-                        itemSettings.inscription[i].cooldown--;
+            InscriptionSettings modItem = item.GetGlobalItem<InscriptionSettings>();
+            if (modItem.CanUpgrade)
+            {
+                modItem.ResetEffects();
+                for (int i = 0; i < modItem.inscription.Length; i++)
+                {
+                    Inscription inscription = modItem.inscription[i];
+                    if (modItem.inscription[i].cooldown > 0) modItem.inscription[i].cooldown--;
+                    if (inscription == CNCID.Inscription.C_Power) modItem.weaponDamageAdd += (float)CNCID.Inscription.C_Power.Data[0];
+                    if (inscription == CNCID.Inscription.C_SkillPower) modItem.skillDamageAdd += (float)CNCID.Inscription.C_SkillPower.Data[0];
+                    if (inscription == CNCID.Inscription.C_Arcane) modItem.weaponCritAdd += (int)((float)CNCID.Inscription.C_Arcane.Data[0] * 100f);
+                    if (inscription == CNCID.Inscription.C_Destroyer) modItem.weaponCritAdd += (int)((float)CNCID.Inscription.C_Destroyer.Data[0] * 100f);
+                    if (inscription == CNCID.Inscription.C_Murder) modItem.weaponCritAdd += (int)((float)CNCID.Inscription.C_Murder.Data[0] * 100f);
+                    if (inscription == CNCID.Inscription.C_EagleEye) modItem.weaponCritAdd += (int)((float)CNCID.Inscription.C_EagleEye.Data[0] * 100f);
+                    if (inscription == CNCID.Inscription.C_MagicAdept) modItem.attackSpeed += (float)CNCID.Inscription.C_MagicAdept.Data[0];
+                    if (inscription == CNCID.Inscription.C_MeleeAdept) modItem.attackSpeed += (float)CNCID.Inscription.C_MeleeAdept.Data[0];
+                    if (inscription == CNCID.Inscription.C_RaidAdept) modItem.attackSpeed += (float)CNCID.Inscription.C_RaidAdept.Data[0];
+                    if (inscription == CNCID.Inscription.C_Reiki) modItem.manaReturn += (float)CNCID.Inscription.C_Reiki.Data[0];
+                }
+            }
         }
 
-    
+        public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage, ref float flat)
+        {
+            damage += item.GetGlobalItem<InscriptionSettings>().weaponDamageAdd;
+            damage *= item.GetGlobalItem<InscriptionSettings>().weaponDamageMul;
+        }
+
+        public override void ModifyWeaponCrit(Item item, Player player, ref int crit) 
+            => crit += item.GetGlobalItem<InscriptionSettings>().weaponCritAdd;
 
         public class InscriptionSystem : ModPlayer
         {

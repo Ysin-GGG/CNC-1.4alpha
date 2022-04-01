@@ -43,7 +43,7 @@ namespace CNC.Content.Items.Weapons.Magic
             {
                 CNCUtils.PlaySound("IceTooth/FrostWave", player, .5f);
                 Projectile projectile = CNCUtils.NewProj(source, position - new Vector2(6 * player.direction, 52f), velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.FrostWave], Inscription.JustGetDamage(-1, (string)CNCID.Inscription.S_FrostWave.Data[2]), knockback);
-                modItem.SetInscriptionCooldown(CNCID.Inscription.S_FrostWave);
+                modItem.SetInscriptionCooldown(CNCID.Inscription.S_FrostWave, player : player);
             }
             else
             {
@@ -63,9 +63,6 @@ namespace CNC.Content.Items.Weapons.Magic
             bool result = base.CanUseItem(player);
             if (player.altFunctionUse == 2)
             {
-                int cost = (int)(player.manaCost * 300);
-                player.itemRotation = -MyMath.deg90 * player.direction;
-                player.itemLocation += new Vector2(0, 6f);
                 result = ConsumeSanity(player, (int)CNCID.Inscription.S_FrostWave.Data[0]);
             }
             return result;
@@ -73,19 +70,15 @@ namespace CNC.Content.Items.Weapons.Magic
 
         public override void ModifyManaCost(Player player, ref float reduce, ref float mult)
         {
-            bool flag = player.altFunctionUse == 2;
-            if (flag) mult = 0;
+            if (player.altFunctionUse == 2) mult = 0;
         }
-
+        
         public override void HoldItem(Player player)
         {
             if (player.altFunctionUse == 2)
                 player.itemRotation = -MyMath.deg45 * player.direction;
         }
 
-        public override Vector2? HoldoutOffset()
-        {
-            return new Vector2(-15, 0);
-        }
+        public override Vector2? HoldoutOffset() => new Vector2(-15f, 0f);
     }
 }

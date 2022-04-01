@@ -20,73 +20,41 @@ namespace CNC.Common.Global.Players
 
         public int Tick => player.GetModPlayer<AllPlayer>().Tick;
 
-        public float cooldownSpeed => (1 + 1 * this.cooldownSpeedAdd) * this.cooldownSpeedMul;
+        public float cooldownReductionAdd = 0f;
+        public float cooldownReductionMul = 0f;
         public float cooldownSpeedAdd = 0f;
         public float cooldownSpeedMul = 1f;
-        public float cooldownReduction = 0f;
-        public float chantingSpeed => (1 + 1 * this.chantingSpeedAdd) * this.chantingSpeedMul;
+        public float chantingReduction = 0f;
         public float chantingSpeedAdd = 0f;
         public float chantingSpeedMul = 1f;
-        public float chantingReduction = 0f;
         public float manaReturn = 0f;
-        public float attackSpeed = 1f;
-        public float spellDamageAdd = 0f;
-        public float spellDamageMul = 1f;
+        public float attackSpeed = 0f;
+        public float skillDamageAdd = 0f;
+        public float skillDamageMul = 1f;
 
         public override void ResetEffects()
         {
+            this.cooldownReductionAdd = 0f;
+            this.cooldownReductionMul = 0f;
             this.cooldownSpeedAdd = 0f;
             this.cooldownSpeedMul = 1f;
-            this.cooldownReduction = 0f;
+            this.chantingReduction = 0f;
             this.chantingSpeedAdd = 0f;
             this.chantingSpeedMul = 1f;
-            this.chantingReduction = 0f;
             this.manaReturn = 0f;
-            this.attackSpeed = 1f;
-            this.spellDamageAdd = 0f;
-            this.spellDamageMul = 1f;
+            this.attackSpeed = 0f;
+            this.skillDamageAdd = 0f;
+            this.skillDamageMul = 1f;
         }
 
-        public override float UseSpeedMultiplier(Item item) => modPlayer.attackSpeed;
-
-        public override void ModifyWeaponDamage(Item item, ref StatModifier damage, ref float flat)
+        public override void ModifyManaCost(Item item, ref float reduce, ref float mult)
         {
-            InscriptionSettings modItem = item.GetGlobalItem<InscriptionSettings>();
-            float add = 0;
-            float mul = 1;
-            for (int i = 0; i < modItem.inscription.Length; i++)
-            {
-                if (modItem.inscription[i].Equals(CNCID.Inscription.C_Power))
-                    add += (float)CNCID.Inscription.C_Power.Data[0];
-            }
-            damage += add;
-            damage *= mul;
+            reduce += item.GetGlobalItem<InscriptionSettings>().manaCostAdd;
+            mult *= item.GetGlobalItem<InscriptionSettings>().manaCostMul;
         }
 
-        public override float UseTimeMultiplier(Item item)
-        {
-            InscriptionSettings modItem = item.GetGlobalItem<InscriptionSettings>();
-            float add = 0;
-            float mul = 1;
-            for (int i = 0; i < modItem.inscription.Length; i++)
-            {
-                if (modItem.inscription[i].Equals(CNCID.Inscription.C_MagicAdept))
-                    add += (float)CNCID.Inscription.C_MagicAdept.Data[0];
-            }
-            return (base.UseTimeMultiplier(item) * (1 / (1 + add))) * mul;
-        }
-
-        public override float UseAnimationMultiplier(Item item)
-        {
-            InscriptionSettings modItem = item.GetGlobalItem<InscriptionSettings>();
-            float add = 0;
-            float mul = 1;
-            for (int i = 0; i < modItem.inscription.Length; i++)
-            {
-                if (modItem.inscription[i].Equals(CNCID.Inscription.C_MagicAdept))
-                    add += (float)CNCID.Inscription.C_MagicAdept.Data[0];
-            }
-            return (base.UseAnimationMultiplier(item) * (1 / (1 + add))) * mul;
-        }
+        private float UseItemSpeed(Item item, float value) => value / (1 + modPlayer.attackSpeed + item.GetGlobalItem<InscriptionSettings>().attackSpeed);
+        public override float UseTimeMultiplier(Item item) => this.UseItemSpeed(item, base.UseTimeMultiplier(item));
+        public override float UseAnimationMultiplier(Item item) => this.UseItemSpeed(item, base.UseAnimationMultiplier(item));
     }
 }
