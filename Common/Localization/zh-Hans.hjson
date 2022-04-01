@@ -27,6 +27,7 @@ Mods: {
 				HHvsRobeCape: 至高斗篷
 				HHvsRobe: 至高巫师法袍
 				HHvsHat: 至高巫师帽
+				HHvsLegs: 至高巫师连裤靴
 				QuartzBlock: Quartz的头
 				MiracleGem: 静谧宝石
 				DestineScroll: 命定卷轴
@@ -49,9 +50,10 @@ Mods: {
 				SpiritSparkingWand: 灵木魔杖
 			}
 			Tooltip: {
-				HHvsRobeCape: “灰色巫师斗篷！”
-				HHvsRobe: “灰色巫师长袍！”
-				HHvsHat: “灰色巫师帽！”
+				HHvsRobeCape: “至高巫师的尊贵象征”
+				HHvsRobe: “浩瀚星辰海洋凝聚的法袍”
+				HHvsHat: “无上智慧直接碾压”
+				HHvsLegs: “至高巫师自创连裤靴”
 				QuartzBlock: “你瞅啥？”
 				MiracleGem: 召唤可骑乘的灵狐
 				DestineScroll: 得到一次重新变更职业的机会\n“卷轴上记载了更替命定之路的上古咒文。”
