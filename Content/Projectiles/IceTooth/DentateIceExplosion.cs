@@ -38,6 +38,11 @@ namespace CNC.Content.Projectiles.IceTooth
             projectile.DamageType = DamageClass.Magic;
         }
 
+        public override void OnSpawn()
+        {
+            projectile.rotation = Main.rand.NextFloat(MyMath.pi2);
+        }
+
         public override void HitNPC(NPC target, int damage, float knockback, bool crit)
         {
             int buff1 = CNCID.Buff.LegacyObject[CNCID.Buff.Gelid];
