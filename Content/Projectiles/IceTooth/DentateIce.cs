@@ -22,6 +22,8 @@ namespace CNC.Content.Projectiles.IceTooth
 
         public override void ResetDefaults()
         {
+            data["add"] = 0f;
+            data["mul"] = 1f;
             data["flake"] = false;
             data["frozen"] = false;
             projectile.width = 20;
@@ -88,7 +90,7 @@ namespace CNC.Content.Projectiles.IceTooth
             if (this.flake)
             {
                 int type = CNCID.Projectile.LegacyObject[CNCID.Projectile.DentateIceExplosion];
-                Projectile proj = this.NewProjectile(0f, 0f, type, Inscription.JustGetDamage(projectile.damage, (string)CNCID.Inscription.S_Iceflake.Data[0]), projectile.knockBack, Main.rand.NextFloat(0, MyMath.pi * 2));
+                Projectile proj = this.NewProjectile(0f, 0f, type, Inscription.JustGetDamage(projectile.damage, (string)CNCID.Inscription.S_Iceflake.Data[0], (float)data["add"], (float)data["mul"]), projectile.knockBack, Main.rand.NextFloat(0, MyMath.pi * 2));
                 proj.GetGlobalProjectile<AllProjectile>().data["target"] = npc != null ? npc.whoAmI : -1;
                 proj.GetGlobalProjectile<AllProjectile>().data["frozen"] = this.frozen;
                 proj.owner = this.projectile.owner;

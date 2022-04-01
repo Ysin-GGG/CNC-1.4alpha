@@ -21,7 +21,7 @@ namespace CNC.Common.Global.Players
         public int Tick => player.GetModPlayer<AllPlayer>().Tick;
 
         public float cooldownReductionAdd = 0f;
-        public float cooldownReductionMul = 0f;
+        public float cooldownReductionMul = 1f;
         public float cooldownSpeedAdd = 0f;
         public float cooldownSpeedMul = 1f;
         public float chantingReduction = 0f;
@@ -35,7 +35,7 @@ namespace CNC.Common.Global.Players
         public override void ResetEffects()
         {
             this.cooldownReductionAdd = 0f;
-            this.cooldownReductionMul = 0f;
+            this.cooldownReductionMul = 1f;
             this.cooldownSpeedAdd = 0f;
             this.cooldownSpeedMul = 1f;
             this.chantingReduction = 0f;

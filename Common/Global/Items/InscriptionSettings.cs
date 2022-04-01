@@ -169,14 +169,14 @@ namespace CNC.Common.Global.Items
         {
             float add = 0; 
             float mul = 1;
-            if(player != null)
+            if (player != null)
             {
                 add = player.GetModPlayer<Players.InscriptionPlayer>().cooldownReductionAdd;
                 mul = player.GetModPlayer<Players.InscriptionPlayer>().cooldownReductionMul;
             }
             for (int i = 0; i < this._inscription1.Count; i++)
-                if (this._inscription1[i].type == inscription.type && this._inscription1[i].style == inscription.style)
-                    this._inscription1[i].SetCooldown((int)((newCooldown + newCooldown * (this.cooldownReductionAdd + add)) * this.cooldownReductionMul * mul), newCooldownMax);
+                if (this._inscription1[i] == inscription)
+                    this._inscription1[i].SetCooldown(newCooldown, newCooldownMax, this.cooldownReductionAdd + add, this.cooldownReductionMul * mul);
         }
 
         public bool GetInscriptionCooldown(Inscription inscription)

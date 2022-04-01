@@ -143,11 +143,11 @@ namespace CNC.Content
             return string.Format(this.description, args);
         }
 
-        public void SetCooldown(int newCooldown = -1, int newCooldownMax = -1)
+        public void SetCooldown(int newCooldown = -1, int newCooldownMax = -1, float add = 0f, float mul = 1f)
         {
             if (newCooldownMax >= 0) this.cooldownMax = newCooldownMax;
-            if (newCooldown >= 0) this.cooldown = newCooldown;
-            else this.cooldown = this.cooldownMax;
+            if (newCooldown < 0) newCooldown = this.cooldownMax;
+            this.cooldown = (int)((newCooldown + newCooldown * add) * mul);
         }
 
         public string GetTooltip(object[] data = default)
@@ -205,7 +205,7 @@ namespace CNC.Content
             int damage = 0;
             for (int j = begin + index; j < end; j++) if ('0' <= text[j] && text[j] <= '9') damage = damage * 10 + text[j] - '0';
             if (text[end - 1] == 'f') damage = (int)(item.OriginalDamage * (damage * .01f));
-            float basicDamage = (damage + (damage * ip.skillDamageAdd + i.skillDamageAdd)) * ip.skillDamageMul * i.skillDamageMul;
+            float basicDamage = (damage + (damage * (ip.skillDamageAdd + i.skillDamageAdd))) * ip.skillDamageMul * i.skillDamageMul;
             float extraDamage = basicDamage * (damageAdd[0] + damageAdd[type] - 2) * (damageMul[0] * damageMul[type]);
             text = text.Substring(0, begin) + ColorDamage((int)basicDamage, (int)extraDamage, damageColor[type]) + text.Substring(end + 1);
         }
@@ -229,6 +229,9 @@ namespace CNC.Content
             if (text[end - 1] == 'f') extra = "%";
             text = text.Substring(0, begin) + damage + extra + text.Substring(end + 1);
         }
+
+        public static int JustGetDamage(int originalDamage, string arg, Item item)
+            => JustGetDamage(originalDamage, arg, item.GetGlobalItem<InscriptionSettings>().skillDamageAdd, item.GetGlobalItem<InscriptionSettings>().skillDamageMul);
 
         public static int JustGetDamage(int originalDamage, string arg, float add = 0f, float mul = 1f)
         {

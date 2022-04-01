@@ -43,13 +43,15 @@ namespace CNC.Content.Items.Weapons.Magic
             if (player.altFunctionUse == 2 && this.FrostWaveEnable)
             {
                 CNCUtils.PlaySound("IceTooth/FrostWave", player, .5f);
-                Projectile projectile = CNCUtils.NewProj(source, position - new Vector2(6 * player.direction, 40f), velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.FrostWave], Inscription.JustGetDamage(-1, (string)CNCID.Inscription.S_FrostWave.Data[2]), knockback);
-                modItem.SetInscriptionCooldown(CNCID.Inscription.S_FrostWave, player : player);
+                Projectile projectile = CNCUtils.NewProj(source, position - new Vector2(6 * player.direction, 40f), velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.FrostWave], Inscription.JustGetDamage(-1, (string)CNCID.Inscription.S_FrostWave.Data[2], item), knockback);
+                modItem.SetInscriptionCooldown(CNCID.Inscription.S_FrostWave, -1, -1, player);
             }
             else
             {
                 CNCUtils.PlaySound("IceTooth/Shoot", player, 1f);
                 Projectile projectile = CNCUtils.NewProj(source, position, velocity, type, damage, knockback);
+                projectile.GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().data["add"] = modItem.skillDamageAdd;
+                projectile.GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().data["mul"] = modItem.skillDamageMul;
                 if (modItem.HasInscription(CNCID.Inscription.S_Iceflake)) projectile.GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().data["flake"] = true;
                 if (modItem.HasInscription(CNCID.Inscription.S_Glacier)) projectile.GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().data["frozen"] = true;
             }
