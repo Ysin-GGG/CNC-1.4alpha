@@ -92,5 +92,17 @@ namespace CNC.Common.Global.Items
         public virtual void ResetDefaults() { }
         public virtual void ResetStaticDefaults() { }
         public virtual void Tooltips(List<TooltipLine> tooltips) { }
+        public bool CNCStaff;
+        public override Vector2? HoldoutOffset()
+        {
+            Vector2? result = base.HoldoutOffset();
+            float x = 0;
+            if (this.CNCStaff)
+            {
+                x = (-item.width * 1 / 2) + (item.width * 1 / 2 * 1 / 3);
+                result = new Vector2(x, 0);
+            }
+            return result;
+        }
     }
 }

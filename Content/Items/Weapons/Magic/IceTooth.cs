@@ -35,6 +35,7 @@ namespace CNC.Content.Items.Weapons.Magic
             item.shootSpeed = 16f;
             clazz = 32;
             staff = false;
+            CNCStaff = true;
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -42,7 +43,7 @@ namespace CNC.Content.Items.Weapons.Magic
             if (player.altFunctionUse == 2 && this.FrostWaveEnable)
             {
                 CNCUtils.PlaySound("IceTooth/FrostWave", player, .5f);
-                Projectile projectile = CNCUtils.NewProj(source, position - new Vector2(6 * player.direction, 52f), velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.FrostWave], Inscription.JustGetDamage(-1, (string)CNCID.Inscription.S_FrostWave.Data[2]), knockback);
+                Projectile projectile = CNCUtils.NewProj(source, position - new Vector2(6 * player.direction, 40f), velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.FrostWave], Inscription.JustGetDamage(-1, (string)CNCID.Inscription.S_FrostWave.Data[2]), knockback);
                 modItem.SetInscriptionCooldown(CNCID.Inscription.S_FrostWave, player : player);
             }
             else
@@ -79,6 +80,6 @@ namespace CNC.Content.Items.Weapons.Magic
                 player.itemRotation = -MyMath.deg45 * player.direction;
         }
 
-        public override Vector2? HoldoutOffset() => new Vector2(-15f, 0f);
+        /*public override Vector2? HoldoutOffset() => new Vector2(-15f, 0f);*/
     }
 }

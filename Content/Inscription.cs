@@ -90,7 +90,7 @@ namespace CNC.Content
                 case CNCID.Item.IceTooth:
                     if (type == 0) { this.args = new object[] { }; }
                     if (type == 1) { this.args = new object[] { }; }
-                    if (type == 2) { this.args = new object[] { "[damage3=14]" }; }
+                    if (type == 2) { this.args = new object[] { "[damage3=30]" }; }
                     if (type == 3) { this.args = new object[] { 0.40f }; }
                     if (type == 4) { this.args = new object[] { 10, 14, "[damage3=80]", 15, 10 }; this.SetCooldown(0, 600); }
                     break;
