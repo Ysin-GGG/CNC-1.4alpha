@@ -67,32 +67,26 @@ namespace CNC.Common.Global.Players
         {
             InscriptionSettings modItem = item.GetGlobalItem<InscriptionSettings>();
             float add = 0;
-            float add2 = 0;
             float mul = 1;
-            float mul2 = 1;
             for (int i = 0; i < modItem.inscription.Length; i++)
             {
                 if (modItem.inscription[i].Equals(CNCID.Inscription.C_MagicAdept))
-                    add2 += (add2 == 0 ? 1 : add2) * (float)CNCID.Inscription.C_MagicAdept.Data[0];
+                    add += (float)CNCID.Inscription.C_MagicAdept.Data[0];
             }
-            add += add2;
-            return (base.UseTimeMultiplier(item) - 1 * add) * mul;
+            return (base.UseTimeMultiplier(item) * (1 / (1 + add))) * mul;
         }
 
         public override float UseAnimationMultiplier(Item item)
         {
             InscriptionSettings modItem = item.GetGlobalItem<InscriptionSettings>();
             float add = 0;
-            float add2 = 0;
             float mul = 1;
-            float mul2 = 1;
             for (int i = 0; i < modItem.inscription.Length; i++)
             {
                 if (modItem.inscription[i].Equals(CNCID.Inscription.C_MagicAdept))
-                    add2 += (add2 == 0 ? 1 : add2) * (float)CNCID.Inscription.C_MagicAdept.Data[0];
+                    add += (float)CNCID.Inscription.C_MagicAdept.Data[0];
             }
-            add += add2;
-            return (base.UseAnimationMultiplier(item) - 1 * add) * mul;
+            return (base.UseAnimationMultiplier(item) * (1 / (1 + add))) * mul;
         }
     }
 }
