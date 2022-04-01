@@ -34,7 +34,7 @@ namespace CNC.Content.Items.Weapons.Magic
             item.shoot = CNCID.Projectile.LegacyObject[CNCID.Projectile.DentateIce];
             item.shootSpeed = 16f;
             clazz = 32;
-            staff = true;
+            staff = false;
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -80,12 +80,12 @@ namespace CNC.Content.Items.Weapons.Magic
         public override void HoldItem(Player player)
         {
             if (player.altFunctionUse == 2)
-                player.itemRotation = -MyMath.deg90 * player.direction;
+                player.itemRotation = -MyMath.deg45 * player.direction;
         }
-        
-        public override Vector2? HoldoutOrigin()
+
+        public override Vector2? HoldoutOffset()
         {
-            return new Vector2(55,55);
+            return new Vector2(-15, 0);
         }
     }
 }
