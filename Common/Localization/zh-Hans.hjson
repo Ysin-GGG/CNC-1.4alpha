@@ -51,14 +51,14 @@ Mods: {
 			}
 			Tooltip: {
 				HHvsRobeCape: “至高巫师的尊贵象征”
-				HHvsRobe: “浩瀚星辰海洋凝聚的法袍”
-				HHvsHat: “无上智慧直接碾压”
-				HHvsLegs: “至高巫师自创连裤靴”
+				HHvsRobe: “浩瀚星辰咒文凝聚的法袍”
+				HHvsHat: “无上智慧的重压”
+				HHvsLegs: “巫师自创连裤靴”
 				QuartzBlock: “你瞅啥？”
 				MiracleGem: 召唤可骑乘的灵狐
 				DestineScroll: 得到一次重新变更职业的机会\n“卷轴上记载了更替命定之路的上古咒文。”
 				#FireGrimoire: 
-				IceTooth: 埃兹西亚巫师费辛生前唯一的遗物。\n“作为权力的代价，埃兹西亚的英雄，"王室守护"费辛也无法逃脱命定之死。”
+				IceTooth: 埃兹西亚巫师费辛生前唯一的遗物。\n“作为权力的代价，埃兹西亚的英雄，大巫师费辛也无法逃脱命定之死。”
 				#Superconductor: 
 				ArgenteusClaw: 残身艾因缇奥，银白圣树最后的子嗣
 				#SpiritWood: 

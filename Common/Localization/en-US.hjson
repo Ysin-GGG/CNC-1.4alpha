@@ -50,14 +50,14 @@ Mods: {
 				SpiritSparkingWand: Wand of Spirit Sparking
 			}
 			Tooltip: {
-				HHvsRobeCape: 'A robe cape of an ashy wizard!'
-				HHvsRobe: 'A robe of an ashy wizard!'
-				HHvsHat: 'A hat of an ashy wizard!'
+				HHvsRobeCape: '至高巫师的尊贵象征'
+				HHvsRobe: '浩瀚星辰咒文凝聚的法袍'
+				HHvsHat: '无上智慧的重压'
 				QuartzBlock: 'What are you looking at?'
 				MiracleGem: Summons a rideable miracle fox
 				DestineScroll: Changes your class once\n'Reading and reading, writing god being'
 				#FireGrimoire: 
-				IceTooth: All that remains of the wizard Fezien of Auzzsia.\n "As the price of power, Ezisia's hero, Fezien," the Royal guardian, "cannot escape his doomed death."
+				IceTooth: All that remains of the wizard Fezien of Auzzsia.\n "As the price of power, Ezisia's hero, Fezien,a great wizard, cannot escape his doomed death."
 				#Superconductor: 
 				ArgenteusClaw: 'Pierces the evil...'
 				#SpiritWood: 
