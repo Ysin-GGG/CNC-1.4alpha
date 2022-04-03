@@ -107,7 +107,7 @@ namespace CNC.Content
                     if (type == 1) { this.args = new object[] { 0.45f, "[damage2=200f]" }; }
                     if (type == 2) { this.args = new object[] { 3, "[damage2=300f]" }; }
                     break;
-                case CNCID.Item.ArgenteusTree:
+                case CNCID.Item.ArgenteusOathKeeper:
                     if (type == 0) { this.args = new object[] { }; }
                     if (type == 1) { this.args = new object[] { "[damage1=12]" }; }
                     if (type == 2) { this.args = new object[] { 30, 15, "[damage1=80]", "[damage1=100]" }; }

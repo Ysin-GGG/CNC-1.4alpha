@@ -211,8 +211,8 @@ namespace CNC.Common.Utils
             public const short TranquilityDirt = 10;
             /// <summary> 灰岩 </summary>
             public const short TranquilityStone = 11;
-            /// <summary> 银树 </summary>
-            public const short ArgenteusTree = 12;
+            /// <summary> 艾因缇奥誓剑 </summary>
+            public const short ArgenteusOathKeeper = 12;
             /// <summary> 埃兹西亚之光 </summary>
             public const short TheLightOfAuzzsia = 13;
             /// <summary> 熔铁尼安 </summary>
@@ -242,7 +242,7 @@ namespace CNC.Common.Utils
                 { "SpiritSapling", SpiritSapling },
                 { "TranquilityDirt", TranquilityDirt },
                 { "TranquilityStone", TranquilityStone },
-                { "ArgenteusTree", ArgenteusTree },
+                { "ArgenteusOathKeeper", ArgenteusOathKeeper },
                 { "TheLightOfAuzzsia", TheLightOfAuzzsia },
                 { "EmberOfNien", EmberOfNien },
                 { "FragmentarySoulDagger", FragmentarySoulDagger },
@@ -265,7 +265,7 @@ namespace CNC.Common.Utils
                 { "SpiritSapling", LegacyObject[Collection["SpiritSapling"]] },
                 { "TranquilityDirt", LegacyObject[Collection["TranquilityDirt"]] },
                 { "TranquilityStone", LegacyObject[Collection["TranquilityStone"]] },
-                { "ArgenteusTree", LegacyObject[Collection["ArgenteusTree"]] },
+                { "ArgenteusOathKeeper", LegacyObject[Collection["ArgenteusOathKeeper"]] },
                 { "TheLightOfAuzzsia", LegacyObject[Collection["TheLightOfAuzzsia"]] },
                 { "EmberOfNien", LegacyObject[Collection["EmberOfNien"]] },
                 { "FragmentarySoulDagger", LegacyObject[Collection["FragmentarySoulDagger"]] },
@@ -289,7 +289,7 @@ namespace CNC.Common.Utils
                 { SpiritSapling, ItemType<Content.Items.SpiritSapling>() },
                 { TranquilityDirt, ItemType<Content.Items.TranquilityDirt>() },
                 { TranquilityStone, ItemType<Content.Items.TranquilityStone>() },
-                //{ ArgenteusTree, ItemType<Content.Items.>() },
+                //{ ArgenteusOathKeeper, ItemType<Content.Items.>() },
                 //{ TheLightOfAuzzsia, ItemType<Content.Items.>() },
                 //{ EmberOfNien, ItemType<Content.Items.>() },
                 //{ FragmentarySoulDagger, ItemType<Content.Items.>() },
@@ -313,7 +313,7 @@ namespace CNC.Common.Utils
                 { LegacyObject[SpiritSapling], SpiritSapling },
                 { LegacyObject[TranquilityDirt], TranquilityDirt },
                 { LegacyObject[TranquilityStone], TranquilityStone },
-                //{ LegacyObject[ArgenteusTree], ArgenteusTree },
+                //{ LegacyObject[ArgenteusOathKeeper], ArgenteusOathKeeper },
                 //{ LegacyObject[TheLightOfAuzzsia], TheLightOfAuzzsia },
                 //{ LegacyObject[EmberOfNien], EmberOfNien },
                 //{ LegacyObject[FragmentarySoulDagger], FragmentarySoulDagger },
@@ -418,13 +418,13 @@ namespace CNC.Common.Utils
             /// <summary> 邪恶克星 </summary>
             public static Content.Inscription S_Exorcism => new Content.Inscription(2, CNCID.Item.ArgenteusClaw);
             /// <summary> 银焰 </summary>
-            public static Content.Inscription S_SilveryFlame => new Content.Inscription(0, CNCID.Item.ArgenteusTree);
+            public static Content.Inscription S_SilveryFlame => new Content.Inscription(0, CNCID.Item.ArgenteusOathKeeper);
             /// <summary> 神圣惩戒 </summary>
-            public static Content.Inscription S_Judgement => new Content.Inscription(1, CNCID.Item.ArgenteusTree);
+            public static Content.Inscription S_Judgement => new Content.Inscription(1, CNCID.Item.ArgenteusOathKeeper);
             /// <summary> 银盾 </summary>
-            public static Content.Inscription S_SilveryShield => new Content.Inscription(2, CNCID.Item.ArgenteusTree);
+            public static Content.Inscription S_SilveryShield => new Content.Inscription(2, CNCID.Item.ArgenteusOathKeeper);
             /// <summary> 银白树立誓 </summary>
-            public static Content.Inscription S_SilveryVow => new Content.Inscription(3, CNCID.Item.ArgenteusTree);
+            public static Content.Inscription S_SilveryVow => new Content.Inscription(3, CNCID.Item.ArgenteusOathKeeper);
             /// <summary> 岩石 </summary>
             public static Content.Inscription S_Rock => new Content.Inscription(0, CNCID.Item.TheLightOfAuzzsia);
             /// <summary> 移动施法 </summary>
@@ -496,10 +496,10 @@ namespace CNC.Common.Utils
                 { new Point(0, CNCID.Item.ArgenteusClaw), "S_SilveryArrow" },
                 { new Point(1, CNCID.Item.ArgenteusClaw), "S_Sanctity" },
                 { new Point(2, CNCID.Item.ArgenteusClaw), "S_Exorcism" },
-                { new Point(0, CNCID.Item.ArgenteusTree), "S_SilveryFlame" },
-                { new Point(1, CNCID.Item.ArgenteusTree), "S_Judgement" },
-                { new Point(2, CNCID.Item.ArgenteusTree), "S_SilveryShield" },
-                { new Point(3, CNCID.Item.ArgenteusTree), "S_SilveryVow" },
+                { new Point(0, CNCID.Item.ArgenteusOathKeeper), "S_SilveryFlame" },
+                { new Point(1, CNCID.Item.ArgenteusOathKeeper), "S_Judgement" },
+                { new Point(2, CNCID.Item.ArgenteusOathKeeper), "S_SilveryShield" },
+                { new Point(3, CNCID.Item.ArgenteusOathKeeper), "S_SilveryVow" },
                 { new Point(0, CNCID.Item.TheLightOfAuzzsia), "S_Rock" },
                 { new Point(1, CNCID.Item.TheLightOfAuzzsia), "S_ActiveChant" },
                 { new Point(2, CNCID.Item.TheLightOfAuzzsia), "S_Fragmentation" },
@@ -624,10 +624,10 @@ namespace CNC.Common.Utils
                 { new Point(0, CNCID.Item.ArgenteusClaw), S_SilveryArrow },
                 { new Point(1, CNCID.Item.ArgenteusClaw), S_Sanctity },
                 { new Point(2, CNCID.Item.ArgenteusClaw), S_Exorcism },
-                { new Point(0, CNCID.Item.ArgenteusTree), S_SilveryFlame },
-                { new Point(1, CNCID.Item.ArgenteusTree), S_Judgement },
-                { new Point(2, CNCID.Item.ArgenteusTree), S_SilveryShield },
-                { new Point(3, CNCID.Item.ArgenteusTree), S_SilveryVow },
+                { new Point(0, CNCID.Item.ArgenteusOathKeeper), S_SilveryFlame },
+                { new Point(1, CNCID.Item.ArgenteusOathKeeper), S_Judgement },
+                { new Point(2, CNCID.Item.ArgenteusOathKeeper), S_SilveryShield },
+                { new Point(3, CNCID.Item.ArgenteusOathKeeper), S_SilveryVow },
                 { new Point(0, CNCID.Item.TheLightOfAuzzsia), S_Rock },
                 { new Point(1, CNCID.Item.TheLightOfAuzzsia), S_ActiveChant },
                 { new Point(2, CNCID.Item.TheLightOfAuzzsia), S_Fragmentation },

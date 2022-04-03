@@ -8,7 +8,7 @@ namespace CNC.Content.Items
 	{
 		public override void ResetDefaults() {
 			item.width = 20;
-            item.height = 30;
+            item.height = 22;
             item.useTime = 20;
             item.useAnimation = 20;
             item.useStyle = 4;

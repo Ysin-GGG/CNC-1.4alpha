@@ -14,6 +14,9 @@
     <Compile Remove="Content\UI\Craft\DarkScreen.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Content\Items\SilenceflowerSeeds.png" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>

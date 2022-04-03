@@ -310,7 +310,7 @@ namespace CNC.Common.Global.Items
                         AddToInscriptionList(ref list, ref levelMax, 2, 2, CNCID.Inscription.S_Sanctity);
                         AddToInscriptionList(ref list, ref levelMax, 4, 4, CNCID.Inscription.S_Exorcism);
                         break;
-                    case CNCID.Item.ArgenteusTree:
+                    case CNCID.Item.ArgenteusOathKeeper:
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.C_Power);
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.C_Dexterity);
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.C_MeleeAdept);
