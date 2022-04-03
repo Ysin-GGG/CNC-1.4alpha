@@ -65,7 +65,7 @@ namespace CNC.Content.Projectiles.IceTooth
                 for (int i = 0; i < 3; i++)
                 {
                     int idx = Particle.NewParticle(
-                                 ModContent.Request<Texture2D>("CNC/Assets/Effects/Snowflake" + Main.rand.Next(1, 5).ToString()).Value,
+                                 ModContent.Request<Texture2D>("CNC/Assets/Particles/Snowflake" + Main.rand.Next(1, 5).ToString()).Value,
                                  projectile.Center,
                                  new Vector2(Main.rand.NextFloat(-2f, 2f), Main.rand.NextFloat(-2f, 2f)) * 6f,
                                  MyMath.deg01 * Main.rand.Next(359),
@@ -104,7 +104,7 @@ namespace CNC.Content.Projectiles.IceTooth
                     for (int i = 0; i < 60; i++)
                     {
                         int idx = Particle.NewParticle(
-                                     ModContent.Request<Texture2D>("CNC/Assets/Effects/Snowflake" + Main.rand.Next(1, 5).ToString()).Value,
+                                     ModContent.Request<Texture2D>("CNC/Assets/Particles/Snowflake" + Main.rand.Next(1, 5).ToString()).Value,
                                      projectile.Center + new Vector2(projectile.width / 2f, 0).RotatedBy(i / 60f * MyMath.pi * 2),
                                      new Vector2(Main.rand.NextFloat(-2f, 2f), Main.rand.NextFloat(-4f, 1f)),
                                      Main.rand.NextFloat(MyMath.pi2),
@@ -133,7 +133,7 @@ namespace CNC.Content.Projectiles.IceTooth
                             MyMath.GetXY(-340f * rot + projectile.rotation) * .52f,
                         };
                         int idx = Particle.NewParticle(
-                                     ModContent.Request<Texture2D>("CNC/Assets/Effects/Snowflake" + Main.rand.Next(1, 5).ToString()).Value,
+                                     ModContent.Request<Texture2D>("CNC/Assets/Particles/Snowflake" + Main.rand.Next(1, 5).ToString()).Value,
                                      projectile.Center + projectile.width / 2f * offset[i / 10] * (i % 10 + 1) / 10f,
                                      Vector2.Zero,
                                      Main.rand.NextFloat(MyMath.pi2),

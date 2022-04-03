@@ -44,7 +44,7 @@ namespace CNC.Content.Projectiles.FireGrimoire
                 for (int i = 0; i < 3; i++)
                 {
                     int idx = Particle.NewParticle(
-                        ModContent.Request<Texture2D>("CNC/Assets/Effects/Light").Value,
+                        ModContent.Request<Texture2D>("CNC/Assets/Particles/Light1").Value,
                         projectile.Center + new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f)) * projectile.Size * projectile.scale / 2f,
                         new Vector2(Main.rand.NextFloat(-6f, 6f), -6f) * Main.rand.NextFloat(.05f, .1f),
                         0f,

@@ -147,34 +147,34 @@ namespace CNC.Content
         {
             for (int i = 0; i < maxParticles; i++)
             {
-                if (particle[i] == null) particle[i] = new Particle();
-                for (int j = 0; j <= particle[i].extraUpdate; j++)
+                if (ParticleRenderer.particle[i] == null) ParticleRenderer.particle[i] = new Particle();
+                for (int j = 0; j <= ParticleRenderer.particle[i].extraUpdate; j++)
                 {
-                    if (particle[i].active = particle[i].timeLeft-- > 0)
+                    if (ParticleRenderer.particle[i].active = ParticleRenderer.particle[i].timeLeft-- > 0)
                     {
-                        if (particle[i].PreUpdate())
+                        if (ParticleRenderer.particle[i].PreUpdate())
                         {
-                            particle[i].oldPosition = particle[i].position;
-                            particle[i].position += particle[i].velocity;
-                            particle[i].rotation += particle[i].rotationAdd;
-                            particle[i].scale += particle[i].scaleAdd;
-                            particle[i].scale *= particle[i].scaleMul;
-                            particle[i].alpha += particle[i].alphaAdd;
-                            particle[i].velocity = (particle[i].velocity + particle[i].velocityAdd) * particle[i].velocityMul;
-                            if (particle[i].scale.X < 0) particle[i].scale.X = 0;
-                            if (particle[i].scale.Y < 0) particle[i].scale.Y = 0;
-                            if (!particle[i].noGravity) particle[i].velocity.Y += MyMath.g * .01f;
-                            if (particle[i].light != Color.Transparent)
+                            ParticleRenderer.particle[i].oldPosition = ParticleRenderer.particle[i].position;
+                            ParticleRenderer.particle[i].position += ParticleRenderer.particle[i].velocity;
+                            ParticleRenderer.particle[i].rotation += ParticleRenderer.particle[i].rotationAdd;
+                            ParticleRenderer.particle[i].scale += ParticleRenderer.particle[i].scaleAdd;
+                            ParticleRenderer.particle[i].scale *= ParticleRenderer.particle[i].scaleMul;
+                            ParticleRenderer.particle[i].alpha += ParticleRenderer.particle[i].alphaAdd;
+                            ParticleRenderer.particle[i].velocity = (ParticleRenderer.particle[i].velocity + ParticleRenderer.particle[i].velocityAdd) * ParticleRenderer.particle[i].velocityMul;
+                            if (ParticleRenderer.particle[i].scale.X < 0) ParticleRenderer.particle[i].scale.X = 0;
+                            if (ParticleRenderer.particle[i].scale.Y < 0) ParticleRenderer.particle[i].scale.Y = 0;
+                            if (!ParticleRenderer.particle[i].noGravity) ParticleRenderer.particle[i].velocity.Y += MyMath.g * .01f;
+                            if (ParticleRenderer.particle[i].light != Color.Transparent)
                             {
-                                Point pos = (particle[i].position / 16f).ToPoint();
-                                Color light = particle[i].light;
-                                float r = light.R * light.A / 255f * particle[i].lightAlpha * (particle[i].scale.X + particle[i].scale.Y) / 2f;
-                                float g = light.G * light.A / 255f * particle[i].lightAlpha * (particle[i].scale.X + particle[i].scale.Y) / 2f;
-                                float b = light.B * light.A / 255f * particle[i].lightAlpha * (particle[i].scale.X + particle[i].scale.Y) / 2f;
+                                Point pos = (ParticleRenderer.particle[i].position / 16f).ToPoint();
+                                Color light = ParticleRenderer.particle[i].light;
+                                float r = light.R * light.A / 255f * ParticleRenderer.particle[i].lightAlpha * (ParticleRenderer.particle[i].scale.X + ParticleRenderer.particle[i].scale.Y) / 2f;
+                                float g = light.G * light.A / 255f * ParticleRenderer.particle[i].lightAlpha * (ParticleRenderer.particle[i].scale.X + ParticleRenderer.particle[i].scale.Y) / 2f;
+                                float b = light.B * light.A / 255f * ParticleRenderer.particle[i].lightAlpha * (ParticleRenderer.particle[i].scale.X + ParticleRenderer.particle[i].scale.Y) / 2f;
                                 Lighting.AddLight(pos.X, pos.Y, r, g, b);
                             }
                         }
-                        particle[i].PostUpdate();
+                        ParticleRenderer.particle[i].PostUpdate();
                     }
                 }
             }

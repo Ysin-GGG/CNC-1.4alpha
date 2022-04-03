@@ -56,17 +56,11 @@ namespace CNC.Content.Projectiles.FireGrimoire
             if (len < lenMax) len++;
             if (projectile.timeLeft < 597)
             {
-                Color color = new Color(242, 92, 34);// * projectile.scale;
-                CNCUtils.AddLight(projectile.position, color, .8f);
-                /*
-                Dust dust = Dust.NewDustDirect(projectile.position, (int)(projectile.width * projectile.scale), (int)(projectile.height * projectile.scale), DustId.Fire, 0f, 0f, 100, Color.Red, 2f);
-                dust.noGravity = true;
-                dust.velocity *= 2;
-                */
+                CNCUtils.AddLight(projectile.position, new Color(242, 92, 34), .8f);
                 for (int i = 0; i < 2; i++)
                 {
                     int idx = Particle.NewParticle(
-                        ModContent.Request<Texture2D>("CNC/Assets/Effects/Light").Value,
+                        ModContent.Request<Texture2D>("CNC/Assets/Particles/Light1").Value,
                         projectile.Center + new Vector2(Main.rand.NextFloat(-1f, 1f) * Main.rand.NextFloat(-1f, 1f)) * projectile.Size * projectile.scale / 2f,
                         -new Vector2(projectile.velocity.X, 6f) * Main.rand.NextFloat(.05f, .1f),
                         0f,
@@ -91,13 +85,8 @@ namespace CNC.Content.Projectiles.FireGrimoire
         {
             for (int i = 0; i < len; i++)
             {
-                /*
-                Dust dust = Dust.NewDustDirect(projectile.oldPos[i], (int)(projectile.width * projectile.scale), (int)(projectile.height * projectile.scale), DustId.Fire, 0f, 0f, 100, Color.Red, 2f - i / len);
-                dust.noGravity = true;
-                dust.velocity = projectile.velocity / 8f;
-                */
                 int idx = Particle.NewParticle(
-                    ModContent.Request<Texture2D>("CNC/Assets/Effects/Light").Value,
+                    ModContent.Request<Texture2D>("CNC/Assets/Particles/Light1").Value,
                     projectile.oldPos[i] + projectile.Size / 2f + new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f)) * projectile.Size * projectile.scale / 2f,
                     -new Vector2(projectile.velocity.X, 6f) * Main.rand.NextFloat(.05f, .1f),
                     0f,

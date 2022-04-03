@@ -78,28 +78,5 @@ namespace CNC.Common.Global.Players
             if (this.shakeValue.Y >= amplitude.Y) { this.shakeDirection.Y = -1; this.shakeValue.Y = amplitude.Y; }
             if (this.shakeValue.Y <= amplitude.Y) { this.shakeDirection.Y = 1; this.shakeValue.Y = -amplitude.Y; }
         }
-
-        public override void PreUpdate()
-        {
-            if (Tick % 5 == 0 && modPlayer.EquippedQuartzHead && modPlayer.IsModDeveloper)
-            {
-                int idx = Content.Particle.NewParticle(
-                    ModContent.Request<Texture2D>("CNC/Content/Dusts/Star").Value,
-                    Main.MouseWorld,
-                    new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f)),
-                    0,
-                    100,
-                    Vector2.One,
-                    new Color(178, 214, 231, 0),
-                    new Color(178, 214, 231, 10)
-                    );
-                Content.ParticleRenderer.particle[idx].color = CNCID.Colors.Expert;
-                Content.ParticleRenderer.particle[idx].light = CNCID.Colors.Expert;
-                Content.ParticleRenderer.particle[idx].scaleAdd = new Vector2(-Main.rand.NextFloat(.065f, .015f));
-                Content.ParticleRenderer.particle[idx].rotationAdd = MyMath.deg01 * Main.rand.Next(1, 16);
-                Content.ParticleRenderer.particle[idx].color.A = 0;
-                Content.ParticleRenderer.particle[idx].light.A = 10;
-            }
-        }
     }
 }

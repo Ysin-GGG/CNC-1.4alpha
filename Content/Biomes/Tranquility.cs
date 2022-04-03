@@ -15,14 +15,14 @@ namespace CNC.Content.Biomes
 {
     public class Tranquility : ModBiome
     {
-        protected static string key => "CNC/Assets/Textures/Backgrounds/Tranquility";
+        protected static string key => "CNC/Assets/Backgrounds/Tranquility";
         //public override bool IsPrimaryBiome => true;
         //public override ModWaterStyle WaterStyle => ModContent.Find<ModWaterStyle>("ExampleMod/ExampleWaterStyle");
         public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.Find<ModSurfaceBackgroundStyle>("CNC/SurfaceBackground");
         public override ModUndergroundBackgroundStyle UndergroundBackgroundStyle => ModContent.Find<ModUndergroundBackgroundStyle>("CNC/UndergroundBackground");
         //public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Crimson;
         public override int Music => MusicLoader.GetMusicSlot(Mod, "Content/Sounds/Music/Tranquility");
-        public override string BestiaryIcon => "CNC/Assets/Textures/Bestiary/Tranquility_Icon";
+        public override string BestiaryIcon => "CNC/Assets/Bestiary/Tranquility_Icon";
         public override string BackgroundPath => base.BackgroundPath;
         public override Color? BackgroundColor => base.BackgroundColor;
         
