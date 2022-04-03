@@ -2,6 +2,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using CNC.Common.Utils;
 
 namespace CNC.Content
 {
@@ -68,6 +69,7 @@ namespace CNC.Content
         public void Draw(SpriteBatch spriteBatch, Vector2 offset = default)
         {
             if (!this.active) return;
+            float alpha = MyMath.Clamp(this.alpha, 0, 1);
             if (PreDraw(spriteBatch, offset))
             {
                 if (this.textureGlow != null)
@@ -75,7 +77,7 @@ namespace CNC.Content
                         this.textureGlow,
                         this.position + offset - Main.screenPosition,
                         null,
-                        this.color * this.alpha,
+                        this.color * alpha,
                         this.rotation,
                         this.textureGlow.Size() / 2,
                         this.scale * this.scaleGlow,
@@ -86,7 +88,7 @@ namespace CNC.Content
                         this.texture,
                         this.position + offset - Main.screenPosition,
                         null,
-                        this.color * this.alpha,
+                        this.color * alpha,
                         this.rotation,
                         this.texture.Size() / 2,
                         this.scale,
@@ -157,10 +159,11 @@ namespace CNC.Content
                             particle[i].rotation += particle[i].rotationAdd;
                             particle[i].scale += particle[i].scaleAdd;
                             particle[i].scale *= particle[i].scaleMul;
+                            particle[i].alpha += particle[i].alphaAdd;
                             particle[i].velocity = (particle[i].velocity + particle[i].velocityAdd) * particle[i].velocityMul;
                             if (particle[i].scale.X < 0) particle[i].scale.X = 0;
                             if (particle[i].scale.Y < 0) particle[i].scale.Y = 0;
-                            if (!particle[i].noGravity) particle[i].velocity.Y += Common.Utils.MyMath.g * .01f;
+                            if (!particle[i].noGravity) particle[i].velocity.Y += MyMath.g * .01f;
                             if (particle[i].light != Color.Transparent)
                             {
                                 Point pos = (particle[i].position / 16f).ToPoint();

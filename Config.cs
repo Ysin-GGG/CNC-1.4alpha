@@ -262,10 +262,10 @@ namespace CNC
                     base.OnBind();
                     valueStrings = new string[]
                     {
-                CNCLocalization.GetText("Config.BottomEdge"),
-                CNCLocalization.GetText("Config.LeftEdge"),
-                CNCLocalization.GetText("Config.TopEdge"),
-                CNCLocalization.GetText("Config.RightEdge"),
+                        CNCLocalization.GetText("Config.BottomEdge"),
+                        CNCLocalization.GetText("Config.LeftEdge"),
+                        CNCLocalization.GetText("Config.TopEdge"),
+                        CNCLocalization.GetText("Config.RightEdge"),
                     };
                     TextDisplayFunction = () => memberInfo.Name + GetStringValue();
                     if (labelAttribute != null) TextDisplayFunction = () => labelAttribute.Label + GetStringValue();

@@ -33,6 +33,7 @@ namespace CNC.Common.Global.Projectiles
         public float velY { get => projectile.velocity.Y; set => projectile.velocity.Y = value; }
         public int frame { get => projectile.frame; set => projectile.frame = value; }
         public int frameTick { get => projectile.frameCounter; set => projectile.frameCounter = value; }
+        public Rectangle? hitBox = null;
 
 
         public NPC NewNPC(short CNCtype, int start = 0)
@@ -106,6 +107,7 @@ namespace CNC.Common.Global.Projectiles
 
         public sealed override void SetDefaults()
         {
+            hitBox = null;
             ResetDefaults();
         }
 
@@ -228,6 +230,12 @@ namespace CNC.Common.Global.Projectiles
             float knockback = 0f;
             HitPlayer(target, ref damage, ref crit);
             ModifyHit(target, ref damage, ref knockback, ref crit);
+        }
+
+        public override void ModifyDamageHitbox(ref Rectangle hitbox)
+        {
+            if (this.hitBox == null) base.ModifyDamageHitbox(ref hitbox);
+            else hitbox = (Rectangle)this.hitBox;
         }
 
         public virtual void ResetDefaults() { }

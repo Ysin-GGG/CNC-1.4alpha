@@ -23,8 +23,8 @@ namespace CNC.Content.Projectiles.FireGrimoire
         public override void ResetDefaults()
         {
             data["level"] = 0;
-            projectile.width = 10;
-            projectile.height = 10;
+            projectile.width = 14;
+            projectile.height = 14;
             projectile.timeLeft = 600;
             projectile.knockBack = 2f;
             projectile.alpha = 0;
@@ -58,9 +58,26 @@ namespace CNC.Content.Projectiles.FireGrimoire
             {
                 Color color = new Color(242, 92, 34);// * projectile.scale;
                 CNCUtils.AddLight(projectile.position, color, .8f);
+                /*
                 Dust dust = Dust.NewDustDirect(projectile.position, (int)(projectile.width * projectile.scale), (int)(projectile.height * projectile.scale), DustId.Fire, 0f, 0f, 100, Color.Red, 2f);
                 dust.noGravity = true;
                 dust.velocity *= 2;
+                */
+                for (int i = 0; i < 2; i++)
+                {
+                    int idx = Particle.NewParticle(
+                        ModContent.Request<Texture2D>("CNC/Assets/Effects/Light").Value,
+                        projectile.Center + new Vector2(Main.rand.NextFloat(-1f, 1f) * Main.rand.NextFloat(-1f, 1f)) * projectile.Size * projectile.scale / 2f,
+                        -new Vector2(projectile.velocity.X, 6f) * Main.rand.NextFloat(.05f, .1f),
+                        0f,
+                        100,
+                        new Vector2(Main.rand.NextFloat(.03f, .09f)),
+                        new Color(242, 92, 34, 0),
+                        new Color(242, 92, 34, 25)
+                        );
+                    ParticleRenderer.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.0003f, .0010f));
+                    ParticleRenderer.particle[idx].alphaAdd = (Main.rand.Next(5) + 1) * -.01f;
+                }
             }
         }
 
@@ -72,11 +89,25 @@ namespace CNC.Content.Projectiles.FireGrimoire
 
         public override void Kill(int timeLeft)
         {
-            for(int i = 0; i < len; i++)
+            for (int i = 0; i < len; i++)
             {
+                /*
                 Dust dust = Dust.NewDustDirect(projectile.oldPos[i], (int)(projectile.width * projectile.scale), (int)(projectile.height * projectile.scale), DustId.Fire, 0f, 0f, 100, Color.Red, 2f - i / len);
                 dust.noGravity = true;
                 dust.velocity = projectile.velocity / 8f;
+                */
+                int idx = Particle.NewParticle(
+                    ModContent.Request<Texture2D>("CNC/Assets/Effects/Light").Value,
+                    projectile.oldPos[i] + projectile.Size / 2f + new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f)) * projectile.Size * projectile.scale / 2f,
+                    -new Vector2(projectile.velocity.X, 6f) * Main.rand.NextFloat(.05f, .1f),
+                    0f,
+                    100,
+                    new Vector2(Main.rand.NextFloat(.06f, .12f)) * ((len - i) / (len + 1f) * .5f + .5f),
+                    new Color(242, 92, 34, 0),
+                    new Color(242, 92, 34, 25)
+                    );
+                ParticleRenderer.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.0005f, .0012f));
+                ParticleRenderer.particle[idx].alphaAdd = (Main.rand.Next(5) + 1) * -.01f;
             }
             Projectile proj = this.NewProjectile(0f, 0f, CNCID.Projectile.LegacyObject[CNCID.Projectile.FireBallExplosion], Inscription.JustGetDamage(projectile.damage, (string)CNCID.Inscription.S_Incinerating.Data[0]), projectile.knockBack, MyMath.deg01 * Main.rand.Next(0, 359));
             proj.GetGlobalProjectile<AllProjectile>().data["level"] = level;
@@ -89,9 +120,16 @@ namespace CNC.Content.Projectiles.FireGrimoire
             Texture2D glowTrail = ModContent.Request<Texture2D>("CNC/Assets/Effects/GlowTrail1").Value;
             Texture2D trail = ModContent.Request<Texture2D>("CNC/Assets/Effects/Trail3").Value;
             Color color = new Color(242, 92, 34, 0);
+            //Main.spriteBatch.Draw(light, projectile.Center - light.Size() / 2f * .5f - Main.screenPosition, null, color, 0, default, .5f, 0, 0f);
             Drawing.DrawTrailDirect(Main.spriteBatch, glowTrail, len, projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, color, pointX, glowTrail.Height / 2, new Vector2(1, .05f), new Vector2(1, .05f), true, 16, 1);
             Drawing.DrawTrailDirect(Main.spriteBatch, trail, Math.Max(0, len - 2), projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, color, pointX, trail.Height / 2, new Vector2(1, .19f), new Vector2(1, .05f), true, 16, 2);
             pointX = (pointX - 15 + trail.Width) % trail.Width;
+            return true;
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            lightColor = Color.White;
             return true;
         }
     }

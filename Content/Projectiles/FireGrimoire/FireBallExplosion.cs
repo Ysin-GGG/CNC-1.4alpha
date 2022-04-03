@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.ID;
-using Terraria.Audio;
 using Terraria.ModLoader;
 using CNC.Common.Utils;
 using CNC.Common.Global.Projectiles;
@@ -22,7 +21,6 @@ namespace CNC.Content.Projectiles.FireGrimoire
             projectile.timeLeft = 23;
             projectile.knockBack = 2f;
             projectile.alpha = 32;
-            projectile.scale = 1f;
             projectile.penetrate = -1;
             projectile.friendly = true;
             projectile.ignoreWater = true;
@@ -38,9 +36,26 @@ namespace CNC.Content.Projectiles.FireGrimoire
             if (frame > 0) projectile.friendly = false; 
             if (frame < 3)
             {
+                /*
                 Dust dust = Dust.NewDustDirect(projectile.position + projectile.velocity, projectile.width, projectile.height, DustId.Fire, 0f, 0f, 100, Color.Red, 3f);
                 dust.noGravity = true;
                 dust.scale -= .05f;
+                */
+                for (int i = 0; i < 3; i++)
+                {
+                    int idx = Particle.NewParticle(
+                        ModContent.Request<Texture2D>("CNC/Assets/Effects/Light").Value,
+                        projectile.Center + new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f)) * projectile.Size * projectile.scale / 2f,
+                        new Vector2(Main.rand.NextFloat(-6f, 6f), -6f) * Main.rand.NextFloat(.05f, .1f),
+                        0f,
+                        100,
+                        new Vector2(Main.rand.NextFloat(.06f, .12f)),
+                        new Color(242, 92, 34, 0),
+                        new Color(242, 92, 34, 25)
+                        );
+                    ParticleRenderer.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.0005f, .0012f));
+                    ParticleRenderer.particle[idx].alphaAdd = (Main.rand.Next(5) + 1) * -.01f;
+                }
             }
             Color color = new Color(242, 92, 34); //projectile.scale;
             CNCUtils.AddLight(projectile.position, color, 0.8f);
@@ -50,6 +65,12 @@ namespace CNC.Content.Projectiles.FireGrimoire
         {
             target.AddBuff(24, 300);
             if (this.level > 0) target.AddBuff(CNCID.Buff.LegacyObject[CNCID.Buff.Scorched], 300);
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            lightColor = Color.White;
+            return true;
         }
     }
 }
