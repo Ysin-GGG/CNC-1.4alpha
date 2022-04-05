@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 
-namespace CNC.Common.Utils
+namespace CNC.Common
 {
     /// <summary> 伪随机数生成器（线形同余法） </summary>
     public class Pseudorandom
