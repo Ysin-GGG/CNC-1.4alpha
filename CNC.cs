@@ -20,6 +20,8 @@ namespace CNC
 	{
         public override Version Version => new Version(0, 0, 3, 0);
         public Version TMLVersion => TModLoaderVersion;
+        public static Pseudorandom Rand => CNC.rand;
+        private static Pseudorandom rand;
         public static CNC Instance;
         public static int me => Const.me;
         public static Player Me => Const.Me;
@@ -38,6 +40,7 @@ namespace CNC
             CNCGlobal.Players.ClassesSettings.ClassKey = KeybindLoader.RegisterKeybind(this, "Class Key", Microsoft.Xna.Framework.Input.Keys.Q);
             CNCGlobal.Items.InscriptionSettings.InscriptionSystem.InscriptionKey = KeybindLoader.RegisterKeybind(this, "Inscription Key", Microsoft.Xna.Framework.Input.Keys.V);
             Instance = this;
+            rand = new Pseudorandom();
             #region 映射载入
             TmodFile modFiles = (TmodFile)typeof(Mod).GetProperty("File", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(this);
             CNCLocalization.Load("CNC", modFiles);
@@ -83,6 +86,7 @@ namespace CNC
             CNCLocalization.Unload();
             CNCGlobal.Players.ClassesSettings.ClassKey = null;
             CNCGlobal.Items.InscriptionSettings.InscriptionSystem.InscriptionKey = null;
+            rand = null;
             Instance = null;
         }
 
