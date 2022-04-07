@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 
-namespace CNC.Common
+namespace CNC.Common.Utils
 {
-    /// <summary> 伪随机数生成器（线形同余法） </summary>
-    public class Pseudorandom
+    /// <summary> 伪随机数生成器（线性同余法） </summary>
+    public class PseudoRandom
     {
         /// <summary> 初始种子 </summary>
         public long OriginalSeed => this.originalSeed;
@@ -17,8 +16,8 @@ namespace CNC.Common
         private MyRandom rand;
         private Dictionary<string, MyRandom> rands;
 
-        /// <summary> 伪随机数生成器（线形同余法） </summary>
-        public Pseudorandom()
+        /// <summary> 伪随机数生成器（线性同余法） </summary>
+        public PseudoRandom()
         {
             this.rands = new Dictionary<string, MyRandom>();
             this.originalSeed = this.seed = System.DateTime.Now.Ticks;
@@ -26,12 +25,14 @@ namespace CNC.Common
             this.rands.Add(this.seed.ToString(), rand);
         }
 
-        /// <summary> 伪随机数生成器（线形同余法） </summary>
+        /// <summary> 伪随机数生成器（线性同余法） </summary>
         /// <param name="seed"> 初始种子 </param>
-        public Pseudorandom(long seed)
+        public PseudoRandom(long seed)
         {
-            this.seed = seed;
+            this.rands = new Dictionary<string, MyRandom>();
+            this.originalSeed = this.seed = seed;
             this.rand = new MyRandom((int)(this.seed % ((long)int.MaxValue + (long)1)));
+            this.rands.Add(this.seed.ToString(), rand);
         }
 
         /// <summary> 重置种子为初始种子 </summary>
@@ -84,17 +85,17 @@ namespace CNC.Common
 
         /// <summary> 
         /// 随机取真假
-        /// <para> max * 100% 的几率取true </para>
+        /// <para> value * 100% 的几率取true </para>
         /// </summary>
-        /// <param name="max"> 整型概率 </param>
-        public bool NextBool(long max = 50) => this.NextBool(0, max);
+        /// <param name="value"> 整型取真概率 </param>
+        public bool NextBool(long value = 50) => this.NextBool(0, value);
 
         /// <summary> 
         /// 随机取真假
         /// <para> (max - min) * 100% 的几率取true </para>
         /// </summary>
-        /// <param name="min"> 整型最小概率 </param>
-        /// <param name="max"> 整型最大概率 </param>
+        /// <param name="min"> 整型取真最小概率 </param>
+        /// <param name="max"> 整型取真最大概率 </param>
         public bool NextBool(long min, long max)
         {
             double num = this.rand.NextDouble();
@@ -107,17 +108,17 @@ namespace CNC.Common
 
         /// <summary> 
         /// 随机取真假
-        /// <para> max * 100% 的几率取true </para>
+        /// <para> value * 100% 的几率取true </para>
         /// </summary>
-        /// <param name="max"> 双精度概率 </param>
-        public bool NextBool(double max) => this.NextBool(0, max);
+        /// <param name="value"> 双精度取真概率 </param>
+        public bool NextBool(double value) => this.NextBool(0, value);
 
         /// <summary> 
         /// 随机取真假
         /// <para> (max - min) * 100% 的几率取true </para>
         /// </summary>
-        /// <param name="min"> 双精度最小概率 </param>
-        /// <param name="max"> 双精度最大概率 </param>
+        /// <param name="min"> 双精度取真最小概率 </param>
+        /// <param name="max"> 双精度取真最大概率 </param>
         public bool NextBool(double min, double max)
         {
             double num = this.rand.NextDouble();
@@ -186,6 +187,9 @@ namespace CNC.Common
         public Vector2 NextVector2(Vector2 max) => new Vector2(this.NextFloat(max.X), this.NextFloat(max.Y));
         public Vector2 NextVector2(float minX, float minY, float maxX, float maxY) => this.NextVector2(new Vector2(minX, minY), new Vector2(maxX, maxY));
         public Vector2 NextVector2(Vector2 min, Vector2 max) => new Vector2(this.NextFloat(min.X, max.X), this.NextFloat(min.Y, max.Y));
+        public Vector2 NextVector2(Rectangle? rect) => rect == null ? new Vector2() : this.NextVector2(((Rectangle)rect).X, ((Rectangle)rect).Y, ((Rectangle)rect).X + ((Rectangle)rect).Width, ((Rectangle)rect).Y + ((Rectangle)rect).Height);
+        public Vector2 NextVector2(Circle? circle, bool onlyEdge = false) => new Vector2();
+        
         /*
         public Point NextPoint(int max) { }
         public Point NextPoint(int maxX, int maxY) { }
@@ -211,21 +215,31 @@ namespace CNC.Common
         public ulong NextUnsignedLong(ulong max) { }
         public ulong NextUnsignedLong(ulong min, ulong max) { }
         */
+        /*
+        public T NextAny<T>(List<T> list) where T : class
+        {
+            T result = null;
+            if (list.Count > 0) result = list[this.NextInt(list.Count) - 1];
+            return result;
+        }
+
+        public T NextAny<T>(ICollection<T> array) where T : class
+        {
+            T result = null;
+            if (array.Count > 0) result = array[0];
+            return result;
+        }
+        */
     }
+
     /// <summary> C# System.Random类的源码（稍有修改） </summary>
     [Serializable()] internal class MyRandom
     {
-        //
         // Private Constants 
-        //
-        private const int MBIG = Int32.MaxValue;
-        private const int MSEED = 161803398;
-        private const int MZ = 0;
-
-
-        //
+        private const int MaxInt = Int32.MaxValue;
+        private const int GoldenSeed = 161803398;
+        
         // Member Variables
-        //
         private int inext, inextp;
         private int[] SeedArray = new int[56];
 
@@ -234,6 +248,7 @@ namespace CNC.Common
           : this(Environment.TickCount) {
         }
 
+        //采用洗牌算法（@Donald E.Knuth-高德纳）
         /**//// <include file='doc\Random.uex' path='docs/doc[@for="Random.Random1"]/*' />
         public MyRandom(int Seed) {
             int ii;
@@ -241,32 +256,29 @@ namespace CNC.Common
 
             //Initialize our Seed array.
             //This algorithm comes from Numerical Recipes in C (2nd Ed.)
-            mj = MSEED - Math.Abs(Seed);
-            SeedArray[55] = mj;
+            mj = GoldenSeed - Math.Abs(Seed);
+            this.SeedArray[55] = mj;
             mk = 1;
             for (int i = 1; i < 55; i++) {  //Apparently the range [1..55] is special (Knuth) and 
                                             //so we're wasting the 0'th position.
                 ii = (21 * i) % 55;
-                SeedArray[ii] = mk;
+                this.SeedArray[ii] = mk;
                 mk = mj - mk;
-                if (mk < 0) mk += MBIG;
-                mj = SeedArray[ii];
+                if (mk < 0) mk += MaxInt;
+                mj = this.SeedArray[ii];
             }
             for (int k = 1; k < 5; k++) {
                 for (int i = 1; i < 56; i++) {
-                    SeedArray[i] -= SeedArray[1 + (i + 30) % 55];
-                    if (SeedArray[i] < 0) SeedArray[i] += MBIG;
+                    this.SeedArray[i] -= this.SeedArray[1 + (i + 30) % 55];
+                    if (this.SeedArray[i] < 0) this.SeedArray[i] += MaxInt;
                 }
             }
-            inext = 0;
-            inextp = 21;
+            this.inext = 0;
+            this.inextp = 21;
             Seed = 1;
         }
-
-        //
+        
         // Package Private Methods
-        //
-
         /**//*====================================Sample====================================
         **Action: Return a new random number [0..1) and reSeed the Seed array.
         **Returns: A double [0..1)
@@ -276,40 +288,34 @@ namespace CNC.Common
             /**//// <include file='doc\Random.uex' path='docs/doc[@for="Random.Sample"]/*' />
         protected virtual double Sample() {
             int retVal;
-            int locINext = inext;
-            int locINextp = inextp;
+            int locINext = this.inext;
+            int locINextp = this.inextp;
 
             if (++locINext >= 56) locINext = 1;
             if (++locINextp >= 56) locINextp = 1;
 
-            retVal = SeedArray[locINext] - SeedArray[locINextp];
+            retVal = this.SeedArray[locINext] - this.SeedArray[locINextp];
 
-            if (retVal < 0) retVal += MBIG;
+            if (retVal < 0) retVal += MaxInt;
 
-            SeedArray[locINext] = retVal;
+            this.SeedArray[locINext] = retVal;
 
-            inext = locINext;
-            inextp = locINextp;
+            this.inext = locINext;
+            this.inextp = locINextp;
 
             //Including this division at the end gives us significantly improved
             //random number distribution.
-            return (retVal * (1.0 / MBIG));
+            return (retVal * (1.0 / MaxInt));
         }
-
-        //
+        
         // Public Instance Methods
-        // 
-
-
         /**//*=====================================Next=====================================
         **Returns: An int [0.._int4.MaxValue)
         **Arguments: None
         **Exceptions: None.
         ==============================================================================*/
             /**//// <include file='doc\Random.uex' path='docs/doc[@for="Random.Next"]/*' />
-        public virtual int Next() {
-            return (int)(Sample() * Int32.MaxValue);
-        }
+        public virtual int Next() => (int)(Sample() * Int32.MaxValue);
 
         /**//*=====================================Next=====================================
         **Returns: An int [minvalue..maxvalue)
@@ -357,23 +363,20 @@ namespace CNC.Common
         **Exceptions: None
         ==============================================================================*/
             /**//// <include file='doc\Random.uex' path='docs/doc[@for="Random.NextDouble"]/*' />
-        public virtual double NextDouble() {
-            return Sample();
-        }
+        public virtual double NextDouble() => Sample();
 
 
         /**//*==================================NextBytes===================================
         **Action:  Fills the byte array with random bytes [0..0x7f].  The entire array is filled.
         **Returns:Void
-        **Arugments:  buffer -- the array to be filled.
+        **Arguments:  buffer -- the array to be filled.
         **Exceptions: None
         ==============================================================================*/
             /**//// <include file='doc\Random.uex' path='docs/doc[@for="Random.NextBytes"]/*' />
         public virtual void NextBytes(byte[] buffer) {
             if (buffer == null) throw new ArgumentNullException("buffer");
-            for (int i = 0; i < buffer.Length; i++) {
+            for (int i = 0; i < buffer.Length; i++)
                 buffer[i] = (byte)(Sample() * (Byte.MaxValue + 1));
-            }
         }
     }
 }

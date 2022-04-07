@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace CNC.Common
+namespace CNC.Common.Utils
 {
     public class StatData : IEnumerable
     {

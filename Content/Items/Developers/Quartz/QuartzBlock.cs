@@ -105,35 +105,20 @@ namespace CNC.Content.Items.Developers.Quartz
 
         public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-            Vector2 pos = Main.ScreenSize.ToVector2() / 2;
+            Vector2 pos = Main.ScreenSize.ToVector2() / 2 / Main.UIScale / Main.UIScale;
             Vector2[] vertex = {
-                    pos + new Vector2(-50,-50),
-                    pos + new Vector2(+50,-50),
-                    pos + new Vector2(+50,+50),
-                    pos + new Vector2(-50,+50),
+                    pos + new Vector2(-128,-128),
+                    pos + new Vector2(+128,-128),
+                    pos + new Vector2(+128,+128),
+                    pos + new Vector2(-128,+128),
                 };
-            Texture2D image1 = ModContent.Request<Texture2D>("CNC/Assets/Effects/Slash1").Value;
+            Texture2D image1 = ModContent.Request<Texture2D>("CNC/Assets/Effects/Test").Value;
             Texture2D image2 = ModContent.Request<Texture2D>("CNC/Assets/Effects/Slash2").Value;
-            Texture2D image3 = ModContent.Request<Texture2D>("CNC/Content/Projectiles/IceTooth/IceAura").Value;
-            Texture2D image4 = ModContent.Request<Texture2D>("CNC/Content/Projectiles/IceTooth/IceCrack").Value;
-            Texture2D image5 = ModContent.Request<Texture2D>("CNC/Content/Projectiles/IceTooth/FrostWave").Value;
-            Color color = new Color(178, 214, 231, 0); color.A = 0;
-            //spriteBatch.Draw(image3, new Rectangle((int)(pos.X - 250), (int)(pos.Y - 250), 500, 500), color);
-            //spriteBatch.Draw(image4, new Rectangle((int)(pos.X - 160), (int)(pos.Y - 160), 320, 320), color);
-            //Drawing.DrawQuadrilateral(spriteBatch, image1, vertex, new Rectangle(0, 0, 256, 244), color, MyMath.deg45);
-            float num131 = 0.0f;
-            /*
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.DepthRead, RasterizerState.CullNone, null, Main.Transform);
-            Vector2 vector2_9 = Main.ScreenSize.ToVector2() / 2f - new Vector2(300f, 310f);
-            Terraria.Graphics.Effects.Filters.Scene["Nebula"].GetShader().UseIntensity(1f + num131).UseProgress(0.0f);
-            DrawData drawData2 = new DrawData(Main.Assets.Request<Texture2D>("Images/Misc/Perlin", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value, vector2_9 + new Vector2(300f, 300f), new Rectangle(0, 0, 600, 600), CNCID.Colors.Expert, 0, new Vector2(300f, 300f), 1, 0, 0);
-            GameShaders.Misc["ForceField"].UseColor(new Vector3(1f));
-            GameShaders.Misc["ForceField"].Apply(new DrawData?(drawData2));
-            drawData2.Draw(spriteBatch);
-            spriteBatch.End();
-            spriteBatch.Begin();
-            */
+            Texture2D image3 = ModContent.Request<Texture2D>("CNC/Assets/Effects/Perlin").Value;
+            Color color = new Color(255, 255, 255, 0);
+            //Drawing.DrawQuadrilateral(spriteBatch, image1, vertex, new Rectangle(0, 0, 255, 255), color, j ++ % 360 * MyMath.deg01, true, SpriteEffects.FlipHorizontally);
+            //Drawing.DrawQuadrilateral(spriteBatch, image1, vertex, new Rectangle(0, 0, 255, 255), color, 0, true, SpriteEffects.FlipHorizontally);
         }
+        int j = 0;
     }
 }

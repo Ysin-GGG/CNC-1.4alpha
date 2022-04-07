@@ -38,7 +38,7 @@ namespace CNC.Content.Items.Weapons.Magic
             Projectile projectile = CNCUtils.NewProj(source, position, velocity, type, damage, knockback);
             if (item.GetGlobalItem<InscriptionSettings>().HasInscription(CNCID.Inscription.S_Scorching))
                 projectile.GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().data["level"] = 1;
-            if (item.GetGlobalItem<InscriptionSettings>().HasInscription(CNCID.Inscription.S_Enthusiasm) && Main.rand.Next(100) < ((float)CNCID.Inscription.S_Enthusiasm.Data[0] * 100f))
+            if (item.GetGlobalItem<InscriptionSettings>().HasInscription(CNCID.Inscription.S_Enthusiasm) && CNC.Random.NextBool((float)CNCID.Inscription.S_Enthusiasm.Data[0]))
                 player.AddBuff(CNCID.Buff.LegacyObject[CNCID.Buff.Enthused], 300);
             return false;
         }

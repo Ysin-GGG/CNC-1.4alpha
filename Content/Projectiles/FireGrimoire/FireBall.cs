@@ -112,7 +112,8 @@ namespace CNC.Content.Projectiles.FireGrimoire
             //Main.spriteBatch.Draw(light, projectile.Center - light.Size() / 2f * .5f - Main.screenPosition, null, color, 0, default, .5f, 0, 0f);
             Drawing.DrawTrailDirect(Main.spriteBatch, glowTrail, len, projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, color, pointX, glowTrail.Height / 2, new Vector2(1, .05f), new Vector2(1, .05f), true, 16, 1);
             Drawing.DrawTrailDirect(Main.spriteBatch, trail, Math.Max(0, len - 2), projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, color, pointX, trail.Height / 2, new Vector2(1, .19f), new Vector2(1, .05f), true, 16, 2);
-            pointX = (pointX - 15 + trail.Width) % trail.Width;
+            //Drawing.DrawTrail(Main.spriteBatch, trail, Math.Max(0, len - 2), projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, color, pointX, trail.Height / 2, new Vector2(.15f), 16);
+            pointX = (pointX - 16 + trail.Width) % trail.Width;
             return true;
         }
 
