@@ -410,8 +410,9 @@ namespace CNC.Common.Global.Items
                 {
                     Inscription inscription = modItem.inscription[i];
                     if (modItem.inscription[i].cooldown > 0) modItem.inscription[i].cooldown--;
-                    if (inscription == CNCID.Inscription.C_Power) modItem.weaponDamageAdd += (float)CNCID.Inscription.C_Power.Data[0];
                     if (inscription == CNCID.Inscription.C_SkillPower) modItem.skillDamageAdd += (float)CNCID.Inscription.C_SkillPower.Data[0];
+                    if (inscription == CNCID.Inscription.C_Charging) modItem.cooldownReductionAdd += (float)CNCID.Inscription.C_Charging.Data[0];
+                    if (inscription == CNCID.Inscription.C_Power) modItem.weaponDamageAdd += (float)CNCID.Inscription.C_Power.Data[0];
                     if (inscription == CNCID.Inscription.C_Arcane) modItem.weaponCritAdd += (int)((float)CNCID.Inscription.C_Arcane.Data[0] * 100f);
                     if (inscription == CNCID.Inscription.C_Destroyer) modItem.weaponCritAdd += (int)((float)CNCID.Inscription.C_Destroyer.Data[0] * 100f);
                     if (inscription == CNCID.Inscription.C_Murder) modItem.weaponCritAdd += (int)((float)CNCID.Inscription.C_Murder.Data[0] * 100f);
@@ -420,8 +421,25 @@ namespace CNC.Common.Global.Items
                     if (inscription == CNCID.Inscription.C_MeleeAdept) modItem.attackSpeed += (float)CNCID.Inscription.C_MeleeAdept.Data[0];
                     if (inscription == CNCID.Inscription.C_RaidAdept) modItem.attackSpeed += (float)CNCID.Inscription.C_RaidAdept.Data[0];
                     if (inscription == CNCID.Inscription.C_Reiki) modItem.manaReturn += (float)CNCID.Inscription.C_Reiki.Data[0];
+                    if (inscription == CNCID.Inscription.C_Economization) modItem.manaCostAdd += (float)CNCID.Inscription.C_Economization.Data[0];
                 }
             }
+        }
+
+        public override void OnConsumeMana(Item item, Player player, int manaConsumed)
+        {
+            int mana = (int)(manaConsumed * item.GetGlobalItem<InscriptionSettings>().manaReturn);
+            if (mana > 0)
+            {
+                player.statMana += mana;
+                player.ManaEffect(mana);
+            }
+        }
+
+        public override void ModifyManaCost(Item item, Player player, ref float reduce, ref float mult)
+        {
+            reduce += item.GetGlobalItem<InscriptionSettings>().manaCostAdd;
+            mult *= item.GetGlobalItem<InscriptionSettings>().manaCostMul;
         }
 
         public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage, ref float flat)

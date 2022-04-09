@@ -9,6 +9,7 @@ using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.Localization;
 using Terraria.GameContent.Creative;
+using CNC.Content;
 using CNC.Common.Utils;
 using CNC.Common.Localization;
 using CNC.Common.Global.Players;
@@ -84,9 +85,11 @@ namespace CNC.Common.Global.Items
             ResetStaticDefaults();
         }
 
-        public sealed override void SetDefaults() => ResetDefaults();
+        public sealed override void SetDefaults() => this.ResetDefaults();
 
         public sealed override void ModifyTooltips(List<TooltipLine> tooltips) => Tooltips(tooltips);
+
+        public int JustGetDamage(Inscription inscription, int dataIndex = 0, int originalDamage = -1) => Inscription.JustGetDamage(originalDamage, (string)inscription.Data[MyMath.Max(0,dataIndex)], this.item);
 
         public override void AddRecipes() { }
         public virtual void ResetDefaults() { }

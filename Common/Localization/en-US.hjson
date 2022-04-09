@@ -314,8 +314,8 @@ Mods: {
 				Shattering: Shattering|冰弹对冻结的敌人造成的魔法伤害增加{0}
 				FrostWave: Frost Wave|右键消耗{0}点咒能，爆发出一阵扩张性的寒气，冻结你半径{1}格内的敌人并造成{2}魔法伤害，凝结寒气破碎时再次造成伤害并施加{3}s减速
 				Charging: Charging|Shoots a lightning missile
-				SpellLightningChain: Spell Lightning Chain|Right click to shoot a lightning chain, and attacks {0} targets, dealing {1} magic damage
-				ArcaneOverload: ArcaneOverload|Increases magic damage by {0} when strikes targets, it will be cleared when increased to {1}, and shoots a overloaded missile next time, dealing {2} AoE magic damage {3} times;
+				SpellLightningChain: Spell Lightning Chain|右键消耗{0}咒能，释放一道闪电，攻击至多{1}名敌人并造成{2}魔法伤害
+				ArcaneOverload: ArcaneOverload|命中敌人时增加{0}魔法伤害，叠至{1}层时清零，{2}秒内下次攻击释放高能闪电弹，造成{3}次{4}范围魔法伤害
 				SpellReconstruction: Spell Reconstruction|Attacks have a {0} chance to instantly rebuild and cast the Spell Chain Lightning charm
 				SpellAugmentated: Spell Augmentated|Improved spell research to increase chain lightning target by {0} and search radius by {1}
 				StableSpell: Stable Spell|Overload will be able to hold for {0}s

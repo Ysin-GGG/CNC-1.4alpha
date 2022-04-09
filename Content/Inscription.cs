@@ -96,11 +96,11 @@ namespace CNC.Content
                     break;
                 case CNCID.Item.Superconductor:
                     if (type == 0) { this.args = new object[] { }; }
-                    if (type == 1) { this.args = new object[] { "[damage3=36]" }; }
-                    if (type == 2) { this.args = new object[] { 0.03f, 10, 4, "[damage3=40]" }; }
+                    if (type == 1) { this.args = new object[] { 4, 4, "[damage3=36]" }; this.cooldownMax = 300; }
+                    if (type == 2) { this.args = new object[] { 0.03f, 10, 4, 4, "[damage3=40]" }; }
                     if (type == 3) { this.args = new object[] { 0.05f }; }
-                    if (type == 4) { this.args = new object[] { 1, 5 }; }
-                    if (type == 5) { this.args = new object[] { 5 }; }
+                    if (type == 4) { this.args = new object[] { 1, 6 }; }
+                    if (type == 5) { this.args = new object[] { 8 }; }
                     break;
                 case CNCID.Item.ArgenteusClaw:
                     if (type == 0) { this.args = new object[] { }; }
@@ -133,21 +133,28 @@ namespace CNC.Content
 
         private string GetDesc(object[] args)
         {
-            for (int i = 0; i < args.Length; i++)
+            try
             {
-                if (args[i] is float arg1) args[i] = ((int)(arg1 * 100f)).ToString() + '%';
-                else if (args[i] is int arg2) args[i] = arg2.ToString();
-                else if (args[i] is string arg3) args[i] = arg3;
-                else args[i] = "";
+                if (args == null || args.Length <= 0) return this.description;
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (args[i] is float arg1) args[i] = ((int)(arg1 * 100f)).ToString() + '%';
+                    else if (args[i] is int arg2) args[i] = arg2.ToString();
+                    else if (args[i] is string arg3) args[i] = arg3;
+                }
+                return string.Format(this.description, args);
             }
-            return string.Format(this.description, args);
+            catch
+            {
+                throw new Exception($"Invalid inscription: type = {type}, style = {style}");
+            }
         }
 
         public void SetCooldown(int newCooldown = -1, int newCooldownMax = -1, float add = 0f, float mul = 1f)
         {
             if (newCooldownMax >= 0) this.cooldownMax = newCooldownMax;
             if (newCooldown < 0) newCooldown = this.cooldownMax;
-            this.cooldown = (int)((newCooldown + newCooldown * add) * mul);
+            this.cooldown = (int)((newCooldown - newCooldown * add) * mul);
         }
 
         public string GetTooltip(object[] data = default)

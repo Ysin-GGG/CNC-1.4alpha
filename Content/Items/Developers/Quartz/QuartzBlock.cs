@@ -107,16 +107,18 @@ namespace CNC.Content.Items.Developers.Quartz
         {
             Vector2 pos = Main.ScreenSize.ToVector2() / 2 / Main.UIScale / Main.UIScale;
             Vector2[] vertex = {
-                    pos + new Vector2(-128,-128),
-                    pos + new Vector2(+128,-128),
+                    pos + new Vector2(-32,-128),
+                    pos + new Vector2(+32,-128),
                     pos + new Vector2(+128,+128),
                     pos + new Vector2(-128,+128),
                 };
             Texture2D image1 = ModContent.Request<Texture2D>("CNC/Assets/Effects/Test").Value;
             Texture2D image2 = ModContent.Request<Texture2D>("CNC/Assets/Effects/Slash2").Value;
-            Texture2D image3 = ModContent.Request<Texture2D>("CNC/Assets/Effects/Perlin").Value;
+            Texture2D image3 = ModContent.Request<Texture2D>("CNC/Assets/Effects/GlowTrail1").Value;
             Color color = new Color(255, 255, 255, 0);
-            //Drawing.DrawQuadrilateral(spriteBatch, image1, vertex, new Rectangle(0, 0, 255, 255), color, j ++ % 360 * MyMath.deg01, true, SpriteEffects.FlipHorizontally);
+            float rot = (j = (j + 1) % 360) * MyMath.deg01;
+            //Drawing.DrawLine(spriteBatch, image3, pos, Main.MouseScreen, null, color, 0, false);
+            //Drawing.DrawQuadrilateral(spriteBatch, image1, vertex, null, color, rot, false);
             //Drawing.DrawQuadrilateral(spriteBatch, image1, vertex, new Rectangle(0, 0, 255, 255), color, 0, true, SpriteEffects.FlipHorizontally);
         }
         int j = 0;

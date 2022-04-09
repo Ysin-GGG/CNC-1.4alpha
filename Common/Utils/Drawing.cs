@@ -47,9 +47,24 @@ namespace CNC.Common.Utils
 
         public static void DrawTriangle(SpriteBatch spriteBatch, Texture2D image, Vector2[] vertex, Rectangle? source, Color color, float imageRot = 0f) { }
         
+        /// <summary> 绘制宽度为1的纹理线条 </summary>
+        /// <param name="image">纹理</param>
+        /// <param name="pos1">点1</param>
+        /// <param name="pos2">点2</param>
+        /// <param name="source">纹理截取</param>
+        /// <param name="color">颜色</param>
+        public static void DrawLine(SpriteBatch spriteBatch, Texture2D image, Vector2 pos1, Vector2 pos2, Rectangle? source, Color color, float extraRot = 0, bool drawVertically = false, SpriteEffects effect = 0)
+        {
+            int dist = (int)pos1.Distance(pos2);
+            float rot = (pos2 - pos1).ToRotation() + extraRot - (drawVertically ? MyMath.deg90 : 0f);
+            Rectangle drawRect = new Rectangle((int)pos1.X, (int)pos1.Y, drawVertically ? 1 : dist, drawVertically ? dist : 1);
+            spriteBatch.Draw(image, drawRect, source, color, rot, default, effect, 0);
+        }
+
         public static void DrawQuadrilateral(SpriteBatch spriteBatch, Texture2D image, Vector2[] vertex, Rectangle? source, Color color, float imageRot = 0f, bool cut = false, SpriteEffects drawType = 0)
         {
             Vector2 floor(Vector2 vector) => vector.ToPoint().ToVector2();
+            Vector2 ceiling(Vector2 vector) => new Vector2((float)Math.Ceiling(vector.X), (float)Math.Ceiling(vector.Y));
             float rot = imageRot % MyMath.pi / 2;
 
             Vector2 lt = floor(vertex[0]);
@@ -62,7 +77,106 @@ namespace CNC.Common.Utils
             float bottom = MyMath.Max(lt.Y, rt.Y, rb.Y, lb.Y);
             float width = right - left;
             float height = bottom - top;
+            Vector2 center = new Vector2(left + width / 2f, top + height / 2f);
 
+            Vector2 lt2 = floor(center + MyMath.GetXY((lt - center).ToRotation() - imageRot) * Vector2.Distance(lt, center));
+            Vector2 rt2 = floor(center + MyMath.GetXY((rt - center).ToRotation() - imageRot) * Vector2.Distance(rt, center));
+            Vector2 rb2 = floor(center + MyMath.GetXY((rb - center).ToRotation() - imageRot) * Vector2.Distance(rb, center));
+            Vector2 lb2 = floor(center + MyMath.GetXY((lb - center).ToRotation() - imageRot) * Vector2.Distance(lb, center));
+
+            float left2 = MyMath.Min(lt2.X, rt2.X, rb2.X, lb2.X);
+            float top2 = MyMath.Min(lt2.Y, rt2.Y, rb2.Y, lb2.Y);
+            float right2 = MyMath.Max(lt2.X, rt2.X, rb2.X, lb2.X);
+            float bottom2 = MyMath.Max(lt2.Y, rt2.Y, rb2.Y, lb2.Y);
+            float width2 = right2 - left2;
+            float height2 = bottom2 - top2;
+
+            Vector2 center2 = new Vector2(left2 + width2 / 2f, top2 + height2 / 2f);
+
+            //if (width2 < height2)
+            {
+                float[] len1 = {//上边缘
+                    MyMath.Max(lt2.X - lb2.X, 0f),
+                    MyMath.Max(rt2.X - lt2.X, 0f),
+                    MyMath.Max(rb2.X - rt2.X, 0f),
+                };
+                float[] len2 = {//下边缘
+                    MyMath.Max(lb2.X - lt2.X, 0f),
+                    MyMath.Max(rb2.X - lb2.X, 0f),
+                    MyMath.Max(rt2.X - rb2.X, 0f),
+                };
+                for(int i = 0; i < width2 - 1; i++)
+                {
+                    Vector2 pos1 = new Vector2();
+                    Vector2 pos2 = new Vector2();
+                    float precent1 = 0f;
+                    float precent2 = 0f;
+                    if (i < len1[0])
+                    {
+                        precent1 = i / len1[0];
+                        pos1 = MyMath.Lerp(lb2, lt2, precent1);
+                    }
+                    else if (i < len1[0] + len1[1])
+                    {
+                        precent1 = (i - len1[0]) / len1[1];
+                        pos1 = MyMath.Lerp(lt2, rt2, precent1);
+                    }
+                    else
+                    {
+                        precent1 = (i - len1[0] - len1[1]) / len1[2];
+                        pos1 = MyMath.Lerp(rt2, rb2, precent1);
+                    }
+                    pos1 = ceiling((center2) + (MyMath.GetXY((pos1 - center2).ToRotation() + imageRot) * Vector2.Distance(pos1, center2)));
+                    if (i < len2[0])
+                    {
+                        precent2 = i / len2[0];
+                        pos2 = MyMath.Lerp(lt2, lb2, precent2);
+                    }
+                    else if (i < len2[0] + len2[1])
+                    {
+                        precent2 = (i - len2[0]) / len2[1];
+                        pos2 = MyMath.Lerp(lb2, rb2, precent2);
+                    }
+                    else
+                    {
+                        precent2 = (i - len2[0] - len2[1]) / len2[2];
+                        pos2 = MyMath.Lerp(rb2, rt2, precent2);
+                    }
+                    pos2 = ceiling((center2) + (MyMath.GetXY((pos2 - center2).ToRotation() + imageRot) * Vector2.Distance(pos2, center2)));
+                    int wid = source == null ? image.Width : ((Rectangle)source).Width;
+                    int hei = source == null ? image.Height : ((Rectangle)source).Height;
+                    int pointX = (int)((source == null ? ((int)(i / width * wid)) : ((Rectangle)source).X) + (((int)drawType == 1) ? (int)(i / width * wid) : (wid - (int)(i / width * wid))));
+                    Rectangle rect = new Rectangle(pointX, 0, 1, hei);
+                    int FlipVertically = (int)drawType / 2 * 2;
+                    if (cut)
+                    {
+                        if (FlipVertically > 0)
+                        {
+
+                        }
+                        else
+                        {
+                            rect.Y = (int)((pos1.Y - top) / height * hei);
+                            rect.Height = (int)Math.Ceiling(pos1.Distance(pos2) / height * hei);
+                        }
+                    }
+                    Drawing.DrawLine(spriteBatch, image, pos1, pos2, rect, color, 0, true, (SpriteEffects)((int)drawType % 2));
+                }
+                Drawing.DrawLine(spriteBatch, image, lt2, rt2, null, color, 0, true, (SpriteEffects)((int)drawType % 2));
+                Drawing.DrawLine(spriteBatch, image, rt2, rb2, null, color, 0, true, (SpriteEffects)((int)drawType % 2));
+                Drawing.DrawLine(spriteBatch, image, rb2, lb2, null, color, 0, true, (SpriteEffects)((int)drawType % 2));
+                Drawing.DrawLine(spriteBatch, image, lb2, lt2, null, color, 0, true, (SpriteEffects)((int)drawType % 2));
+                Drawing.DrawLine(spriteBatch, image, new Vector2(left, top), new Vector2(right, top), null, color, 0, true, (SpriteEffects)((int)drawType % 2));
+                Drawing.DrawLine(spriteBatch, image, new Vector2(right, top), new Vector2(right, bottom), null, color, 0, true, (SpriteEffects)((int)drawType % 2));
+                Drawing.DrawLine(spriteBatch, image, new Vector2(right, bottom), new Vector2(left, bottom), null, color, 0, true, (SpriteEffects)((int)drawType % 2));
+                Drawing.DrawLine(spriteBatch, image, new Vector2(left, bottom), new Vector2(left, top), null, color, 0, true, (SpriteEffects)((int)drawType % 2));
+                Drawing.DrawLine(spriteBatch, image, new Vector2(left2, top2), new Vector2(right2, top2), null, color, 0, true, (SpriteEffects)((int)drawType % 2));
+                Drawing.DrawLine(spriteBatch, image, new Vector2(right2, top2), new Vector2(right2, bottom2), null, color, 0, true, (SpriteEffects)((int)drawType % 2));
+                Drawing.DrawLine(spriteBatch, image, new Vector2(right2, bottom2), new Vector2(left2, bottom2), null, color, 0, true, (SpriteEffects)((int)drawType % 2));
+                Drawing.DrawLine(spriteBatch, image, new Vector2(left2, bottom2), new Vector2(left2, top2), null, color, 0, true, (SpriteEffects)((int)drawType % 2));
+            }
+
+            /*
             Rectangle Box = new Rectangle((int)left, (int)top, (int)width, (int)height);
             //（最难点）纹理旋转未完成
             //积分原理绘制
@@ -139,6 +253,7 @@ namespace CNC.Common.Utils
                     //spriteBatch.Draw(image, pos, rect, color, 0, default, new Vector2(1f, len / hei), 0, 0);
                 }
             }
+            */
         }
 
         public static void DrawRA_Trapezoid(SpriteBatch spriteBatch, Texture2D image, Vector2[] vertex, Color color, float rot, int pointX, int width = 1, float scaleY = 1f)

@@ -7,6 +7,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.GameContent;
 using Terraria.DataStructures;
+using CNC.Content;
 using CNC.Common.Utils;
 using CNC.Common.Localization;
 using CNC.Common.Global.NPCs;
@@ -34,7 +35,10 @@ namespace CNC.Common.Global.Projectiles
         public int frame { get => projectile.frame; set => projectile.frame = value; }
         public int frameTick { get => projectile.frameCounter; set => projectile.frameCounter = value; }
         public Rectangle? hitBox = null;
-
+        /// <summary> 对子弹幕生效 </summary>
+        public float damageAdd => projectile.GetGlobalProjectile<AllProjectile>().damageAdd;
+        /// <summary> 对子弹幕生效 </summary>
+        public float damageMul => projectile.GetGlobalProjectile<AllProjectile>().damageMul;
 
         public NPC NewNPC(short CNCtype, int start = 0)
             => NewNPC(projectile, (int)projectile.Center.X, (int)projectile.Center.Y, CNCID.NPC.LegacyObject[CNCtype], start);
@@ -69,22 +73,36 @@ namespace CNC.Common.Global.Projectiles
         }
 
         public Projectile NewProjectile(float velocity, float velocityRot, int type, float knockback = 0f, float rotation = 0f)
-            => NewProjectile(projectile, projectile.Center, MyMath.GetXY(velocityRot) * velocity, type, projectile.damage, rotation);
+            => NewProjectile(projectile, projectile.Center, MyMath.GetXY(velocityRot) * velocity, type, projectile.damage, rotation, 0f, 1f);
 
-        public Projectile NewProjectile(float velocity, float velocityRot, int type, float damage, float knockback = 0f, float rotation = 0f)
-            => NewProjectile(projectile, projectile.Center, MyMath.GetXY(velocityRot) * velocity, type, damage, rotation);
+        public Projectile NewProjectile(float velocity, float velocityRot, int type, float damage, float knockback, float rotation = 0f, float damageAdd = 0f, float damageMul = 1f)
+            => NewProjectile(projectile, projectile.Center, MyMath.GetXY(velocityRot) * velocity, type, damage, rotation, damageAdd, damageMul);
 
-        public Projectile NewProjectile(Vector2 velocity, int type, float damage, float knockback = 0f, float rotation = 0f)
-            => NewProjectile(projectile, projectile.Center, velocity, type, damage, rotation);
+        public Projectile NewProjectile(Vector2 velocity, int type, float damage, float knockback, float rotation = 0f, float damageAdd = 0f, float damageMul = 1f)
+            => NewProjectile(projectile, projectile.Center, velocity, type, damage, rotation, damageAdd, damageMul);
 
-        public Projectile NewProjectile(Vector2 position, Vector2 velocity, int type, float damage, float knockback = 0f, float rotation = 0f)
-            => NewProjectile(projectile, position, velocity, type, damage, rotation);
+        public Projectile NewProjectile(Vector2 position, Vector2 velocity, int type, float damage, float knockback, float rotation = 0f, float damageAdd = 0f, float damageMul = 1f)
+            => NewProjectile(projectile, position, velocity, type, damage, rotation, damageAdd, damageMul);
 
-        public Projectile NewProjectile(Projectile projectile, Vector2 position, Vector2 velocity, int type, float damage, float knockBack = 0f, float rotation = 0f)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="projectile"></param>
+        /// <param name="position"></param>
+        /// <param name="velocity"></param>
+        /// <param name="type"></param>
+        /// <param name="damage"></param>
+        /// <param name="knockBack"></param>
+        /// <param name="rotation"></param>
+        /// <param name="damageAdd"></param>
+        /// <param name="damageMul"></param>
+        public Projectile NewProjectile(Projectile projectile, Vector2 position, Vector2 velocity, int type, float damage, float knockBack = 0f, float rotation = 0f, float damageAdd = 0f, float damageMul = 1f)
         {
             int whoAmI = Projectile.NewProjectile(projectile.GetProjectileSource_FromThis(), position, velocity, type, (int)damage, knockBack, projectile.owner);
             Main.projectile[whoAmI].Center = position;
             Main.projectile[whoAmI].rotation = rotation;
+            Main.projectile[whoAmI].GetGlobalProjectile<AllProjectile>().damageAdd = damageAdd;
+            Main.projectile[whoAmI].GetGlobalProjectile<AllProjectile>().damageMul = damageMul;
             Main.projectile[whoAmI].GetGlobalProjectile<ProjectileRelation>().SetParent(projectile, true);
             Main.projectile[whoAmI].GetGlobalProjectile<ProjectileRelation>().SetRoot(projectile, true);
             if (Main.projectile[projectile.whoAmI].GetGlobalProjectile<ProjectileRelation>().ChildrenProjectile != null)
@@ -174,6 +192,8 @@ namespace CNC.Common.Global.Projectiles
                 p.oldRot[i] = p.oldRot[i - 1];
             p.oldRot[0] = p.rotation;
         }
+        public int JustGetDamage(Inscription inscription, int dataIndex = 0, int originalDamage = -1) => Inscription.JustGetDamage(originalDamage, (string)inscription.Data[MyMath.Max(0, dataIndex)], this.damageAdd, this.damageMul);
+        public int JustGetDamage(Inscription inscription, float damageAdd, float damageMul, int dataIndex = 0, int originalDamage = -1) => Inscription.JustGetDamage(originalDamage, (string)inscription.Data[MyMath.Max(0, dataIndex)], damageAdd, damageMul);
 
         protected Projectile AI001_RollingMissile(Projectile p, bool gravity = false, bool updateRot = false, float extraAngle = 0)
         {

@@ -32,6 +32,9 @@ namespace CNC.Common.Global.Players
         public float skillDamageAdd = 0f;
         public float skillDamageMul = 1f;
 
+        public int overloadLevel = 0;
+        public int overloadLevelCounter = 0;
+
         public override void ResetEffects()
         {
             this.cooldownReductionAdd = 0f;
@@ -45,6 +48,10 @@ namespace CNC.Common.Global.Players
             this.attackSpeed = 0f;
             this.skillDamageAdd = 0f;
             this.skillDamageMul = 1f;
+
+            if (player.HeldItem.type != CNCID.Item.LegacyObject[CNCID.Item.Superconductor] || !player.HeldItem.GetGlobalItem<InscriptionSettings>().HasInscription(CNCID.Inscription.S_ArcaneOverload)) this.overloadLevelCounter = 0;
+            if (this.overloadLevelCounter > 0) this.overloadLevelCounter--;
+            else this.overloadLevel = this.overloadLevelCounter = 0;
         }
 
         public override void ModifyManaCost(Item item, ref float reduce, ref float mult)

@@ -23,10 +23,12 @@ namespace CNC.Common.Utils
         /// <param name="data0">数据变量1</param>
         /// <param name="data1">数据变量2</param>
         /// <returns></returns>
-        public static Projectile NewProj(Terraria.DataStructures.IEntitySource source, Vector2 position, Vector2 velocity, int type, int dmg, float kb, int owner = -1, float ai0 = 0, float ai1 = 0)
+        public static Projectile NewProj(Terraria.DataStructures.IEntitySource source, Vector2 position, Vector2 velocity, int type, int dmg, float kb, int owner = -1, float damageAdd = 0, float damageMul = 1)
         {
             if (owner < 0) { owner = Const.me; }
-            int whoAmI = Projectile.NewProjectile(source, position, velocity, type, dmg, kb, owner, ai0, ai1);
+            int whoAmI = Projectile.NewProjectile(source, position, velocity, type, dmg, kb, owner);
+            Main.projectile[whoAmI].GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().damageAdd = damageAdd;
+            Main.projectile[whoAmI].GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().damageMul = damageMul;
             if (Main.projectile[whoAmI].ModProjectile != null && (CNCProjectile)Main.projectile[whoAmI].ModProjectile != null) ((CNCProjectile)Main.projectile[whoAmI].ModProjectile).OnSpawn();
             return Main.projectile[whoAmI];
         }
@@ -74,6 +76,12 @@ namespace CNC.Common.Utils
         {
             if (!path.StartsWith("Content/Sounds/Custom/")) path = "Content/Sounds/Custom/" + path;
             Terraria.Audio.SoundEngine.PlaySound(SoundLoader.CustomSoundType, (int)position.X, (int)position.Y, SoundLoader.GetSoundSlot(mod == default ? CNC.Instance : mod, path), volume);
+        }
+
+        public static void PlaySound(string path, Vector2 position, float volume, float pitch, Mod mod = default)
+        {
+            if (!path.StartsWith("Content/Sounds/Custom/")) path = "Content/Sounds/Custom/" + path;
+            Terraria.Audio.SoundEngine.PlaySound(SoundLoader.CustomSoundType, (int)position.X, (int)position.Y, SoundLoader.GetSoundSlot(mod == default ? CNC.Instance : mod, path), volume, pitch);
         }
 
         public static void AddLight(Vector2 position, Color color, float light = .5f)

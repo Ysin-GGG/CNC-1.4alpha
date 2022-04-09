@@ -41,8 +41,8 @@ namespace CNC.Common.Utils
         public static float Lerp(float value1, float value2, float percentage) => (float)(value1 * (1f - MyMath.Clamp(percentage, 0, 1)) + value2 * MyMath.Clamp(percentage, 0, 1));
         public static Point Lerp(Point value1, Point value2, float percentage) => MyMath.Lerp(value1, value2, new Vector2(percentage));
         public static Vector2 Lerp(Vector2 value1, Vector2 value2, float percentage) => MyMath.Lerp(value1, value2, new Vector2(percentage));
-        public static Point Lerp(Point value1, Point value2, Vector2 percentage) => new Point((int)MyMath.Lerp(value1.X, value2.X, percentage.X), (int)MyMath.Lerp(value1.X, value2.X, percentage.Y));
-        public static Vector2 Lerp(Vector2 value1, Vector2 value2, Vector2 percentage) => new Vector2((float)MyMath.Lerp(value1.X, value2.X, percentage.X), (float)MyMath.Lerp(value1.X, value2.X, percentage.Y));
+        public static Point Lerp(Point value1, Point value2, Vector2 percentage) => new Point((int)MyMath.Lerp(value1.X, value2.X, percentage.X), (int)MyMath.Lerp(value1.Y, value2.Y, percentage.Y));
+        public static Vector2 Lerp(Vector2 value1, Vector2 value2, Vector2 percentage) => new Vector2((float)MyMath.Lerp(value1.X, value2.X, percentage.X), (float)MyMath.Lerp(value1.Y, value2.Y, percentage.Y));
         public static int Clamp(int value, int min, int max) => MyMath.Min(MyMath.Max(min, value), max);
         public static int Clamp(int value, int min, int max, out int extra) => MyMath.Clamp((extra = value - (value = MyMath.Clamp(value, min, max))) + value, min, max);
         public static float Clamp(float value, float min, float max) => MyMath.Min(MyMath.Max(min, value), max);

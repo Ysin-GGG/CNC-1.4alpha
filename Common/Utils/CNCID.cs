@@ -63,9 +63,9 @@ namespace CNC.Common.Utils
                 { Enthused, BuffType<Content.Buffs.Enthused>() },
                 { Gelid, BuffType<Content.Buffs.Gelid>() },
                 { Glacier, BuffType<Content.Buffs.Glacier>() },
-                { Overloaded, BuffType<Content.Buffs.Scorched>() },
-                { Surged, BuffType<Content.Buffs.Enthused>() },
-                { Sanctified, BuffType<Content.Buffs.Gelid>() },
+                { Overloaded, BuffType<Content.Buffs.Overloaded>() },
+                { Surged, BuffType<Content.Buffs.Overloaded>() },
+                { Sanctified, BuffType<Content.Buffs.Overloaded>() },
             };
         }
 
@@ -282,7 +282,7 @@ namespace CNC.Common.Utils
                 { DestineScroll, ItemType<Content.Items.DestineScroll>() },
                 { FireGrimoire, ItemType<Content.Items.Weapons.Magic.FireGrimoire>() },
                 { IceTooth, ItemType<Content.Items.Weapons.Magic.IceTooth>() },
-                //{ Superconductor, ItemType<Content.Items.Weapons.Magic.Superconductor>() },
+                { Superconductor, ItemType<Content.Items.Weapons.Magic.Superconductor>() },
                 { ArgenteusClaw, ItemType<Content.Items.Weapons.Ranged.ArgenteusClaw>() },
                 { SpiritWood, ItemType<Content.Items.SpiritWood>() },
                 { TranquilityGem, ItemType<Content.Items.TranquilityGem>() },
@@ -306,7 +306,7 @@ namespace CNC.Common.Utils
                 { LegacyObject[DestineScroll], DestineScroll },
                 { LegacyObject[FireGrimoire], FireGrimoire },
                 { LegacyObject[IceTooth], IceTooth },
-                //{ LegacyObject[Superconductor], Superconductor },
+                { LegacyObject[Superconductor], Superconductor },
                 { LegacyObject[ArgenteusClaw], ArgenteusClaw },
                 { LegacyObject[SpiritWood], SpiritWood },
                 { LegacyObject[TranquilityGem], TranquilityGem },
@@ -720,6 +720,16 @@ namespace CNC.Common.Utils
             public const short DentateIceExplosion = 9;
             /// <summary> À™≥± </summary>
             public const short FrostWave = 10;
+            /// <summary> …¡µÁµØ</summary>
+            public const short LightningMissile = 11;
+            /// <summary> …¡µÁ±¨∆∆</summary>
+            public const short LightningExplosion = 12;
+            /// <summary> π˝‘ÿ…¡µÁµØ</summary>
+            public const short OverloadedLightningMissile = 13;
+            /// <summary> π˝‘ÿ±¨∆∆</summary>
+            public const short OverloadedLightningExplosion = 14;
+            /// <summary> …¡µÁ¡¥</summary>
+            public const short LightningChain = 15;
             #endregion
             public static Dictionary<string, short> Collection => new Dictionary<string, short>()
             {
@@ -733,6 +743,11 @@ namespace CNC.Common.Utils
                 { "DentateIce", DentateIce },
                 { "DentateIceExplosion", DentateIceExplosion },
                 { "FrostWave", FrostWave },
+                { "LightningMissile", LightningMissile },
+                { "LightningExplosion", LightningExplosion },
+                { "OverloadedLightningMissile", OverloadedLightningMissile },
+                { "OverloadedLightningExplosion", OverloadedLightningExplosion },
+                { "LightningChain", LightningChain },
             };
 
             public static Dictionary<string, int> LegacyCollection => new Dictionary<string, int>()
@@ -747,6 +762,11 @@ namespace CNC.Common.Utils
                 { "DentateIce", LegacyObject[Collection["DentateIce"]] },
                 { "DentateIceExplosion", LegacyObject[Collection["DentateIceExplosion"]] },
                 { "FrostWave", LegacyObject[Collection["FrostWave"]] },
+                { "LightningMissile", LegacyObject[Collection["LightningMissile"]] },
+                { "LightningExplosion", LegacyObject[Collection["LightningExplosion"]] },
+                { "OverloadedLightningMissile", LegacyObject[Collection["OverloadedLightningMissile"]] },
+                { "OverloadedLightningExplosion", LegacyObject[Collection["OverloadedLightningExplosion"]] },
+                { "LightningChain", LegacyObject[Collection["LightningChain"]] },
             };
 
             public static Dictionary<short, int> LegacyObject => new Dictionary<short, int>()
@@ -761,6 +781,11 @@ namespace CNC.Common.Utils
                 { DentateIce, ProjectileType<Content.Projectiles.IceTooth.DentateIce>() },
                 { DentateIceExplosion, ProjectileType<Content.Projectiles.IceTooth.DentateIceExplosion>() },
                 { FrostWave, ProjectileType<Content.Projectiles.IceTooth.FrostWave>() },
+                { LightningMissile, ProjectileType<Content.Projectiles.Superconductor.LightningMissile>() },
+                { LightningExplosion, ProjectileType<Content.Projectiles.Superconductor.LightningExplosion>() },
+                { OverloadedLightningMissile, ProjectileType<Content.Projectiles.Superconductor.OverloadedLightningMissile>() },
+                { OverloadedLightningExplosion, ProjectileType<Content.Projectiles.Superconductor.OverloadedLightningExplosion>() },
+                { LightningChain, ProjectileType<Content.Projectiles.Superconductor.LightningChain>() },
             };
         }
 

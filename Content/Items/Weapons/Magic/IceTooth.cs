@@ -65,9 +65,7 @@ namespace CNC.Content.Items.Weapons.Magic
         {
             bool result = base.CanUseItem(player);
             if (player.altFunctionUse == 2)
-            {
                 result = ConsumeSanity(player, (int)CNCID.Inscription.S_FrostWave.Data[0]);
-            }
             return result;
         }
 

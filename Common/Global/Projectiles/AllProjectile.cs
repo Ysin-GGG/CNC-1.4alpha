@@ -11,10 +11,14 @@ namespace CNC.Common.Global.Projectiles
         public override bool CloneNewInstances => true;
 
         public Dictionary<string, object> data = new Dictionary<string, object>();//modµ¯Ä»ÁÙÊ±Êý¾Ý
+        public float damageAdd { get => (float)this.data["damageAdd"]; set => this.data["damageAdd"] = value; }
+        public float damageMul { get => (float)this.data["damageMul"]; set => this.data["damageMul"] = value; }
 
         public override void SetDefaults(Projectile projectile)
         {
-            data = new Dictionary<string, object>();
+            this.data = new Dictionary<string, object>();
+            this.damageAdd = 0f;
+            this.damageMul = 1f;
         }
     }
 }
