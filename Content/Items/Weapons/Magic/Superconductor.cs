@@ -24,8 +24,8 @@ namespace CNC.Content.Items.Weapons.Magic
         
         public override void ResetDefaults()
         {
-            item.width = 38;
-            item.height = 38;
+            item.width = 32;
+            item.height = 32;
             item.useTime = 30;
             item.useAnimation = 30;
             item.rare = 3;
@@ -41,7 +41,7 @@ namespace CNC.Content.Items.Weapons.Magic
             item.shoot = CNCID.Projectile.LegacyObject[CNCID.Projectile.LightningMissile];
             item.shootSpeed = 16f;
             this.clazz = CNCID.Clazz.Wizard;
-            this.CNCStaff = true;
+            staff = true;
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
