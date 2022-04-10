@@ -154,7 +154,7 @@ namespace CNC.Content
         {
             if (newCooldownMax >= 0) this.cooldownMax = newCooldownMax;
             if (newCooldown < 0) newCooldown = this.cooldownMax;
-            this.cooldown = (int)((newCooldown - newCooldown * add) * mul);
+            this.cooldown = (int)((newCooldown  / (1 + add)) * mul);
         }
 
         public string GetTooltip(object[] data = default)

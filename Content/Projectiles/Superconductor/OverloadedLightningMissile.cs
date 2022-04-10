@@ -26,7 +26,7 @@ namespace CNC.Content.Projectiles.Superconductor
             projectile.height = 13;
             projectile.timeLeft = 300;
             projectile.knockBack = 2f;
-            projectile.alpha = 0;
+            projectile.alpha = 255;
             projectile.scale = 2f;
             projectile.aiStyle = 1;
             projectile.penetrate = 1;
@@ -63,15 +63,25 @@ namespace CNC.Content.Projectiles.Superconductor
         public override bool PreDraw(ref Color lightColor)
         {
             lightColor = Color.LightBlue;
+            Main.EntitySpriteDraw(
+                Terraria.GameContent.TextureAssets.Projectile[Type].Value,
+                projectile.Center - Main.screenPosition,
+                new Rectangle(0, projectile.frame * 25, 13, 25),
+                lightColor,
+                projectile.rotation,
+                new Vector2(6.5f, 12.5f),
+                projectile.scale,
+                0, 0
+                );
             return true;
         }
 
         public override bool PreDrawExtras()
         {
-            Texture2D tail = ModContent.Request<Texture2D>("CNC/Assets/Effects/Trail2").Value;
+            Texture2D trail = ModContent.Request<Texture2D>("CNC/Assets/Effects/Trail2").Value;
             Color color = Color.LightBlue; color.A = 0;
-            Drawing.DrawTrailDirect(Main.spriteBatch, tail, len2, projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, color, pointX, tail.Height / 2, new Vector2(1f, .1f), new Vector2(1f, .01f), true, 8);
-            pointX = (pointX - 8 + tail.Width) % tail.Width;
+            Drawing.DrawTrailDirect(Main.spriteBatch, trail, len2, projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, color, pointX, trail.Height / 2, new Vector2(1f, .11f), new Vector2(1f, .01f), true, 32);
+            pointX = (pointX - 8 + trail.Width) % trail.Width;
             return true;
         }
     }

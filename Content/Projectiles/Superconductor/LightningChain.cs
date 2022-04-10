@@ -120,7 +120,7 @@ namespace CNC.Content.Projectiles.Superconductor
                 );
             ParticleRenderer.particle[idx].scale2 = new Vector2(.25f);
             ParticleRenderer.particle[idx].scaleFlashSpeed = .25f;
-            ParticleRenderer.particle[idx].scaleAdd = new Vector2(.002f, -.005f);
+            ParticleRenderer.particle[idx].scaleAdd = new Vector2(.002f, -.01f);
             ParticleRenderer.particle[idx].Alpha = .75f;
             ParticleRenderer.particle[idx].alphaAdd = -.04f;
             idx = Particle.NewParticle(
@@ -135,7 +135,7 @@ namespace CNC.Content.Projectiles.Superconductor
                 );
             ParticleRenderer.particle[idx].scale2 = new Vector2(.15f);
             ParticleRenderer.particle[idx].scaleFlashSpeed = .25f;
-            ParticleRenderer.particle[idx].scaleAdd = new Vector2(.001f, -.003f);
+            ParticleRenderer.particle[idx].scaleAdd = new Vector2(.001f, -.005f);
             ParticleRenderer.particle[idx].Alpha = .4f;
             ParticleRenderer.particle[idx].alphaAdd = -.02f;
         }
