@@ -63,10 +63,7 @@ namespace CNC.Content.Projectiles.Hostile
             }
             Vector2 pos = (p.position + p.Size / 2f) / 16f;
             Color color = new Color(0, 234, 118);
-            float r = color.R / 255f;
-            float g = color.G / 255f;
-            float b = color.B / 255f;
-            Lighting.AddLight((int)pos.X, (int)pos.Y, r, g, b);
+            CNCUtils.AddLight(p.Center, color);
         }
 
         public override void Kill(int timeLeft)

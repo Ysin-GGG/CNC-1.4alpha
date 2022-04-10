@@ -45,6 +45,9 @@ namespace CNC.Content.Projectiles.Superconductor
             projectile.friendly = false;
             foundTarget = false;
             currentTarget = null;
+            int max = CNC.Random.NextInt(2, 5);
+            for(int i = 0; i < max; i++)
+            this.LittleBolt(target.Center, CNC.Random.NextFloat(MyMath.pi2) + MyMath.pi2 * i / max, CNC.Random.NextInt(60, 100));
             //CNCUtils.PlaySound("Superconductor/Chain", projectile.Center, 1f, Main.rand.NextFloat(.1f, .3f), mod);
             if (target.netID == 488) { projectile.penetrate++; }
             //SpellDamage(p, damage, crit);
@@ -70,6 +73,7 @@ namespace CNC.Content.Projectiles.Superconductor
                 float y = (float)(deviation * Math.Sin(projectile.rotation));
                 Vector2 dev = new Vector2(x, y);
                 projectile.position += dev * .1f;
+                //if (CNC.Random.NextBool(3)) this.LittleBolt(projectile.Center, (CNC.Random.NextBool() ? CNC.Random.NextFloat(MyMath.deg30, MyMath.deg60) + MyMath.pi : -CNC.Random.NextFloat(MyMath.deg30, MyMath.deg60)), CNC.Random.NextInt(40, 70));
             }
             else
             {
@@ -100,33 +104,87 @@ namespace CNC.Content.Projectiles.Superconductor
                     projectile.Center += dev * .1f;
                 }
                 else { projectile.Kill(); return; }
+                //if (CNC.Random.NextBool(2)) this.LittleBolt(projectile.Center, CNC.Random.NextFloat(-MyMath.deg60, MyMath.deg60) + (projectile.position - projectile.oldPosition).ToRotation() + (CNC.Random.NextBool() ? -MyMath.deg90 : MyMath.deg90), CNC.Random.NextInt(40, 70));
             }
-            Color color = Color.LightBlue;
-            color.A = 0;
+            float rot = (projectile.position - projectile.oldPosition).ToRotation();
+            Color color = Color.LightBlue; color.A = 0;
             int idx = Particle.NewParticle(
                 ModContent.Request<Texture2D>("CNC/Assets/Particles/Light2").Value,
                 projectile.Center,
-                Const._02,
-                0,
-                30,
-                new Vector2(.175f),
-                color
+                default,
+                rot,
+                16,
+                new Vector2(.025f),
+                color,
+                new Color(color.R, color.G, color.B, 255)
                 );
-            ParticleRenderer.particle[idx].scaleAdd = -new Vector2(.0002f);
-            ParticleRenderer.particle[idx].alpha = .75f;
-            ParticleRenderer.particle[idx].alphaAdd = -.025f;
+            ParticleRenderer.particle[idx].scale2 = new Vector2(.25f);
+            ParticleRenderer.particle[idx].scaleFlashSpeed = .25f;
+            ParticleRenderer.particle[idx].scaleAdd = new Vector2(.002f, -.005f);
+            ParticleRenderer.particle[idx].Alpha = .75f;
+            ParticleRenderer.particle[idx].alphaAdd = -.04f;
             idx = Particle.NewParticle(
-                ModContent.Request<Texture2D>("CNC/Assets/Particles/Light2").Value,
+                ModContent.Request<Texture2D>("CNC/Assets/Particles/Light3").Value,
                 projectile.Center,
-                Const._02,
-                0,
-                30,
-                new Vector2(.05f),
-                color
+                default,
+                rot,
+                16,
+                new Vector2(.02f),
+                color,
+                new Color(color.R, color.G, color.B, 255)
                 );
-            ParticleRenderer.particle[idx].scaleAdd = -new Vector2(.0001f);
-            ParticleRenderer.particle[idx].alpha = .4f;
-            ParticleRenderer.particle[idx].alphaAdd = -.013f;
+            ParticleRenderer.particle[idx].scale2 = new Vector2(.15f);
+            ParticleRenderer.particle[idx].scaleFlashSpeed = .25f;
+            ParticleRenderer.particle[idx].scaleAdd = new Vector2(.001f, -.003f);
+            ParticleRenderer.particle[idx].Alpha = .4f;
+            ParticleRenderer.particle[idx].alphaAdd = -.02f;
+        }
+
+        private void LittleBolt(Vector2 pos, float rotation, float len)
+        {
+            Color color = Color.LightBlue; color.A = 0;
+            Vector2 oldPos = pos;
+            float rot = (projectile.position - projectile.oldPosition).ToRotation() + rotation;
+            float rot2 = rotation;
+            for (int i = 0; i < len; i++)
+            {
+                float num = ((len - i) / len) * .85f + .2f;
+                int idx = Particle.NewParticle(
+                    ModContent.Request<Texture2D>("CNC/Assets/Particles/Light2").Value,
+                    pos,
+                    default,
+                    rot,
+                    16,
+                    new Vector2(.025f) * num,
+                    color,
+                    new Color(color.R, color.G, color.B, 55)
+                    );
+                ParticleRenderer.particle[idx].scale2 = new Vector2(.25f) * num;
+                ParticleRenderer.particle[idx].scaleFlashSpeed = .25f;
+                ParticleRenderer.particle[idx].scaleAdd = new Vector2(.002f, -.005f) * num;
+                ParticleRenderer.particle[idx].Alpha = .75f;
+                ParticleRenderer.particle[idx].alphaAdd = -.04f;
+                
+                idx = Particle.NewParticle(
+                    ModContent.Request<Texture2D>("CNC/Assets/Particles/Light3").Value,
+                    pos,
+                    default,
+                    rot,
+                    16,
+                    new Vector2(.02f) * num,
+                    color,
+                    new Color(color.R, color.G, color.B, 55)
+                    );
+                ParticleRenderer.particle[idx].scale2 = new Vector2(.15f) * num;
+                ParticleRenderer.particle[idx].scaleFlashSpeed = .25f;
+                ParticleRenderer.particle[idx].scaleAdd = new Vector2(.001f, -.003f) * num;
+                ParticleRenderer.particle[idx].Alpha = .4f;
+                ParticleRenderer.particle[idx].alphaAdd = -.02f;
+                rot2 += CNC.Random.NextFloat(-MyMath.deg30, MyMath.deg30) / 2f;
+                oldPos = pos;
+                pos += new Vector2(0, CNC.Random.NextFloat(3f, 6f)).RotatedBy(rot2) * num;
+                rot = (pos - oldPos).ToRotation();
+            }
         }
 
         private NPC FindTargetAI()

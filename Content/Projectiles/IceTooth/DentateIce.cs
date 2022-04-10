@@ -49,7 +49,7 @@ namespace CNC.Content.Projectiles.IceTooth
             AI001_RollingMissile(projectile, false, true, 90f);
             Dust dust = Dust.NewDustDirect(projectile.position, 14, 14, DustID.IceTorch, 0f, 0f, 100, Color.LightBlue, 1f);
             dust.noGravity = true;
-            CNCUtils.AddLight(projectile.position, new Color(0, 170, 255), 1f);
+            CNCUtils.AddLight(projectile.position, new Color(0, 170, 255), .2f);
         }
 
         public override void HitNPC(NPC target, int damage, float knockback, bool crit)

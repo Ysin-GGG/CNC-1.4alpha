@@ -50,10 +50,18 @@ namespace CNC.Content.Projectiles.Superconductor
             Anim001_Loop(projectile, 5, 0);
             for (int i = 0; i < 2; i++)
             {
-                Dust dust = CNCUtils.NewDust(projectile, 226, projectile.rotation, .8f, projectile.Size / 2f, CNCUtils.AccurateColor(Color.LightBlue));
-                dust.velocity /= 2f;
+                Vector4 xywh = new Vector4(projectile.Center.X, projectile.Center.Y, 1, 1);
+                Dust dust = CNCUtils.NewDust(xywh, 226, projectile.rotation, .8f, projectile.Size / 2f, CNCUtils.AccurateColor(Color.LightBlue));
+                dust.position = projectile.position + CNC.Random.NextVector2(new Vector2(12f));
+                dust.velocity *= .2f;
                 dust.noGravity = true;
             }
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            lightColor = Color.White;
+            return true;
         }
 
         public override void Kill(int timeLeft)

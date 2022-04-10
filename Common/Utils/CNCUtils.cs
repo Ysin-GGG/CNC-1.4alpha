@@ -90,7 +90,7 @@ namespace CNC.Common.Utils
             float r = color.R / (float)byte.MaxValue * light;
             float g = color.G / (float)byte.MaxValue * light;
             float b = color.B / (float)byte.MaxValue * light;
-            Lighting.AddLight((int)position.X, (int)position.Y, r, g, b);
+            Lighting.AddLight((int)(position.X / 16f), (int)(position.Y / 16f), r, g, b);
         }
 
         public static void SetTile(Point position, int type, bool isWall = false, bool flag = true, int size = 0)

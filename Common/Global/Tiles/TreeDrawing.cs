@@ -37,6 +37,7 @@ namespace CNC.Common.Global.Tiles
                 short frameX = t.TileFrameX;
                 short frameY = t.TileFrameY;
                 bool flag1 = t.WallType > (ushort)0;
+                bool flag2 = Lighting.Mode == Terraria.Graphics.Light.LightMode.White || Lighting.Mode == Terraria.Graphics.Light.LightMode.Color;
                 byte tileColor = t.TileColor;
                 Color color = t.TileColor == (byte)31 ? Color.White : Lighting.GetColor(x, y);
                 WorldGen.GetTreeFoliageDataMethod foliageDataMethod = new WorldGen.GetTreeFoliageDataMethod(drawType);
@@ -59,7 +60,7 @@ namespace CNC.Common.Global.Tiles
                         if (!flag1) num5 = PaintSystem.Instance.GetWindCycle(x, y);
                         position.X += num5 * 2f;
                         position.Y += Math.Abs(num5) * 2f;
-                        position += new Vector2(12f * 16f);
+                        if (flag2) position += new Vector2(12f * 16f);
                         Main.spriteBatch.Draw(treeTopTexture, position, new Rectangle?(new Rectangle(treeFrame * (topTextureFrameWidth + 2), 0, topTextureFrameWidth, topTextureFrameHeight)), color, num5 * num2, new Vector2((float)(topTextureFrameWidth / 2), (float)topTextureFrameHeight), 1f, 0, 0f);
                     }
                     if (frameX == 44)
@@ -74,7 +75,7 @@ namespace CNC.Common.Global.Tiles
                         if (!flag1) num8 = PaintSystem.Instance.GetWindCycle(x, y);
                         if ((double)num8 > 0.0) position.X += num8;
                         position.X += Math.Abs(num8) * 2f;
-                        position += new Vector2(12f * 16f);
+                        if (flag2) position += new Vector2(12f * 16f);
                         Main.spriteBatch.Draw(branch, position, new Rectangle?(new Rectangle(0, treeFrame * 42, 40, 40)), color, num8 * num3, new Vector2(40f, 24f), 1f, 0, 0f);
                     }
                     if (frameX == 66)
@@ -90,7 +91,7 @@ namespace CNC.Common.Global.Tiles
                         if (!flag1) num11 = PaintSystem.Instance.GetWindCycle(x, y);
                         if ((double)num11 < 0.0) position.X += num11;
                         position.X -= Math.Abs(num11) * 2f;
-                        position += new Vector2(12f * 16f);
+                        if(flag2) position += new Vector2(12f * 16f);
                         Main.spriteBatch.Draw(treeBranchTexture, position, new Rectangle?(new Rectangle(42, treeFrame * 42, 40, 40)), color, num11 * num3, new Vector2(0.0f, 30f), 1f, 0, 0f);
                     }
                 }

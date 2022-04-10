@@ -50,8 +50,8 @@ namespace CNC.Content.Items.Weapons.Magic
             {
                 type = CNCID.Projectile.LegacyObject[CNCID.Projectile.LightningChain];
                 CNCUtils.PlaySound("Superconductor/Chain", player);
-                Projectile projectile = CNCUtils.NewProj(source, position - new Vector2(6 * player.direction, -10f), default, type, 0, 0f);
-                projectile = CNCUtils.NewProj(source, position - new Vector2(6 * player.direction, -10f), default, type, this.LightningChainDamage, 0f);
+                Projectile projectile = CNCUtils.NewProj(source, position - new Vector2(6 * player.direction, 20f), default, type, 0, 0f);
+                projectile = CNCUtils.NewProj(source, position - new Vector2(6 * player.direction, 20f), default, type, this.LightningChainDamage, 0f);
                 projectile.GetGlobalProjectile<AllProjectile>().data["noDamage"] = false;
                 projectile.GetGlobalProjectile<AllProjectile>().data["upgraded"] = this.LightningChainUpgrade;
                 bool noCooldown = this.LightningChainUpgrade2 && CNC.Random.NextBool((float)CNCID.Inscription.S_SpellReconstruction.Data[0]);
@@ -90,7 +90,7 @@ namespace CNC.Content.Items.Weapons.Magic
         public override void HoldItem(Player player)
         {
             if (player.altFunctionUse == 2)
-                player.itemRotation = -MyMath.deg45 * player.direction;
+                player.itemRotation = -MyMath.deg90 * player.direction;
         }
 
         public override void ModifyManaCost(Player player, ref float reduce, ref float mult)

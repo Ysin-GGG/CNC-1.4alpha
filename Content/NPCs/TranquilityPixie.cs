@@ -111,12 +111,7 @@ namespace CNC.Content.NPCs
             }
             FindTarget();//寻找最近的目标玩家
             if (Main.rand.Next(0, 30) == 0) CNCUtils.NewDust(npc, dustid, Main.rand.NextFloat(MathHelper.Pi), 1.2f, default, default(Color));
-            Vector2 pos = (npc.position + npc.Size / 2f) / 16f;
-            Color color = new Color(0, 234, 118);
-            float r = color.R / 255f;
-            float g = color.G / 255f;
-            float b = color.B / 255f;
-            Lighting.AddLight((int)pos.X, (int)pos.Y, r, g, b);
+            CNCUtils.AddLight(npc.Center, new Color(178, 214, 231));
             if (spawn > 0) npc.alpha = (spawn -= 5);
         }
 
