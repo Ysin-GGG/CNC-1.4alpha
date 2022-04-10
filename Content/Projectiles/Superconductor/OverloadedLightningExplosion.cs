@@ -35,7 +35,7 @@ namespace CNC.Content.Projectiles.Superconductor
             Anim001_Loop(projectile, 6);
             projectile.scale += .02f;
             if (projectile.timeLeft > 14)
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Dust dust = CNCUtils.NewDust(projectile, DustId.ElectricCyan, projectile.rotation, 1.2f, projectile.Size / 4f, CNCUtils.AccurateColor(Color.DarkCyan));
                 dust.noGravity = true;

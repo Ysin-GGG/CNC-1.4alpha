@@ -50,11 +50,19 @@ namespace CNC.Content.Projectiles.Superconductor
             AI001_RollingMissile(projectile, false, true, 90f);
             Anim001_Loop(projectile, 5, 0);
             UpdateOldData(projectile, projectile.velocity);
+            CNCUtils.AddLight(projectile.Center, Color.DarkCyan, .3f);
             if (len2 < len - 1) len2++;
         }
 
         public override void Kill(int timeLeft)
         {
+            for (int i = 0; i < len2; i++)
+            {
+                Vector2 pos = projectile.oldPos[i] + projectile.Size / 2f + new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f)) * projectile.Size * projectile.scale / 2f;
+                Dust dust = CNCUtils.NewDust(projectile, DustId.ElectricCyan, projectile.rotation, 1.2f, projectile.Size / 4f, CNCUtils.AccurateColor(Color.DarkCyan));
+                dust.position = pos;
+                dust.noGravity = true;
+            }
             CNCUtils.PlaySound("Superconductor/Explosion", projectile.Center, 2f, mod);
             CNCUtils.PlaySound("Superconductor/Chain", projectile.Center, 1f, mod);
             this.NewProjectile(projectile.Center + projectile.oldVelocity, Const._02, CNCID.Projectile.LegacyObject[CNCID.Projectile.OverloadedLightningExplosion], JustGetDamage(CNCID.Inscription.S_ArcaneOverload, 4), projectile.knockBack, CNC.Random.NextFloat(MyMath.pi2));

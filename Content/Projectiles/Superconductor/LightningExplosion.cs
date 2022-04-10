@@ -33,12 +33,11 @@ namespace CNC.Content.Projectiles.Superconductor
         {
             Anim001_Loop(projectile, 4);
             projectile.scale += .01f;
-            if(projectile.timeLeft > 14)
-            for (int i = 0; i < 5; i++)
+            if (projectile.timeLeft > 14)
             {
-                Dust dust = CNCUtils.NewDust(projectile,  DustId.ElectricCyan, projectile.rotation, 1.2f, projectile.Size / 4f, CNCUtils.AccurateColor(Color.DarkCyan));
+                Dust dust = CNCUtils.NewDust(projectile, DustId.ElectricCyan, projectile.rotation, 1.2f, projectile.Size / 4f, CNCUtils.AccurateColor(Color.DarkCyan));
                 dust.noGravity = true;
-                CNCUtils.AddLight(projectile.Center, dust.color, .2f);
+                CNCUtils.AddLight(projectile.Center, dust.color, .4f);
             }
         }
     }

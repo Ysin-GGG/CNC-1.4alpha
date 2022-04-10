@@ -47,7 +47,7 @@ namespace CNC.Content.Projectiles.Superconductor
             currentTarget = null;
             int max = CNC.Random.NextInt(2, 5);
             for(int i = 0; i < max; i++)
-            this.LittleBolt(target.Center, CNC.Random.NextFloat(MyMath.pi2) + MyMath.pi2 * i / max, CNC.Random.NextInt(60, 100));
+            this.LittleBolt(target.Center, CNC.Random.NextDegree() + MyMath.pi2 * i / max, CNC.Random.NextInt(60, 100));
             //CNCUtils.PlaySound("Superconductor/Chain", projectile.Center, 1f, Main.rand.NextFloat(.1f, .3f), mod);
             if (target.netID == 488) { projectile.penetrate++; }
             //SpellDamage(p, damage, crit);
@@ -122,7 +122,7 @@ namespace CNC.Content.Projectiles.Superconductor
             ParticleRenderer.particle[idx].scaleFlashSpeed = .25f;
             ParticleRenderer.particle[idx].scaleAdd = new Vector2(.002f, -.01f);
             ParticleRenderer.particle[idx].Alpha = .75f;
-            ParticleRenderer.particle[idx].alphaAdd = -.04f;
+            ParticleRenderer.particle[idx].alphaAdd = -.06f;
             idx = Particle.NewParticle(
                 ModContent.Request<Texture2D>("CNC/Assets/Particles/Light3").Value,
                 projectile.Center,
@@ -137,7 +137,7 @@ namespace CNC.Content.Projectiles.Superconductor
             ParticleRenderer.particle[idx].scaleFlashSpeed = .25f;
             ParticleRenderer.particle[idx].scaleAdd = new Vector2(.001f, -.005f);
             ParticleRenderer.particle[idx].Alpha = .4f;
-            ParticleRenderer.particle[idx].alphaAdd = -.02f;
+            ParticleRenderer.particle[idx].alphaAdd = -.025f;
         }
 
         private void LittleBolt(Vector2 pos, float rotation, float len)
@@ -163,7 +163,7 @@ namespace CNC.Content.Projectiles.Superconductor
                 ParticleRenderer.particle[idx].scaleFlashSpeed = .25f;
                 ParticleRenderer.particle[idx].scaleAdd = new Vector2(.002f, -.005f) * num;
                 ParticleRenderer.particle[idx].Alpha = .75f;
-                ParticleRenderer.particle[idx].alphaAdd = -.04f;
+                ParticleRenderer.particle[idx].alphaAdd = -.06f;
                 
                 idx = Particle.NewParticle(
                     ModContent.Request<Texture2D>("CNC/Assets/Particles/Light3").Value,
@@ -179,7 +179,7 @@ namespace CNC.Content.Projectiles.Superconductor
                 ParticleRenderer.particle[idx].scaleFlashSpeed = .25f;
                 ParticleRenderer.particle[idx].scaleAdd = new Vector2(.001f, -.003f) * num;
                 ParticleRenderer.particle[idx].Alpha = .4f;
-                ParticleRenderer.particle[idx].alphaAdd = -.02f;
+                ParticleRenderer.particle[idx].alphaAdd = -.025f;
                 rot2 += CNC.Random.NextFloat(-MyMath.deg30, MyMath.deg30) / 2f;
                 oldPos = pos;
                 pos += new Vector2(0, CNC.Random.NextFloat(3f, 6f)).RotatedBy(rot2) * num;

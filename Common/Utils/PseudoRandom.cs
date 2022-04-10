@@ -181,6 +181,28 @@ namespace CNC.Common.Utils
             else return this.rand.NextDouble() * max;
         }
 
+        /// <summary> 
+        /// 随机取角度
+        /// <para> 从[0, pi * 2)中取一个角度 </para>
+        /// </summary>
+        /// <param name="max"> 最大角度 </param>
+        public float NextDegree() => this.NextFloat(0, MyMath.pi2);
+
+        /// <summary> 
+        /// 随机取角度
+        /// <para> 从[0, max)中取一个角度 </para>
+        /// </summary>
+        /// <param name="max"> 最大角度 </param>
+        public float NextDegree(float max) => this.NextFloat(0, MyMath.deg01 * max);
+
+        /// <summary> 
+        /// 随机取角度
+        /// <para> 从[min, max)中取一个角度 </para>
+        /// </summary>
+        /// <param name="min"> 最小角度 </param>
+        /// <param name="max"> 最大角度 </param>
+        public float NextDegree(float min, float max) => this.NextFloat(MyMath.deg01 * min, MyMath.deg01 * max);
+
         //待完善
         public Vector2 NextVector2(float max) => this.NextVector2(new Vector2(max));
         public Vector2 NextVector2(float maxX, float maxY) => this.NextVector2(new Vector2(maxX, maxY));
