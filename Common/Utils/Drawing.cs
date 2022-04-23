@@ -105,7 +105,7 @@ namespace CNC.Common.Utils
                     MyMath.Max(rb2.X - lb2.X, 0f),
                     MyMath.Max(rt2.X - rb2.X, 0f),
                 };
-                for(int i = 0; i < width2 - 1; i++)
+                for (int i = 0; i < width2 - 1; i++)
                 {
                     Vector2 pos1 = new Vector2();
                     Vector2 pos2 = new Vector2();
@@ -444,7 +444,6 @@ namespace CNC.Common.Utils
 
             public void Draw(SpriteBatch spriteBatch)
             {
-                
             }
         }
     }

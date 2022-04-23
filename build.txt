@@ -1,9 +1,9 @@
-﻿displayName = Classes & Craft (1.4Alpha CNC)
+﻿displayName = Classes & Craft (CNC-1.4Alpha)
 author = HHvs & Quartz
-version = 0.0.3.0
+version = 0.0.3.1
 hideResources = false
-hideCode = true
-includeSource = true
-includePDB = true
+hideCode = false
+includeSource = false
+includePDB = false
 side = Client
 buildIgnore = *.sln, *.suo, *.user, *.gitignore, .git\*, .vs\*, obj\*, bin\*, Libraries\*, Properties\*,

@@ -7,11 +7,9 @@ using Terraria.ModLoader;
 using Terraria.Localization;
 using CNC.Common.Global.Projectiles;
 
-using static Terraria.ModLoader.ModContent;
-
 namespace CNC.Common.Utils
 {
-    public class CNCUtils
+    public static class CNCUtils
     {
         /// <summary> 生成弹幕 </summary>
         /// <param name="pos">世界坐标</param>

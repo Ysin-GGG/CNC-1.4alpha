@@ -24,7 +24,7 @@ namespace CNC.Common.Global.NPCs
     public class AllNPC : GlobalNPC
     {
         public bool[] buff = new bool[CNCID.Buff.MaxObject];
-        public int SanctifiedLevel;
+        public int sanctifiedLevel = 0;
         public int lastFrame = 0;
 
         public int lifeRegenCount;
@@ -38,6 +38,7 @@ namespace CNC.Common.Global.NPCs
 
             if (lifeRegen > 0) { lifeRegenCount = 0; }
             lifeRegen = 0;
+            if (sanctifiedLevel < 0) sanctifiedLevel = MyMath.Clamp(sanctifiedLevel + 1, -2, 0);
         }
 
         public override void FindFrame(NPC npc, int frameHeight)

@@ -65,7 +65,7 @@ namespace CNC.Common.Utils
                 { Glacier, BuffType<Content.Buffs.Glacier>() },
                 { Overloaded, BuffType<Content.Buffs.Overloaded>() },
                 { Surged, BuffType<Content.Buffs.Overloaded>() },
-                { Sanctified, BuffType<Content.Buffs.Overloaded>() },
+                { Sanctified, BuffType<Content.Buffs.Sanctified>() },
             };
         }
 
@@ -698,7 +698,7 @@ namespace CNC.Common.Utils
 
         public static class Projectile
         {
-            public const short MaxObject = 9;
+            public const short MaxObject = 19;
             #region ID
             /// <summary> ƒß∑®∑…µØ </summary>
             public const short MentorMissile = 1;
@@ -720,16 +720,24 @@ namespace CNC.Common.Utils
             public const short DentateIceExplosion = 9;
             /// <summary> À™≥± </summary>
             public const short FrostWave = 10;
-            /// <summary> …¡µÁµØ</summary>
+            /// <summary> …¡µÁµØ </summary>
             public const short LightningMissile = 11;
-            /// <summary> …¡µÁ±¨∆∆</summary>
+            /// <summary> …¡µÁ±¨∆∆ </summary>
             public const short LightningExplosion = 12;
-            /// <summary> π˝‘ÿ…¡µÁµØ</summary>
+            /// <summary> π˝‘ÿ…¡µÁµØ </summary>
             public const short OverloadedLightningMissile = 13;
-            /// <summary> π˝‘ÿ±¨∆∆</summary>
+            /// <summary> π˝‘ÿ±¨∆∆ </summary>
             public const short OverloadedLightningExplosion = 14;
-            /// <summary> …¡µÁ¡¥</summary>
+            /// <summary> …¡µÁ¡¥ </summary>
             public const short LightningChain = 15;
+            /// <summary> “¯∞◊ ∏ </summary>
+            public const short SilveryArrow = 16;
+            /// <summary> ÷¡ • ∏ </summary>
+            public const short SanctifiedArrow = 17;
+            /// <summary> ÷¡ •…‰ª˜ </summary>
+            public const short SanctifiedArrowShoot = 18;
+            /// <summary> ÷¡ •±¨∆∆ </summary>
+            public const short SanctifiedExplosion = 19;
             #endregion
             public static Dictionary<string, short> Collection => new Dictionary<string, short>()
             {
@@ -748,6 +756,10 @@ namespace CNC.Common.Utils
                 { "OverloadedLightningMissile", OverloadedLightningMissile },
                 { "OverloadedLightningExplosion", OverloadedLightningExplosion },
                 { "LightningChain", LightningChain },
+                { "SilveryArrow", SilveryArrow },
+                { "SanctifiedArrow", SanctifiedArrow },
+                { "SanctifiedArrowShoot", SanctifiedArrowShoot },
+                { "SanctifiedExplosion", SanctifiedExplosion },
             };
 
             public static Dictionary<string, int> LegacyCollection => new Dictionary<string, int>()
@@ -767,6 +779,10 @@ namespace CNC.Common.Utils
                 { "OverloadedLightningMissile", LegacyObject[Collection["OverloadedLightningMissile"]] },
                 { "OverloadedLightningExplosion", LegacyObject[Collection["OverloadedLightningExplosion"]] },
                 { "LightningChain", LegacyObject[Collection["LightningChain"]] },
+                { "SilveryArrow", LegacyObject[Collection["SilveryArrow"]] },
+                { "SanctifiedArrow", LegacyObject[Collection["SanctifiedArrow"]] },
+                { "SanctifiedArrowShoot", LegacyObject[Collection["SanctifiedArrowShoot"]] },
+                { "SanctifiedExplosion", LegacyObject[Collection["SanctifiedExplosion"]] },
             };
 
             public static Dictionary<short, int> LegacyObject => new Dictionary<short, int>()
@@ -786,6 +802,10 @@ namespace CNC.Common.Utils
                 { OverloadedLightningMissile, ProjectileType<Content.Projectiles.Superconductor.OverloadedLightningMissile>() },
                 { OverloadedLightningExplosion, ProjectileType<Content.Projectiles.Superconductor.OverloadedLightningExplosion>() },
                 { LightningChain, ProjectileType<Content.Projectiles.Superconductor.LightningChain>() },
+                { SilveryArrow, ProjectileType<Content.Projectiles.ArgenteusClaw.SilveryArrow>() },
+                { SanctifiedArrow, ProjectileType<Content.Projectiles.ArgenteusClaw.SanctifiedArrow>() },
+                { SanctifiedArrowShoot, ProjectileType<Content.Projectiles.ArgenteusClaw.SanctifiedArrowShoot>() },
+                { SanctifiedExplosion, ProjectileType<Content.Projectiles.ArgenteusClaw.SanctifiedExplosion>() },
             };
         }
 

@@ -2,17 +2,18 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Terraria;
 using Terraria.ID;
 using Terraria.UI;
 using Terraria.Audio;
 using Terraria.GameInput;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using CNC.Content;
 using CNC.Common.Utils;
 using CNC.Common.Localization;
-using System.Collections.ObjectModel;
-using Terraria.ModLoader.IO;
+using CNC.Common.Global.Players;
 
 namespace CNC.Common.Global.Items
 {
@@ -422,7 +423,18 @@ namespace CNC.Common.Global.Items
                     if (inscription == CNCID.Inscription.C_RaidAdept) modItem.attackSpeed += (float)CNCID.Inscription.C_RaidAdept.Data[0];
                     if (inscription == CNCID.Inscription.C_Reiki) modItem.manaReturn += (float)CNCID.Inscription.C_Reiki.Data[0];
                     if (inscription == CNCID.Inscription.C_Economization) modItem.manaCostAdd += (float)CNCID.Inscription.C_Economization.Data[0];
+                    if (inscription == CNCID.Inscription.C_EnchantedBowstring) modItem.manaCostAdd += (float)CNCID.Inscription.C_EnchantedBowstring.Data[0];
                 }
+            }
+        }
+
+        public override void HoldItem(Item item, Player player)
+        {
+            InscriptionSettings modItem = item.GetGlobalItem<InscriptionSettings>();
+            for (int i = 0; i < modItem.inscription.Length; i++)
+            {
+                Inscription inscription = modItem.inscription[i];
+                if (inscription == CNCID.Inscription.C_EnchantedBowstring) player.GetModPlayer<ClassesSettings>().clazz_PowerSpeedAdd += (float)CNCID.Inscription.C_EnchantedBowstring.Data[0];
             }
         }
 

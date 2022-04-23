@@ -112,7 +112,7 @@ Mods: {
 		Config: {
 			Client: Client Config
 			Server: Server Config
-			OnlyFor: Only for CNC and extra contents
+			OnlyFor: CNC and extra contents Only
 			UseModMusic: Applying CNC music for bosses
 			HoverTextBox: Hover text boxes
 			HoverTextBoxAlpha: Opacity

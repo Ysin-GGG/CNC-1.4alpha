@@ -388,8 +388,8 @@ namespace CNC.Common.Global.Players
                 if (this._stateType.Contains(i)) this._stateTime[i - 1] = this.state[i - 1];
                 else this.state[i - 1] = 0;
             }
-            this.ResetClassVar(false);
             this.Update();
+            this.ResetClassVar(false);
         }
 
         public void Update()

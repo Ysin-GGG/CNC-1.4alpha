@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ namespace CNC
 {
 	public class CNC : Mod
 	{
-        public override Version Version => new Version(0, 0, 3, 0);
+        public override Version Version => new Version(0, 0, 3, 1);
         public Version TMLVersion => TModLoaderVersion;
         public static PseudoRandom Random => CNC.random;
         private static PseudoRandom random;

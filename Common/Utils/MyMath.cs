@@ -1,17 +1,12 @@
 using System;
 using System.Linq;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using ReLogic.Graphics;
-using Terraria;
-using Terraria.GameContent;
-
-using static Terraria.ModLoader.ModContent;
 
 namespace CNC.Common.Utils
 {
-    public class MyMath
+    public static class MyMath
     {
+        public const double Phi = 1.6180339887498948;
         public const double G = 9.8061905036721905;
         public const double E = 2.7182818284590451;
         public const double Pi = 3.1415926535897931;
@@ -21,6 +16,7 @@ namespace CNC.Common.Utils
         public const double Deg45 = Pi / 4;
         public const double Deg60 = Pi / 3;
         public const double Deg90 = Pi / 2;
+        public const float phi = 1.6180339f;
         public const float g = 9.8066500f;
         public const float e = 2.7182818f;
         public const float pi = 3.1415927f;
@@ -51,142 +47,151 @@ namespace CNC.Common.Utils
         public static Point Clamp(Point value, Point min, Point max, out Point extra) => MyMath.Clamp((extra = value - (value = MyMath.Clamp(value, min, max))) + value, min, max);
         public static Vector2 Clamp(Vector2 value, Vector2 min, Vector2 max) => new Vector2(MyMath.Clamp(value.X, min.X, max.X), MyMath.Clamp(value.Y, min.Y, max.Y));
         public static Vector2 Clamp(Vector2 value, Vector2 min, Vector2 max, out Vector2 extra) => MyMath.Clamp((extra = value - (value = MyMath.Clamp(value, min, max))) + value, min, max);
-        
-        public static byte Max(byte value1, byte value2, byte value3, byte value4) => (((value1 > value2) ? value1 : value2) > ((value3 > value4) ? value3 : value4)) ? ((value1 > value2) ? value1 : value2) : ((value3 > value4) ? value3 : value4);
-        public static byte Max(byte value1, byte value2, byte value3) => (((value1 > value2) ? value1 : value2) > value3) ? ((value1 > value2) ? value1 : value2) : value3;
-        public static byte Max(byte value1, byte value2) => (value1 > value2) ? value1 : value2;
-        public static byte Max(byte[] values) => values.Max();
-        public static sbyte Max(sbyte value1, sbyte value2, sbyte value3, sbyte value4) => (((value1 > value2) ? value1 : value2) > ((value3 > value4) ? value3 : value4)) ? ((value1 > value2) ? value1 : value2) : ((value3 > value4) ? value3 : value4);
-        public static sbyte Max(sbyte value1, sbyte value2, sbyte value3) => (((value1 > value2) ? value1 : value2) > value3) ? ((value1 > value2) ? value1 : value2) : value3;
-        public static sbyte Max(sbyte value1, sbyte value2) => (value1 > value2) ? value1 : value2;
-        public static sbyte Max(sbyte[] values) => values.Max();
-        public static short Max(short value1, short value2, short value3, short value4) => (((value1 > value2) ? value1 : value2) > ((value3 > value4) ? value3 : value4)) ? ((value1 > value2) ? value1 : value2) : ((value3 > value4) ? value3 : value4);
-        public static short Max(short value1, short value2, short value3) => (((value1 > value2) ? value1 : value2) > value3) ? ((value1 > value2) ? value1 : value2) : value3;
-        public static short Max(short value1, short value2) => (value1 > value2) ? value1 : value2;
-        public static short Max(short[] values) => values.Max();
-        public static ushort Max(ushort value1, ushort value2, ushort value3, ushort value4) => (((value1 > value2) ? value1 : value2) > ((value3 > value4) ? value3 : value4)) ? ((value1 > value2) ? value1 : value2) : ((value3 > value4) ? value3 : value4);
-        public static ushort Max(ushort value1, ushort value2, ushort value3) => (((value1 > value2) ? value1 : value2) > value3) ? ((value1 > value2) ? value1 : value2) : value3;
-        public static ushort Max(ushort value1, ushort value2) => (value1 > value2) ? value1 : value2;
-        public static ushort Max(ushort[] values) => values.Max();
-        public static int Max(int value1, int value2, int value3, int value4) => (((value1 > value2) ? value1 : value2) > ((value3 > value4) ? value3 : value4)) ? ((value1 > value2) ? value1 : value2) : ((value3 > value4) ? value3 : value4);
-        public static int Max(int value1, int value2, int value3) => (((value1 > value2) ? value1 : value2) > value3) ? ((value1 > value2) ? value1 : value2) : value3;
-        public static int Max(int value1, int value2) => (value1 > value2) ? value1 : value2;
-        public static int Max(int[] values) => values.Max();
-        public static uint Max(uint value1, uint value2, uint value3, uint value4) => (((value1 > value2) ? value1 : value2) > ((value3 > value4) ? value3 : value4)) ? ((value1 > value2) ? value1 : value2) : ((value3 > value4) ? value3 : value4);
-        public static uint Max(uint value1, uint value2, uint value3) => (((value1 > value2) ? value1 : value2) > value3) ? ((value1 > value2) ? value1 : value2) : value3;
-        public static uint Max(uint value1, uint value2) => (value1 > value2) ? value1 : value2;
-        public static uint Max(uint[] values) => values.Max();
-        public static long Max(long value1, long value2, long value3, long value4) => (((value1 > value2) ? value1 : value2) > ((value3 > value4) ? value3 : value4)) ? ((value1 > value2) ? value1 : value2) : ((value3 > value4) ? value3 : value4);
-        public static long Max(long value1, long value2, long value3) => (((value1 > value2) ? value1 : value2) > value3) ? ((value1 > value2) ? value1 : value2) : value3;
-        public static long Max(long value1, long value2) => (value1 > value2) ? value1 : value2;
-        public static long Max(long[] values) => values.Max();
-        public static ulong Max(ulong value1, ulong value2, ulong value3, ulong value4) => (((value1 > value2) ? value1 : value2) > ((value3 > value4) ? value3 : value4)) ? ((value1 > value2) ? value1 : value2) : ((value3 > value4) ? value3 : value4);
-        public static ulong Max(ulong value1, ulong value2, ulong value3) => (((value1 > value2) ? value1 : value2) > value3) ? ((value1 > value2) ? value1 : value2) : value3;
-        public static ulong Max(ulong value1, ulong value2) => (value1 > value2) ? value1 : value2;
-        public static ulong Max(ulong[] values) => values.Max();
-        public static float Max(float value1, float value2, float value3, float value4) => (((value1 > value2) ? value1 : value2) > ((value3 > value4) ? value3 : value4)) ? ((value1 > value2) ? value1 : value2) : ((value3 > value4) ? value3 : value4);
-        public static float Max(float value1, float value2, float value3) => (((value1 > value2) ? value1 : value2) > value3) ? ((value1 > value2) ? value1 : value2) : value3;
-        public static float Max(float value1, float value2) => (value1 > value2) ? value1 : value2;
-        public static float Max(float[] values) => values.Max();
-        public static double Max(double value1, double value2, double value3, double value4) => (((value1 > value2) ? value1 : value2) > ((value3 > value4) ? value3 : value4)) ? ((value1 > value2) ? value1 : value2) : ((value3 > value4) ? value3 : value4);
-        public static double Max(double value1, double value2, double value3) => (((value1 > value2) ? value1 : value2) > value3) ? ((value1 > value2) ? value1 : value2) : value3;
-        public static double Max(double value1, double value2) => (value1 > value2) ? value1 : value2;
-        public static double Max(double[] values) => values.Max();
-        public static char Max(char value1, char value2, char value3, char value4) => (((value1 > value2) ? value1 : value2) > ((value3 > value4) ? value3 : value4)) ? ((value1 > value2) ? value1 : value2) : ((value3 > value4) ? value3 : value4);
-        public static char Max(char value1, char value2, char value3) => (((value1 > value2) ? value1 : value2) > value3) ? ((value1 > value2) ? value1 : value2) : value3;
-        public static char Max(char value1, char value2) => (value1 > value2) ? value1 : value2;
-        public static char Max(char[] values) => values.Max();
-        public static decimal Max(decimal value1, decimal value2, decimal value3, decimal value4) => (((value1 > value2) ? value1 : value2) > ((value3 > value4) ? value3 : value4)) ? ((value1 > value2) ? value1 : value2) : ((value3 > value4) ? value3 : value4);
-        public static decimal Max(decimal value1, decimal value2, decimal value3) => (((value1 > value2) ? value1 : value2) > value3) ? ((value1 > value2) ? value1 : value2) : value3;
-        public static decimal Max(decimal value1, decimal value2) => (value1 > value2) ? value1 : value2;
-        public static decimal Max(decimal[] values) => values.Max();
 
-        public static byte Min(byte value1, byte value2, byte value3, byte value4) => (((value1 < value2) ? value1 : value2) < ((value3 < value4) ? value3 : value4)) ? ((value1 < value2) ? value1 : value2) : ((value3 < value4) ? value3 : value4);
-        public static byte Min(byte value1, byte value2, byte value3) => (((value1 < value2) ? value1 : value2) < value3) ? ((value1 < value2) ? value1 : value2) : value3;
-        public static byte Min(byte value1, byte value2) => (value1 < value2) ? value1 : value2;
-        public static byte Min(byte[] values) => values.Min();
-        public static sbyte Min(sbyte value1, sbyte value2, sbyte value3, sbyte value4) => (((value1 < value2) ? value1 : value2) < ((value3 < value4) ? value3 : value4)) ? ((value1 < value2) ? value1 : value2) : ((value3 < value4) ? value3 : value4);
-        public static sbyte Min(sbyte value1, sbyte value2, sbyte value3) => (((value1 < value2) ? value1 : value2) < value3) ? ((value1 < value2) ? value1 : value2) : value3;
-        public static sbyte Min(sbyte value1, sbyte value2) => (value1 < value2) ? value1 : value2;
-        public static sbyte Min(sbyte[] values) => values.Min();
-        public static short Min(short value1, short value2, short value3, short value4) => (((value1 < value2) ? value1 : value2) < ((value3 < value4) ? value3 : value4)) ? ((value1 < value2) ? value1 : value2) : ((value3 < value4) ? value3 : value4);
-        public static short Min(short value1, short value2, short value3) => (((value1 < value2) ? value1 : value2) < value3) ? ((value1 < value2) ? value1 : value2) : value3;
-        public static short Min(short value1, short value2) => (value1 < value2) ? value1 : value2;
-        public static short Min(short[] values) => values.Min();
-        public static ushort Min(ushort value1, ushort value2, ushort value3, ushort value4) => (((value1 < value2) ? value1 : value2) < ((value3 < value4) ? value3 : value4)) ? ((value1 < value2) ? value1 : value2) : ((value3 < value4) ? value3 : value4);
-        public static ushort Min(ushort value1, ushort value2, ushort value3) => (((value1 < value2) ? value1 : value2) < value3) ? ((value1 < value2) ? value1 : value2) : value3;
-        public static ushort Min(ushort value1, ushort value2) => (value1 < value2) ? value1 : value2;
-        public static ushort Min(ushort[] values) => values.Min();
-        public static int Min(int value1, int value2, int value3, int value4) => (((value1 < value2) ? value1 : value2) < ((value3 < value4) ? value3 : value4)) ? ((value1 < value2) ? value1 : value2) : ((value3 < value4) ? value3 : value4);
-        public static int Min(int value1, int value2, int value3) => (((value1 < value2) ? value1 : value2) < value3) ? ((value1 < value2) ? value1 : value2) : value3;
-        public static int Min(int value1, int value2) => (value1 < value2) ? value1 : value2;
-        public static int Min(int[] values) => values.Min();
-        public static uint Min(uint value1, uint value2, uint value3, uint value4) => (((value1 < value2) ? value1 : value2) < ((value3 < value4) ? value3 : value4)) ? ((value1 < value2) ? value1 : value2) : ((value3 < value4) ? value3 : value4);
-        public static uint Min(uint value1, uint value2, uint value3) => (((value1 < value2) ? value1 : value2) < value3) ? ((value1 < value2) ? value1 : value2) : value3;
-        public static uint Min(uint value1, uint value2) => (value1 < value2) ? value1 : value2;
-        public static uint Min(uint[] values) => values.Min();
-        public static long Min(long value1, long value2, long value3, long value4) => (((value1 < value2) ? value1 : value2) < ((value3 < value4) ? value3 : value4)) ? ((value1 < value2) ? value1 : value2) : ((value3 < value4) ? value3 : value4);
-        public static long Min(long value1, long value2, long value3) => (((value1 < value2) ? value1 : value2) < value3) ? ((value1 < value2) ? value1 : value2) : value3;
-        public static long Min(long value1, long value2) => (value1 < value2) ? value1 : value2;
-        public static long Min(long[] values) => values.Min();
-        public static ulong Min(ulong value1, ulong value2, ulong value3, ulong value4) => (((value1 < value2) ? value1 : value2) < ((value3 < value4) ? value3 : value4)) ? ((value1 < value2) ? value1 : value2) : ((value3 < value4) ? value3 : value4);
-        public static ulong Min(ulong value1, ulong value2, ulong value3) => (((value1 < value2) ? value1 : value2) < value3) ? ((value1 < value2) ? value1 : value2) : value3;
-        public static ulong Min(ulong value1, ulong value2) => (value1 < value2) ? value1 : value2;
-        public static ulong Min(ulong[] values) => values.Min();
-        public static float Min(float value1, float value2, float value3, float value4) => (((value1 < value2) ? value1 : value2) < ((value3 < value4) ? value3 : value4)) ? ((value1 < value2) ? value1 : value2) : ((value3 < value4) ? value3 : value4);
-        public static float Min(float value1, float value2, float value3) => (((value1 < value2) ? value1 : value2) < value3) ? ((value1 < value2) ? value1 : value2) : value3;
-        public static float Min(float value1, float value2) => (value1 < value2) ? value1 : value2;
-        public static float Min(float[] values) => values.Min();
-        public static double Min(double value1, double value2, double value3, double value4) => (((value1 < value2) ? value1 : value2) < ((value3 < value4) ? value3 : value4)) ? ((value1 < value2) ? value1 : value2) : ((value3 < value4) ? value3 : value4);
-        public static double Min(double value1, double value2, double value3) => (((value1 < value2) ? value1 : value2) < value3) ? ((value1 < value2) ? value1 : value2) : value3;
-        public static double Min(double value1, double value2) => (value1 < value2) ? value1 : value2;
-        public static double Min(double[] values) => values.Min();
-        public static char Min(char value1, char value2, char value3, char value4) => (((value1 < value2) ? value1 : value2) < ((value3 < value4) ? value3 : value4)) ? ((value1 < value2) ? value1 : value2) : ((value3 < value4) ? value3 : value4);
-        public static char Min(char value1, char value2, char value3) => (((value1 < value2) ? value1 : value2) < value3) ? ((value1 < value2) ? value1 : value2) : value3;
-        public static char Min(char value1, char value2) => (value1 < value2) ? value1 : value2;
-        public static char Min(char[] values) => values.Min();
-        public static decimal Min(decimal value1, decimal value2, decimal value3, decimal value4) => (((value1 < value2) ? value1 : value2) < ((value3 < value4) ? value3 : value4)) ? ((value1 < value2) ? value1 : value2) : ((value3 < value4) ? value3 : value4);
-        public static decimal Min(decimal value1, decimal value2, decimal value3) => (((value1 < value2) ? value1 : value2) < value3) ? ((value1 < value2) ? value1 : value2) : value3;
-        public static decimal Min(decimal value1, decimal value2) => (value1 < value2) ? value1 : value2;
-        public static decimal Min(decimal[] values) => values.Min();
-        public static byte Sum(byte[] values, byte basic = 0)
+        public static byte Max(params byte[] values) => values.Max();
+        public static sbyte Max(params sbyte[] values) => values.Max();
+        public static short Max(params short[] values) => values.Max();
+        public static ushort Max(params ushort[] values) => values.Max();
+        public static int Max(params int[] values) => values.Max();
+        public static uint Max(params uint[] values) => values.Max();
+        public static long Max(params long[] values) => values.Max();
+        public static ulong Max(params ulong[] values) => values.Max();
+        public static float Max(params float[] values) => values.Max();
+        public static double Max(params double[] values) => values.Max();
+        public static char Max(params char[] values) => values.Max();
+        public static decimal Max(params decimal[] values) => values.Max();
+
+        public static byte Min(params byte[] values) => values.Min();
+        public static sbyte Min(params sbyte[] values) => values.Min();
+        public static short Min(params short[] values) => values.Min();
+        public static ushort Min(params ushort[] values) => values.Min();
+        public static int Min(params int[] values) => values.Min();
+        public static uint Min(params uint[] values) => values.Min();
+        public static long Min(params long[] values) => values.Min();
+        public static ulong Min(params ulong[] values) => values.Min();
+        public static float Min(params float[] values) => values.Min();
+        public static double Min(params double[] values) => values.Min();
+        public static char Min(params char[] values) => values.Min();
+        public static decimal Min(params decimal[] values) => values.Min();
+
+        public static byte Sum(byte[] values, byte basic = (byte)0)
         {
             for (int i = 0; i < values.Length; i++) basic = (byte)(basic + values[i]);
             return basic;
         }
-        public static sbyte Sum(sbyte[] values, sbyte basic = 0)
+        public static byte Sum(byte basic = (byte)0, params byte[] values)
+        {
+            for (int i = 0; i < values.Length; i++) basic = (byte)(basic + values[i]);
+            return basic;
+        }
+        public static sbyte Sum(sbyte[] values, sbyte basic = (sbyte)0)
         {
             for (int i = 0; i < values.Length; i++) basic = (sbyte)(basic + values[i]);
             return basic;
         }
-        public static short Sum(short[] values, short basic = 0)
+        public static sbyte Sum(sbyte basic = (sbyte)0, params sbyte[] values)
+        {
+            for (int i = 0; i < values.Length; i++) basic = (sbyte)(basic + values[i]);
+            return basic;
+        }
+        public static short Sum(short[] values, short basic = (short)0)
         {
             for (int i = 0; i < values.Length; i++) basic = (short)(basic + values[i]);
             return basic;
         }
-        public static ushort Sum(ushort[] values, ushort basic = 0)
+        public static short Sum(short basic = (short)0, params short[] values)
+        {
+            for (int i = 0; i < values.Length; i++) basic = (short)(basic + values[i]);
+            return basic;
+        }
+        public static ushort Sum(ushort[] values, ushort basic = (ushort)0)
         {
             for (int i = 0; i < values.Length; i++) basic = (ushort)(basic + values[i]);
             return basic;
         }
-        public static int Sum(int[] values, int basic = 0)
+        public static ushort Sum(ushort basic = (ushort)0, params ushort[] values)
+        {
+            for (int i = 0; i < values.Length; i++) basic = (ushort)(basic + values[i]);
+            return basic;
+        }
+        public static int Sum(int[] values, int basic = (int)0)
         {
             for (int i = 0; i < values.Length; i++) basic = (int)(basic + values[i]);
             return basic;
         }
-        public static uint Sum(uint[] values, uint basic = 0)
+        public static int Sum(int basic = (int)0, params int[] values)
+        {
+            for (int i = 0; i < values.Length; i++) basic = (int)(basic + values[i]);
+            return basic;
+        }
+        public static uint Sum(uint[] values, uint basic = (uint)0)
         {
             for (int i = 0; i < values.Length; i++) basic = (uint)(basic + values[i]);
             return basic;
         }
-        public static long Sum(long[] values, long basic = 0)
+        public static uint Sum(uint basic = (uint)0, params uint[] values)
+        {
+            for (int i = 0; i < values.Length; i++) basic = (uint)(basic + values[i]);
+            return basic;
+        }
+        public static long Sum(long[] values, long basic = (long)0)
         {
             for (int i = 0; i < values.Length; i++) basic = (long)(basic + values[i]);
             return basic;
         }
-        public static ulong Sum(ulong[] values, ulong basic = 0)
+        public static long Sum(long basic = (long)0, params long[] values)
+        {
+            for (int i = 0; i < values.Length; i++) basic = (long)(basic + values[i]);
+            return basic;
+        }
+        public static ulong Sum(ulong[] values, ulong basic = (ulong)0)
         {
             for (int i = 0; i < values.Length; i++) basic = (ulong)(basic + values[i]);
+            return basic;
+        }
+        public static ulong Sum(ulong basic = (ulong)0, params ulong[] values)
+        {
+            for (int i = 0; i < values.Length; i++) basic = (ulong)(basic + values[i]);
+            return basic;
+        }
+        public static float Sum(float[] values, float basic = (float)0)
+        {
+            for (int i = 0; i < values.Length; i++) basic = (float)(basic + values[i]);
+            return basic;
+        }
+        public static float Sum(float basic = (float)0, params float[] values)
+        {
+            for (int i = 0; i < values.Length; i++) basic = (float)(basic + values[i]);
+            return basic;
+        }
+        public static double Sum(double[] values, double basic = (double)0)
+        {
+            for (int i = 0; i < values.Length; i++) basic = (double)(basic + values[i]);
+            return basic;
+        }
+        public static double Sum(double basic = (double)0, params double[] values)
+        {
+            for (int i = 0; i < values.Length; i++) basic = (double)(basic + values[i]);
+            return basic;
+        }
+        public static char Sum(char[] values, char basic = (char)0)
+        {
+            for (int i = 0; i < values.Length; i++) basic = (char)(basic + values[i]);
+            return basic;
+        }
+        public static char Sum(char basic = (char)0, params char[] values)
+        {
+            for (int i = 0; i < values.Length; i++) basic = (char)(basic + values[i]);
+            return basic;
+        }
+        public static decimal Sum(decimal[] values, decimal basic = (decimal)0)
+        {
+            for (int i = 0; i < values.Length; i++) basic = (decimal)(basic + values[i]);
+            return basic;
+        }
+        public static decimal Sum(decimal basic = (decimal)0, params decimal[] values)
+        {
+            for (int i = 0; i < values.Length; i++) basic = (decimal)(basic + values[i]);
             return basic;
         }
         public static Point Sum(Point[] values, Point basic = default)
@@ -194,7 +199,17 @@ namespace CNC.Common.Utils
             for (int i = 0; i < values.Length; i++) basic = (Point)(basic + values[i]);
             return basic;
         }
+        public static Point Sum(Point basic = default, params Point[] values)
+        {
+            for (int i = 0; i < values.Length; i++) basic = (Point)(basic + values[i]);
+            return basic;
+        }
         public static Vector2 Sum(Vector2[] values, Vector2 basic = default)
+        {
+            for (int i = 0; i < values.Length; i++) basic = (Vector2)(basic + values[i]);
+            return basic;
+        }
+        public static Vector2 Sum(Vector2 basic = default, params Vector2[] values)
         {
             for (int i = 0; i < values.Length; i++) basic = (Vector2)(basic + values[i]);
             return basic;

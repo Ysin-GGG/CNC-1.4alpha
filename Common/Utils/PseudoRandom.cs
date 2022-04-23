@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Terraria;
 
 namespace CNC.Common.Utils
 {
@@ -204,13 +205,13 @@ namespace CNC.Common.Utils
         public float NextDegree(float min, float max) => this.NextFloat(MyMath.deg01 * min, MyMath.deg01 * max);
 
         //待完善
-        public Vector2 NextVector2(float max) => this.NextVector2(new Vector2(max));
-        public Vector2 NextVector2(float maxX, float maxY) => this.NextVector2(new Vector2(maxX, maxY));
-        public Vector2 NextVector2(Vector2 max) => new Vector2(this.NextFloat(max.X), this.NextFloat(max.Y));
-        public Vector2 NextVector2(float minX, float minY, float maxX, float maxY) => this.NextVector2(new Vector2(minX, minY), new Vector2(maxX, maxY));
-        public Vector2 NextVector2(Vector2 min, Vector2 max) => new Vector2(this.NextFloat(min.X, max.X), this.NextFloat(min.Y, max.Y));
-        public Vector2 NextVector2(Rectangle? rect) => rect == null ? new Vector2() : this.NextVector2(((Rectangle)rect).X, ((Rectangle)rect).Y, ((Rectangle)rect).X + ((Rectangle)rect).Width, ((Rectangle)rect).Y + ((Rectangle)rect).Height);
-        public Vector2 NextVector2(Circle? circle, bool onlyEdge = false) => new Vector2();
+        public Vector2 NextVector2(float max) => this.NextVector2(max, max);
+        public Vector2 NextVector2(float maxX, float maxY) => new Vector2(this.NextFloat(maxX), this.NextFloat(maxY));
+        public Vector2 NextVector2(float minX, float minY, float maxX, float maxY) => new Vector2(this.NextFloat(minX, maxX), this.NextFloat(minY, maxY));
+        public Vector2 NextVector2(Vector2 max) => this.NextVector2(max.X, max.Y);
+        public Vector2 NextVector2(Vector2 min, Vector2 max) => this.NextVector2(min.X, min.Y, max.X, max.Y);
+        public Vector2 NextVector2(Rectangle? rect) => rect == null ? Vector2.Zero : this.NextVector2(((Rectangle)rect).X, ((Rectangle)rect).Y, ((Rectangle)rect).X + ((Rectangle)rect).Width, ((Rectangle)rect).Y + ((Rectangle)rect).Height);
+        public Vector2 NextVector2(Circle? circle, bool onlyEdge = false) => circle == null ? Vector2.Zero : new Vector2((onlyEdge ? ((Circle)circle).radius : this.NextFloat(((Circle)circle).radius)), 0).RotatedBy(this.NextDegree());
         
         /*
         public Point NextPoint(int max) { }
@@ -237,21 +238,20 @@ namespace CNC.Common.Utils
         public ulong NextUnsignedLong(ulong max) { }
         public ulong NextUnsignedLong(ulong min, ulong max) { }
         */
-        /*
+
         public T NextAny<T>(List<T> list) where T : class
         {
             T result = null;
             if (list.Count > 0) result = list[this.NextInt(list.Count) - 1];
             return result;
         }
-
-        public T NextAny<T>(ICollection<T> array) where T : class
+        
+        public T NextAny<T>(params T[] array) where T : class
         {
             T result = null;
-            if (array.Count > 0) result = array[0];
+            if (array.Length > 0) result = array[0];
             return result;
         }
-        */
     }
 
     /// <summary> C# System.Random类的源码（稍有修改） </summary>
@@ -259,7 +259,7 @@ namespace CNC.Common.Utils
     {
         // Private Constants 
         private const int MaxInt = Int32.MaxValue;
-        private const int GoldenSeed = 161803398;
+        private const int GoldenSeed = (int)(MyMath.Phi * 1e8);// 161803398
         
         // Member Variables
         private int inext, inextp;
