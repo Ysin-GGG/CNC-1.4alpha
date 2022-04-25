@@ -29,6 +29,7 @@ namespace CNC.Content.Items.Weapons.Ranged
             item.useStyle = 5;
             item.value = 50000;
             item.noMelee = true;
+            item.autoReuse = true;
             item.useAmmo = AmmoID.Arrow;
             item.DamageType = DamageClass.Ranged;
             item.shoot = CNCID.Projectile.LegacyObject[CNCID.Projectile.SilveryArrow];

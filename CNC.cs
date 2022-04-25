@@ -18,7 +18,7 @@ namespace CNC
 {
 	public class CNC : Mod
 	{
-        public override Version Version => new Version(0, 0, 3, 1);
+        public override Version Version => new Version(0, 0, 3, 2);
         public Version TMLVersion => TModLoaderVersion;
         public static PseudoRandom Random => CNC.random;
         private static PseudoRandom random;

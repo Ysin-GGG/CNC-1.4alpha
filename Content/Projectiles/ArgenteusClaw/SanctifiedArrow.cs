@@ -97,18 +97,17 @@ namespace CNC.Content.Projectiles.ArgenteusClaw
             }
             else
             {
-                float rot = projectile.velocity.ToRotation();
                 int idx = Particle.NewParticle(
                     ModContent.Request<Texture2D>("CNC/Assets/Particles/GlowTrail").Value,
                     projectile.Center,
                     default,
-                    rot,
+                    projectile.velocity.ToRotation(),
                     20,
-                    new Vector2(.15f, .1f),
+                    new Vector2(MyMath.GetZ(velX, velY) / ModContent.Request<Texture2D>("CNC/Assets/Particles/GlowTrail").Value.Width, .1f),
                     color,
                     new Color(color.R, color.G, color.B, 5)
                     );
-                ParticleRenderer.particle[idx].scaleAdd = new Vector2(.002f, -.005f);
+                ParticleRenderer.particle[idx].scaleAdd.Y = -.005f;
                 ParticleRenderer.particle[idx].alphaAdd = -.05f;
                 ParticleRenderer.particle[idx].alpha = 1f;
 
@@ -118,7 +117,7 @@ namespace CNC.Content.Projectiles.ArgenteusClaw
                     projectile.velocity,
                     CNC.Random.NextDegree(),
                     40,
-                    new Vector2(1f),
+                    Vector2.One,
                     color,
                     new Color(color.R, color.G, color.B, 5)
                     );
@@ -156,7 +155,6 @@ namespace CNC.Content.Projectiles.ArgenteusClaw
                     false
                     );
                 ParticleRenderer.particle[idx].lightAlpha = .2f;
-                ParticleRenderer.particle[idx].extraUpdate = 1;
                 ParticleRenderer.particle[idx].rotationAdd = CNC.Random.NextDegree(-16f, 16f);
                 ParticleRenderer.particle[idx].scaleAdd = new Vector2(-.01f);
                 ParticleRenderer.particle[idx].alphaAdd = -.005f;

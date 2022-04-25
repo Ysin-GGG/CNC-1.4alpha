@@ -80,10 +80,10 @@ namespace CNC.Content.Buffs
                     int idx = Particle.NewParticle(
                         ModContent.Request<Texture2D>("CNC/Assets/Particles/Star1").Value,
                         target.Center,
-                        new Vector2(0, (i / 8 % 2 == 0 ? MyMath.phi : 1f) * spd * 1.25f).RotatedBy(MyMath.deg90 * (i / 8) + randRot),
+                        new Vector2(0, (i / 8 % 2 == 0 ? MyMath.phi : 1f) * spd * .75f).RotatedBy(MyMath.deg90 * (i / 8) + randRot),
                         CNC.Random.NextDegree(),
                         20,
-                        Vector2.One,
+                        Vector2.One * .5f,
                         color
                         );
                     ParticleRenderer.particle[idx].velocityMul = Vector2.One * (((1 - spd / 8f) * .08f) + .92f);

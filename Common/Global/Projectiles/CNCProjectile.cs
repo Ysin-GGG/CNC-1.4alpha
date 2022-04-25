@@ -200,7 +200,7 @@ namespace CNC.Common.Global.Projectiles
             Vector2 realVel = Const._02;
             float angle = MyMath.pi * extraAngle / 180;
             if (p.type == 0 || p.velocity == Const._02) return p;
-            p.velocity.Y = gravity ? p.velocity.Y : p.oldVelocity.Y;
+            p.velocity.Y = gravity ? p.velocity.Y + MyMath.g * .01f : p.oldVelocity.Y;
             if (updateRot && realVel == Const._02)
             {
                 realVel = p.velocity;
