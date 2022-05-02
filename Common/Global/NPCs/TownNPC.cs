@@ -67,7 +67,7 @@ namespace CNC.Common.Global.NPCs
             ResetBestiary(ref database, ref bestiaryEntry);
         }
 
-        public sealed override string TownNPCName()
+        public sealed override List<string> SetNPCNameList()
         {
             List<string> nameList = new List<string>();
             int idx = 1;
@@ -81,8 +81,8 @@ namespace CNC.Common.Global.NPCs
                 value = CNCLocalization.GetText(key);
             }
             NPCName(ref nameList);
-            string[] name = nameList.ToArray();
-            return name[WorldGen.genRand.Next(name.Length)];
+            //string[] name = nameList.ToArray();
+            return nameList;// name[WorldGen.genRand.Next(name.Length)];
         }
 
         public sealed override string GetChat()

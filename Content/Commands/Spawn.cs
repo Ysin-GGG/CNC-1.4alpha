@@ -25,7 +25,7 @@ namespace CNC.Content.Commands
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
-            NPC.NewNPC(NPC.GetSpawnSourceForNaturalSpawn(), (int)caller.Player.position.X, (int)caller.Player.position.Y, Common.Utils.CNCID.NPC.LegacyObject[short.Parse(args[0])]);
+            NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)caller.Player.position.X, (int)caller.Player.position.Y, Common.Utils.CNCID.NPC.LegacyObject[short.Parse(args[0])]);
         }
     }
 }

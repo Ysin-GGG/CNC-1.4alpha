@@ -933,19 +933,19 @@ namespace CNC.Common.Global.Players
             if (damage < 1) damage = 1;
         }
 
-        public override void ModifyWeaponCrit(Item item, ref int crit)
+        public override void ModifyWeaponCrit(Item item, ref float crit)
         {
             if (modPlayer.clazz == CNCID.Clazz.Ranger)
             {
                 if (item.useAmmo == AmmoID.Arrow)
                 {
-                    if (modPlayer.state_Fluster > 0) crit -= 10;
+                    if (modPlayer.state_Fluster > 0) crit -= 10f;
                     crit += (int)(modPlayer.clazz_PowerProgress * 30);
                 }
             }
         }
 
-        public override void ModifyWeaponDamage(Item item, ref StatModifier damage, ref float flat)
+        public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
             if (modPlayer.clazz == CNCID.Clazz.Ranger)
             {
@@ -995,8 +995,8 @@ namespace CNC.Common.Global.Players
             private List<int> arrowList;
             private List<int> bulletList;
 
-            public override bool CloneNewInstances => true;
             public override bool InstancePerEntity => true;
+            //public override bool CloneNewInstances => true;
 
             public override void Load()
             {

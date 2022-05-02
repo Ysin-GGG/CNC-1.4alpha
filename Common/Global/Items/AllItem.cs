@@ -69,7 +69,7 @@ namespace CNC.Common.Global.Items
             if (ai.clazz > 0)
             {
                 string Class = CNCLocalization.GetText($"Class.{ClazzID[ai.clazz]}");
-                TooltipLine tt1 = new TooltipLine(mod, item.Name, CNCLocalization.GetText("Class.Format", Class)) { overrideColor = ClazzColor[ai.clazz] };
+                TooltipLine tt1 = new TooltipLine(mod, item.Name, CNCLocalization.GetText("Class.Format", Class)) { OverrideColor = ClazzColor[ai.clazz] };
                 tooltips.Add(tt1);
             }
         }

@@ -48,7 +48,7 @@
       <HintPath>bin\Debug\net45\TerrariaHooks.dll</HintPath>
     </Reference>
     <Reference Include="tModLoader">
-      <HintPath>bin\Debug\net45\tModLoader.dll</HintPath>
+      <HintPath>D:\其它\Steam\steamapps\common\tModLoader\tModLoader.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -112,7 +112,7 @@ namespace CNC.Content.NPCs.SpiritBoss
         {
             if (Main.netMode == 2) return;
             if (NPC.life <= 0) for (int i = 1; i <= 2; i++)
-                Gore.NewGore(NPC.position, new Vector2(Main.rand.Next(-3, 4), Main.rand.Next(-6, 7)), Mod.Find<ModGore>($"SpiritBossGore{i}").Type);
+                Gore.NewGore(NPC.GetSource_FromThis(), NPC.position, new Vector2(Main.rand.Next(-3, 4), Main.rand.Next(-6, 7)), Mod.Find<ModGore>($"SpiritBossGore{i}").Type);
         }
 
         public override void ModifyHit(Entity target, ref int damage, ref float knockback, ref bool crit) => damage = rage ? 99999 : (int)(damage * atkMul);

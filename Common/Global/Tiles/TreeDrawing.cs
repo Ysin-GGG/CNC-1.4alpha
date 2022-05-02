@@ -203,7 +203,7 @@ namespace CNC.Common.Global.Tiles
                     if (flag1) vector2.Y -= (float)(Main.rand.Next(0, 28) * 4);
                 }
                 if (WorldGen.SolidTile(vector2.ToTileCoordinates())) return;
-                Gore.NewGoreDirect(vector2, Terraria.Utils.RandomVector2(Main.rand, -2, 2), leafType, (float)(0.699999988079071 + (double)Main.rand.NextFloat() * 0.600000023841858));
+                Gore.NewGoreDirect(new EntitySource_TileUpdate(tilePosX, tilePosY), vector2, Terraria.Utils.RandomVector2(Main.rand, -2, 2), leafType, (float)(0.699999988079071 + (double)Main.rand.NextFloat() * 0.600000023841858));
             }
         }
     }

@@ -34,7 +34,7 @@ namespace CNC.Common.Global.NPCs
         public int countFrame { get => Main.npcFrameCount[Type]; set => Main.npcFrameCount[Type] = value; }
         public int attackFrame { get => NPCID.Sets.AttackFrameCount[Type]; set => NPCID.Sets.AttackFrameCount[Type] = value; }
         public int extraFrame { get => NPCID.Sets.ExtraFramesCount[Type]; set => NPCID.Sets.ExtraFramesCount[Type] = value; }
-        public IEntitySource source => npc.GetSpawnSource_ForProjectile();
+        public IEntitySource source => npc.GetSource_FromThis();
 
         public float var1 { get => npc.ai[0]; set => npc.ai[0] = value; }
         public float var2 { get => npc.ai[1]; set => npc.ai[1] = value; }
@@ -68,7 +68,7 @@ namespace CNC.Common.Global.NPCs
 
         public static NPC NewNPC(NPC npc, int x, int y, int type, int start = 0)
         {
-            int whoAmI = NPC.NewNPC(npc.GetSpawnSourceForNPCFromNPCAI(), x, y, type, start);
+            int whoAmI = NPC.NewNPC(npc.GetSource_FromAI(), x, y, type, start);
             Main.npc[whoAmI].Center = new Vector2(x, y);
             Main.npc[whoAmI].GetGlobalNPC<NPCRelation>().SetParent(npc, true);
             Main.npc[whoAmI].GetGlobalNPC<NPCRelation>().SetRoot(npc, true);
@@ -91,7 +91,7 @@ namespace CNC.Common.Global.NPCs
 
         public static Projectile NewProjectile(NPC npc, Vector2 position, Vector2 velocity, int type, float damage, float rotation = 0f)
         {
-            int whoAmI = Projectile.NewProjectile(npc.GetSpawnSourceForNPCFromNPCAI(), position, velocity, type, (int)damage, 0, Main.myPlayer);
+            int whoAmI = Projectile.NewProjectile(npc.GetSource_FromAI(), position, velocity, type, (int)damage, 0, Main.myPlayer);
             Main.projectile[whoAmI].Center = position;
             Main.projectile[whoAmI].rotation = rotation;
             Main.projectile[whoAmI].GetGlobalProjectile<ProjectileRelation>().SetParent(npc, true);

@@ -8,7 +8,7 @@ namespace CNC.Common.Global.Projectiles
     public class ProjectileRelation : GlobalProjectile
     {
         public override bool InstancePerEntity => true;
-        public override bool CloneNewInstances => true;
+        //public override bool CloneNewInstances => true;
 
         public Projectile projectile => _projectile;
         private Projectile _projectile = null;

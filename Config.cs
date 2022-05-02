@@ -183,8 +183,8 @@ namespace CNC
                 CNCLocalization.GetText("Config.HoverTextBoxStyleOrigin"),
                 CNCLocalization.GetText("Config.HoverTextBoxStyleBrown"),
                     };
-                    TextDisplayFunction = () => memberInfo.Name + GetStringValue();
-                    if (labelAttribute != null) TextDisplayFunction = () => labelAttribute.Label + GetStringValue();
+                    TextDisplayFunction = () => this.MemberInfo.Name + GetStringValue();
+                    if (this.LabelAttribute != null) TextDisplayFunction = () => this.LabelAttribute.Label + GetStringValue();
                 }
 
                 public override void Click(UIMouseEvent evt)
@@ -267,8 +267,8 @@ namespace CNC
                         CNCLocalization.GetText("Config.TopEdge"),
                         CNCLocalization.GetText("Config.RightEdge"),
                     };
-                    TextDisplayFunction = () => memberInfo.Name + GetStringValue();
-                    if (labelAttribute != null) TextDisplayFunction = () => labelAttribute.Label + GetStringValue();
+                    TextDisplayFunction = () => this.MemberInfo.Name + GetStringValue();
+                    if (this.LabelAttribute != null) TextDisplayFunction = () => this.LabelAttribute.Label + GetStringValue();
                 }
 
                 public override void Click(UIMouseEvent evt)

@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ModLoader;
 using CNC.Common.Utils;
 using CNC.Common.Global.Tiles;
+using Terraria.DataStructures;
 
 namespace CNC.Content.Tiles.Trees
 {
@@ -16,7 +17,7 @@ namespace CNC.Content.Tiles.Trees
 
         public class SpiritTreeFX : ModGore
         {
-            public override void OnSpawn(Gore gore)
+            public override void OnSpawn(Gore gore, IEntitySource source)
             {
                 gore.velocity = new Vector2(Main.rand.NextFloat() - 0.5f, Main.rand.NextFloat() * MyMath.pi * 2);
                 gore.numFrames = 8;

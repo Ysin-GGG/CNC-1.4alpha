@@ -144,7 +144,7 @@ namespace CNC.Content.NPCs
                 Vector2 vel = new Vector2(MyMath.cos(rot), MyMath.sin(rot)) * 8f;
                 int proj = CNCID.Projectile.LegacyObject[CNCID.Projectile.SpiritMass];
                 int projDmg = (int)(damage * 1.2f);
-                CNCUtils.NewProj(npc.GetSpawnSource_ForProjectile(), pos, vel, proj, projDmg, 0f, -1, targetID + 1);//发射弹幕
+                CNCUtils.NewProj(npc.GetSource_FromThis(), pos, vel, proj, projDmg, 0f, -1, targetID + 1);//发射弹幕
             }
             if (state == State.Attacking && frame >= StandFrame + AttackFrame - 1)//结束攻击动画并退出攻击状态
             {

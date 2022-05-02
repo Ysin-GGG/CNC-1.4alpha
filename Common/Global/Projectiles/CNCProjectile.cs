@@ -27,7 +27,7 @@ namespace CNC.Common.Global.Projectiles
         public Mod mod => Mod;
         public Projectile projectile => Projectile;
         public Player Target = null;
-        public IEntitySource source => projectile.GetProjectileSource_FromThis();
+        public IEntitySource source => projectile.GetSource_FromThis();
         public float posX { get => projectile.position.X; set => projectile.position.X = value; }
         public float posY { get => projectile.position.Y; set => projectile.position.Y = value; }
         public float velX { get => projectile.velocity.X; set => projectile.velocity.X = value; }
@@ -63,7 +63,7 @@ namespace CNC.Common.Global.Projectiles
 
         public NPC NewNPC(Projectile projectile, int x, int y, int type, int start = 0)
         {
-            int whoAmI = NPC.NewNPC(projectile.GetNPCSource_FromThis(), x, y, type, start);
+            int whoAmI = NPC.NewNPC(projectile.GetSource_FromThis(), x, y, type, start);
             Main.npc[whoAmI].Center = new Vector2(x, y);
             Main.npc[whoAmI].GetGlobalNPC<NPCRelation>().SetParent(projectile, true);
             Main.npc[whoAmI].GetGlobalNPC<NPCRelation>().SetRoot(projectile, true);
@@ -98,7 +98,7 @@ namespace CNC.Common.Global.Projectiles
         /// <param name="damageMul"></param>
         public Projectile NewProjectile(Projectile projectile, Vector2 position, Vector2 velocity, int type, float damage, float knockBack = 0f, float rotation = 0f, float damageAdd = 0f, float damageMul = 1f)
         {
-            int whoAmI = Projectile.NewProjectile(projectile.GetProjectileSource_FromThis(), position, velocity, type, (int)damage, knockBack, projectile.owner);
+            int whoAmI = Projectile.NewProjectile(projectile.GetSource_FromThis(), position, velocity, type, (int)damage, knockBack, projectile.owner);
             Main.projectile[whoAmI].Center = position;
             Main.projectile[whoAmI].rotation = rotation;
             Main.projectile[whoAmI].GetGlobalProjectile<AllProjectile>().damageAdd = damageAdd;

@@ -8,7 +8,7 @@ namespace CNC.Common.Global.NPCs
     public class NPCRelation : GlobalNPC
     {
         public override bool InstancePerEntity => true;
-        public override bool CloneNewInstances => true;
+        //public override bool CloneNewInstances => true;
 
         public NPC npc => _npc;
         private NPC _npc = null;

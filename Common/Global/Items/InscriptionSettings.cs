@@ -385,9 +385,9 @@ namespace CNC.Common.Global.Items
                     string desc = "";
                     string desc2 = inscription.GetTooltip();
                     while (desc != desc2) { desc = desc2; Inscription.GetFirstDamage(ref desc2, item); }
-                    TooltipLine tt = new TooltipLine(mod, name, desc) { overrideColor = Color.White };
-                    if (Main.LocalPlayer.GetModPlayer<InscriptionSystem>().showDetail) tt.text = $"<{desc}>";
-                    else tt.text = CNCLocalization.GetText("Misc.Inscription", name);
+                    TooltipLine tt = new TooltipLine(mod, name, desc) { OverrideColor = Color.White };
+                    if (Main.LocalPlayer.GetModPlayer<InscriptionSystem>().showDetail) tt.Text = $"<{desc}>";
+                    else tt.Text = CNCLocalization.GetText("Misc.Inscription", name);
                     tooltips.Add(tt);
                 }
             }
@@ -454,13 +454,13 @@ namespace CNC.Common.Global.Items
             mult *= item.GetGlobalItem<InscriptionSettings>().manaCostMul;
         }
 
-        public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage, ref float flat)
+        public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
         {
             damage += item.GetGlobalItem<InscriptionSettings>().weaponDamageAdd;
             damage *= item.GetGlobalItem<InscriptionSettings>().weaponDamageMul;
         }
 
-        public override void ModifyWeaponCrit(Item item, Player player, ref int crit) 
+        public override void ModifyWeaponCrit(Item item, Player player, ref float crit) 
             => crit += item.GetGlobalItem<InscriptionSettings>().weaponCritAdd;
 
         public class InscriptionSystem : ModPlayer
