@@ -26,8 +26,19 @@ namespace CNC.Common.Global.Items
         protected Color n => new Color(64, 64, 64, 255);
         
         public byte clazz { get => allItem.clazz; set => allItem.clazz = value; }
+        /// <summary>
+        /// 对原版法杖方法的简化
+        /// </summary>
         public bool staff { get => Item.staff[Type]; set => Item.staff[Type] = value; }
 
+        /// <summary>
+        /// 巫师职业的咒能消耗
+        /// </summary>
+        /// <param name="player">目标玩家</param>
+        /// <param name="amount">将要消耗的咒能数量</param>
+        /// <param name="ignoreCost">某人记大过</param>
+        /// <param name="convert">是否允许以生命代替消耗</param>
+        /// <returns></returns>
         public bool ConsumeSanity(Player player, int amount, float ignoreCost = 0, bool? convert = null)
         {
             ignoreCost = MyMath.Clamp(ignoreCost, 0, 1);
@@ -95,6 +106,10 @@ namespace CNC.Common.Global.Items
         public virtual void ResetDefaults() { }
         public virtual void ResetStaticDefaults() { }
         public virtual void Tooltips(List<TooltipLine> tooltips) { }
+
+        /// <summary>
+        /// 权杖等法杖类武器的重定位
+        /// </summary>
         public bool CNCStaff;
         public override Vector2? HoldoutOffset()
         {

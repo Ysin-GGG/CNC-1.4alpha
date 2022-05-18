@@ -143,6 +143,13 @@ namespace CNC.Common.Global.Projectiles
             }
         }
 
+        /// <summary>
+        /// 寻找最近的NPC
+        /// </summary>
+        /// <param name="p">当前弹幕</param>
+        /// <param name="range">搜索半径</param>
+        /// <param name="friendly">是否为友好NPC</param>
+        /// <returns></returns>
         public NPC FindClosestTarget(Projectile p, float range, bool friendly = false)
         {
             NPC target = null;
@@ -161,7 +168,12 @@ namespace CNC.Common.Global.Projectiles
             }
             return target;
         }
-
+        /// <summary>
+        /// 搜索最近玩家
+        /// </summary>
+        /// <param name="p">当前弹幕</param>
+        /// <param name="range">搜索半径</param>
+        /// <returns></returns>
         public Player FindClosestTarget(Projectile p, float range)
         {
             if (Main.netMode == 0) return Const.Me;
@@ -181,6 +193,11 @@ namespace CNC.Common.Global.Projectiles
             }
             return target;
         }
+        /// <summary>
+        /// 记录多帧的旋转和坐标
+        /// </summary>
+        /// <param name="p">当前弹幕</param>
+        /// <param name="offset">所有坐标偏移</param>
 
         public void UpdateOldData(Projectile p, Vector2 offset = default)
         {

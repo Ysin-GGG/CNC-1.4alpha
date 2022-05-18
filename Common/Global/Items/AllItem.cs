@@ -43,7 +43,9 @@ namespace CNC.Common.Global.Items
             }
             return clone;
         }
-
+        /// <summary>
+        /// Ö°Òµ±àºÅ
+        /// </summary>
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(item, tooltips);
