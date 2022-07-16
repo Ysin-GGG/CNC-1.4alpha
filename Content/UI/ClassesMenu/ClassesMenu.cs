@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.UI;
 using Terraria.Audio;
 using Microsoft.Xna.Framework;
@@ -141,7 +142,8 @@ namespace CNC.Content.UI.ClassesMenu
             {
                 string arg = CNCLocalization.GetText($"Class.{clazz[page]}");
                 Main.NewText(CNCLocalization.GetText($"UI.{Name}.SelectClass", arg), Color.LightGreen);
-                SoundEngine.PlaySound(2, player.Center, 37);
+                SoundEngine.PlaySound(SoundID.Item37, player.Center);
+                //SoundEngine.PlaySound(2, player.Center, 37);
                 SetClassDefaults(clazz2[page]);
             }
         }
@@ -154,7 +156,8 @@ namespace CNC.Content.UI.ClassesMenu
             {
                 ReduceItem(id, 1, player);
                 Main.NewText(CNCLocalization.GetText($"UI.{Name}.ResetClass"), Color.LightGreen);
-                SoundEngine.PlaySound(2, player.Center, 37);
+                SoundEngine.PlaySound(SoundID.Item37, player.Center);
+                //SoundEngine.PlaySound(2, player.Center, 37);
                 SetClassDefaults(0);
             }
             else Main.NewText(CNCLocalization.GetText($"UI.{Name}.NoMoney"), Color.Red);

@@ -15,7 +15,7 @@ namespace CNC.Content.Tiles.Tranquility
         {
             MapColor = new Color(100, 218, 157);
             DustType = DustID.Grass;
-            SoundType = SoundID.Grass;
+            HitSound = SoundID.Grass;
         }
 
         public class TranquilityPlants1 : TranquilityPlants

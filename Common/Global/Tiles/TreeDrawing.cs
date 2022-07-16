@@ -53,7 +53,7 @@ namespace CNC.Common.Global.Tiles
                         int grassPosX = x + xoffset1;
                         int floorY1 = y;
                         foliageDataMethod(x, y, xoffset1, ref treeFrame, ref treeStyle, out floorY1, out topTextureFrameWidth, out topTextureFrameHeight);
-                        PaintSystem.Instance.EmitTreeLeaves(x, y, grassPosX, floorY1, ModContent.GoreType<Content.Tiles.Trees.SpiritTree.SpiritTreeFX>());
+                        //PaintSystem.Instance.EmitTreeLeaves(x, y, grassPosX, floorY1, ModContent.GoreType<Content.Tiles.Trees.SpiritTree.SpiritTreeFX>());
                         Texture2D treeTopTexture = top;
                         Vector2 position = new Vector2((float)(x * 16 - (int)unscaledPosition.X + 8), (float)(y * 16 - (int)unscaledPosition.Y + 16)) + zero;
                         float num5 = 0.0f;
@@ -69,7 +69,7 @@ namespace CNC.Common.Global.Tiles
                         int floorY2 = y;
                         int xoffset2 = 1;
                         foliageDataMethod(x, y, xoffset2, ref treeFrame, ref treeStyle, out floorY2, out topTextureFrameWidth, out topTextureFrameHeight);
-                        PaintSystem.Instance.EmitTreeLeaves(x, y, num6 + xoffset2, floorY2, ModContent.GoreType<Content.Tiles.Trees.SpiritTree.SpiritTreeFX>());
+                        //PaintSystem.Instance.EmitTreeLeaves(x, y, num6 + xoffset2, floorY2, ModContent.GoreType<Content.Tiles.Trees.SpiritTree.SpiritTreeFX>());
                         Vector2 position = new Vector2((float)(x * 16), (float)(y * 16)) - unscaledPosition.Floor() + zero + new Vector2(16f, 12f);
                         float num8 = 0.0f;
                         if (!flag1) num8 = PaintSystem.Instance.GetWindCycle(x, y);
@@ -84,7 +84,7 @@ namespace CNC.Common.Global.Tiles
                         int floorY3 = y;
                         int xoffset3 = -1;
                         foliageDataMethod(x, y, xoffset3, ref treeFrame, ref treeStyle, out floorY3, out topTextureFrameWidth, out topTextureFrameHeight);
-                        PaintSystem.Instance.EmitTreeLeaves(x, y, num9 + xoffset3, floorY3, ModContent.GoreType<Content.Tiles.Trees.SpiritTree.SpiritTreeFX>());
+                        //PaintSystem.Instance.EmitTreeLeaves(x, y, num9 + xoffset3, floorY3, ModContent.GoreType<Content.Tiles.Trees.SpiritTree.SpiritTreeFX>());
                         Texture2D treeBranchTexture = branch;
                         Vector2 position = new Vector2((float)(x * 16), (float)(y * 16)) - unscaledPosition.Floor() + zero + new Vector2(0.0f, 18f);
                         float num11 = 0.0f;

@@ -1,5 +1,6 @@
 using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.UI;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -62,7 +63,7 @@ namespace CNC.Content.UI.InscriptionMenu
             for (int i = 0; i < 50; i++)
             {
                 if (WeaponIcon[i].IsMouseHovering && mouseLeft && mouseLeftRelease) SelectWeapon(i);
-                WeaponIcon[i].soundClick = -1;
+                WeaponIcon[i].soundClick = null;// -1;
                 WeaponIcon[i].SetIcon(null, Color.Transparent);
                 WeaponIcon[i].SetBox(GetImage("ButtonBox"), Color.White * .7f, Color.White);
                 WeaponIcon[i].SetRect((new Vector2(16f) + new Vector2(i % 10, i / 10) * (WeaponIcon[i].box.Size() + new Vector2(4f))) * scale, WeaponIcon[i].box.Size() * scale);
@@ -98,7 +99,7 @@ namespace CNC.Content.UI.InscriptionMenu
             {
                 if (player.inventory[idx].GetGlobalItem<InscriptionSettings>().CanUpgrade2)
                 {
-                    SoundEngine.PlaySound(10);
+                    SoundEngine.PlaySound(SoundID.MenuClose);//10
                     WeaponList.index = idx;
                     Visible = false;
                     mouseLeft = false;
@@ -106,7 +107,7 @@ namespace CNC.Content.UI.InscriptionMenu
                     return;
                 }
             }
-            SoundEngine.PlaySound(11);
+            SoundEngine.PlaySound(SoundID.MenuOpen);//11
         }
 
         public override void Click(UIMouseEvent evt)
@@ -115,7 +116,7 @@ namespace CNC.Content.UI.InscriptionMenu
             if (!MainBox.IsMouseHovering)
             {
                 Visible = false;
-                SoundEngine.PlaySound(11);
+                SoundEngine.PlaySound(SoundID.MenuOpen);//11
             }
         }
     }

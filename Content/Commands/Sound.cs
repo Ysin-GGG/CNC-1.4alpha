@@ -25,7 +25,7 @@ namespace CNC.Content.Commands
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
-            SoundEngine.PlaySound(int.Parse(args[0]), caller.Player.position, int.Parse(args[1]));
+            //SoundEngine.PlaySound(int.Parse(args[0]), caller.Player.position, int.Parse(args[1]));
         }
     }
 }

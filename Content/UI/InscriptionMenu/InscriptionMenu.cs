@@ -1,5 +1,6 @@
 using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.UI;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -183,7 +184,8 @@ namespace CNC.Content.UI.InscriptionMenu
         {
             if (inscription == null || WeaponList.index < 0) return;
             page = 0;
-            SoundEngine.PlaySound(2, player.Center, 37);
+            SoundEngine.PlaySound(SoundID.Item37, player.Center);
+            //SoundEngine.PlaySound(2, player.Center, 37);
             player.inventory[WeaponList.index].GetGlobalItem<InscriptionSettings>().level++;
             player.inventory[WeaponList.index].GetGlobalItem<InscriptionSettings>().SetInscription(-1, inscription);
         }
@@ -200,7 +202,7 @@ namespace CNC.Content.UI.InscriptionMenu
         private void ClearWeapon(UIMouseEvent evt, Terraria.UI.UIElement e)
         {
             WeaponList.index = -1;
-            SoundEngine.PlaySound(11);
+            SoundEngine.PlaySound(SoundID.MenuOpen);
             mouseText = TargetWeaponIcon.display = "";
         }
     }

@@ -142,7 +142,6 @@ namespace CNC.Common.Global.Projectiles
                 Main.EntitySpriteDraw(texture, drawPos, null, _color, projectile.oldRot[i], drawOrigin, projectile.scale, SpriteEffects.None, 0);
             }
         }
-
         /// <summary>
         /// 寻找最近的NPC
         /// </summary>
@@ -198,7 +197,6 @@ namespace CNC.Common.Global.Projectiles
         /// </summary>
         /// <param name="p">当前弹幕</param>
         /// <param name="offset">所有坐标偏移</param>
-
         public void UpdateOldData(Projectile p, Vector2 offset = default)
         {
             if (offset == default) offset = Vector2.Zero;

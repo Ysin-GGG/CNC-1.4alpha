@@ -43,6 +43,7 @@ namespace CNC.Common.Global.Items
             }
             return clone;
         }
+
         /// <summary>
         /// Ö°Òµ±àºÅ
         /// </summary>

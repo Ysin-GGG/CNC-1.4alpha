@@ -146,29 +146,31 @@ namespace CNC.Content
         {
             if (!this.active) return;
             float alpha = MyMath.Clamp(this.Alpha, 0, 1);
+            Vector2 basic = this.position - Main.screenPosition;// + offset;
             Vector2 scale = new Vector2(MyMath.Max(0f, this.Scale.X), MyMath.Max(0f, this.Scale.Y));
+            Vector2 scale2 = Main.GameViewMatrix.Zoom / Main.UIScale;
             if (PreDraw(spriteBatch, offset))
             {
                 if (this.textureGlow != null)
                     spriteBatch.Draw(
                         this.textureGlow,
-                        this.position + offset - Main.screenPosition,
+                        (basic * scale2) - Main.ScreenSize.ToVector2() / 2f * (scale2 - Vector2.One),
                         null,
                         this.Color * alpha,
                         this.rotation,
                         this.textureGlow.Size() / 2,
-                        scale * this.scaleGlow,
+                        scale * scale2 * this.scaleGlow,
                         0,
                         0);
                 if (this.texture != null)
                     spriteBatch.Draw(
                         this.texture,
-                        this.position + offset - Main.screenPosition,
+                        (basic * scale2) - Main.ScreenSize.ToVector2() / 2f * (scale2 - Vector2.One),
                         null,
                         this.Color * alpha,
                         this.rotation,
                         this.texture.Size() / 2,
-                        scale,
+                        scale * scale2,
                         0,
                         0);
             }

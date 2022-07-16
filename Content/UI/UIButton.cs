@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.ID;
 using Terraria.UI;
 using Terraria.Audio;
 using ReLogic.Graphics;
@@ -27,7 +28,7 @@ namespace CNC.Content.UI
         public int iconDrawStyle;
         public int boxDrawStyle;
         public float transformSpeed;
-        public int soundClick;
+        public SoundStyle? soundClick;
         private float _alpha;
 
         public UIButton()
@@ -48,7 +49,7 @@ namespace CNC.Content.UI
             displayOffset = Vector2.Zero;
             iconDrawStyle = 0;
             boxDrawStyle = 0;
-            soundClick = 10;
+            soundClick = SoundID.MenuOpen;
             transformSpeed = .1f;
             _alpha = 0;
             Append(text);
@@ -158,7 +159,7 @@ namespace CNC.Content.UI
             Rectangle rect = new Rectangle(0, 0, (int)screen.X, (int)screen.Y);
             if (basic = !rect.Contains(Main.MouseScreen.ToPoint())) return;
             basic = true;
-            SoundEngine.PlaySound(12);
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
 
         public override void Click(UIMouseEvent evt, ref bool basic)
@@ -167,7 +168,7 @@ namespace CNC.Content.UI
             Rectangle rect = new Rectangle(0, 0, (int)screen.X, (int)screen.Y);
             if (basic = !rect.Contains(Main.MouseScreen.ToPoint())) return;
             basic = true;
-            if (soundClick >= 0) SoundEngine.PlaySound(soundClick);
+            if (soundClick != null) SoundEngine.PlaySound((SoundStyle)soundClick);
         }
     }
 }

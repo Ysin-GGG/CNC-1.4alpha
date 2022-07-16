@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using ReLogic.Graphics;
 using Terraria;
-using Terraria.UI;
+using Terraria.ID;
 using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.GameContent;
@@ -325,7 +325,8 @@ namespace CNC.Content.UI.Clone
                         if (!flag && (id == 101 || id == 102)) flag = player.miscEquips[slot].buffType == 27;
                         if (flag) player.hideMisc[slot] = true;
                     }
-                    SoundEngine.PlaySound(12);
+                    SoundEngine.PlaySound(SoundID.MenuTick);
+                    //SoundEngine.PlaySound(12);
                     if (!common) player.DelBuff(idx);
                     return true;
                 }

@@ -106,10 +106,6 @@ namespace CNC.Common.Global.Items
         public virtual void ResetDefaults() { }
         public virtual void ResetStaticDefaults() { }
         public virtual void Tooltips(List<TooltipLine> tooltips) { }
-
-        /// <summary>
-        /// 权杖等法杖类武器的重定位
-        /// </summary>
         public bool CNCStaff;
         public override Vector2? HoldoutOffset()
         {

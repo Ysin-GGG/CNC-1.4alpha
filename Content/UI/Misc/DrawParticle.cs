@@ -21,7 +21,11 @@ namespace CNC.Content.UI.Misc
         {
             for (int i = 0; i < ParticleRenderer.maxParticles; i++)
                 if (ParticleRenderer.particle[i] != null && ParticleRenderer.particle[i].active)
-                        ParticleRenderer.particle[i].Draw(spriteBatch, (ParticleRenderer.particle[i].position - Main.screenPosition) / Main.UIScale - (ParticleRenderer.particle[i].position - Main.screenPosition));
+                {
+                    Vector2 basic = ParticleRenderer.particle[i].position - Main.screenPosition;
+                    Vector2 scale = Main.GameViewMatrix.Zoom / Main.UIScale;
+                    ParticleRenderer.particle[i].Draw(spriteBatch, ((basic / Main.UIScale) - basic));
+                }
         }
     }
 }

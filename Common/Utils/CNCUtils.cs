@@ -1,8 +1,10 @@
 using System;
+using System.Runtime;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.Localization;
 using CNC.Common.Global.Projectiles;
@@ -61,25 +63,29 @@ namespace CNC.Common.Utils
             return Dust.NewDustDirect(pos + _range, width, height, id, vel.X, vel.Y, color.A, color, scale);
         }
 
-        public static void PlaySound(string path, Entity target, Mod mod = default)
-            => PlaySound(path, target.position, 1f, mod);
+        public static void PlaySound(string path, Entity target, Mod mod = null)
+            => PlaySound(path, target.position, 1f, mod ?? CNC.Instance);
 
-        public static void PlaySound(string path, Entity target, float volume, Mod mod = default)
-            => PlaySound(path, target.position, volume, mod);
+        public static void PlaySound(string path, Entity target, float volume, Mod mod = null)
+            => PlaySound(path, target.position, volume, mod ?? CNC.Instance);
 
-        public static void PlaySound(string path, Vector2 position, Mod mod = default)
-            => PlaySound(path, position, 1f, mod);
+        public static void PlaySound(string path, Vector2 position, Mod mod = null)
+            => PlaySound(path, position, 1f, mod ?? CNC.Instance);
 
-        public static void PlaySound(string path, Vector2 position, float volume, Mod mod = default)
+        public static void PlaySound(string path, Vector2 position, float volume, Mod mod = null)
         {
+            mod = mod ?? CNC.Instance;
             if (!path.StartsWith("Content/Sounds/Custom/")) path = "Content/Sounds/Custom/" + path;
-            Terraria.Audio.SoundEngine.PlaySound(SoundLoader.CustomSoundType, (int)position.X, (int)position.Y, SoundLoader.GetSoundSlot(mod == default ? CNC.Instance : mod, path), volume);
+            SoundEngine.PlaySound(new SoundStyle(mod.Name + "/" + path, SoundType.Sound));
+            //Terraria.Audio.SoundEngine.PlaySound(SoundLoader.CustomSoundType, (int)position.X, (int)position.Y, SoundLoader.GetSoundSlot(mod == default ? CNC.Instance : mod, path), volume);
         }
 
-        public static void PlaySound(string path, Vector2 position, float volume, float pitch, Mod mod = default)
+        public static void PlaySound(string path, Vector2 position, float volume, float pitch, Mod mod = null)
         {
+            mod = mod ?? CNC.Instance;
             if (!path.StartsWith("Content/Sounds/Custom/")) path = "Content/Sounds/Custom/" + path;
-            Terraria.Audio.SoundEngine.PlaySound(SoundLoader.CustomSoundType, (int)position.X, (int)position.Y, SoundLoader.GetSoundSlot(mod == default ? CNC.Instance : mod, path), volume, pitch);
+            SoundEngine.PlaySound(new SoundStyle(mod.Name + "/" + path, SoundType.Sound));
+           // Terraria.Audio.SoundEngine.PlaySound(SoundLoader.CustomSoundType, (int)position.X, (int)position.Y, SoundLoader.GetSoundSlot(mod == default ? CNC.Instance : mod, path), volume, pitch);
         }
 
         public static void AddLight(Vector2 position, Color color, float light = .5f)

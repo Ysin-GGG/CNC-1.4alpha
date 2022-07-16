@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.UI;
 using Microsoft.Xna.Framework;
 using CNC.Common.Localization;
@@ -175,7 +176,7 @@ namespace CNC.Content.UI.MainBar
 
         private void Collapse(UIMouseEvent evt, Terraria.UI.UIElement e)
         {
-            CollapseBar.soundClick = (Show = !Show) ? 10 : 11;
+            CollapseBar.soundClick = (Show = !Show) ? SoundID.MenuOpen : SoundID.MenuClose;// 10 : 11;
         }
 
         private void OpenClassesMenu(UIMouseEvent evt, Terraria.UI.UIElement e)

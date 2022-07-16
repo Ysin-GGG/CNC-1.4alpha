@@ -17,7 +17,7 @@ namespace CNC.Content.Items.Developers.HHvs
         public override void SetMatch(bool male, ref int equipSlot, ref bool robes)
         {
 			robes = true;
-            equipSlot = mod.GetEquipSlot("CNC/Content/Items/Developers/HHvs/HHvsRobe_Legs", EquipType.Legs);
+            //equipSlot = mod.GetEquipSlot("CNC/Content/Items/Developers/HHvs/HHvsRobe_Legs", EquipType.Legs);
         }
 	}
 }

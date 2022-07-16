@@ -506,7 +506,7 @@ namespace CNC.Common.Global.Players
                     else if (!modPlayer.clazz_DurabilityReload && modPlayer.clazz_Durability < modPlayer.clazz_DurabilityMax)
                     {
                         modPlayer.clazz_DurabilityReload = true;
-                        SoundEngine.PlaySound(40, player.position, 1);
+                        //SoundEngine.PlaySound(40, player.position, 1);
                     }
                 }
                 if (modPlayer.clazz == CNCID.Clazz.Assassin && modPlayer.clazz_Phantom >= modPlayer.clazz_PhantomMax)
@@ -760,7 +760,7 @@ namespace CNC.Common.Global.Players
                     {
                         modPlayer.clazz_Durability = 0;
                         modPlayer.clazz_DurabilityReload = true;
-                        SoundEngine.PlaySound(40, player.position, 1);
+                        //SoundEngine.PlaySound(40, player.position, 1);
                     }
                     modPlayer.clazz_DurabilityOld = modPlayer.clazz_Durability;
                     modPlayer.clazz_DurabilityReloadTimeMax = modPlayer.clazz_DurabilityReloadTime;
@@ -784,7 +784,7 @@ namespace CNC.Common.Global.Players
                         modPlayer.clazz_Durability = modPlayer.clazz_DurabilityMax;
                         modPlayer.clazz_DurabilityReloadTime = 0;
                         modPlayer.clazz_DurabilityReloadTimeMax = 0;
-                        SoundEngine.PlaySound(40, player.position, 1);
+                        //SoundEngine.PlaySound(40, player.position, 1);
                     }
                 }
             }
@@ -1035,6 +1035,8 @@ namespace CNC.Common.Global.Players
 
             public override void SetDefaults(Projectile projectile)
             {
+                if (this.arrowList == null) this.arrowList = new List<int>();
+                if (this.bulletList == null) this.bulletList = new List<int>();
                 projectile.GetGlobalProjectile<AmmoType>().arrow = this.arrowList.Contains(projectile.type);
                 projectile.GetGlobalProjectile<AmmoType>().bullet = this.bulletList.Contains(projectile.type);
             }

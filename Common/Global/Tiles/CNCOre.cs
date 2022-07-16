@@ -45,8 +45,8 @@ namespace CNC.Common.Global.Tiles
 			Main.tileBlockLight[Type] = true;
             ShineTick = 900;
             Value = 100;
-			SoundType = SoundID.Tink;
-			SoundStyle = 1;
+            HitSound = SoundID.Tink;
+			//SoundStyle = 1;
             base.SetStaticDefaults();
         }
 	}

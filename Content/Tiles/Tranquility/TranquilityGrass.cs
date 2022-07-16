@@ -16,7 +16,7 @@ namespace CNC.Content.Tiles.Tranquility
             Merge(CNCID.Tile.LegacyObject[CNCID.Tile.TranquilityGrass], true);
             MapColor = new Color(100, 218, 157);
             DustType = DustID.Grass;
-            SetModTree(new Trees.SpiritTree());
+            //SetModTree(new Trees.SpiritTree());
         }
 
         public override void ModifyBreak(Tile tile, Point pos, ref bool fail, ref bool effectOnly, ref bool noItem)
@@ -26,12 +26,13 @@ namespace CNC.Content.Tiles.Tranquility
             effectOnly = true;
             SetTile(pos, CNCID.Tile.TranquilityDirt);
         }
-
+        /*
         public override int SaplingGrowthType(ref int style)
         {
             style = 0;
             return CNCID.Tile.LegacyObject[CNCID.Tile.SpiritSapling];
         }
+        */
         /*
         public override void Update(Tile tile, Tile safeTile, Point pos)
         {

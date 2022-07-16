@@ -16,8 +16,8 @@ namespace CNC.Content.Tiles.Tranquility
             Merge(CNCID.Tile.LegacyObject[CNCID.Tile.TranquilityGrass], true);
             MapColor = new Color(125, 125, 125);
             DustType = DustID.Stone;
-            SoundType = SoundID.Tink;
-            SetModTree(new Trees.TranquilityGemTree());
+            HitSound = SoundID.Tink;
+            //SetModTree(new Trees.TranquilityGemTree());
             ItemDrop = CNCID.Item.LegacyObject[CNCID.Item.TranquilityStone];
         }
         /*
