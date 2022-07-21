@@ -100,8 +100,8 @@ namespace CNC.Content.NPCs.SpiritBoss
             Color color2 = color; color.A = 0;
             CNCUtils.UpdateEffectVar(ref alpha1);
             CNCUtils.UpdateEffectVar(ref alpha2);
-            Main.EntitySpriteDraw(Aura, pos, null, color * (1 - npc.alpha / 255f), rot, Aura.Size() / 2, 1, 0, 1);
-            Main.EntitySpriteDraw(Aura, pos, null, color * (1 - npc.alpha / 255f) * (alpha1[0] / 100f) * .25f, rot, Aura.Size() / 2, 1 + (alpha1[0] / 100f) * .2f, 0, 1);
+            Main.EntitySpriteDraw(Aura, pos, null, color * (1 - npc.alpha / 255f), rot, Aura.Size() / 2, 0.12f, 0, 1);
+            Main.EntitySpriteDraw(Aura, pos, null, color * (1 - npc.alpha / 255f) * (alpha1[0] / 100f) * .25f, rot, Aura.Size() / 2, 0.13f + (alpha1[0] / 300f) * .1f, 0, 1);
             Main.EntitySpriteDraw(Rune, pos, null, color * (1 - npc.alpha / 255f) * (alpha2[0] / 100f), rot, Rune.Size() / 2, 1, 0, 1);
             Main.EntitySpriteDraw(Glow, pos, null, Color.Lerp(color2, mainColor, alpha3[0] / 100f) * (1 - npc.alpha / 255f) * (alpha2[0] / 100f), 0, Glow.Size() / 2, 1, 0, 1);
             if (state == 3) Main.EntitySpriteDraw(Hoop, pos, null, mainColor * (1 - stateTick / 120f), rot / 2f, Hoop.Size() / 2, stateTick / 90f, 0, 0);
