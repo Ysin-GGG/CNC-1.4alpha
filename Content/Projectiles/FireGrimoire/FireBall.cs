@@ -5,6 +5,8 @@ using Terraria;
 using Terraria.ID;
 using Terraria.Audio;
 using Terraria.ModLoader;
+using Terraria.Graphics.Shaders;
+using Terraria.DataStructures;
 using CNC.Common.Utils;
 using CNC.Common.Global.Projectiles;
 using System.Collections.Generic;
@@ -16,7 +18,7 @@ namespace CNC.Content.Projectiles.FireGrimoire
         public int level => data.ContainsKey("level") ? (int)data["level"] : 0;
         public override int countFrame => 7;
         private const int tpf = 4;//Time Per Frame
-        private const int lenMax = 17;
+        private const int lenMax = 30;
         private int len = 0;
         private int pointX = 0;
 
@@ -34,6 +36,9 @@ namespace CNC.Content.Projectiles.FireGrimoire
             projectile.friendly = true;
             projectile.ignoreWater = false;
             projectile.DamageType = DamageClass.Magic;
+            //ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
+            //ProjectileID.Sets.TrailCacheLength[Projectile.type] = lenMax;
+            
             if (projectile.oldPos.Length != lenMax)
             {
                 Array.Resize(ref projectile.oldPos, lenMax);
@@ -45,6 +50,7 @@ namespace CNC.Content.Projectiles.FireGrimoire
                 projectile.oldPos[i].X = 0.0f;
                 projectile.oldPos[i].Y = 0.0f;
             }
+            
         }
 
         public override void AI()
@@ -106,7 +112,7 @@ namespace CNC.Content.Projectiles.FireGrimoire
 
         public override bool PreDrawExtras()
         {
-            Texture2D glowTrail = ModContent.Request<Texture2D>("CNC/Assets/Effects/GlowTrail1").Value;
+            Texture2D glowTrail = ModContent.Request<Texture2D>("CNC/Assets/Effects/Trail4").Value;
             Texture2D trail = ModContent.Request<Texture2D>("CNC/Assets/Effects/Trail3").Value;
             Color color = new Color(242, 92, 34, 0);
             //Main.spriteBatch.Draw(light, projectile.Center - light.Size() / 2f * .5f - Main.screenPosition, null, color, 0, default, .5f, 0, 0f);

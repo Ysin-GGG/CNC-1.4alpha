@@ -10,6 +10,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.UI.BigProgressBar;
 using CNC.Common.Utils;
 using CNC.Common.Global.NPCs;
+using CNC.Content.DataStructures;
 
 namespace CNC.Content.NPCs.SpiritBoss
 {
@@ -17,10 +18,10 @@ namespace CNC.Content.NPCs.SpiritBoss
     {
         private Color mainColor => new Color(178, 214, 231, 0);
         private float rot = 0;
-        private int[] alpha1 = { 0, 1, 0, 0, 255, 0, 50, 5 };
-        private int[] scale1 = { 0, 1, 0, 0, 100, 0, 50, 2 };
-        private int[] alpha2 = { 0, 1, 0, 255, 510, 0, 0, 3 };
-        private int[] scale2 = { 0, 1, 0, 50, 100, 50, 50, 2 };
+        private EffectTimer alpha1 = new EffectTimer(0, 1, 0, 0, 255, 0, 50, 5, 1);
+        private EffectTimer alpha2 = new EffectTimer(0, 1, 0, 255, 510, 0, 0, 3, 1);
+        private EffectTimer scale1 = new EffectTimer(0, 1, 0, 0, 100, 0, 50, 2, 1);
+        private EffectTimer scale2 = new EffectTimer(0, 1, 0, 50, 100, 50, 50, 2, 1);
 
         public override void ResetStaticDefaults()
         {
@@ -85,16 +86,12 @@ namespace CNC.Content.NPCs.SpiritBoss
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             rot += MyMath.deg01;
-            CNCUtils.UpdateEffectVar(ref alpha1);
-            CNCUtils.UpdateEffectVar(ref scale1);
-            CNCUtils.UpdateEffectVar(ref alpha2);
-            CNCUtils.UpdateEffectVar(ref scale2);
             Texture2D Aurora = ModContent.Request<Texture2D>("CNC/Content/NPCs/SpiritBoss/Aurora").Value;
             Texture2D Glow = ModContent.Request<Texture2D>("CNC/Content/NPCs/SpiritBoss/SpiritCrystalGlow").Value;
             Texture2D Light = ModContent.Request<Texture2D>("CNC/Content/NPCs/SpiritBoss/Light").Value;
             Vector2 pos = npc.Center - screenPos + new Vector2(0, 4);
-            Main.EntitySpriteDraw(Glow, pos, null, mainColor * (alpha1[0] / 255f) * (1 - npc.alpha / 255f), 0, Glow.Size() / 2, 1 + scale1[0] * .003f, 0, 1);
-            Main.EntitySpriteDraw(Light, pos, null, new Color(255, 255, 255, 0) * (alpha2[0] / 255f / 3f) * (1 - npc.alpha / 255f), rot, Light.Size() / 2, .75f + scale2[0] * .001f, 0, 1);
+            Main.EntitySpriteDraw(Glow, pos, null, mainColor * (alpha1.value / 255f) * (1 - npc.alpha / 255f), 0, Glow.Size() / 2, 1 + scale1.value * .003f, 0, 1);
+            Main.EntitySpriteDraw(Light, pos, null, new Color(255, 255, 255, 0) * (alpha2.value / 255f / 3f) * (1 - npc.alpha / 255f), rot, Light.Size() / 2, .75f + scale2.value * .001f, 0, 1);
             return true;
         }
     }

@@ -710,34 +710,36 @@ namespace CNC.Common.Utils
             public const short SpiritArrowV2 = 4;
             /// <summary> ¡È∆¯ ∏ </summary>
             public const short SpiritArrowV3 = 5;
+            /// <summary> ¡È∆¯ ∏ </summary>
+            public const short SpiritArrowV4 = 6;
             /// <summary> ª«Ú </summary>
-            public const short FireBall = 6;
+            public const short FireBall = 7;
             /// <summary> —◊±¨ </summary>
-            public const short FireBallExplosion = 7;
+            public const short FireBallExplosion = 8;
             /// <summary> ±˘—¿ </summary>
-            public const short DentateIce = 8;
+            public const short DentateIce = 9;
             /// <summary> ±˘ª® </summary>
-            public const short DentateIceExplosion = 9;
+            public const short DentateIceExplosion = 10;
             /// <summary> À™≥± </summary>
-            public const short FrostWave = 10;
+            public const short FrostWave = 11;
             /// <summary> …¡µÁµØ </summary>
-            public const short LightningMissile = 11;
+            public const short LightningMissile = 12;
             /// <summary> …¡µÁ±¨∆∆ </summary>
-            public const short LightningExplosion = 12;
+            public const short LightningExplosion = 13;
             /// <summary> π˝‘ÿ…¡µÁµØ </summary>
-            public const short OverloadedLightningMissile = 13;
+            public const short OverloadedLightningMissile = 14;
             /// <summary> π˝‘ÿ±¨∆∆ </summary>
-            public const short OverloadedLightningExplosion = 14;
+            public const short OverloadedLightningExplosion = 15;
             /// <summary> …¡µÁ¡¥ </summary>
-            public const short LightningChain = 15;
+            public const short LightningChain = 16;
             /// <summary> “¯∞◊ ∏ </summary>
-            public const short SilveryArrow = 16;
+            public const short SilveryArrow = 17;
             /// <summary> ÷¡ • ∏ </summary>
-            public const short SanctifiedArrow = 17;
+            public const short SanctifiedArrow = 18;
             /// <summary> ÷¡ •…‰ª˜ </summary>
-            public const short SanctifiedArrowShoot = 18;
+            public const short SanctifiedArrowShoot = 19;
             /// <summary> ÷¡ •±¨∆∆ </summary>
-            public const short SanctifiedExplosion = 19;
+            public const short SanctifiedExplosion = 20;
             #endregion
             public static Dictionary<string, short> Collection => new Dictionary<string, short>()
             {
@@ -746,6 +748,7 @@ namespace CNC.Common.Utils
                 { "SpiritArrowV1", SpiritArrowV1 },
                 { "SpiritArrowV2", SpiritArrowV2 },
                 { "SpiritArrowV3", SpiritArrowV3 },
+                { "SpiritArrowV4", SpiritArrowV4 },
                 { "FireBall", FireBall },
                 { "FireBallExplosion", FireBallExplosion },
                 { "DentateIce", DentateIce },
@@ -769,6 +772,7 @@ namespace CNC.Common.Utils
                 { "SpiritArrowV1", LegacyObject[Collection["SpiritArrowV1"]] },
                 { "SpiritArrowV2", LegacyObject[Collection["SpiritArrowV2"]] },
                 { "SpiritArrowV3", LegacyObject[Collection["SpiritArrowV3"]] },
+                { "SpiritArrowV4", LegacyObject[Collection["SpiritArrowV4"]] },
                 { "FireBall", LegacyObject[Collection["FireBall"]] },
                 { "FireBallExplosion", LegacyObject[Collection["FireBallExplosion"]] },
                 { "DentateIce", LegacyObject[Collection["DentateIce"]] },
@@ -792,6 +796,7 @@ namespace CNC.Common.Utils
                 { SpiritArrowV1, ProjectileType<Content.Projectiles.Hostile.SpiritArrow.V1>() },
                 { SpiritArrowV2, ProjectileType<Content.Projectiles.Hostile.SpiritArrow.V2>() },
                 { SpiritArrowV3, ProjectileType<Content.Projectiles.Hostile.SpiritArrow.V3>() },
+                { SpiritArrowV4, ProjectileType<Content.Projectiles.Hostile.SpiritArrow.V4>() },
                 { FireBall, ProjectileType<Content.Projectiles.FireGrimoire.FireBall>() },
                 { FireBallExplosion, ProjectileType<Content.Projectiles.FireGrimoire.FireBallExplosion>() },
                 { DentateIce, ProjectileType<Content.Projectiles.IceTooth.DentateIce>() },

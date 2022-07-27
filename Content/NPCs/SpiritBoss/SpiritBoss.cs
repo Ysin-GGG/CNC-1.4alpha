@@ -62,8 +62,8 @@ namespace CNC.Content.NPCs.SpiritBoss
 
         public override void ResetDefaults()
         {
-            npc.width = 122;
-            npc.height = 128;
+            npc.width = 110;
+            npc.height = 118;
             npc.aiStyle = -1;
             npc.knockBackResist = 0;
             npc.damage = 30;
@@ -214,9 +214,9 @@ namespace CNC.Content.NPCs.SpiritBoss
             if(state != 1) return;
             if (stateTick >= 0)
             {
-                state = Main.rand.Next(2, 6);
+                state =  CNC.Random.NextInt(2, 7);
                 stateTick = 0;
-                //state = 5; preState = 1;
+                //state = 6; preState = 1;
             }
         }
 
@@ -356,11 +356,28 @@ namespace CNC.Content.NPCs.SpiritBoss
                     return;
                 }
                 preState = state;
+                SoundEngine.PlaySound(SoundID.Item164, npc.Center);
             }
-            if (stateTick >= 0)
+            if (stateTick < 120 && stateTick % 5 == 0)
+            {
+                for (int i = 0; i < (rage ? 5 : 2); i++)
+                {
+                    Projectile proj = this.NewProjectile(CNC.Random.NextVector2(-12f, -16f, 12f, -4f), CNCID.Projectile.LegacyObject[CNCID.Projectile.SpiritArrowV4], atkDamage[1]);
+                    var arrow = (Projectiles.Hostile.SpiritArrow.V4)proj.ModProjectile;
+                    arrow.rot = CNC.Random.NextDegree();
+                    arrow.stateOrder[1] = 200 - arrow.stateOrder[0] - stateTick + stateTick / 40 * 30;
+                }
+            }
+            if (stateTick >= 200 && (stateTick - 200) % 30 == 0)
+            {
+                SoundEngine.PlaySound(SoundID.Item115, npc.Center);
+                SoundEngine.PlaySound(SoundID.Item66, npc.Center);
+                SoundEngine.PlaySound(stateTick == 230 ? SoundID.Item67 : SoundID.Item68, npc.Center);
+            }
+            if (stateTick >= 260)
             {
                 state = 1;
-                stateTick = 0;
+                stateTick = -400;
             }
         }
 

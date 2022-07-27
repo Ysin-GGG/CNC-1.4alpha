@@ -154,6 +154,7 @@ namespace CNC.Common.Utils
             if (!flash) return new Color((byte)R, (byte)G, (byte)B, (byte)A);
             else return new Color((byte)(R * alpha), (byte)(G * alpha), (byte)(B * alpha), Main.mouseTextColor);
         }
+
         /// <summary> value, type, counter, min, max, addCD, delCD, num </summary>
         public static void UpdateEffectVar(ref int[] variable)
         {
