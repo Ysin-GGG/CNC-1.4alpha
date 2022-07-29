@@ -62,8 +62,8 @@ namespace CNC.Content.NPCs.SpiritBoss
 
         public override void ResetDefaults()
         {
-            npc.width = 110;
-            npc.height = 118;
+            npc.width = 122;
+            npc.height = 128;
             npc.aiStyle = -1;
             npc.knockBackResist = 0;
             npc.damage = 30;
