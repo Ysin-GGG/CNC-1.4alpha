@@ -414,7 +414,7 @@ namespace CNC.Content.Projectiles.Hostile
             public override void Kill(int timeLeft)
             {
                 base.Kill(timeLeft);
-                SoundEngine.PlaySound(SoundID.Item62, this.p.position);//14
+                SoundEngine.PlaySound(SoundID.Item101, this.p.position);//14
                 //SoundEngine.PlaySound(SoundID.Item25, this.p.position);
             }
         }

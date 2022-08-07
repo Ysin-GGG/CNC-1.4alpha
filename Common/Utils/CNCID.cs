@@ -290,7 +290,7 @@ namespace CNC.Common.Utils
                 { TranquilityDirt, ItemType<Content.Items.TranquilityDirt>() },
                 { TranquilityStone, ItemType<Content.Items.TranquilityStone>() },
                 //{ ArgenteusOathKeeper, ItemType<Content.Items.>() },
-                //{ TheLightOfAuzzsia, ItemType<Content.Items.>() },
+                { TheLightOfAuzzsia, ItemType<Content.Items.Weapons.Magic.TheLightOfAuzzsia>() },
                 //{ EmberOfNien, ItemType<Content.Items.>() },
                 //{ FragmentarySoulDagger, ItemType<Content.Items.>() },
                 //{ SpiritIronGreatsword, ItemType<Content.Items.>() },
@@ -314,7 +314,7 @@ namespace CNC.Common.Utils
                 { LegacyObject[TranquilityDirt], TranquilityDirt },
                 { LegacyObject[TranquilityStone], TranquilityStone },
                 //{ LegacyObject[ArgenteusOathKeeper], ArgenteusOathKeeper },
-                //{ LegacyObject[TheLightOfAuzzsia], TheLightOfAuzzsia },
+                { LegacyObject[TheLightOfAuzzsia], TheLightOfAuzzsia },
                 //{ LegacyObject[EmberOfNien], EmberOfNien },
                 //{ LegacyObject[FragmentarySoulDagger], FragmentarySoulDagger },
                 //{ LegacyObject[SpiritIronGreatsword], SpiritIronGreatsword },
@@ -698,7 +698,7 @@ namespace CNC.Common.Utils
 
         public static class Projectile
         {
-            public const short MaxObject = 19;
+            public const short MaxObject = 21;
             #region ID
             /// <summary> Ä§·¨·Éµ¯ </summary>
             public const short MentorMissile = 1;
@@ -740,6 +740,8 @@ namespace CNC.Common.Utils
             public const short SanctifiedArrowShoot = 19;
             /// <summary> ÖÁÊ¥±¬ÆÆ </summary>
             public const short SanctifiedExplosion = 20;
+            /// <summary> Ä§·¨ÑÒÊ¯ </summary>
+            public const short MagicRock = 21;
             #endregion
             public static Dictionary<string, short> Collection => new Dictionary<string, short>()
             {
@@ -763,6 +765,7 @@ namespace CNC.Common.Utils
                 { "SanctifiedArrow", SanctifiedArrow },
                 { "SanctifiedArrowShoot", SanctifiedArrowShoot },
                 { "SanctifiedExplosion", SanctifiedExplosion },
+                { "MagicRock", MagicRock },
             };
 
             public static Dictionary<string, int> LegacyCollection => new Dictionary<string, int>()
@@ -787,6 +790,7 @@ namespace CNC.Common.Utils
                 { "SanctifiedArrow", LegacyObject[Collection["SanctifiedArrow"]] },
                 { "SanctifiedArrowShoot", LegacyObject[Collection["SanctifiedArrowShoot"]] },
                 { "SanctifiedExplosion", LegacyObject[Collection["SanctifiedExplosion"]] },
+                { "MagicRock", LegacyObject[Collection["MagicRock"]] },
             };
 
             public static Dictionary<short, int> LegacyObject => new Dictionary<short, int>()
@@ -811,6 +815,7 @@ namespace CNC.Common.Utils
                 { SanctifiedArrow, ProjectileType<Content.Projectiles.ArgenteusClaw.SanctifiedArrow>() },
                 { SanctifiedArrowShoot, ProjectileType<Content.Projectiles.ArgenteusClaw.SanctifiedArrowShoot>() },
                 { SanctifiedExplosion, ProjectileType<Content.Projectiles.ArgenteusClaw.SanctifiedExplosion>() },
+                { MagicRock, ProjectileType<Content.Projectiles.TheLightOfAuzzsia.MagicRock>() }
             };
         }
 
