@@ -1,7 +1,7 @@
+*.sln
+*.csproj
 .git/
 .vs/
 obj/
 bin/
 Properties/
-*.sln
-*.csproj

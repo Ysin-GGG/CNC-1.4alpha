@@ -126,6 +126,9 @@ namespace CNC.Common.Global.Projectiles
         public sealed override void SetDefaults()
         {
             hitBox = null;
+            string path = Texture.StartsWith(mod.Name) ? Texture.Substring(Texture.IndexOf('/') + 1) : Texture;
+            Texture2D image = this.mod.Assets.Request<Texture2D>(path).Value;
+            this.projectile.Resize(image.Width, image.Height);
             ResetDefaults();
         }
 

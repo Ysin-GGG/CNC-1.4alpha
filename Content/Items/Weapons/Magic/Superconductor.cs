@@ -46,6 +46,7 @@ namespace CNC.Content.Items.Weapons.Magic
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            //player.GetModPlayer<Common.Global.Players.AllPlayer>().ScreenShake(30, new Vector2(0, 15), new Vector2(0, 15));
             if (player.altFunctionUse == 2 && this.LightningChainEnable)
             {
                 type = CNCID.Projectile.LegacyObject[CNCID.Projectile.LightningChain];

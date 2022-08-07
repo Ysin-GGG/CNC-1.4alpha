@@ -38,8 +38,6 @@ namespace CNC.Content.Projectiles.Hostile
 
         public override void ResetDefaults()
         {
-            projectile.width = 64;
-            projectile.height = 64;
             projectile.timeLeft = 360;
             projectile.alpha = 255;
             projectile.light = 0;
@@ -48,6 +46,7 @@ namespace CNC.Content.Projectiles.Hostile
             projectile.hostile = true;
             projectile.ignoreWater = true;
             projectile.tileCollide = false;
+            projectile.scale = .75f;
             rand = CNC.Random.NextFloat(-100f, 100f);
             if (len != projectile.oldPos.Length)
             {
@@ -132,6 +131,12 @@ namespace CNC.Content.Projectiles.Hostile
         {
             lightColor = Color.White;
             AfterImages(projectile, mainColor * .75f * (255 - p.alpha / 255f), len);
+            Texture2D glow = Mod.Assets.Request<Texture2D>("Content/Projectiles/Hostile/SpiritArrowGlow").Value;
+            Vector2 pos = projectile.Center - Main.screenPosition;
+            Vector2 origin = glow.Size() / 2f;
+            Color color = mainColor;
+            color.A = 0;
+            Main.spriteBatch.Draw(glow, pos, null, color, 0f, origin, .25f, 0, 0f);
             return true;
         }
         
