@@ -20,6 +20,29 @@
     <Exec Command="&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks)" />
   </Target>
   <ItemGroup>
+    <Compile Remove="Content\Sounds\Custom\新文件夹1\**" />
+    <Compile Remove="Content\Sounds\Custom\新文件夹2\**" />
+    <Compile Remove="Content\Sounds\Custom\新文件夹3\**" />
+    <Compile Remove="Content\Sounds\Custom\新文件夹4\**" />
+    <Compile Remove="Content\Sounds\Custom\新文件夹5\**" />
+    <Compile Remove="Content\Sounds\Custom\新文件夹6\**" />
+    <Compile Remove="Content\Sounds\Custom\新文件夹\**" />
+    <EmbeddedResource Remove="Content\Sounds\Custom\新文件夹1\**" />
+    <EmbeddedResource Remove="Content\Sounds\Custom\新文件夹2\**" />
+    <EmbeddedResource Remove="Content\Sounds\Custom\新文件夹3\**" />
+    <EmbeddedResource Remove="Content\Sounds\Custom\新文件夹4\**" />
+    <EmbeddedResource Remove="Content\Sounds\Custom\新文件夹5\**" />
+    <EmbeddedResource Remove="Content\Sounds\Custom\新文件夹6\**" />
+    <EmbeddedResource Remove="Content\Sounds\Custom\新文件夹\**" />
+    <None Remove="Content\Sounds\Custom\新文件夹1\**" />
+    <None Remove="Content\Sounds\Custom\新文件夹2\**" />
+    <None Remove="Content\Sounds\Custom\新文件夹3\**" />
+    <None Remove="Content\Sounds\Custom\新文件夹4\**" />
+    <None Remove="Content\Sounds\Custom\新文件夹5\**" />
+    <None Remove="Content\Sounds\Custom\新文件夹6\**" />
+    <None Remove="Content\Sounds\Custom\新文件夹\**" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Remove="Content\UI\Craft\DarkScreen.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -94,13 +117,6 @@
   <ItemGroup>
     <Folder Include="Content\Items\Weapons\Magic\Sceptre\" />
     <Folder Include="Content\Sounds\Custom\ArgenteusClaw\新文件夹\" />
-    <Folder Include="Content\Sounds\Custom\新文件夹1\" />
-    <Folder Include="Content\Sounds\Custom\新文件夹2\" />
-    <Folder Include="Content\Sounds\Custom\新文件夹3\" />
-    <Folder Include="Content\Sounds\Custom\新文件夹4\" />
-    <Folder Include="Content\Sounds\Custom\新文件夹5\" />
-    <Folder Include="Content\Sounds\Custom\新文件夹6\" />
-    <Folder Include="Content\Sounds\Custom\新文件夹\" />
     <Folder Include="Content\UI\Misc\" />
   </ItemGroup>
   <ItemGroup />

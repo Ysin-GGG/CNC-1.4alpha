@@ -17,20 +17,33 @@ namespace CNC.Content.Projectiles.TheLightOfAuzzsia
             projectile.knockBack = 7f;
             projectile.alpha = 32;
             projectile.scale = 0.8f;
-            projectile.aiStyle = 1;
             projectile.penetrate = 1;
             projectile.friendly = true;
             projectile.DamageType = DamageClass.Magic;
         }
 
+        public override void AI()
+        {
+            CNCUtils.AddLight(projectile.Center, Color.Purple, 1f);
+        }
+
         public override void HitNPC(NPC target, int damage, float knockback, bool crit)
         {
-            Dust dust=CNCUtils.NewDust(projectile,DustId.Wood, projectile.rotation, 1.2f, projectile.Size / 4f, CNCUtils.AccurateColor(Color.White));
+            for (int i = 0; i < 5; i++)
+            {
+                Dust dust = CNCUtils.NewDust(projectile, DustId.GreyStone, projectile.rotation, 1.2f, projectile.Size / 4f, CNCUtils.AccurateColor(Color.White));
+                dust.alpha = 1;
+            }
         }
 
         public override void Kill(int timeLeft)
         {
-            Dust dust = CNCUtils.NewDust(projectile, DustId.Wood, projectile.rotation, 1.2f, projectile.Size / 4f, CNCUtils.AccurateColor(Color.White));
+            for (int i = 0; i < 5; i++)
+            {
+                Dust dust = CNCUtils.NewDust(projectile, DustId.GreyStone, projectile.rotation, 1.2f, projectile.Size / 4f, CNCUtils.AccurateColor(Color.White));
+                dust.alpha = 1;
+            }
+            CNCUtils.PlaySound("TheLightOfAuzzsia/RockHit", projectile, .5f);
         }
     }
 }

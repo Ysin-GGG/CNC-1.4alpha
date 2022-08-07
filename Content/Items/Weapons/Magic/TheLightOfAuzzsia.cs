@@ -19,9 +19,9 @@ namespace CNC.Content.Items.Weapons.Magic
             item.height = 50;
             item.useTime = 30;
             item.useAnimation = 30;
-            item.rare = 3;
+            item.rare = 2;
             item.value = 20000;
-            item.damage = 18;
+            item.damage = 80;
             item.crit = 5;
             item.knockBack = 20f;
             item.useStyle = 5;
