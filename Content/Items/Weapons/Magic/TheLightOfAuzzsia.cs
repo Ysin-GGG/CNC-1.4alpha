@@ -6,6 +6,11 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using CNC.Common.Utils;
 using CNC.Common.Global.Items;
+using Terraria.GameContent;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.UI.BigProgressBar;
+using ReLogic.Content;
 
 namespace CNC.Content.Items.Weapons.Magic
 {
