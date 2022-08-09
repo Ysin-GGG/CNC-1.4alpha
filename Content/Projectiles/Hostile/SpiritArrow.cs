@@ -194,8 +194,9 @@ namespace CNC.Content.Projectiles.Hostile
                 var trai = new TrailShaderData(ef, projectile, width)
                 {
                     colorBegin = mainColor,
+                    trailAnimAdd = rand,
                     imageHeatmap = Mod.Assets.Request<Texture2D>("Assets/Effects/Heatmap/Blue2").Value,
-                    imageTrace = Mod.Assets.Request<Texture2D>("Assets/Effects/Trace1").Value,
+                    imageTrace = Mod.Assets.Request<Texture2D>("Assets/Effects/Trace2").Value,
                     imageTrail = Mod.Assets.Request<Texture2D>("Assets/Effects/FormalTrail6").Value,
                 };
                 trai.Draw(Main.spriteBatch, triangleList.ToArray(), true);

@@ -14,7 +14,7 @@ using ReLogic.Content;
 
 namespace CNC.Content.Items.Weapons.Magic
 {
-    class TheLightOfAuzzsia : CNCItem
+    public class TheLightOfAuzzsia : CNCItem
     {
         public InscriptionSettings modItem => item.GetGlobalItem<InscriptionSettings>();
 
@@ -36,15 +36,16 @@ namespace CNC.Content.Items.Weapons.Magic
             item.UseSound = SoundID.Item20;
             item.DamageType = DamageClass.Magic;
             item.shoot = CNCID.Projectile.LegacyObject[CNCID.Projectile.MagicRock];
-            item.shootSpeed = 20f;
+            item.shootSpeed = 12f;
             clazz = 32;
             staff = false;
             CNCStaff = true;
         }
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             CNCUtils.PlaySound("TheLightOfAuzzsia/Shoot1", player, .5f);
-            Projectile projectile = CNCUtils.NewProj(source, position, velocity, type, damage, knockback);
+            CNCUtils.NewProj(source, position, velocity, type, damage, knockback);
             return false;
         }
     }

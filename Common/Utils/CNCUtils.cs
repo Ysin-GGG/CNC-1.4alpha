@@ -33,6 +33,20 @@ namespace CNC.Common.Utils
             return Main.projectile[whoAmI];
         }
 
+        public static Dust NewDust(Vector2 pos, int id, float scale = 1f, Vector2 vel = default, Color color = default)
+        {
+            int index = Dust.NewDust(pos, 0, 0, id, vel.X, vel.Y, color.A, color, scale);
+            Main.dust[index].position = pos;
+            Main.dust[index].velocity = vel;
+            Main.dust[index].scale = scale;
+            Main.dust[index].color = color;
+            Main.dust[index].alpha = color.A;
+            return Main.dust[index];
+        }
+
+        public static Dust NewDust(Entity target, int id, float scale = 1f, Vector2 vel = default, Color color = default)
+            => Dust.NewDustDirect(target.position + CNC.Random.NextVector2(target.Size), 0, 0, id, vel.X, vel.Y, color.A, color, scale);
+        
         public static Dust NewDust(Vector4 pos_size, int id, float angle, float scale = 1f, Vector2 range = default, Vector2 vel = default, Color color = default)
             => NewDust(pos_size, id, angle, scale, range, color, vel);
 
@@ -48,19 +62,17 @@ namespace CNC.Common.Utils
             return Dust.NewDustDirect(pos + _range, width, height, id, vel.X, vel.Y, color.A, color, scale);
         }
 
-        public static Dust NewDust(Entity owner, int id, float angle, float scale = 1f, Vector2 range = default, Color color = default, Vector2 vel = default)
-            => NewDust(owner, id, angle, scale, range, vel, color);
+        public static Dust NewDust(Entity target, int id, float angle, float scale = 1f, Vector2 range = default, Color color = default, Vector2 vel = default)
+            => NewDust(target, id, angle, scale, range, vel, color);
 
-        public static Dust NewDust(Entity owner, int id, float angle, float scale = 1f, Vector2 range = default, Vector2 vel = default, Color color = default)
+        public static Dust NewDust(Entity target, int id, float angle, float scale = 1f, Vector2 range = default, Vector2 vel = default, Color color = default)
         {
-            Vector2 pos = owner.position - owner.velocity;
-            int width = (int)owner.Size.X;
-            int height = (int)owner.Size.Y / 2;
+            Vector2 pos = target.position - target.velocity;
             vel = vel == default ? Const._02 : vel;
             float x = Main.rand.NextFloat(-range.X, range.X);
             float y = Main.rand.NextFloat(-range.Y, range.Y);
             Vector2 _range = range == default ? Const._02 : new Vector2((float)(x * Math.Cos(angle) + y * Math.Sin(angle)), (float)(x * Math.Sin(angle) + y * Math.Cos(angle)));
-            return Dust.NewDustDirect(pos + _range, width, height, id, vel.X, vel.Y, color.A, color, scale);
+            return Dust.NewDustDirect(pos + _range + CNC.Random.NextVector2(target.Size), 0, 0, id, vel.X, vel.Y, color.A, color, scale);
         }
 
         public static void PlaySound(string path, Entity target, Mod mod = null)

@@ -32,7 +32,8 @@ namespace CNC
         public const int maxInscriptionTypes = CNCID.Inscription.MaxObject;
         public const int maxStateTypes = CNCID.State.MaxObject;
 
-        public static Dictionary<string, Texture2D> Image;
+        public static Dictionary<string, Texture2D> Image { get; private set; }
+        public static Dictionary<string, Effect> Shader;
 
         public override void Load()
         {
@@ -40,30 +41,9 @@ namespace CNC
             CNCGlobal.Players.ClassesSettings.ClassKey = KeybindLoader.RegisterKeybind(this, "Class Key", Microsoft.Xna.Framework.Input.Keys.Q);
             CNCGlobal.Items.InscriptionSettings.InscriptionSystem.InscriptionKey = KeybindLoader.RegisterKeybind(this, "Inscription Key", Microsoft.Xna.Framework.Input.Keys.V);
             Instance = this;
-            random = new PseudoRandom();
-            #region 映射载入
             TmodFile modFiles = (TmodFile)typeof(Mod).GetProperty("File", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(this);
             CNCLocalization.Load("CNC", modFiles);
-            Image = new Dictionary<string, Texture2D>();
-            Image.Clear();
-            foreach (TmodFile.FileEntry file in modFiles)
-            {
-                if (file.Name.EndsWith(".rawimg"))// || file.Name.EndsWith(".png") || file.Name.EndsWith(".jpg"))
-                {
-                    string name = file.Name;
-                    string path = Path.GetFullPath(name);
-                    string key = Path.GetFileNameWithoutExtension(name);
-                    while (Image.ContainsKey(key))
-                    {
-                        int idx = path.LastIndexOf('\\');
-                        int idx2 = path.Substring(0, idx).LastIndexOf('\\');
-                        key = path.Substring(idx2 + 1, idx - idx2 - 1) + '.' + key;
-                        path = path.Substring(0, idx);
-                    }
-                    Image.Add(key, ModContent.Request<Texture2D>("CNC/" + name.Substring(0, name.IndexOf('.'))).Value);
-                }
-            }
-            #endregion
+            random = new PseudoRandom();
             Logger.Info(CNCLocalization.GetText("Misc.Loaded"));
             Logger.Info($"Mod {CNCLocalization.GetText("Misc.Version")}v{Version}");
             Logger.Info($"TML {CNCLocalization.GetText("Misc.Version")}v{TMLVersion}");
@@ -87,6 +67,42 @@ namespace CNC
             CNCGlobal.Items.InscriptionSettings.InscriptionSystem.InscriptionKey = null;
             random = null;
             Instance = null;
+        }
+
+        public override void PostSetupContent()
+        {
+            #region 映射载入
+            TmodFile modFiles = (TmodFile)typeof(Mod).GetProperty("File", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(this);
+            CNCLocalization.Load("CNC", modFiles);
+            Image = new Dictionary<string, Texture2D>();
+            Image.Clear();
+            Shader = new Dictionary<string, Effect>();
+            Shader.Clear();
+            foreach (TmodFile.FileEntry file in modFiles)
+            {
+                if (file.Name.EndsWith(".rawimg"))// || file.Name.EndsWith(".png") || file.Name.EndsWith(".jpg"))
+                {
+                    string name = file.Name;
+                    string path = Path.GetFullPath(name);
+                    string key = Path.GetFileNameWithoutExtension(name);
+                    while (Image.ContainsKey(key))
+                    {
+                        int idx = path.LastIndexOf('\\');
+                        int idx2 = path.Substring(0, idx).LastIndexOf('\\');
+                        key = path.Substring(idx2 + 1, idx - idx2 - 1) + '.' + key;
+                        path = path.Substring(0, idx);
+                    }
+                    Image.Add(key, ModContent.Request<Texture2D>("CNC/" + name.Substring(0, name.IndexOf('.'))).Value);
+                }
+                if (file.Name.EndsWith(".fx"))
+                {
+                    string name = file.Name;
+                    string path = Path.GetFullPath(name);
+                    string key = Path.GetFileNameWithoutExtension(name);
+                    Shader.Add(key, ModContent.Request<Effect>("CNC/" + name.Substring(0, name.IndexOf('.'))).Value);
+                }
+            }
+            #endregion
         }
 
         private void ResetManaMax(ILContext il, int max = 400)
