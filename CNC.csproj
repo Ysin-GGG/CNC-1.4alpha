@@ -20,6 +20,29 @@
     <Exec Command="&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks)" />
   </Target>
   <ItemGroup>
+    <Compile Remove="Content\Sounds\Custom\新文件夹1\**" />
+    <Compile Remove="Content\Sounds\Custom\新文件夹2\**" />
+    <Compile Remove="Content\Sounds\Custom\新文件夹3\**" />
+    <Compile Remove="Content\Sounds\Custom\新文件夹4\**" />
+    <Compile Remove="Content\Sounds\Custom\新文件夹5\**" />
+    <Compile Remove="Content\Sounds\Custom\新文件夹6\**" />
+    <Compile Remove="Content\Sounds\Custom\新文件夹\**" />
+    <EmbeddedResource Remove="Content\Sounds\Custom\新文件夹1\**" />
+    <EmbeddedResource Remove="Content\Sounds\Custom\新文件夹2\**" />
+    <EmbeddedResource Remove="Content\Sounds\Custom\新文件夹3\**" />
+    <EmbeddedResource Remove="Content\Sounds\Custom\新文件夹4\**" />
+    <EmbeddedResource Remove="Content\Sounds\Custom\新文件夹5\**" />
+    <EmbeddedResource Remove="Content\Sounds\Custom\新文件夹6\**" />
+    <EmbeddedResource Remove="Content\Sounds\Custom\新文件夹\**" />
+    <None Remove="Content\Sounds\Custom\新文件夹1\**" />
+    <None Remove="Content\Sounds\Custom\新文件夹2\**" />
+    <None Remove="Content\Sounds\Custom\新文件夹3\**" />
+    <None Remove="Content\Sounds\Custom\新文件夹4\**" />
+    <None Remove="Content\Sounds\Custom\新文件夹5\**" />
+    <None Remove="Content\Sounds\Custom\新文件夹6\**" />
+    <None Remove="Content\Sounds\Custom\新文件夹\**" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Remove="Content\UI\Craft\DarkScreen.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -31,25 +54,31 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FNA">
-      <HintPath>D:\Applications\Steam\steamapps\common\tModLoader\Libraries\FNA\1.0.0\FNA.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Steam\steamapps\common\tModLoader\Libraries\FNA\1.0.0\FNA.dll</HintPath>
+    </Reference>
+    <Reference Include="Hjson">
+      <HintPath>..\..\..\..\..\..\Steam\steamapps\common\tModLoader\Libraries\hjson\3.0.0\lib\netstandard1.3\Hjson.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>bin\Debug\net45\log4net.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Steam\steamapps\common\tModLoader\Libraries\log4net\2.0.8.0\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cecil">
-      <HintPath>bin\Debug\net45\Mono.Cecil.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Steam\steamapps\common\tModLoader\Libraries\mono.cecil\0.11.4\lib\netstandard2.0\Mono.Cecil.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cecil.Mdb">
-      <HintPath>bin\Debug\net45\Mono.Cecil.Mdb.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Steam\steamapps\common\tModLoader\Libraries\mono.cecil\0.11.4\lib\netstandard2.0\Mono.Cecil.Mdb.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cecil.Pdb">
-      <HintPath>bin\Debug\net45\Mono.Cecil.Pdb.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Steam\steamapps\common\tModLoader\Libraries\mono.cecil\0.11.4\lib\netstandard2.0\Mono.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Rocks">
+      <HintPath>..\..\..\..\..\..\Steam\steamapps\common\tModLoader\Libraries\mono.cecil\0.11.4\lib\netstandard2.0\Mono.Cecil.Rocks.dll</HintPath>
     </Reference>
     <Reference Include="MonoMod.RuntimeDetour">
       <HintPath>..\..\..\ModLoader\Mod Sources\CNC\bin\Debug\net45\MonoMod.RuntimeDetour.dll</HintPath>
     </Reference>
     <Reference Include="MonoMod.Utils">
-      <HintPath>bin\Debug\net45\MonoMod.Utils.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Steam\steamapps\common\tModLoader\Libraries\monomod.utils\22.5.31.2\lib\net5.0\MonoMod.Utils.dll</HintPath>
     </Reference>
     <Reference Include="MP3Sharp">
       <HintPath>..\..\..\ModLoader\Mod Sources\CNC\bin\Debug\net45\MP3Sharp.dll</HintPath>
@@ -59,7 +88,7 @@
       <HintPath>..\..\..\ModLoader\Mod Sources\CNC\bin\Debug\net45\NVorbis.dll</HintPath>
     </Reference>
     <Reference Include="ReLogic">
-      <HintPath>bin\Debug\net45\ReLogic.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Steam\steamapps\common\tModLoader\Libraries\ReLogic\1.0.0\ReLogic.dll</HintPath>
     </Reference>
     <Reference Include="Steamworks.NET">
       <HintPath>..\..\..\ModLoader\Mod Sources\CNC\bin\Debug\net45\Steamworks.NET.dll</HintPath>
@@ -68,10 +97,13 @@
       <HintPath>..\..\..\ModLoader\Mod Sources\CNC\bin\Debug\net45\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="TerrariaHooks">
-      <HintPath>bin\Debug\net45\TerrariaHooks.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Steam\steamapps\common\tModLoader\Libraries\TerrariaHooks\0.0.0.0\TerrariaHooks.dll</HintPath>
     </Reference>
     <Reference Include="tModLoader">
-      <HintPath>D:\Applications\Steam\steamapps\common\tModLoader\tModLoader.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Steam\steamapps\common\tModLoader\tModLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="tModPorter">
+      <HintPath>..\..\..\..\..\..\Steam\steamapps\common\tModLoader\Libraries\tModPorter\1.0.0\tModPorter.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -85,13 +117,6 @@
   <ItemGroup>
     <Folder Include="Content\Items\Weapons\Magic\Sceptre\" />
     <Folder Include="Content\Sounds\Custom\ArgenteusClaw\新文件夹\" />
-    <Folder Include="Content\Sounds\Custom\新文件夹1\" />
-    <Folder Include="Content\Sounds\Custom\新文件夹2\" />
-    <Folder Include="Content\Sounds\Custom\新文件夹3\" />
-    <Folder Include="Content\Sounds\Custom\新文件夹4\" />
-    <Folder Include="Content\Sounds\Custom\新文件夹5\" />
-    <Folder Include="Content\Sounds\Custom\新文件夹6\" />
-    <Folder Include="Content\Sounds\Custom\新文件夹\" />
     <Folder Include="Content\UI\Misc\" />
   </ItemGroup>
   <ItemGroup />
