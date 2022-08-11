@@ -673,7 +673,7 @@ namespace CNC.Common.Utils
 
         public static class Projectile
         {
-            public const short MaxObject = 24;
+            public const short MaxObject = 25;
             #region ID
             /// <summary> Ä§·¨·Éµ¯ </summary>
             public const short MentorMissile = 1;
@@ -723,6 +723,8 @@ namespace CNC.Common.Utils
             public const short MagicRock = 23;
             /// <summary> ±¬Õ¨ </summary>
             public const short GenericExplosion = 24;
+            /// <summary> Ê¥ÁéÖ®ÂÖ </summary>
+            public const short AnnulusOfPneuma = 25;
             #endregion
             public static Dictionary<string, short> Collection
             {
@@ -771,7 +773,8 @@ namespace CNC.Common.Utils
                 { SanctifiedArrowShoot, ProjectileType<Content.Projectiles.ArgenteusClaw.SanctifiedArrowShoot>() },
                 { SanctifiedExplosion, ProjectileType<Content.Projectiles.ArgenteusClaw.SanctifiedExplosion>() },
                 { MagicRock, ProjectileType<Content.Projectiles.TheLightOfAuzzsia.MagicRock>() },
-                { GenericExplosion, ProjectileType<Content.Projectiles.GenericExplosion>() }
+                { GenericExplosion, ProjectileType<Content.Projectiles.GenericExplosion>() },
+                { AnnulusOfPneuma, ProjectileType<Content.Projectiles.Hostile.AnnulusOfPneuma>() },
             };
         }
 

@@ -20,15 +20,20 @@ namespace CNC.Content.Projectiles.Hostile
         protected const int dustid1 = DustId.TrailingCyan;
         protected const int dustid2 = DustId.CyanShortFx1;
         protected virtual Color mainColor => new Color(178, 214, 231);
+        protected virtual Color mainColor2 => new Color(178, 214, 231, 0);
         protected virtual int len => 30;
         protected virtual bool update => true;
         protected int attackCD = 0;
         protected bool rage => RootNPC != null && RootNPC.type == CNCID.NPC.LegacyObject[CNCID.NPC.SpiritBoss] && ((NPCs.SpiritBoss.SpiritBoss)RootNPC.ModNPC).rage;
         private float rand;
         private int fade = 0;
-        //private bool fadeIn = true;
-        //private bool fadeOut = false;
-        protected bool drawTrail = false;
+        private float lightAlpha;
+        private float lightRotation;
+        private float lightDirection;
+        private Vector2 lightScale;
+        private EffectTimer lightWidth;
+        private EffectTimer lightHeight;
+        private EffectTimer lightFlash;
 
         public override void ResetStaticDefaults()
         {
@@ -47,7 +52,6 @@ namespace CNC.Content.Projectiles.Hostile
             projectile.ignoreWater = true;
             projectile.tileCollide = false;
             projectile.scale = .75f;
-            rand = CNC.Random.NextFloat(-100f, 100f);
             if (len != projectile.oldPos.Length)
             {
                 Array.Resize(ref projectile.oldPos, len);
@@ -63,18 +67,24 @@ namespace CNC.Content.Projectiles.Hostile
             attackCD = 0;
         }
 
+        public override void OnSpawn()
+        {
+            lightAlpha = 0f;
+            lightRotation = 1f;
+            lightDirection = 1f;
+            lightScale = Vector2.Zero;
+            lightWidth = new EffectTimer(48, 1, 0, 48, 80, 10, 10, 4, 0);
+            lightHeight = new EffectTimer(48, 1, 0, 48, 64, 10, 10, 2, 0);
+            lightFlash = new EffectTimer(127, 1, 0, 127, 255, 0, 0, 16, 0);
+            rand = CNC.Random.NextFloat(-100f, 100f);
+        }
+
         public override void AI()
         {
             AI001_RollingMissile(p, false, true, 90f);
             if (update) UpdateOldData(p);
             p.alpha = MyMath.Clamp(p.alpha + fade, 0, 255);
             if (p.alpha <= 0 || p.alpha >= 255) fade = 0;
-            /*
-            if (fadeIn) p.alpha = MyMath.Clamp(p.alpha - 5, 0, 255);
-            if (fadeOut) p.alpha = MyMath.Clamp(p.alpha + 5, 0, 255);
-            if (fadeIn && p.alpha <= 0) fadeIn = false;
-            if (fadeOut && p.alpha >= 255) fadeOut = false;
-            */
             projectile.friendly = false;
             projectile.hostile = true;
             while (attackCD > 0) attackCD--;
@@ -115,93 +125,129 @@ namespace CNC.Content.Projectiles.Hostile
                 dust.color = mainColor;
                 dust.noGravity = true;
             }
-            for (int i = 0; i < p.oldPos.Length; i++)
+            float max = p.oldPos.Length * 2 / 3;
+            for (int i = 0; i < max; i++)
             {
                 float x = p.oldPos[i].X;
                 float y = p.oldPos[i].Y;
                 float[] rand = { CNC.Random.NextDegree() / 2f, CNC.Random.NextFloat(-1, 1), CNC.Random.NextFloat(-1, 1) };
                 Vector4 xywh = new Vector4(x, y, 9, 9);
-                Dust dust = CNCUtils.NewDust(xywh, dustid1, rand[0], CNC.Random.NextFloat(.8f, 1.2f), default, mainColor, MyMath.GetXY(p.oldRot[i] - MyMath.deg90) * 4f);
+                Dust dust = CNCUtils.NewDust(xywh, dustid1, rand[0], CNC.Random.NextFloat(.8f, 1.2f) * (1 - (i / max)), default, mainColor, MyMath.GetXY(p.oldRot[i] - MyMath.deg90) * 4f);
                 dust.position = xywh.XY() + p.Size / 2;
                 dust.noGravity = true;
             }
         }
 
-        public override bool PreDraw(ref Color lightColor)
+        public sealed override bool PreDraw(ref Color lightColor)
         {
-            lightColor = Color.White;
-            AfterImages(projectile, mainColor * .75f * (255 - p.alpha / 255f), len);
-            Texture2D glow = Mod.Assets.Request<Texture2D>("Content/Projectiles/Hostile/SpiritArrowGlow").Value;
+            lightColor = mainColor;
+            bool afterImage = true;
+            Texture2D trailImage = Mod.Assets.Request<Texture2D>("Assets/Effects/FormalTrail6").Value;
+            Draw(lightColor, false, ref trailImage, ref afterImage);
+            AfterImages(projectile, mainColor * .75f * (255 - p.alpha / 255f), len, null, new Vector2(-1f, 1f) / len / 1.5f, new Vector2(.99f, 1.01f));
+
+            Texture2D glow = Mod.Assets.Request<Texture2D>("Assets/Glow/Refringence").Value;
             Vector2 pos = projectile.Center - Main.screenPosition;
-            Vector2 origin = glow.Size() / 2f;
-            Color color = mainColor;
-            color.A = 0;
-            Main.spriteBatch.Draw(glow, pos, null, color, 0f, origin, .25f, 0, 0f);
-            return true;
-        }
-        
-        public override void PostDraw(Color lightColor)
-        {
-            var ef = (Effect)Mod.Assets.Request<Effect>("Content/Effects/Trail").Value;
-            List<VertexInfo> bars = new List<VertexInfo>();
-            int width = 32;
-            var normalDir = projectile.position - Projectile.oldPos[0];
-            normalDir = Vector2.Normalize(new Vector2(-normalDir.Y, normalDir.X));
+            Color color = CNCUtils.AccurateColor(mainColor2) * ((255f - p.alpha) / 255f); color.A = 0;
+            Main.EntitySpriteDraw(glow, pos, null, color, 0f, glow.Size() / 2f, new Vector2(lightWidth.GetNextValue(), 80f) / 120f, 0, 0);
+            Main.EntitySpriteDraw(glow, pos, null, color, MyMath.deg90, glow.Size() / 2f, new Vector2(lightHeight.GetNextValue() / MyMath.phi, 80f) / 120f, 0, 0);
 
-            var color = mainColor;
-            var w = MathHelper.Lerp(1f, 0.05f, 0);
-
-            bars.Add(new VertexInfo(projectile.position + Projectile.Size / 2f + normalDir * width, color, new Vector3(0, 1, w)));
-            bars.Add(new VertexInfo(projectile.position + Projectile.Size / 2f - normalDir * width, color, new Vector3(0, 0, w)));
-            for (int i = 1; i < Projectile.oldPos.Length; ++i)
+            if (trailImage != null)
             {
-                if (Projectile.oldPos[i] == Vector2.Zero) break;
-
-                normalDir = Projectile.oldPos[i - 1] - Projectile.oldPos[i];
+                var ef = (Effect)Mod.Assets.Request<Effect>("Content/Effects/Trail").Value;
+                List<VertexInfo> bars = new List<VertexInfo>();
+                int width = 32;
+                var normalDir = projectile.position - Projectile.oldPos[0];
                 normalDir = Vector2.Normalize(new Vector2(-normalDir.Y, normalDir.X));
 
-                var factor = i / (float)Projectile.oldPos.Length;
-                color = Color.Lerp(mainColor, Color.Transparent, factor);
-                w = MathHelper.Lerp(1f, 0.05f, factor);
+                var color2 = mainColor;
+                var w = MathHelper.Lerp(1f, 0.05f, 0);
 
-                bars.Add(new VertexInfo(Projectile.oldPos[i - 1] + Projectile.Size / 2f + normalDir * (width + 32 * factor), color, new Vector3((float)Math.Sqrt(factor), 1, w)));
-                bars.Add(new VertexInfo(Projectile.oldPos[i - 1] + Projectile.Size / 2f - normalDir * (width + 32 * factor), color, new Vector3((float)Math.Sqrt(factor), 0, w)));
-            }
-
-            List<VertexInfo> triangleList = new List<VertexInfo>();
-            if (bars.Count > 2)
-            {
-                triangleList.Add(bars[0]);
-                triangleList.Add(bars[1]);
-                triangleList.Add(new VertexInfo((bars[0].position + bars[1].position) * 0.5f + Vector2.Normalize(Projectile.velocity) * 3, Color.White, new Vector3(0, 0.5f, 1)));
-                for (int i = 0; i < bars.Count - 2; i += 2)
+                bars.Add(new VertexInfo(projectile.position + Projectile.Size / 2f + normalDir * width, color, new Vector3(0, 1, w)));
+                bars.Add(new VertexInfo(projectile.position + Projectile.Size / 2f - normalDir * width, color, new Vector3(0, 0, w)));
+                for (int i = 1; i < Projectile.oldPos.Length; ++i)
                 {
-                    triangleList.Add(bars[i]);
-                    triangleList.Add(bars[i + 2]);
-                    triangleList.Add(bars[i + 1]);
+                    if (Projectile.oldPos[i] == Vector2.Zero) break;
 
-                    triangleList.Add(bars[i + 1]);
-                    triangleList.Add(bars[i + 2]);
-                    triangleList.Add(bars[i + 3]);
+                    normalDir = Projectile.oldPos[i - 1] - Projectile.oldPos[i];
+                    normalDir = Vector2.Normalize(new Vector2(-normalDir.Y, normalDir.X));
+
+                    var factor = i / (float)Projectile.oldPos.Length;
+                    var factor2 = MyMath.Clamp(factor * 2, 0, 1);
+                    color2 = Color.Lerp(mainColor, Color.Transparent, factor);
+                    w = MathHelper.Lerp(1f, 0.05f, factor);
+
+                    bars.Add(new VertexInfo(Projectile.oldPos[i - 1] + Projectile.Size / 2f + normalDir * (width + 16 * factor2), color2, new Vector3((float)Math.Sqrt(factor), 1, w)));
+                    bars.Add(new VertexInfo(Projectile.oldPos[i - 1] + Projectile.Size / 2f - normalDir * (width + 16 * factor2), color2, new Vector3((float)Math.Sqrt(factor), 0, w)));
                 }
-                RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
 
-                Matrix projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
-                Matrix model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0)) * Main.GameViewMatrix.ZoomMatrix;
-
-                ef.Parameters["uTransform"].SetValue(model * projection);
-                ef.Parameters["uTime"].SetValue(-Main.GlobalTimeWrappedHourly + rand);
-                var trai = new TrailShaderData(ef, projectile, width)
+                List<VertexInfo> triangleList = new List<VertexInfo>();
+                if (bars.Count > 2)
                 {
-                    colorBegin = mainColor,
-                    trailAnimAdd = rand,
-                    imageHeatmap = Mod.Assets.Request<Texture2D>("Assets/Effects/Heatmap/Blue2").Value,
-                    imageTrace = Mod.Assets.Request<Texture2D>("Assets/Effects/Trace2").Value,
-                    imageTrail = Mod.Assets.Request<Texture2D>("Assets/Effects/FormalTrail6").Value,
-                };
-                trai.Draw(Main.spriteBatch, triangleList.ToArray(), true);
+                    triangleList.Add(bars[0]);
+                    triangleList.Add(bars[1]);
+                    triangleList.Add(new VertexInfo((bars[0].position + bars[1].position) * 0.5f + Vector2.Normalize(Projectile.velocity) * 3, Color.White, new Vector3(0, 0.5f, 1)));
+                    for (int i = 0; i < bars.Count - 2; i += 2)
+                    {
+                        triangleList.Add(bars[i]);
+                        triangleList.Add(bars[i + 2]);
+                        triangleList.Add(bars[i + 1]);
+
+                        triangleList.Add(bars[i + 1]);
+                        triangleList.Add(bars[i + 2]);
+                        triangleList.Add(bars[i + 3]);
+                    }
+                    RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
+
+                    Matrix projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
+                    Matrix model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0)) * Main.GameViewMatrix.ZoomMatrix;
+
+                    ef.Parameters["uTransform"].SetValue(model * projection);
+                    ef.Parameters["uTime"].SetValue(-Main.GlobalTimeWrappedHourly + rand);
+                    var trai = new TrailShaderData(ef, projectile, width)
+                    {
+                        colorBegin = mainColor,
+                        trailAnimAdd = rand,
+                        imageHeatmap = Mod.Assets.Request<Texture2D>("Assets/Effects/Heatmap/Blue2").Value,
+                        imageTrace = Mod.Assets.Request<Texture2D>("Assets/Effects/Trace2").Value,
+                        imageTrail = trailImage,
+                    };
+                    trai.Draw(Main.spriteBatch, triangleList.ToArray(), true);
+                }
+            }
+            return true;
+        }
+
+        public override void PostDraw(Color lightColor)
+        {
+            Texture2D misc1 = null;
+            bool misc2 = true;
+            Draw(lightColor, true, ref misc1, ref misc2);
+            Texture2D[] glow =
+            {
+                Mod.Assets.Request<Texture2D>("Assets/Glow/Lamp").Value,
+                Mod.Assets.Request<Texture2D>("Assets/Glow/Teleport").Value,
+            };
+            Vector2 pos = projectile.Center - Main.screenPosition;
+            Color color = CNCUtils.AccurateColor(mainColor2) * ((255f - p.alpha) / 255f); color.A = 0;
+            Main.EntitySpriteDraw(glow[1], pos, null, color, 0f, glow[1].Size() / 2f, Vector2.One / 4f, 0, 0);
+            if (lightAlpha > 0f)
+            {
+                Main.EntitySpriteDraw(glow[1], pos, null, color * lightAlpha, lightRotation, glow[1].Size() / 2f, lightScale, 0, 0);
+                lightAlpha -= .025f;
+                lightRotation += MyMath.deg01 * lightDirection * 2f;
+                lightScale += new Vector2(-1f, 1f) / 40f;
+            }
+            else if (CNC.Random.NextBool(.001))
+            {
+                lightAlpha = 1f;
+                lightRotation = CNC.Random.NextDegree();
+                lightDirection = CNC.Random.NextBool().ToDirectionInt();
+                lightScale = new Vector2(1f, 0f);
             }
         }
+
+        public virtual void Draw(Color lightColor, bool post, ref Texture2D trailImage, ref bool afterImage) { }
 
         public class V1 : SpiritArrow
         {
@@ -251,12 +297,6 @@ namespace CNC.Content.Projectiles.Hostile
                 p.hostile = update;
             }
 
-            public override bool PreDraw(ref Color lightColor)
-            {
-                lightColor = Color.White;
-                if (update) AfterImages(projectile, mainColor * .75f * (255 - p.alpha / 255f), len);
-                return true;
-            }
         }
 
         public class V3 : SpiritArrow
@@ -277,23 +317,6 @@ namespace CNC.Content.Projectiles.Hostile
                     if (Math.Abs(p.velocity.X) > velMax) { p.velocity.X = (p.velocity.X < 0 ? -1 : 1) * velMax; }
                     if (Math.Abs(p.velocity.Y) > velMax) { p.velocity.Y = (p.velocity.Y < 0 ? -1 : 1) * velMax; }
                 }
-                if (len2 < 16) len2++;
-            }
-
-            private int pointX = 0;
-            private int len2 = 0;
-
-            public override bool PreDrawExtras()
-            {
-                Texture2D slash1 = Terraria.ModLoader.ModContent.Request<Texture2D>("CNC/Assets/Effects/Slash1").Value;
-                Texture2D slash2 = Terraria.ModLoader.ModContent.Request<Texture2D>("CNC/Assets/Effects/Slash2").Value;
-                Color _color = mainColor; _color.A = 0;
-                //Drawing.DrawTrail(Main.spriteBatch, slash1, len2, projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, _color, pointX, slash1.Height / 2, .1f, 16);
-                //Drawing.DrawTrail(Main.spriteBatch, slash2, len2, projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, _color, pointX, slash2.Height / 2, .1f, 16);
-                //Drawing.DrawTrailDirect(Main.spriteBatch, slash1, len2, projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, _color, pointX, slash1.Height / 2, new Vector2(1f, .10f), new Vector2(1f, .10f), true, 16);
-                //Drawing.DrawTrailDirect(Main.spriteBatch, slash2, len2, projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, _color, pointX, slash2.Height / 2, new Vector2(1f, .10f), new Vector2(1f, .10f), true, 16);
-                //pointX = (pointX - 15 + slash1.Width) % slash1.Width;
-                return true;
             }
         }
 
@@ -323,7 +346,7 @@ namespace CNC.Content.Projectiles.Hostile
                         Vector4 xywh = new Vector4(x, y, 9, 9);
                         Dust dust = CNCUtils.NewDust(xywh, dustid2, rand[0], CNC.Random.NextFloat(1.5f, 2.5f), default, new Color(0, 234, 118));
                         dust.position = xywh.XY() + p.Size / 2;
-                        dust.velocity = Vector2.Normalize( p.velocity) * 4f;
+                        dust.velocity = Vector2.Normalize(p.velocity) * 4f;
                         dust.color = mainColor;
                         dust.noGravity = true;
                     }
@@ -358,11 +381,9 @@ namespace CNC.Content.Projectiles.Hostile
                 rot += MyMath.deg01 * 5;
             }
 
-            public override bool PreDraw(ref Color lightColor)
+            public override void Draw(Color lightColor, bool post, ref Texture2D trailImage, ref bool afterImage)
             {
-                lightColor = Color.White;
-                if (update) AfterImages(projectile, mainColor * .75f * (255 - p.alpha / 255f), len);
-                return true;
+                afterImage = update;
             }
 
             public override bool PreDrawExtras()
@@ -415,8 +436,7 @@ namespace CNC.Content.Projectiles.Hostile
             public override void Kill(int timeLeft)
             {
                 base.Kill(timeLeft);
-                SoundEngine.PlaySound(SoundID.Item101, this.p.position);//14
-                //SoundEngine.PlaySound(SoundID.Item25, this.p.position);
+                SoundEngine.PlaySound(SoundID.Item101, this.p.position);
             }
         }
 

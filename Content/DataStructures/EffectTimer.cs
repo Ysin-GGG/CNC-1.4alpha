@@ -29,7 +29,7 @@ namespace CNC.Content.DataStructures
         /// <summary>  </summary>
         /// <param name="value">初始值</param>
         /// <param name="type">值变化类型（正/负）</param>
-        /// <param name="delay">值变化延迟</param>
+        /// <param name="delay">值初始变化延迟</param>
         /// <param name="min">最小值</param>
         /// <param name="max">最大值</param>
         /// <param name="addDelay">切换到正变化时的延迟</param>
@@ -75,24 +75,11 @@ namespace CNC.Content.DataStructures
             if (this.delay <= 0) this.value = MyMath.Clamp( this.value + this.type * this.count, this.min, this.max);
         }
 
-        public void UpdateEffectVar()
+        public int GetNextValue()
         {
-            if (delay-- <= 0)
-            {
-                if (type < 0 && value <= min)
-                {
-                    type = 1;
-                    delay = addDelay;
-                }
-                if (type > 0 && value >= max)
-                {
-                    type = -1;
-                    delay = delDelay;
-                }
-            }
-            if (delay <= 0) value += type * count;
-            if (value < min) value = min;
-            if (value > max) value = max;
+            int result = this.value;
+            this.Update();
+            return result;
         }
     }
 }

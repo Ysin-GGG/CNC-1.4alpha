@@ -132,9 +132,10 @@ namespace CNC.Common.Global.Projectiles
             ResetDefaults();
         }
 
-        public void AfterImages(Projectile projectile, Color color, int count = 5, Texture2D image = null)
+        public void AfterImages(Projectile projectile, Color color, int count, Texture2D image, float scaleAdd, float scaleMult)
         {
             Main.instance.LoadProjectile(projectile.type);
+            var stat = new Content.DataStructures.VariagleStatus(1, scaleAdd, 0f, 1f, 1f, scaleMult);
             Texture2D texture = image == null ? TextureAssets.Projectile[projectile.type].Value : image;
             Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, projectile.height * 0.5f);
             int num = projectile.oldPos.Length > count ? count : projectile.oldPos.Length;
@@ -142,9 +143,29 @@ namespace CNC.Common.Global.Projectiles
             {
                 Vector2 drawPos = projectile.oldPos[i] - Main.screenPosition + drawOrigin;
                 Color _color = projectile.GetAlpha(color) * ((num - i) / (float)num);
-                Main.EntitySpriteDraw(texture, drawPos, null, _color, projectile.oldRot[i], drawOrigin, projectile.scale, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(texture, drawPos, null, _color, projectile.oldRot[i], drawOrigin, projectile.scale * stat.GetNextValue(), SpriteEffects.None, 0);
             }
         }
+
+        public void AfterImages(Projectile projectile, Color color, int count, Texture2D image, Vector2 scaleAdd, Vector2 scaleMult)
+        {
+            Main.instance.LoadProjectile(projectile.type);
+            if (scaleAdd == default) scaleAdd = Vector2.Zero;
+            if (scaleMult == default) scaleMult = Vector2.One;
+            var statX = new Content.DataStructures.VariagleStatus(1, scaleAdd.X, 0f, 1f, 1f, scaleMult.X);
+            var statY = new Content.DataStructures.VariagleStatus(1, scaleAdd.Y, 0f, 1f, 1f, scaleMult.Y);
+            Texture2D texture = image == null ? TextureAssets.Projectile[projectile.type].Value : image;
+            Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, projectile.height * 0.5f);
+            int num = projectile.oldPos.Length > count ? count : projectile.oldPos.Length;
+            for (int i = 0; i < num; i++)
+            {
+                Vector2 drawPos = projectile.oldPos[i] - Main.screenPosition + drawOrigin;
+                Color _color = projectile.GetAlpha(color) * ((num - i) / (float)num);
+                Main.EntitySpriteDraw(texture, drawPos, null, _color, projectile.oldRot[i], drawOrigin, projectile.scale * new Vector2(statX.GetNextValue(), statY.GetNextValue()), SpriteEffects.None, 0);
+            }
+        }
+
+
         /// <summary>
         /// Ñ°ÕÒ×î½üµÄNPC
         /// </summary>

@@ -171,6 +171,8 @@ namespace CNC.Content.NPCs.SpiritBoss
             if (rage = mp.EquippedQuartzHead && ((float)Main.player[target].statLifeMax2 / Main.player[target].statLifeMax) > 50)
                 hurtMul = .1f;
 
+            for(int i = 0; i < 200; i++) CNCUtils.NewDust(npc.Center + new Vector2(16f * 100f, 0f).RotatedBy(CNC.Random.NextDegree()), DustId.CyanShortFx1).noGravity = true;
+
             RunAway();
             Intro();
             Normal();
@@ -335,7 +337,8 @@ namespace CNC.Content.NPCs.SpiritBoss
                     Vector2 pos = npc.Center;
                     Vector2 vel = MyMath.GetXY(deg) * 16f;
                     if (stateTick == 71) vel *= .5f;
-                    CNCUtils.NewProj(source, pos, vel, CNCID.Projectile.LegacyObject[CNCID.Projectile.SpiritArrowV3], atkDamage[2], 0, -1, target + 1);
+                    this.NewProjectile(vel, CNCID.Projectile.LegacyObject[CNCID.Projectile.SpiritArrowV3], atkDamage[2]).ai[0] = target + 1;
+                    //CNCUtils.NewProj(source, pos, vel, CNCID.Projectile.LegacyObject[CNCID.Projectile.SpiritArrowV3], atkDamage[2], 0, -1, target + 1);
                 }
             }
             if (stateTick >= (rage ? 90 : 108))

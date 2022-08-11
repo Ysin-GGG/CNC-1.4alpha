@@ -111,7 +111,7 @@ namespace CNC.Content.Projectiles.TheLightOfAuzzsia
             Color color = Color.White;
             lightColor = color;
             color.A = 0;
-            Main.EntitySpriteDraw(MagicAura, pos, null, color * (1 - projectile.alpha / 255f), projectile.rotation, MagicAura.Size() / 2, .2f, 0, 1);
+            Main.EntitySpriteDraw(MagicAura, pos, null, color * (1 - projectile.alpha / 255f), projectile.rotation, MagicAura.Size() / 2, .25f, 0, 1);
             return true;
         }
 
