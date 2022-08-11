@@ -156,6 +156,9 @@ namespace CNC.Common.Utils
             else return (float)(this.rand.NextDouble() * max);
         }
 
+        /// <summary> 从区间[0,1)中随机取双精度浮点数 </summary>
+        public double NextDouble() => this.NextDouble(0, 1);
+
         /// <summary> 
         /// 随机取双精度浮点数
         /// <para> 当max≥0时：从[0, max)中取一个双精度浮点数 </para>

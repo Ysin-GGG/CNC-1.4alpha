@@ -38,13 +38,30 @@ namespace CNC.Content.Projectiles.TheLightOfAuzzsia
             }
         }
 
+        public override void OnSpawn()
+        {
+            rand = CNC.Random.NextDegree();
+            projectile.rotation = rand;
+            projectile.oldPosition = projectile.position;
+        }
+
         public override void AI()
         {
             UpdateOldData(projectile);
-            CNCUtils.NewDust(projectile.Center + new Vector2(0, projectile.height / 2f).RotatedBy(projectile.rotation * projectile.direction), DustId.PurpleLight, 1f, projectile.velocity * .1f);
-            CNCUtils.NewDust(projectile.Center + new Vector2(0, -projectile.height / 2f).RotatedBy(projectile.rotation * projectile.direction), DustId.PurpleLight, 1f, projectile.velocity * .1f);
-            CNCUtils.NewDust(projectile.Center + new Vector2(0, projectile.height / 2f * projectile.direction).RotatedBy(projectile.velocity.ToRotation()), DustId.PurpleLight, 1f, projectile.velocity.RotatedBy(MyMath.deg90) * .1f * projectile.direction);
-            CNCUtils.NewDust(projectile.Center + new Vector2(0, -projectile.height / 2f * projectile.direction).RotatedBy(projectile.velocity.ToRotation()), DustId.PurpleLight, 1f, projectile.velocity.RotatedBy(-MyMath.deg90) * .1f * projectile.direction);
+            CNCUtils.NewDust(projectile.Center + new Vector2(0, projectile.height / 2f).RotatedBy(projectile.rotation * projectile.direction), DustId.PurpleShortFx, 1.2f, projectile.velocity * .5f);
+            CNCUtils.NewDust(projectile.Center + new Vector2(0, -projectile.height / 2f).RotatedBy(projectile.rotation * projectile.direction), DustId.PurpleShortFx, 1.2f, projectile.velocity * .5f);
+            CNCUtils.NewDust(projectile.Center + new Vector2(0, projectile.height / 2f * projectile.direction).RotatedBy(projectile.velocity.ToRotation()), DustId.GreyStone, 1f, projectile.velocity.RotatedBy(MyMath.deg90) * .1f * projectile.direction).noGravity = true;
+            CNCUtils.NewDust(projectile.Center + new Vector2(0, -projectile.height / 2f * projectile.direction).RotatedBy(projectile.velocity.ToRotation()), DustId.GreyStone, 1f, projectile.velocity.RotatedBy(-MyMath.deg90) * .1f * projectile.direction).noGravity = true;
+            float dist = projectile.position.Distance(projectile.oldPosition);
+            if (dist >= 12f)
+            {
+                for (int i = 0; i < dist / 12f; i++)
+                {
+                    Vector2 pos = projectile.Center + (projectile.position - projectile.oldPosition) * (i + 1) / (dist / 12f + 1);
+                    CNCUtils.NewDust(pos + new Vector2(0, projectile.height / 2f * projectile.direction).RotatedBy(projectile.velocity.ToRotation()), DustId.GreyStone, 1f, projectile.velocity.RotatedBy(MyMath.deg90) * .1f * projectile.direction).noGravity = true;
+                    CNCUtils.NewDust(pos + new Vector2(0, -projectile.height / 2f * projectile.direction).RotatedBy(projectile.velocity.ToRotation()), DustId.GreyStone, 1f, projectile.velocity.RotatedBy(-MyMath.deg90) * .1f * projectile.direction).noGravity = true;
+                }
+            }
             projectile.rotation += MyMath.deg30 / 6 * projectile.direction;
             if (projectile.timeLeft > 540) projectile.velocity.X *= 1.0025f; 
             else projectile.velocity.Y += MyMath.g * .01f;
@@ -63,12 +80,28 @@ namespace CNC.Content.Projectiles.TheLightOfAuzzsia
             for (int i = 0; i < max; i++)
             {
                 float amount = i / max * MyMath.pi2;
-                Vector2 vel = new Vector2(6f * MyMath.cos(amount), 18f * MyMath.sin(amount)).RotatedBy(rot);
+                Vector2 vel = new Vector2(6f * MyMath.cos(amount), 18f * MyMath.sin(amount)).RotatedBy((projectile.oldPosition - projectile.position).ToRotation());
                 Dust dust = CNCUtils.NewDust(projectile.Center, DustId.GreyStone, 1.5f, vel);
                 dust.noGravity = true;
                 dust.alpha = 0;
             }
+            for (int i = 0; i < max; i++)
+            {
+                Vector2 vel = (projectile.oldPosition - projectile.position).RotatedBy(CNC.Random.NextDegree(-16f, 16f)) * CNC.Random.NextFloat(.25f, .75f);
+                if (vel.X > 8f || vel.Y > 8f) vel *= 8f / (vel.X > 8f ? vel.X : vel.Y);
+                Dust dust = CNCUtils.NewDust(projectile, DustId.GreyStone, 1.25f, vel);
+                dust.noGravity = false;
+                dust.alpha = 0;
+            }
+            CNCUtils.AddLight(projectile.position, Color.Purple, .6f);
             CNCUtils.PlaySound("TheLightOfAuzzsia/RockHit", projectile, .5f);
+            GenericExplosion e = CNCUtils.CreateExplosion(projectile);
+            e.SetDefaults(Mod.Assets.Request<Texture2D>("Content/Projectiles/TheLightOfAuzzsia/MagicRockExplosion").Value, projectile.Center, Vector2.One * 120, new int[12] { 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2 });
+            e.SetDamage(0, projectile.DamageType, projectile.damage, projectile.knockBack, projectile.CritChance, 0f, 1f);
+            e.SetColor(Lighting.GetColor((int)(projectile.Center.X / 16f), (int)(projectile.Center.Y / 16f)), Color.MediumPurple, .3f);
+            e.SetAlpha(1f, -.025f, 1f);
+            e.SetScale(1f, .0375f, 1f);
+            e.SetRotation((projectile.position - projectile.oldPosition).ToRotation() - MyMath.deg90, 0f, 1f);
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -79,7 +112,6 @@ namespace CNC.Content.Projectiles.TheLightOfAuzzsia
             lightColor = color;
             color.A = 0;
             Main.EntitySpriteDraw(MagicAura, pos, null, color * (1 - projectile.alpha / 255f), projectile.rotation, MagicAura.Size() / 2, .2f, 0, 1);
-            CNCUtils.AddLight(pos, Color.Purple, 2f);
             return true;
         }
 

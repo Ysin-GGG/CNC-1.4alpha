@@ -419,5 +419,15 @@ namespace CNC.Content.Projectiles.Hostile
                 //SoundEngine.PlaySound(SoundID.Item25, this.p.position);
             }
         }
+
+        public class V5 : SpiritArrow
+        {
+
+        }
+
+        public class V6 : SpiritArrow
+        {
+
+        }
     }
 }

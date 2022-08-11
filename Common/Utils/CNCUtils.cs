@@ -8,6 +8,7 @@ using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.Localization;
 using CNC.Common.Global.Projectiles;
+using CNC.Content.Projectiles;
 
 namespace CNC.Common.Utils
 {
@@ -88,7 +89,7 @@ namespace CNC.Common.Utils
         {
             mod = mod ?? CNC.Instance;
             if (!path.StartsWith("Content/Sounds/Custom/")) path = "Content/Sounds/Custom/" + path;
-            SoundEngine.PlaySound(new SoundStyle(mod.Name + "/" + path, SoundType.Sound));
+            SoundEngine.PlaySound(new SoundStyle(mod.Name + "/" + path, SoundType.Sound), position);
             //Terraria.Audio.SoundEngine.PlaySound(SoundLoader.CustomSoundType, (int)position.X, (int)position.Y, SoundLoader.GetSoundSlot(mod == default ? CNC.Instance : mod, path), volume);
         }
 
@@ -96,7 +97,7 @@ namespace CNC.Common.Utils
         {
             mod = mod ?? CNC.Instance;
             if (!path.StartsWith("Content/Sounds/Custom/")) path = "Content/Sounds/Custom/" + path;
-            SoundEngine.PlaySound(new SoundStyle(mod.Name + "/" + path, SoundType.Sound));
+            SoundEngine.PlaySound(new SoundStyle(mod.Name + "/" + path, SoundType.Sound), position);
            // Terraria.Audio.SoundEngine.PlaySound(SoundLoader.CustomSoundType, (int)position.X, (int)position.Y, SoundLoader.GetSoundSlot(mod == default ? CNC.Instance : mod, path), volume, pitch);
         }
 
@@ -207,6 +208,24 @@ namespace CNC.Common.Utils
                 }
             }
             return res;
+        }
+
+        public static GenericExplosion CreateExplosion(Projectile proj = null) 
+        {
+            if (proj != null && proj.ModProjectile is CNCProjectile)
+            {
+                Projectile p = ((CNCProjectile)proj.ModProjectile).NewProjectile(0, 0, CNCID.Projectile.LegacyObject[CNCID.Projectile.GenericExplosion], 0, 0);
+                p.direction = proj.direction;
+                GenericExplosion explosion = (GenericExplosion)p.ModProjectile;
+                return explosion.
+                    SetDefaults(null, proj.Center, Vector2.Zero, null).
+                    SetDamage(0, DamageClass.Default, 0, 0f, 0, 0f, 1f).
+                    SetAlpha(1f, 0f, 1f).
+                    SetScale(0f, 0f, 1f).
+                    SetRotation(0f, 0f, 1f).
+                    SetColor(Color.White, Color.Transparent, 0f);
+            }
+            return null;
         }
     }
 }

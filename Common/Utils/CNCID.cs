@@ -184,7 +184,7 @@ namespace CNC.Common.Utils
             {
             };
         }
-        
+
         public static class Item
         {
             public const short MaxObject = 19;
@@ -229,55 +229,30 @@ namespace CNC.Common.Utils
             public const short SpiritSparkingWand = 19;
             #endregion
 
-            public static Dictionary<string, short> Collection => new Dictionary<string, short>()
+            public static Dictionary<string, short> Collection
             {
-                { "MiracleGem", MiracleGem },
-                { "DestineScroll", DestineScroll },
-                { "FireGrimoire", FireGrimoire },
-                { "IceTooth", IceTooth },
-                { "Superconductor", Superconductor },
-                { "ArgenteusClaw", ArgenteusClaw },
-                { "SpiritWood", SpiritWood },
-                { "TranquilityGem", TranquilityGem },
-                { "SpiritSapling", SpiritSapling },
-                { "TranquilityDirt", TranquilityDirt },
-                { "TranquilityStone", TranquilityStone },
-                { "ArgenteusOathKeeper", ArgenteusOathKeeper },
-                { "TheLightOfAuzzsia", TheLightOfAuzzsia },
-                { "EmberOfNien", EmberOfNien },
-                { "FragmentarySoulDagger", FragmentarySoulDagger },
-                { "SpiritIronGreatsword", SpiritIronGreatsword },
-                { "MysticalLight", MysticalLight },
-                { "ShortDagger", ShortDagger },
-                { "SpiritSparkingWand", SpiritSparkingWand },
-            };
+                get
+                {
+                    Dictionary<string, short> dict = new Dictionary<string, short>();
+                    foreach (var member in typeof(CNCID.Item).GetFields())
+                        if (member.FieldType == typeof(short)) dict.Add(member.Name, (short)member.GetRawConstantValue());
+                    return dict;
+                }
+            }
 
-            public static Dictionary<string, int> LegacyCollection => new Dictionary<string, int>()
+            public static Dictionary<string, int> LegacyCollection
             {
-                { "MiracleGem", LegacyObject[Collection["MiracleGem"]] },
-                { "DestineScroll", LegacyObject[Collection["DestineScroll"]] },
-                { "FireGrimoire", LegacyObject[Collection["FireGrimoire"]] },
-                { "IceTooth", LegacyObject[Collection["IceTooth"]] },
-                { "Superconductor", LegacyObject[Collection["Superconductor"]] },
-                { "ArgenteusClaw", LegacyObject[Collection["ArgenteusClaw"]] },
-                { "SpiritWood", LegacyObject[Collection["SpiritWood"]] },
-                { "TranquilityGem", LegacyObject[Collection["TranquilityGem"]] },
-                { "SpiritSapling", LegacyObject[Collection["SpiritSapling"]] },
-                { "TranquilityDirt", LegacyObject[Collection["TranquilityDirt"]] },
-                { "TranquilityStone", LegacyObject[Collection["TranquilityStone"]] },
-                { "ArgenteusOathKeeper", LegacyObject[Collection["ArgenteusOathKeeper"]] },
-                { "TheLightOfAuzzsia", LegacyObject[Collection["TheLightOfAuzzsia"]] },
-                { "EmberOfNien", LegacyObject[Collection["EmberOfNien"]] },
-                { "FragmentarySoulDagger", LegacyObject[Collection["FragmentarySoulDagger"]] },
-                { "SpiritIronGreatsword", LegacyObject[Collection["SpiritIronGreatsword"]] },
-                { "MysticalLight", LegacyObject[Collection["MysticalLight"]] },
-                { "ShortDagger", LegacyObject[Collection["ShortDagger"]] },
-                { "SpiritSparkingWand", LegacyObject[Collection["SpiritSparkingWand"]] },
-            };
+                get
+                {
+                    Dictionary<string, int> dict = new Dictionary<string, int>();
+                    foreach (var member in typeof(CNCID.Item).GetFields())
+                        if (member.FieldType == typeof(short)) dict.Add(member.Name, LegacyObject[Collection[member.Name]]);
+                    return dict;
+                }
+            }
 
             public static Dictionary<short, int> LegacyObject => new Dictionary<short, int>()
             {
-
                 { MiracleGem, ItemType<Content.Items.MiracleGem>() },
                 { DestineScroll, ItemType<Content.Items.DestineScroll>() },
                 { FireGrimoire, ItemType<Content.Items.Weapons.Magic.FireGrimoire>() },
@@ -662,27 +637,27 @@ namespace CNC.Common.Utils
             /// <summary> ÊØ»¤Ë®¾§ </summary>
             public const short SpiritCrystal = 7;
             #endregion
-            public static Dictionary<string, short> Collection => new Dictionary<string, short>()
+            public static Dictionary<string, short> Collection
             {
-                { "Mentor", Mentor },
-                { "TranquilityPixie", TranquilityPixie },
-                { "PhantomBat", PhantomBat },
-                { "PhantomSlime", PhantomSlime },
-                //{ "PhantomFlame", PhantomFlame },
-                { "SpiritBoss", SpiritBoss },
-                { "SpiritCrystal", SpiritCrystal },
-            };
+                get
+                {
+                    Dictionary<string, short> dict = new Dictionary<string, short>();
+                    foreach (var member in typeof(CNCID.Item).GetFields())
+                        if (member.FieldType == typeof(short)) dict.Add(member.Name, (short)member.GetRawConstantValue());
+                    return dict;
+                }
+            }
 
-            public static Dictionary<string, int> LegacyCollection => new Dictionary<string, int>()
+            public static Dictionary<string, int> LegacyCollection
             {
-                { "Mentor", LegacyObject[Collection["Mentor"]] },
-                { "TranquilityPixie", LegacyObject[Collection["TranquilityPixie"]] },
-                { "PhantomBat", LegacyObject[Collection["PhantomBat"]] },
-                { "PhantomSlime", LegacyObject[Collection["PhantomSlime"]] },
-                //{ "PhantomFlame", LegacyObject[Collection["PhantomFlame"]] },
-                { "SpiritBoss", LegacyObject[Collection["SpiritBoss"]] },
-                { "SpiritCrystal", LegacyObject[Collection["SpiritCrystal"]] },
-            };
+                get
+                {
+                    Dictionary<string, int> dict = new Dictionary<string, int>();
+                    foreach (var member in typeof(CNCID.Item).GetFields())
+                        if (member.FieldType == typeof(short)) dict.Add(member.Name, LegacyObject[Collection[member.Name]]);
+                    return dict;
+                }
+            }
 
             public static Dictionary<short, int> LegacyObject => new Dictionary<short, int>()
             {
@@ -698,7 +673,7 @@ namespace CNC.Common.Utils
 
         public static class Projectile
         {
-            public const short MaxObject = 21;
+            public const short MaxObject = 24;
             #region ID
             /// <summary> Ä§·¨·Éµ¯ </summary>
             public const short MentorMissile = 1;
@@ -712,86 +687,64 @@ namespace CNC.Common.Utils
             public const short SpiritArrowV3 = 5;
             /// <summary> ÁéÆøÊ¸ </summary>
             public const short SpiritArrowV4 = 6;
+            /// <summary> ÁéÆøÊ¸ </summary>
+            public const short SpiritArrowV5 = 7;
+            /// <summary> ÁéÆøÊ¸ </summary>
+            public const short SpiritArrowV6 = 8;
             /// <summary> »ðÇò </summary>
-            public const short FireBall = 7;
+            public const short FireBall = 9;
             /// <summary> Ñ×±¬ </summary>
-            public const short FireBallExplosion = 8;
+            public const short FireBallExplosion = 10;
             /// <summary> ±ùÑÀ </summary>
-            public const short DentateIce = 9;
+            public const short DentateIce = 11;
             /// <summary> ±ù»¨ </summary>
-            public const short DentateIceExplosion = 10;
+            public const short DentateIceExplosion = 12;
             /// <summary> Ëª³± </summary>
-            public const short FrostWave = 11;
+            public const short FrostWave = 13;
             /// <summary> ÉÁµçµ¯ </summary>
-            public const short LightningMissile = 12;
+            public const short LightningMissile = 14;
             /// <summary> ÉÁµç±¬ÆÆ </summary>
-            public const short LightningExplosion = 13;
+            public const short LightningExplosion = 15;
             /// <summary> ¹ýÔØÉÁµçµ¯ </summary>
-            public const short OverloadedLightningMissile = 14;
+            public const short OverloadedLightningMissile = 16;
             /// <summary> ¹ýÔØ±¬ÆÆ </summary>
-            public const short OverloadedLightningExplosion = 15;
+            public const short OverloadedLightningExplosion = 17;
             /// <summary> ÉÁµçÁ´ </summary>
-            public const short LightningChain = 16;
+            public const short LightningChain = 18;
             /// <summary> Òø°×Ê¸ </summary>
-            public const short SilveryArrow = 17;
+            public const short SilveryArrow = 19;
             /// <summary> ÖÁÊ¥Ê¸ </summary>
-            public const short SanctifiedArrow = 18;
+            public const short SanctifiedArrow = 20;
             /// <summary> ÖÁÊ¥Éä»÷ </summary>
-            public const short SanctifiedArrowShoot = 19;
+            public const short SanctifiedArrowShoot = 21;
             /// <summary> ÖÁÊ¥±¬ÆÆ </summary>
-            public const short SanctifiedExplosion = 20;
+            public const short SanctifiedExplosion = 22;
             /// <summary> Ä§·¨ÑÒÊ¯ </summary>
-            public const short MagicRock = 21;
+            public const short MagicRock = 23;
+            /// <summary> ±¬Õ¨ </summary>
+            public const short GenericExplosion = 24;
             #endregion
-            public static Dictionary<string, short> Collection => new Dictionary<string, short>()
+            public static Dictionary<string, short> Collection
             {
-                { "MentorMissile", MentorMissile },
-                { "SpiritMass", SpiritMass },
-                { "SpiritArrowV1", SpiritArrowV1 },
-                { "SpiritArrowV2", SpiritArrowV2 },
-                { "SpiritArrowV3", SpiritArrowV3 },
-                { "SpiritArrowV4", SpiritArrowV4 },
-                { "FireBall", FireBall },
-                { "FireBallExplosion", FireBallExplosion },
-                { "DentateIce", DentateIce },
-                { "DentateIceExplosion", DentateIceExplosion },
-                { "FrostWave", FrostWave },
-                { "LightningMissile", LightningMissile },
-                { "LightningExplosion", LightningExplosion },
-                { "OverloadedLightningMissile", OverloadedLightningMissile },
-                { "OverloadedLightningExplosion", OverloadedLightningExplosion },
-                { "LightningChain", LightningChain },
-                { "SilveryArrow", SilveryArrow },
-                { "SanctifiedArrow", SanctifiedArrow },
-                { "SanctifiedArrowShoot", SanctifiedArrowShoot },
-                { "SanctifiedExplosion", SanctifiedExplosion },
-                { "MagicRock", MagicRock },
-            };
+                get
+                {
+                    Dictionary<string, short> dict = new Dictionary<string, short>();
+                    foreach (var member in typeof(CNCID.Item).GetFields())
+                        if (member.FieldType == typeof(short)) dict.Add(member.Name, (short)member.GetRawConstantValue());
+                    return dict;
+                }
+            }
 
-            public static Dictionary<string, int> LegacyCollection => new Dictionary<string, int>()
+            public static Dictionary<string, int> LegacyCollection
             {
-                { "MentorMissile", LegacyObject[Collection["MentorMissile"]] },
-                { "SpiritMass", LegacyObject[Collection["SpiritMass"]] },
-                { "SpiritArrowV1", LegacyObject[Collection["SpiritArrowV1"]] },
-                { "SpiritArrowV2", LegacyObject[Collection["SpiritArrowV2"]] },
-                { "SpiritArrowV3", LegacyObject[Collection["SpiritArrowV3"]] },
-                { "SpiritArrowV4", LegacyObject[Collection["SpiritArrowV4"]] },
-                { "FireBall", LegacyObject[Collection["FireBall"]] },
-                { "FireBallExplosion", LegacyObject[Collection["FireBallExplosion"]] },
-                { "DentateIce", LegacyObject[Collection["DentateIce"]] },
-                { "DentateIceExplosion", LegacyObject[Collection["DentateIceExplosion"]] },
-                { "FrostWave", LegacyObject[Collection["FrostWave"]] },
-                { "LightningMissile", LegacyObject[Collection["LightningMissile"]] },
-                { "LightningExplosion", LegacyObject[Collection["LightningExplosion"]] },
-                { "OverloadedLightningMissile", LegacyObject[Collection["OverloadedLightningMissile"]] },
-                { "OverloadedLightningExplosion", LegacyObject[Collection["OverloadedLightningExplosion"]] },
-                { "LightningChain", LegacyObject[Collection["LightningChain"]] },
-                { "SilveryArrow", LegacyObject[Collection["SilveryArrow"]] },
-                { "SanctifiedArrow", LegacyObject[Collection["SanctifiedArrow"]] },
-                { "SanctifiedArrowShoot", LegacyObject[Collection["SanctifiedArrowShoot"]] },
-                { "SanctifiedExplosion", LegacyObject[Collection["SanctifiedExplosion"]] },
-                { "MagicRock", LegacyObject[Collection["MagicRock"]] },
-            };
+                get
+                {
+                    Dictionary<string, int> dict = new Dictionary<string, int>();
+                    foreach (var member in typeof(CNCID.Item).GetFields())
+                        if (member.FieldType == typeof(short)) dict.Add(member.Name, LegacyObject[Collection[member.Name]]);
+                    return dict;
+                }
+            }
 
             public static Dictionary<short, int> LegacyObject => new Dictionary<short, int>()
             {
@@ -801,6 +754,8 @@ namespace CNC.Common.Utils
                 { SpiritArrowV2, ProjectileType<Content.Projectiles.Hostile.SpiritArrow.V2>() },
                 { SpiritArrowV3, ProjectileType<Content.Projectiles.Hostile.SpiritArrow.V3>() },
                 { SpiritArrowV4, ProjectileType<Content.Projectiles.Hostile.SpiritArrow.V4>() },
+                { SpiritArrowV5, ProjectileType<Content.Projectiles.Hostile.SpiritArrow.V5>() },
+                { SpiritArrowV6, ProjectileType<Content.Projectiles.Hostile.SpiritArrow.V6>() },
                 { FireBall, ProjectileType<Content.Projectiles.FireGrimoire.FireBall>() },
                 { FireBallExplosion, ProjectileType<Content.Projectiles.FireGrimoire.FireBallExplosion>() },
                 { DentateIce, ProjectileType<Content.Projectiles.IceTooth.DentateIce>() },
@@ -815,7 +770,8 @@ namespace CNC.Common.Utils
                 { SanctifiedArrow, ProjectileType<Content.Projectiles.ArgenteusClaw.SanctifiedArrow>() },
                 { SanctifiedArrowShoot, ProjectileType<Content.Projectiles.ArgenteusClaw.SanctifiedArrowShoot>() },
                 { SanctifiedExplosion, ProjectileType<Content.Projectiles.ArgenteusClaw.SanctifiedExplosion>() },
-                { MagicRock, ProjectileType<Content.Projectiles.TheLightOfAuzzsia.MagicRock>() }
+                { MagicRock, ProjectileType<Content.Projectiles.TheLightOfAuzzsia.MagicRock>() },
+                { GenericExplosion, ProjectileType<Content.Projectiles.GenericExplosion>() }
             };
         }
 
@@ -862,31 +818,27 @@ namespace CNC.Common.Utils
             public const short TranquilityPlants2 = 8;
             public const short TranquilityVines = 9;
             #endregion
-            public static Dictionary<string, short> Collection => new Dictionary<string, short>()
+            public static Dictionary<string, short> Collection
             {
-                { "TranquilityDirt", TranquilityDirt },
-                { "TranquilityStone", TranquilityStone },
-                { "TranquilityGrass", TranquilityGrass },
-                { "SpiritWood", SpiritWood },
-                { "SpiritSapling", SpiritSapling },
-                { "TranquilityGemSapling", TranquilityGemSapling },
-                { "TranquilityPlants1", TranquilityPlants1 },
-                { "TranquilityPlants2", TranquilityPlants2 },
-                { "TranquilityVines", TranquilityVines },
-            };
+                get
+                {
+                    Dictionary<string, short> dict = new Dictionary<string, short>();
+                    foreach (var member in typeof(CNCID.Item).GetFields())
+                        if (member.FieldType == typeof(short)) dict.Add(member.Name, (short)member.GetRawConstantValue());
+                    return dict;
+                }
+            }
 
-            public static Dictionary<string, int> LegacyCollection => new Dictionary<string, int>()
+            public static Dictionary<string, int> LegacyCollection
             {
-                { "TranquilityDirt", LegacyObject[Collection["TranquilityDirt"]] },
-                { "TranquilityStone", LegacyObject[Collection["TranquilityStone"]] },
-                { "TranquilityGrass", LegacyObject[Collection["TranquilityGrass"]] },
-                { "SpiritWood", LegacyObject[Collection["SpiritWood"]] },
-                { "SpiritSapling", LegacyObject[Collection["SpiritSapling"]] },
-                { "TranquilityGemSapling", LegacyObject[Collection["TranquilityGemSapling"]] },
-                { "TranquilityPlants1", LegacyObject[Collection["TranquilityPlants1"]] },
-                { "TranquilityPlants2", LegacyObject[Collection["TranquilityPlants2"]] },
-                { "TranquilityVines", LegacyObject[Collection["TranquilityVines"]] },
-            };
+                get
+                {
+                    Dictionary<string, int> dict = new Dictionary<string, int>();
+                    foreach (var member in typeof(CNCID.Item).GetFields())
+                        if (member.FieldType == typeof(short)) dict.Add(member.Name, LegacyObject[Collection[member.Name]]);
+                    return dict;
+                }
+            }
 
             public static Dictionary<short, int> LegacyObject => new Dictionary<short, int>()
             {

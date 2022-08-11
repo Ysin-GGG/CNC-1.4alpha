@@ -103,8 +103,16 @@ namespace CNC.Content.DataStructures
             return bars;
         }
 
+        /// <summary> 计算生成三角形列 </summary>
+        /// <param name="bars">直线列表</param>
+        /// <param name="vel">速度矢量</param>
+        /// <param name="mult">倍数</param>
         public static List<VertexInfo> GetTriangleList(List<VertexInfo> bars, Vector2 vel, float mult)
             => GetTriangleList(bars, Vector2.Normalize(vel) * mult);
+
+        /// <summary> 计算生成三角形列 </summary>
+        /// <param name="bars">直线列表</param>
+        /// <param name="beginOffset">拖尾头部坐标偏移</param>
         public static List<VertexInfo> GetTriangleList(List<VertexInfo> bars, Vector2 beginOffset)
         {
             if (bars.Count > 2)
@@ -155,21 +163,22 @@ namespace CNC.Content.DataStructures
             {
                 VertexInfo begin = new VertexInfo(firstPos == default ? (vertex[0].position + vertex[1].position) / 2f + Vector2.Normalize(proj.velocity) * width2 : firstPos, Color.White, new Vector3(0.0f, 0.5f, 1.0f));
                 triangleList.Clear();
+                //↓第一个三角形比较特殊，因为是拖尾的头部
                 triangleList.Add(vertex[0]);
                 triangleList.Add(vertex[1]);
                 triangleList.Add(begin);
                 for (int i = 0; i < vertex.Count - 2; i += 2)
                 {
+                    //↓第二个三角形
                     triangleList.Add(vertex[i + 0]);
                     triangleList.Add(vertex[i + 2]);
                     triangleList.Add(vertex[i + 1]);
-
+                    //↓第三个三角形
                     triangleList.Add(vertex[i + 1]);
                     triangleList.Add(vertex[i + 2]);
                     triangleList.Add(vertex[i + 3]);
+                    //以此类推生成...
                 }
-                //0 2
-                //1 3
             }
 
             if (useTransform)
@@ -181,12 +190,19 @@ namespace CNC.Content.DataStructures
             if (useTime) shader.Parameters["uTime"].SetValue(trailAnimMult * (trailAnimAdd - Main.GlobalTimeWrappedHourly));
         }
 
+        /// <summary> 根据每帧的直线生成三角形列后绘制拖尾 </summary>
+        /// <param name="bars">直线列表</param>
+        /// <param name="firstPos">拖尾的头部坐标</param>
+        /// <param name="init">将SpriteBatch初始化</param>
         public virtual void Draw(SpriteBatch spriteBatch, List<VertexInfo> vertex = null, Vector2 firstPos = default, bool init = true)
         {
             this.Calculate(vertex, default);
             this.Draw(spriteBatch, this.triangleList.ToArray(), init);
         }
-        
+
+        /// <summary> 根据三角形列直接绘制拖尾 </summary>
+        /// <param name="triangleList">三角形列</param>
+        /// <param name="init">将SpriteBatch初始化</param>
         public virtual void Draw(SpriteBatch spriteBatch, VertexInfo[] triangleList, bool init = true)
         {
             if (init)
@@ -218,8 +234,8 @@ namespace CNC.Content.DataStructures
                 Main.graphics.GraphicsDevice.SamplerStates[2] = samplerTrail;
             }
 
-            if (shader != null) shader.CurrentTechnique.Passes[0].Apply();
-            Main.pixelShader.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, triangleList.Length / 3);
+            if (shader != null) shader.CurrentTechnique.Passes[0].Apply();//引用着色器pass通道
+            Main.pixelShader.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, triangleList.Length / 3);//依据三角形列绘制拖尾
             Main.graphics.GraphicsDevice.RasterizerState = originalState;
 
             spriteBatch.End();
@@ -227,3 +243,114 @@ namespace CNC.Content.DataStructures
         }
     }
 }
+/*
+        public virtual void Calculate(List<VertexInfo> vertex = null, Vector2 firstPos = default)
+        {
+            if (this.shader == null) this.shader = ModContent.Request<Effect>("CNC/Content/Effects/Trail").Value;
+            if (vertex == null)
+            {
+                vertex = new List<VertexInfo>();
+                if (proj != null)
+                {
+                    for (int i = 1; i < proj.oldPos.Length; i++)
+                    {
+                        if (proj.oldPos[i] == Vector2.Zero) break;
+                        Vector2 normalVector = proj.oldPos[i - 1] - proj.oldPos[i];
+                        normalVector = Vector2.Normalize(new Vector2(-normalVector.Y, normalVector.X));
+                        float amount = (float)i / proj.oldPos.Length;
+                        Color color = Color.Lerp(colorBegin, colorEnd, amount) * (proj.alpha / 255f);
+                        float w = MyMath.Lerp(1f, .05f, amount);
+
+                        vertex.Add(new VertexInfo(proj.oldPos[i] + proj.Size / 2f + normalVector * width, color, new Vector3((float)Math.Sqrt(amount), 1, w)));
+                        vertex.Add(new VertexInfo(proj.oldPos[i] + proj.Size / 2f - normalVector * width, color, new Vector3((float)Math.Sqrt(amount), 0, w)));
+                    }
+                }
+                this.vertex = vertex;
+            }
+
+            if (vertex.Count > 2)
+            {
+                VertexInfo begin = new VertexInfo(firstPos == default ? (vertex[0].position + vertex[1].position) / 2f + Vector2.Normalize(proj.velocity) * width2 : firstPos, Color.White, new Vector3(0.0f, 0.5f, 1.0f));
+                triangleList.Clear();
+                //↓第一个三角形比较特殊，因为是拖尾的头部
+                triangleList.Add(vertex[0]);
+                triangleList.Add(vertex[1]);
+                triangleList.Add(begin);
+                for (int i = 0; i < vertex.Count - 2; i += 2)
+                {
+                    //↓第二个三角形
+                    triangleList.Add(vertex[i + 0]);
+                    triangleList.Add(vertex[i + 2]);
+                    triangleList.Add(vertex[i + 1]);
+                    //↓第三个三角形
+                    triangleList.Add(vertex[i + 1]);
+                    triangleList.Add(vertex[i + 2]);
+                    triangleList.Add(vertex[i + 3]);
+                    //以此类推生成...
+                }
+                //三角形顶点顺序如下
+                //0 2
+                //1 3
+                if (useTransform)
+                {
+                    Matrix projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
+                    Matrix model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0)) * Main.GameViewMatrix.ZoomMatrix;
+                    shader.Parameters["uTransform"].SetValue(model * projection);
+                }
+                if (useTime) shader.Parameters["uTime"].SetValue(trailAnimMult * (trailAnimAdd - Main.GlobalTimeWrappedHourly));
+            }
+
+        }
+
+        /// <summary> 根据每帧的直线生成三角形列后绘制拖尾 </summary>
+        /// <param name="bars">直线列表</param>
+        /// <param name="firstPos">拖尾的头部坐标</param>
+        /// <param name="init">将SpriteBatch初始化</param>
+        public virtual void Draw(SpriteBatch spriteBatch, List<VertexInfo> bars = null, Vector2 firstPos = default, bool init = true)
+        {
+            this.Calculate(vertex, default);
+            this.Draw(spriteBatch, this.triangleList.ToArray(), init);
+        }
+
+        /// <summary> 根据三角形列直接绘制拖尾 </summary>
+        /// <param name="triangleList">三角形列</param>
+        /// <param name="init">将SpriteBatch初始化</param>
+        public virtual void Draw(SpriteBatch spriteBatch, VertexInfo[] triangleList, bool init = true)
+        {
+            if (init)
+            {
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            }
+
+            RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
+
+            RasterizerState rasterizerState = new RasterizerState();
+            rasterizerState.CullMode = CullMode.None;
+            rasterizerState.FillMode = FillMode.WireFrame;
+            //Main.graphics.GraphicsDevice.RasterizerState = rasterizerState;//显示三角形栅格
+
+            if (imageHeatmap != null)
+            {
+                Main.graphics.GraphicsDevice.Textures[0] = imageHeatmap;
+                Main.graphics.GraphicsDevice.SamplerStates[0] = samplerHeatmap;
+            }
+            if (imageTrace != null)
+            {
+                Main.graphics.GraphicsDevice.Textures[1] = imageTrace;
+                Main.graphics.GraphicsDevice.SamplerStates[1] = samplerTrace;
+            }
+            if (imageTrail != null)
+            {
+                Main.graphics.GraphicsDevice.Textures[2] = imageTrail;
+                Main.graphics.GraphicsDevice.SamplerStates[2] = samplerTrail;
+            }
+
+            Main.graphics.GraphicsDevice.RasterizerState = originalState;
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+        }
+    }
+}
+*/
