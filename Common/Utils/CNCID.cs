@@ -187,7 +187,7 @@ namespace CNC.Common.Utils
 
         public static class Item
         {
-            public const short MaxObject = 19;
+            public const short MaxObject = 20;
             #region ID
             /// <summary> ¾²Ú×±¦Ê¯ </summary>
             public const short MiracleGem = 1;
@@ -264,9 +264,9 @@ namespace CNC.Common.Utils
                 { SpiritSapling, ItemType<Content.Items.SpiritSapling>() },
                 { TranquilityDirt, ItemType<Content.Items.TranquilityDirt>() },
                 { TranquilityStone, ItemType<Content.Items.TranquilityStone>() },
-                //{ ArgenteusOathKeeper, ItemType<Content.Items.>() },
+                { ArgenteusOathKeeper, ItemType<Content.Items.Weapons.Melee.TwoHandedSword.ArgenteusOathKeeper>() },
                 { TheLightOfAuzzsia, ItemType<Content.Items.Weapons.Magic.TheLightOfAuzzsia>() },
-                //{ EmberOfNien, ItemType<Content.Items.>() },
+                { EmberOfNien, ItemType<Content.Items.Weapons.Melee.Hammer.EmberOfNien>() },
                 //{ FragmentarySoulDagger, ItemType<Content.Items.>() },
                 //{ SpiritIronGreatsword, ItemType<Content.Items.>() },
                 //{ MysticalLight, ItemType<Content.Items.>() },
@@ -288,7 +288,7 @@ namespace CNC.Common.Utils
                 { LegacyObject[SpiritSapling], SpiritSapling },
                 { LegacyObject[TranquilityDirt], TranquilityDirt },
                 { LegacyObject[TranquilityStone], TranquilityStone },
-                //{ LegacyObject[ArgenteusOathKeeper], ArgenteusOathKeeper },
+                { LegacyObject[ArgenteusOathKeeper], ArgenteusOathKeeper },
                 { LegacyObject[TheLightOfAuzzsia], TheLightOfAuzzsia },
                 //{ LegacyObject[EmberOfNien], EmberOfNien },
                 //{ LegacyObject[FragmentarySoulDagger], FragmentarySoulDagger },
@@ -673,7 +673,7 @@ namespace CNC.Common.Utils
 
         public static class Projectile
         {
-            public const short MaxObject = 25;
+            public const short MaxObject = 26;
             #region ID
             /// <summary> Ä§·¨·Éµ¯ </summary>
             public const short MentorMissile = 1;
@@ -725,6 +725,8 @@ namespace CNC.Common.Utils
             public const short GenericExplosion = 24;
             /// <summary> Ê¥ÁéÖ®ÂÖ </summary>
             public const short AnnulusOfPneuma = 25;
+            /// <summary> Òø°×µ¶¹â </summary>
+            public const short AttackProjectile1 = 26;
             #endregion
             public static Dictionary<string, short> Collection
             {
@@ -775,6 +777,7 @@ namespace CNC.Common.Utils
                 { MagicRock, ProjectileType<Content.Projectiles.TheLightOfAuzzsia.MagicRock>() },
                 { GenericExplosion, ProjectileType<Content.Projectiles.GenericExplosion>() },
                 { AnnulusOfPneuma, ProjectileType<Content.Projectiles.Hostile.AnnulusOfPneuma>() },
+                { AttackProjectile1, ProjectileType<Content.Projectiles.ArgenteusOathKeeper.AttackProjectile1>() },
             };
         }
 
