@@ -165,6 +165,8 @@ namespace CNC.Common.Utils
             //public static Color GenericCrit => CNCUtils.AccurateColor(255, 196, 85, 0, true);
             //public static Color GenericCrit => CNCUtils.AccurateColor(179, 175, 50, 0, true);
             //public static Color GenericCrit => CNCUtils.AccurateColor(103, 43, 159, 0, true);
+            public static Color SpiritBoss => CNCUtils.AccurateColor(178, 214, 231, 255, true);
+            public static Color SpiritBoss2 => CNCUtils.AccurateColor(178, 214, 231, 0, false);
         }
 
         public static class Dust
@@ -673,7 +675,7 @@ namespace CNC.Common.Utils
 
         public static class Projectile
         {
-            public const short MaxObject = 26;
+            public const short MaxObject = 29;
             #region ID
             /// <summary> Ä§·¨·Éµ¯ </summary>
             public const short MentorMissile = 1;
@@ -721,12 +723,18 @@ namespace CNC.Common.Utils
             public const short SanctifiedExplosion = 22;
             /// <summary> Ä§·¨ÑÒÊ¯ </summary>
             public const short MagicRock = 23;
+            /// <summary> Ê¥Áé¹âÂÖ </summary>
+            public const short AnnulusOfPneuma = 24;
+            /// <summary> ÖÚÁéÖ®Ô¸ </summary>
+            public const short MeteorSummoner = 25;
+            /// <summary> ÆÆÍÁ¼¬´Ì </summary>
+            public const short GiantBranch = 26;
             /// <summary> ±¬Õ¨ </summary>
-            public const short GenericExplosion = 24;
-            /// <summary> Ê¥ÁéÖ®ÂÖ </summary>
-            public const short AnnulusOfPneuma = 25;
+            public const short GenericExplosion = 27;
+            /// <summary> Õ¶»÷ </summary>
+            public const short GenericSlash = 28;
             /// <summary> Òø°×µ¶¹â </summary>
-            public const short AttackProjectile1 = 26;
+            public const short AttackProjectile1 = 29;
             #endregion
             public static Dictionary<string, short> Collection
             {
@@ -775,8 +783,11 @@ namespace CNC.Common.Utils
                 { SanctifiedArrowShoot, ProjectileType<Content.Projectiles.ArgenteusClaw.SanctifiedArrowShoot>() },
                 { SanctifiedExplosion, ProjectileType<Content.Projectiles.ArgenteusClaw.SanctifiedExplosion>() },
                 { MagicRock, ProjectileType<Content.Projectiles.TheLightOfAuzzsia.MagicRock>() },
-                { GenericExplosion, ProjectileType<Content.Projectiles.GenericExplosion>() },
                 { AnnulusOfPneuma, ProjectileType<Content.Projectiles.Hostile.AnnulusOfPneuma>() },
+                { MeteorSummoner, ProjectileType<Content.Projectiles.Hostile.MeteorSummoner>() },
+                { GiantBranch, ProjectileType<Content.Projectiles.Hostile.GiantBranch>() },
+                { GenericExplosion, ProjectileType<Content.Projectiles.GenericExplosion>() },
+                { GenericSlash, ProjectileType<Content.Projectiles.GenericExplosion>() },
                 { AttackProjectile1, ProjectileType<Content.Projectiles.ArgenteusOathKeeper.AttackProjectile1>() },
             };
         }

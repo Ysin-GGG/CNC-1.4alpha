@@ -111,24 +111,24 @@ namespace CNC.Content.Projectiles.TheLightOfAuzzsia
             Color color = Color.White;
             lightColor = color;
             color.A = 0;
-            Main.EntitySpriteDraw(MagicAura, pos, null, color * (1 - projectile.alpha / 255f), projectile.rotation, MagicAura.Size() / 2, .25f, 0, 1);
+            Main.EntitySpriteDraw(MagicAura, pos, null, color * (1 - projectile.alpha / 255f), projectile.rotation, MagicAura.Size() / 2, .2f, 0, 1);
             return true;
         }
 
         public override void PostDraw(Color lightColor)
         {
             Effect ef = Mod.Assets.Request<Effect>("Content/Effects/Trail").Value;
-            List<VertexInfo> bars = TrailShaderData.GetBars(projectile, 64, 2f, 3f, true, 1f, 2.5f, -1);
+            List<VertexInfo> bars = TrailShaderData.GetBars(projectile, 64, 2f, 3f, true, 1f, 2.5f, -1, false);
             if (bars.Count > 2)
             {
                 ef.Parameters["uTransform"].SetValue(transform);
-                ef.Parameters["uTime"].SetValue(rand - Main.GlobalTimeWrappedHourly);
+                ef.Parameters["uTime"].SetValue(0f);
                 var trai = new TrailShaderData(ef, projectile, 64)
                 {
                     width2 = 32f,
                     imageHeatmap = Mod.Assets.Request<Texture2D>("Assets/Effects/Heatmap/Grey2").Value,
-                    imageTrace = Mod.Assets.Request<Texture2D>("Assets/Effects/GlowTrail1").Value,
-                    imageTrail = Mod.Assets.Request<Texture2D>("Assets/Effects/Trace2").Value,
+                    imageTrace = Mod.Assets.Request<Texture2D>("Assets/Effects/Metero1").Value,
+                    imageTrail = Mod.Assets.Request<Texture2D>("Assets/Effects/Metero1").Value,
                 };
                 trai.Draw(Main.spriteBatch, bars);
             }

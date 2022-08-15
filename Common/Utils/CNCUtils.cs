@@ -76,6 +76,12 @@ namespace CNC.Common.Utils
             return Dust.NewDustDirect(pos + _range + CNC.Random.NextVector2(target.Size), 0, 0, id, vel.X, vel.Y, color.A, color, scale);
         }
 
+        public static void PlaySound(SoundStyle sound, Entity target)
+            => PlaySound(sound, target.position);
+
+        public static void PlaySound(SoundStyle sound, Vector2 position)
+            => SoundEngine.PlaySound(sound, position);
+
         public static void PlaySound(string path, Entity target, Mod mod = null)
             => PlaySound(path, target.position, 1f, mod ?? CNC.Instance);
 
@@ -210,15 +216,46 @@ namespace CNC.Common.Utils
             return res;
         }
 
-        public static GenericExplosion CreateExplosion(Projectile proj = null) 
+        public static GenericExplosion CreateExplosion(Terraria.DataStructures.IEntitySource source)
         {
-            if (proj != null && proj.ModProjectile is CNCProjectile)
+            Projectile p = CNCUtils.NewProj(source, Vector2.Zero, Vector2.Zero, CNCID.Projectile.LegacyObject[CNCID.Projectile.GenericExplosion], 0, 0);
+            GenericExplosion explosion = (GenericExplosion)p.ModProjectile;
+            return explosion.
+                SetDefaults(null, Vector2.Zero, Vector2.Zero, null).
+                SetDamage(0, DamageClass.Default, 0, 0f, 0, 0f, 1f).
+                SetAlpha(1f, 0f, 1f).
+                SetScale(0f, 0f, 1f).
+                SetRotation(0f, 0f, 1f).
+                SetColor(Color.White, Color.Transparent, 0f);
+        }
+
+        public static GenericExplosion CreateExplosion(Projectile proj)
+        {
+            if (proj != null && proj.ModProjectile is Global.Projectiles.CNCProjectile)
             {
-                Projectile p = ((CNCProjectile)proj.ModProjectile).NewProjectile(0, 0, CNCID.Projectile.LegacyObject[CNCID.Projectile.GenericExplosion], 0, 0);
+                Projectile p = ((Global.Projectiles.CNCProjectile)proj.ModProjectile).NewProjectile(0, 0, CNCID.Projectile.LegacyObject[CNCID.Projectile.GenericExplosion], 0, 0);
                 p.direction = proj.direction;
                 GenericExplosion explosion = (GenericExplosion)p.ModProjectile;
                 return explosion.
                     SetDefaults(null, proj.Center, Vector2.Zero, null).
+                    SetDamage(0, DamageClass.Default, 0, 0f, 0, 0f, 1f).
+                    SetAlpha(1f, 0f, 1f).
+                    SetScale(0f, 0f, 1f).
+                    SetRotation(0f, 0f, 1f).
+                    SetColor(Color.White, Color.Transparent, 0f);
+            }
+            return null;
+        }
+
+        public static GenericExplosion CreateExplosion(NPC npc)
+        {
+            if (npc != null && npc.ModNPC is Global.NPCs.CNCNPC)
+            {
+                Projectile p = ((Global.NPCs.CNCNPC)npc.ModNPC).NewProjectile(0, 0, CNCID.Projectile.LegacyObject[CNCID.Projectile.GenericExplosion], 0, 0);
+                p.direction = npc.direction;
+                GenericExplosion explosion = (GenericExplosion)p.ModProjectile;
+                return explosion.
+                    SetDefaults(null, npc.Center, Vector2.Zero, null).
                     SetDamage(0, DamageClass.Default, 0, 0f, 0, 0f, 1f).
                     SetAlpha(1f, 0f, 1f).
                     SetScale(0f, 0f, 1f).

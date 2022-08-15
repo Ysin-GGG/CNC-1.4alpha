@@ -19,8 +19,8 @@ namespace CNC.Content.Projectiles.Hostile
         protected Projectile p => projectile;
         protected const int dustid1 = DustId.TrailingCyan;
         protected const int dustid2 = DustId.CyanShortFx1;
-        protected virtual Color mainColor => new Color(178, 214, 231);
-        protected virtual Color mainColor2 => new Color(178, 214, 231, 0);
+        protected virtual Color mainColor => CNCID.Colors.SpiritBoss;
+        protected virtual Color mainColor2 => CNCID.Colors.SpiritBoss2;
         protected virtual int len => 30;
         protected virtual bool update => true;
         protected int attackCD = 0;
@@ -209,7 +209,7 @@ namespace CNC.Content.Projectiles.Hostile
                         colorBegin = mainColor,
                         trailAnimAdd = rand,
                         imageHeatmap = Mod.Assets.Request<Texture2D>("Assets/Effects/Heatmap/Blue2").Value,
-                        imageTrace = Mod.Assets.Request<Texture2D>("Assets/Effects/Trace2").Value,
+                        imageTrace = Mod.Assets.Request<Texture2D>("Assets/Effects/Trace1").Value,
                         imageTrail = trailImage,
                     };
                     trai.Draw(Main.spriteBatch, triangleList.ToArray(), true);
@@ -218,7 +218,7 @@ namespace CNC.Content.Projectiles.Hostile
             return true;
         }
 
-        public override void PostDraw(Color lightColor)
+        public sealed override void PostDraw(Color lightColor)
         {
             Texture2D misc1 = null;
             bool misc2 = true;
@@ -263,6 +263,8 @@ namespace CNC.Content.Projectiles.Hostile
                 if (maxVel == Const._02) maxVel = p.velocity * .75f;
                 else p.velocity = maxVel * precent;
             }
+
+            public override void Draw(Color lightColor, bool post, ref Texture2D trailImage, ref bool afterImage) => trailImage = Mod.Assets.Request<Texture2D>("Assets/Effects/FormalTrail1").Value;
         }
 
         public class V2 : SpiritArrow
@@ -296,7 +298,6 @@ namespace CNC.Content.Projectiles.Hostile
                 }
                 p.hostile = update;
             }
-
         }
 
         public class V3 : SpiritArrow
@@ -442,12 +443,67 @@ namespace CNC.Content.Projectiles.Hostile
 
         public class V5 : SpiritArrow
         {
+            protected override int len => 15;
 
+            public override void AI()
+            {
+                base.AI();
+                if (p.velocity.Y < 24f) p.velocity *= 1.1f;
+                p.tileCollide = true;
+            }
+
+            public override void Kill(int timeLeft)
+            {
+                base.Kill(timeLeft);
+                float max = 36f;
+                for (int i = 0; i < max; i++)
+                {
+                    float amount = i / max * MyMath.pi2;
+                    Vector2 vel = new Vector2(2f * MyMath.cos(amount), 1f * MyMath.sin(amount)).RotatedBy(CNC.Random.NextDegree(-30f, 30f)) * 3f;
+                    CNCUtils.NewDust(projectile.Center, dustid1, .75f, vel).noGravity = true;
+                }
+                SoundEngine.PlaySound(SoundID.Item101, this.p.position);
+                GenericExplosion e = CNCUtils.CreateExplosion(projectile);
+                e.SetDefaults(Mod.Assets.Request<Texture2D>("Content/Projectiles/Hostile/MeteorExplosion").Value, projectile.Center, Vector2.One * 120, new int[7] { 1, 1, 1, 1, 2, 2, 2 });
+                e.SetDamage(GenericExplosion.DamageStyle.Hostile, projectile.DamageType, projectile.damage + 10, projectile.knockBack, projectile.CritChance, 0f, 1f);
+                e.SetColor(mainColor, mainColor, .3f);
+                e.SetAlpha(1f, -.025f, 1f);
+                e.SetScale(.5f, .025f, 1f);
+                e.SetRotation(0f, 0f, 1f);
+            }
         }
 
         public class V6 : SpiritArrow
         {
+            private bool onTile;
 
+            public override void ResetDefaults()
+            {
+                base.ResetDefaults();
+                projectile.timeLeft = 10;
+            }
+            public override void AI()
+            {
+                base.AI();
+                projectile.velocity.Y = MyMath.Min(projectile.velocity.Y + MyMath.g * .025f, 24f);
+                projectile.tileCollide = projectile.velocity.Y > 0;
+                CNCUtils.NewDust(projectile.Center, dustid1, 1).noGravity = true;
+            }
+
+            
+            public override bool OnTileCollide(Vector2 oldVelocity)
+            {
+                if (projectile.velocity.X == 0) return true;
+                projectile.velocity = new Vector2(0, 4f);
+                projectile.extraUpdates = 99;
+                return false;
+            }
+            
+
+            public override void Kill(int timeLeft)
+            {
+                NewProjectile(0f, 0f, CNCID.Projectile.LegacyObject[CNCID.Projectile.GiantBranch], projectile.damage, 0f, 0f, 1f).Bottom = projectile.position;
+            }
         }
     }
 }

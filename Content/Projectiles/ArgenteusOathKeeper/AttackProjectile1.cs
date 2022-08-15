@@ -11,7 +11,7 @@ using CNC.Common.Global.Projectiles;
 
 namespace CNC.Content.Projectiles.ArgenteusOathKeeper
 {
-    public class AttackProjectile1 : CNCProjectile
+    public abstract class AttackProjectile1 : CNCProjectile
     {
         public int level => data.ContainsKey("level") ? (int)data["level"] : 0;
         public override int countFrame => 2;

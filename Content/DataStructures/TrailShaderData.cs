@@ -86,7 +86,7 @@ namespace CNC.Content.DataStructures
             return GetBars(projectile, width, float.MinValue, float.MaxValue, reverse, amountAdd, amountMult, len);
         }
 
-        public static List<VertexInfo> GetBars(Projectile projectile, float width, float amountMin, float amountMax, bool reverse = false, float amountAdd = 0f, float amountMult = 1f, int len = -1)
+        public static List<VertexInfo> GetBars(Projectile projectile, float width, float amountMin, float amountMax, bool reverse = false, float amountAdd = 0f, float amountMult = 1f, int len = -1, bool sqrt = true)
         {
             List<VertexInfo> bars = new List<VertexInfo>();
             int max = len < 0 ? projectile.oldPos.Length : len;
@@ -97,8 +97,8 @@ namespace CNC.Content.DataStructures
                 normalVector = Vector2.Normalize(new Vector2(-normalVector.Y, normalVector.X));
                 float amount = reverse ? ((float)i / max) : (1 - (float)i / max);
                 float w = MyMath.Lerp(1f, .05f, amount);
-                bars.Add(new VertexInfo(projectile.oldPos[i - 1] + projectile.Size / 2f + normalVector * width * MyMath.Clamp((amount + amountAdd) * amountMult, amountMin, amountMax), Color.White, new Vector3((float)Math.Sqrt(amount), 1, w)));
-                bars.Add(new VertexInfo(projectile.oldPos[i - 1] + projectile.Size / 2f - normalVector * width * MyMath.Clamp((amount + amountAdd) * amountMult, amountMin, amountMax), Color.White, new Vector3((float)Math.Sqrt(amount), 0, w)));
+                bars.Add(new VertexInfo(projectile.oldPos[i - 1] + projectile.Size / 2f + normalVector * width * MyMath.Clamp((amount + amountAdd) * amountMult, amountMin, amountMax), Color.White, new Vector3(sqrt ? (float)Math.Sqrt(amount) : amount, 1, w)));
+                bars.Add(new VertexInfo(projectile.oldPos[i - 1] + projectile.Size / 2f - normalVector * width * MyMath.Clamp((amount + amountAdd) * amountMult, amountMin, amountMax), Color.White, new Vector3(sqrt ? (float)Math.Sqrt(amount) : amount, 0, w)));
             }
             return bars;
         }

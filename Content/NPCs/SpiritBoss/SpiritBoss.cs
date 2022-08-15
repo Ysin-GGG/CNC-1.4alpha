@@ -11,13 +11,15 @@ using Terraria.GameContent.UI.BigProgressBar;
 using Terraria.DataStructures;
 using CNC.Common.Utils;
 using CNC.Common.Global.NPCs;
+using CNC.Content.DataStructures;
+using System.Collections.Generic;
 
 namespace CNC.Content.NPCs.SpiritBoss
 {
     [AutoloadBossHead]
     public class SpiritBoss : CNCNPC
     {
-        private Color mainColor => new Color(178, 214, 231, 0);
+        private Color mainColor => CNCID.Colors.SpiritBoss2;
         private int preState = 0;
         public int state = 0;
         private int stateTick = 0;
@@ -56,6 +58,7 @@ namespace CNC.Content.NPCs.SpiritBoss
                 PortraitScale = 0.6f,
                 PortraitPositionYOverride = 0f,
             };
+            NPCID.Sets.NeedsExpertScaling[Type] = true;
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
             NPCID.Sets.BossBestiaryPriority.Add(Type);
         }
@@ -66,17 +69,19 @@ namespace CNC.Content.NPCs.SpiritBoss
             npc.height = 128;
             npc.aiStyle = -1;
             npc.knockBackResist = 0;
-            npc.damage = 30;
+            npc.damage = 0;
             npc.defense = 15;
             npc.lifeMax = 4300;
             npc.alpha = 255;
             npc.value = 50000;
+            npc.npcSlots = 10f;
             npc.boss = true;
             npc.noGravity = true;
+            npc.friendly = false;
             npc.dontTakeDamageFromHostiles = true;
             npc.HitSound = SoundID.NPCHit1;
             npc.DeathSound = SoundID.NPCDeath7;
-            npc.SpawnWithHigherTime(30);
+            npc.SpawnWithHigherTime(60);
             npc.BossBar = ModContent.GetInstance<SpiritBossBossBar>();
             SpawnModBiomes = new int[] { ModContent.GetInstance<Biomes.Tranquility>().Type }; 
             if (!Main.dedServ) Music = Options.useModMusic ? MusicLoader.GetMusicSlot(Mod, "Content/Sounds/Music/SpiritBoss") : MusicID.Boss3;
@@ -88,7 +93,6 @@ namespace CNC.Content.NPCs.SpiritBoss
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
             });
         }
-
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D Aura = ModContent.Request<Texture2D>("CNC/Content/NPCs/SpiritBoss/Aura").Value;
@@ -96,7 +100,7 @@ namespace CNC.Content.NPCs.SpiritBoss
             Texture2D Hoop = ModContent.Request<Texture2D>("CNC/Content/NPCs/SpiritBoss/Hoop").Value;
             Texture2D Rune = ModContent.Request<Texture2D>("CNC/Content/NPCs/SpiritBoss/Rune").Value;
             Vector2 pos = npc.Center - screenPos;
-            Color color = Color.White;
+            Color color = mainColor;
             Color color2 = color; color.A = 0;
             CNCUtils.UpdateEffectVar(ref alpha1);
             CNCUtils.UpdateEffectVar(ref alpha2);
@@ -180,6 +184,7 @@ namespace CNC.Content.NPCs.SpiritBoss
             Attack_ConcentratedShoot();
             Attack_SummonMinions();
             Attack_RadialShoot();
+            Attack_RandomExplosion();
             Attack_MeteorShower();
             Attack_BranchGrowth();
         }
@@ -216,9 +221,9 @@ namespace CNC.Content.NPCs.SpiritBoss
             if(state != 1) return;
             if (stateTick >= 0)
             {
-                state =  CNC.Random.NextInt(2, 7);
+                state =  CNC.Random.NextInt(2, 8);
                 stateTick = 0;
-                //state = 6; preState = 1;
+                //state = 8; preState = 1;
             }
         }
 
@@ -237,13 +242,13 @@ namespace CNC.Content.NPCs.SpiritBoss
             if (stateTick < 120)
             {
                 float rot2 = (Main.player[target].Center - npc.Center).ToRotation();
-                if (stateTick % (rage ? 5 : 10) == 0) this.NewProjectile(24, rot2, CNCID.Projectile.LegacyObject[CNCID.Projectile.SpiritArrowV1], atkDamage[0]);
-                if (stateTick % 60 == 0) SoundEngine.PlaySound(SoundID.Item165, npc.Center);
+                this.NewProjectile(.1f, rot2, CNCID.Projectile.LegacyObject[CNCID.Projectile.AnnulusOfPneuma], 0).Center = npc.Center;
+                stateTick = 120;
             }
             if (stateTick >= 120)
             {
                 state = 1;
-                stateTick = -180;
+                stateTick = -240;
             }
         }
 
@@ -347,8 +352,8 @@ namespace CNC.Content.NPCs.SpiritBoss
                 stateTick = -360;
             }
         }
-
-        private void Attack_MeteorShower()
+        
+        private void Attack_RandomExplosion()
         {
             if (state != 6) return;
             if (stateTick == 0)
@@ -384,7 +389,7 @@ namespace CNC.Content.NPCs.SpiritBoss
             }
         }
 
-        private void Attack_BranchGrowth()
+        private void Attack_MeteorShower()
         {
             if (state != 7) return;
             if (stateTick == 0)
@@ -394,12 +399,47 @@ namespace CNC.Content.NPCs.SpiritBoss
                     state = 1;
                     return;
                 }
+                Vector2 pos = Main.player[target].Center;//这里应该随机选玩家
+                CNCUtils.PlaySound(SoundID.Item4, pos);
+                Projectiles.GenericExplosion e = CNCUtils.CreateExplosion(npc);
+                e.SetDefaults(Mod.Assets.Request<Texture2D>("Content/Projectiles/Hostile/MeteorExplosion").Value, pos, Vector2.One * 120, new int[7] { 1, 1, 1, 1, 2, 2, 2 });
+                e.SetColor(mainColor, mainColor, .3f);
+                e.SetAlpha(1f, -.025f, 1f);
+                e.SetScale(.5f, .025f, 1f);
+                e.SetRotation(0f, 0f, 1f);
+            }
+            if(stateTick > 70)
+            {
+                Vector2 pos = Main.player[target].Center + Projectiles.Hostile.MeteorSummoner.targetOffset;
+                CNCUtils.PlaySound(SoundID.Item113, pos);
+                this.NewProjectile(pos, Vector2.Zero, CNCID.Projectile.LegacyObject[CNCID.Projectile.MeteorSummoner], 0).ai[0] = target + 1;
+                preState = state;
+                state = 1;
+                stateTick = -360;
+            }
+        }
+
+        private void Attack_BranchGrowth()
+        {
+            if (state != 8) return;
+            if (stateTick == 0)
+            {
+                if (preState == state)
+                {
+                    state = 1;
+                    return;
+                }
                 preState = state;
             }
-            if (stateTick >= 0)
+            if (stateTick < 120 && stateTick % 15 == 0)
+            {
+                this.NewProjectile(CNC.Random.NextVector2(-12f, -16f, 12f, -4f), CNCID.Projectile.LegacyObject[CNCID.Projectile.SpiritArrowV6], atkDamage[1]);
+                this.NewProjectile(0, 0, CNCID.Projectile.LegacyObject[CNCID.Projectile.GiantBranch], atkDamage[1],0f).Bottom = Main.player[target].Bottom;
+            }
+            if (stateTick >= 120)
             {
                 state = 1;
-                stateTick = 0;
+                stateTick = -200;
             }
         }
 
