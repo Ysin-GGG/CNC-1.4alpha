@@ -25,7 +25,7 @@ namespace CNC.Content.Projectiles.Hostile
         private float rot = 0f;
         private bool attack = false;
         private bool dying = false;
-        private int width = 128;
+        private int width = 65;
 
         public override void ResetDefaults()
         {
