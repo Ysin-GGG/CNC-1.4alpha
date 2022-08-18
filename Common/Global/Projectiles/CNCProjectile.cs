@@ -26,6 +26,7 @@ namespace CNC.Common.Global.Projectiles
 
         public Mod mod => Mod;
         public Projectile projectile => Projectile;
+        public Player owner => Main.player[MyMath.Clamp(projectile.owner, 0, 255)];
         public Player Target = null;
         public IEntitySource source => projectile.GetSource_FromThis();
         public float posX { get => projectile.position.X; set => projectile.position.X = value; }
@@ -39,6 +40,20 @@ namespace CNC.Common.Global.Projectiles
         public float damageAdd => projectile.GetGlobalProjectile<AllProjectile>().damageAdd;
         /// <summary> 对子弹幕生效 </summary>
         public float damageMul => projectile.GetGlobalProjectile<AllProjectile>().damageMul;
+
+        public ProjDamageStyle DamageStyle
+        {
+            get => (ProjDamageStyle)(projectile.friendly.ToInt(1) + projectile.hostile.ToInt(2));
+            set { projectile.hostile = ((int)value) > 1; projectile.friendly = ((int)value) % 2 == 1; }
+        }
+
+        public enum ProjDamageStyle
+        {
+            None = 0,
+            Friendly = 1,
+            Hostile = 2,
+            Both = 3,
+        }
 
         public NPC NewNPC(short CNCtype, int start = 0)
             => NewNPC(projectile, (int)projectile.Center.X, (int)projectile.Center.Y, CNCID.NPC.LegacyObject[CNCtype], start);

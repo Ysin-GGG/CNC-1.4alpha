@@ -31,7 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FNA">
-      <HintPath>..\..\..\..\..\..\Steam\steamapps\common\tModLoader\Libraries\FNA\1.0.0\FNA.dll</HintPath>
+      <HintPath>D:\Applications\Steam\steamapps\common\tModLoader\Libraries\FNA\1.0.0\FNA.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>bin\Debug\net45\log4net.dll</HintPath>
@@ -71,7 +71,7 @@
       <HintPath>bin\Debug\net45\TerrariaHooks.dll</HintPath>
     </Reference>
     <Reference Include="tModLoader">
-      <HintPath>..\..\..\..\..\..\Steam\steamapps\common\tModLoader\tModLoader.dll</HintPath>
+      <HintPath>D:\Applications\Steam\steamapps\common\tModLoader\tModLoader.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

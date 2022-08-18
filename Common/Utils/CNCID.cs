@@ -787,7 +787,7 @@ namespace CNC.Common.Utils
                 { MeteorSummoner, ProjectileType<Content.Projectiles.Hostile.MeteorSummoner>() },
                 { GiantBranch, ProjectileType<Content.Projectiles.Hostile.GiantBranch>() },
                 { GenericExplosion, ProjectileType<Content.Projectiles.GenericExplosion>() },
-                { GenericSlash, ProjectileType<Content.Projectiles.GenericExplosion>() },
+                { GenericSlash, ProjectileType<Content.Projectiles.GenericSlash>() },
                 { AttackProjectile1, ProjectileType<Content.Projectiles.ArgenteusOathKeeper.AttackProjectile1>() },
             };
         }

@@ -30,16 +30,21 @@ namespace CNC.Content.Projectiles
         public float rotation;
         public float rotationAdd;
         public float rotationMult;
-        public DamageStyle damageStyle;
-
-        public enum DamageStyle
+        public enum DrawLayer
         {
-            None = 0,
-            Friendly = 1,
-            Hostile = 2,
-            Both = 3,
+            behindNPCsAndTiles,
+            behindNPCs,
+            behindProjectiles,
+            overPlayers,
+            overWiresUI,
         }
 
+        /// <summary> 设定常规项 </summary>
+        /// <param name="image">斩击贴图</param>
+        /// <param name="position">初始坐标</param>
+        /// <param name="size">攻击范围</param>
+        /// <param name="frame">爆炸贴图总帧数</param>
+        /// <param name="tickPerFrame">爆炸贴图每帧时长</param>
         public GenericExplosion SetDefaults(Texture2D image, Vector2 position, Vector2 size, int frame, int tickPerFrame)
         {
             this.image = image;
@@ -50,6 +55,11 @@ namespace CNC.Content.Projectiles
             return this;
         }
 
+        /// <summary> 设定常规项 </summary>
+        /// <param name="image">斩击贴图</param>
+        /// <param name="position">初始坐标</param>
+        /// <param name="size">攻击范围</param>
+        /// <param name="frameTick">爆炸贴图每帧时长</param>
         public GenericExplosion SetDefaults(Texture2D image, Vector2 position, Vector2 size, int[] frameTick)
         {
             this.image = image;
@@ -59,10 +69,27 @@ namespace CNC.Content.Projectiles
             return this;
         }
 
-        public GenericExplosion SetDamage(DamageStyle style, DamageClass type, int damage, float knockback, int crit, float add = 0f, float mult = 1f)
+        /// <summary> 设定伤害项 </summary>
+        /// <param name="style">友好/敌对型</param>
+        /// <param name="type">伤害类型</param>
+        /// <param name="damage">伤害值</param>
+        /// <param name="knockback">击退</param>
+        /// <param name="crit">暴击率</param>
+        /// <param name="add">追加伤害</param>
+        /// <param name="mult">伤害倍率</param>
+        public GenericExplosion SetDamage(int style, DamageClass type, int damage, float knockback, int crit, float add = 0f, float mult = 1f)
+            => this.SetDamage((ProjDamageStyle)style, type, damage, knockback, crit, add, mult);
+        /// <summary> 设定伤害项 </summary>
+        /// <param name="style">友好/敌对型</param>
+        /// <param name="type">伤害类型</param>
+        /// <param name="damage">伤害值</param>
+        /// <param name="knockback">击退</param>
+        /// <param name="crit">暴击率</param>
+        /// <param name="add">追加伤害</param>
+        /// <param name="mult">伤害倍率</param>
+        public GenericExplosion SetDamage(ProjDamageStyle style, DamageClass type, int damage, float knockback, int crit, float add = 0f, float mult = 1f)
         {
-            this.projectile.friendly = ((int)style % 2) == 1;
-            this.projectile.hostile = (int)style > 1;
+            this.DamageStyle = style;
             this.projectile.DamageType = type;
             this.projectile.damage = (int)((damage + add) * mult);
             this.projectile.knockBack = knockback;
@@ -70,6 +97,10 @@ namespace CNC.Content.Projectiles
             return this;
         }
 
+        /// <summary> 设定色彩项 </summary>
+        /// <param name="imageColor">图像颜色（为Color.Transparent时自动获取环境色）</param>
+        /// <param name="lightColor">光源颜色</param>
+        /// <param name="light">光源亮度</param>
         public GenericExplosion SetColor(Color imageColor, Color lightColor, float light = 0f)
         {
             this.imageColor = imageColor;
@@ -78,6 +109,11 @@ namespace CNC.Content.Projectiles
             return this;
         }
 
+        /// <summary> 设定透明项 </summary>
+        /// <param name="alpha">初始值</param>
+        /// <param name="add">每帧增加值</param>
+        /// <param name="mult">每帧倍数值</param>
+        /// <returns></returns>
         public GenericExplosion SetAlpha(float alpha = 0f, float add = 0f, float mult = 1f)
         {
             this.alpha = alpha;
@@ -86,6 +122,10 @@ namespace CNC.Content.Projectiles
             return this;
         }
 
+        /// <summary> 设定比例项 </summary>
+        /// <param name="scale">初始值</param>
+        /// <param name="add">每帧增加值</param>
+        /// <param name="mult">每帧倍数值</param>
         public GenericExplosion SetScale(float scale = 1f, float add = 0f, float mult = 1f)
         {
             this.scale = scale;
@@ -94,6 +134,10 @@ namespace CNC.Content.Projectiles
             return this;
         }
 
+        /// <summary> 设定旋转项 </summary>
+        /// <param name="rotation">初始值</param>
+        /// <param name="add">每帧增加值</param>
+        /// <param name="mult">每帧倍数值</param>
         public GenericExplosion SetRotation(float rotation = 0f, float add = 0f, float mult = 1f)
         {
             this.rotation = rotation;

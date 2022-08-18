@@ -465,7 +465,7 @@ namespace CNC.Content.Projectiles.Hostile
                 SoundEngine.PlaySound(SoundID.Item101, this.p.position);
                 GenericExplosion e = CNCUtils.CreateExplosion(projectile);
                 e.SetDefaults(Mod.Assets.Request<Texture2D>("Content/Projectiles/Hostile/MeteorExplosion").Value, projectile.Center, Vector2.One * 120, new int[7] { 1, 1, 1, 1, 2, 2, 2 });
-                e.SetDamage(GenericExplosion.DamageStyle.Hostile, projectile.DamageType, projectile.damage + 10, projectile.knockBack, projectile.CritChance, 0f, 1f);
+                e.SetDamage(2, projectile.DamageType, projectile.damage + 10, projectile.knockBack, projectile.CritChance, 0f, 1f);
                 e.SetColor(mainColor, mainColor, .3f);
                 e.SetAlpha(1f, -.025f, 1f);
                 e.SetScale(.5f, .025f, 1f);

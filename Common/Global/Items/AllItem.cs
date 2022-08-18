@@ -17,6 +17,7 @@ using Terraria.ModLoader.IO;
 using Terraria.Localization;
 using Terraria.DataStructures;
 using Terraria.Graphics.Shaders;
+using CNC.Common.Utils;
 using CNC.Common.Localization;
 using System.Collections.ObjectModel;
 
@@ -25,11 +26,21 @@ namespace CNC.Common.Global.Items
     public class AllItem : GlobalItem
     {
         public byte clazz;
+        public int comboCur;
+        public int comboNext;
+        public int comboCount;
+        public int comboTime;
+        public int comboDelay;
         public Mod mod => Mod;
 
         public AllItem()
         {
-            clazz = 0;
+            this.clazz = 0;
+            this.comboCur = 0;
+            this.comboNext = 0;
+            this.comboCount = 1;
+            this.comboTime = 0;
+            this.comboDelay = 0;
         }
 
         public override bool InstancePerEntity => true;
@@ -42,6 +53,14 @@ namespace CNC.Common.Global.Items
                 clone.clazz = clazz;
             }
             return clone;
+        }
+
+        public override void UpdateInventory(Item item, Player player)
+        {
+            AllItem modItem = item.GetGlobalItem<AllItem>();
+            if (player.itemTime <= 0) modItem.comboTime = MyMath.Max(0, modItem.comboTime - 1);
+            if (player.itemTime <= 1) modItem.comboCur = modItem.comboNext;
+            if (modItem.comboTime <= 0) modItem.comboCur = 0;
         }
 
         /// <summary>

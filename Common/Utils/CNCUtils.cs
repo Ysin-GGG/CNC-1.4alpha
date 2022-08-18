@@ -107,6 +107,10 @@ namespace CNC.Common.Utils
            // Terraria.Audio.SoundEngine.PlaySound(SoundLoader.CustomSoundType, (int)position.X, (int)position.Y, SoundLoader.GetSoundSlot(mod == default ? CNC.Instance : mod, path), volume, pitch);
         }
 
+        /// <summary> 添加光源 </summary>
+        /// <param name="position">世界内坐标</param>
+        /// <param name="color">光源颜色</param>
+        /// <param name="light">亮度</param>
         public static void AddLight(Vector2 position, Color color, float light = .5f)
         {
             float a = color.A / (float)byte.MaxValue * light;
@@ -216,6 +220,8 @@ namespace CNC.Common.Utils
             return res;
         }
 
+        /// <summary> 生成爆炸弹幕 </summary>
+        /// <param name="source">实体源</param>
         public static GenericExplosion CreateExplosion(Terraria.DataStructures.IEntitySource source)
         {
             Projectile p = CNCUtils.NewProj(source, Vector2.Zero, Vector2.Zero, CNCID.Projectile.LegacyObject[CNCID.Projectile.GenericExplosion], 0, 0);
@@ -229,6 +235,8 @@ namespace CNC.Common.Utils
                 SetColor(Color.White, Color.Transparent, 0f);
         }
 
+        /// <summary> 生成爆炸弹幕 </summary>
+        /// <param name="proj">父弹幕</param>
         public static GenericExplosion CreateExplosion(Projectile proj)
         {
             if (proj != null && proj.ModProjectile is Global.Projectiles.CNCProjectile)
@@ -247,6 +255,8 @@ namespace CNC.Common.Utils
             return null;
         }
 
+        /// <summary> 生成爆炸弹幕 </summary>
+        /// <param name="npc">父NPC</param>
         public static GenericExplosion CreateExplosion(NPC npc)
         {
             if (npc != null && npc.ModNPC is Global.NPCs.CNCNPC)
@@ -264,5 +274,34 @@ namespace CNC.Common.Utils
             }
             return null;
         }
+
+        /// <summary> 生成斩击弹幕 </summary>
+        /// <param name="player">生成者</param>
+        /// <param name="velocity">方向</param>
+        public static GenericSlash CreateSlash(Player player, Vector2 velocity, int hitboxDust = -1)
+        {
+            if (player != null)
+            {
+                Projectile p = Projectile.NewProjectileDirect(player.GetSource_FromThis(), player.Center, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.GenericSlash], 0, 0, player.whoAmI);
+                p.direction = player.direction;
+                p.rotation = velocity.ToRotation();
+                GenericSlash slash = (GenericSlash)p.ModProjectile;
+                slash.bindOwner = true;
+                slash.dustToShowHitbox = hitboxDust;
+                return slash.
+                    SetDefaults(null, player.Center, Vector2.One, velocity, 1, 10).
+                    SetDamage(0, DamageClass.Default, 0, 0f, 0, 0f, 1f).
+                    SetColor(Color.White, Color.Transparent, 0f);
+            }
+            return null;
+        }
+
+        /// <summary> Boolean转Int64（0/1） </summary>
+        /// <param name="mult">返回值倍数</param>
+        public static int ToInt(this bool value, int mult = 1) => value ? mult : 0;
+
+        /// <summary> Boolean转Int64（-1/1） </summary>
+        /// <param name="mult">返回值倍数</param>
+        public static int ToDirectionInt(this bool value, int mult = 1) => value ? mult : -mult;
     }
 }
