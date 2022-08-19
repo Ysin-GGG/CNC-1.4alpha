@@ -210,12 +210,12 @@ namespace CNC.Content.Projectiles
             if (this.dustToShowHitbox >= 0 && this.fadeTime <= 0)
             {
                 Vector4 info = this.GetSlashInfo();
-                for (int i = 0; i <= 10; i++)
+                for (int i = 10; i <= 10; i++)
                 {
                     float rot = info.W + projectile.rotation;
                     Vector2 begin = projectile.Center + info.XY().RotatedBy(rot);
                     Vector2 end = begin + new Vector2(info.Z, 0).RotatedBy(rot);
-                    CNCUtils.NewDust(MyMath.Lerp(begin, end, i / 10f), dustToShowHitbox, 1.5f).noGravity = true;
+                    CNCUtils.NewDust(MyMath.Lerp(begin, end, i / 10f), dustToShowHitbox, 1.5f, Vector2.Normalize(end - begin) * 1f).noGravity = true;
                 }
             }
             if (afterImageData.Length > 0 && timer % this.fadeInterval == 0)
@@ -240,7 +240,7 @@ namespace CNC.Content.Projectiles
             }
             else if (this.fadeTime < 0) this.fadeTime *= -1;
             jump :
-            if (this.fadeTime == 0) projectile.Kill();
+            if (this.fadeTime == 1) projectile.Kill();
             else if (this.fadeTime > 0) projectile.timeLeft = this.fadeTime--;
             if (this.lightColor != null && this.lightColor != Color.Transparent && this.light > 0f)
                 CNCUtils.AddLight(this.projectile.Center, this.lightColor, this.light);
@@ -261,14 +261,15 @@ namespace CNC.Content.Projectiles
             bool inRange = false;
             bool noBarrier = true;
             bool noBarrier2 = true;
-            float max = begin.Distance(end) / 8f;
+            int size = 4;
+            float max = begin.Distance(end) / size;
             for (int i = 0; i <= max; i++)
             {
                 Vector2 point = MyMath.Lerp(begin, end, i / max);
                 Vector2 point2 = MyMath.Lerp(owner.Center, end, i / max);
                 if (!inRange) inRange = targetHitbox.Contains(point.ToPoint());
-                if (noBarrier) noBarrier = !Collision.SolidTiles(point, 1, 1);
-                if (noBarrier2) noBarrier2 = !Collision.SolidTiles(point2, 1, 1);
+                if (noBarrier) noBarrier = !Collision.SolidTiles(point, size, size);
+                if (noBarrier2) noBarrier2 = !Collision.SolidTiles(point2, size, size);
                 if (inRange && noBarrier && noBarrier2) return true;
             }
             return false;

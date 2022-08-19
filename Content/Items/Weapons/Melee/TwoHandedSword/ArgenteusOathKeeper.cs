@@ -44,17 +44,30 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            var info = new Projectiles.GenericSlash.SlashInfo[30];
-            for (int i = 0; i < info.Length; i++)
+            int num = this.comboCur;
+            var info = new Projectiles.GenericSlash.SlashInfo[2][]
             {
-                float factor = (float)i / info.Length;
-                info[i].offset = Vector2.Zero;
-                info[i].range = 40 + MyMath.sin(factor * MyMath.deg60) * 200;
-                info[i].rotation = MyMath.deg01 * (90 - factor * 310);
+                    new Projectiles.GenericSlash.SlashInfo[30],
+                    new Projectiles.GenericSlash.SlashInfo[30],
+            };
+            for (int i = 0; i < info[0].Length; i++)
+            {
+                float[] range = new float[30] { 70, 60, 50, 40 ,35, 32, 30, 29, 27, 28, 28, 30, 37, 44, 50, 57, 60, 63, 63, 61, 58, 56, 54, 51, 48, 48, 49, 50, 52, 55 };
+                float factor = (float)i / info[0].Length;
+                info[0][i].offset = Vector2.Zero;
+                info[0][i].range = range[i];
+                info[0][i].rotation = MyMath.deg01 * (factor * 305 - 170);
+            }
+            for (int i = 0; i < info[1].Length; i++)
+            {
+                float factor = (float)i / info[1].Length;
+                info[1][i].offset = Vector2.Zero;
+                info[1][i].range = 40 + MyMath.sin(factor * MyMath.deg60) * 200;
+                info[1][i].rotation = MyMath.deg01 * (90 - factor * 310);
                 float lim = .3f;
-                if (factor > lim) info[i].range = 100 - MyMath.sin(((factor - lim) / (1 - lim)) * MyMath.pi) * 30;
+                if (factor > lim) info[1][i].range = 100 - MyMath.sin(((factor - lim) / (1 - lim)) * MyMath.pi) * 30;
                 lim = .4f;
-                if (factor > lim) info[i].range = 80 - MyMath.sin(((factor - lim) / (1 - lim)) * MyMath.pi) * 50;
+                if (factor > lim) info[1][i].range = 80 - MyMath.sin(((factor - lim) / (1 - lim)) * MyMath.pi) * 50;
             }
             int[][] frame =
             {
@@ -66,13 +79,13 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
                 new Vector2(-20f, 0f),
                 new Vector2(20f, 0f),
             };
-            var e = CNCUtils.CreateSlash(player, velocity);
-            e.SetDefaults(Mod.Assets.Request<Texture2D>("Assets/Projectiles/Slash/SilverSlash").Value, player.Center, Vector2.One * .75f, velocity, frame[this.comboCur], 7);
+            var e = CNCUtils.CreateSlash(player, velocity, DustId.CyanShortFx1);
+            e.SetDefaults(Mod.Assets.Request<Texture2D>("Assets/Projectiles/Slash/SilverSlash").Value, player.Center, Vector2.One * .75f, velocity, frame[num], 7);
             e.SetColor(Color.White, Color.Gold, .5f);
             e.SetDamage(1, DamageClass.Melee, damage, knockback, 100);
-            e.SetAttackInfo(info);
+            e.SetAttackInfo(info[num]);
             e.SetAfterImages(50, 1, .25f);
-            e.imageOffset = offset[this.comboCur];
+            e.imageOffset = offset[num];
             return false;
         }
     }
