@@ -1,6 +1,6 @@
 ﻿displayName = Classes & Craft (CNC-1.4Alpha)
 author = HHvs & Quartz
-version = 0.0.3.2
+version = 0.0.3.3
 hideResources = false
 hideCode = false
 includeSource = false
