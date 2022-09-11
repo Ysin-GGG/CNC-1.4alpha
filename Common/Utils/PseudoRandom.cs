@@ -245,14 +245,14 @@ namespace CNC.Common.Utils
         public T NextAny<T>(List<T> list) where T : class
         {
             T result = null;
-            if (list.Count > 0) result = list[this.NextInt(list.Count) - 1];
+            if (list.Count > 0) result = list[this.NextInt(list.Count)];
             return result;
         }
         
         public T NextAny<T>(params T[] array) where T : class
         {
             T result = null;
-            if (array.Length > 0) result = array[0];
+            if (array.Length > 0) result = array[this.NextInt(array.Length)];
             return result;
         }
     }

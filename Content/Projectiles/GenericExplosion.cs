@@ -193,6 +193,10 @@ namespace CNC.Content.Projectiles
                 Main.EntitySpriteDraw(this.image, projectile.Center - Main.screenPosition, source, color * this.alpha, this.rotation, origin, this.scale, 0, 0);
             }
         }
+        public override void HitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        {
+            hitDirection = (target.position.X > this.projectile.position.X).ToDirectionInt(1);
+        }
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {

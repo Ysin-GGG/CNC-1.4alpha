@@ -13,7 +13,7 @@ namespace CNC.Common.Utils
     {
         public static class Buff
         {
-            public const short MaxObject = 8;
+            public const short MaxObject = 10;
             #region ID
             /// <summary> 灵狐 </summary>
             public const short MiracleFox = 1;
@@ -31,30 +31,34 @@ namespace CNC.Common.Utils
             public const short Surged = 7;
             /// <summary> 圣化 </summary>
             public const short Sanctified = 8;
+            /// <summary> 眩晕 </summary>
+            public const short Dizzy = 9;
+            /// <summary> 流血 </summary>
+            public const short Bleeding = 10;
+            /// <summary> 神圣护盾 </summary>
+            public const short Blessed = 11;
             #endregion
-            public static Dictionary<string, short> Collection => new Dictionary<string, short>()
+            public static Dictionary<string, short> Collection
             {
-                { "MiracleFox", MiracleFox },
-                { "Scorched", Scorched },
-                { "Enthused", Enthused },
-                { "Gelid", Gelid },
-                { "Glacier", Glacier },
-                { "Overloaded", Overloaded },
-                { "Surged", Surged },
-                { "Sanctified", Sanctified },
-            };
+                get
+                {
+                    Dictionary<string, short> dict = new Dictionary<string, short>();
+                    foreach (var member in typeof(CNCID.Buff).GetFields())
+                        if (member.FieldType == typeof(short)) dict.Add(member.Name, (short)member.GetRawConstantValue());
+                    return dict;
+                }
+            }
 
-            public static Dictionary<string, int> LegacyCollection => new Dictionary<string, int>()
+            public static Dictionary<string, int> LegacyCollection
             {
-                { "MiracleFox", LegacyObject[Collection["MiracleFox"]] },
-                { "Scorched", LegacyObject[Collection["Scorched"]] },
-                { "Enthused", LegacyObject[Collection["Enthused"]] },
-                { "Gelid", LegacyObject[Collection["Gelid"]] },
-                { "Glacier", LegacyObject[Collection["Glacier"]] },
-                { "Overloaded", LegacyObject[Collection["Overloaded"]] },
-                { "Surged", LegacyObject[Collection["Surged"]] },
-                { "Sanctified", LegacyObject[Collection["Sanctified"]] },
-            };
+                get
+                {
+                    Dictionary<string, int> dict = new Dictionary<string, int>();
+                    foreach (var member in typeof(CNCID.Buff).GetFields())
+                        if (member.FieldType == typeof(short)) dict.Add(member.Name, LegacyObject[Collection[member.Name]]);
+                    return dict;
+                }
+            }
 
             public static Dictionary<short, int> LegacyObject => new Dictionary<short, int>()
             {
@@ -66,6 +70,9 @@ namespace CNC.Common.Utils
                 { Overloaded, BuffType<Content.Buffs.Overloaded>() },
                 { Surged, BuffType<Content.Buffs.Overloaded>() },
                 { Sanctified, BuffType<Content.Buffs.Sanctified>() },
+                { Dizzy, BuffType<Content.Buffs.Dizzy>() },
+                { Bleeding, BuffType<Content.Buffs.Bleeding>() },
+                { Blessed, BuffType<Content.Buffs.Blessed>() },
             };
         }
 
@@ -394,12 +401,12 @@ namespace CNC.Common.Utils
             public static Content.Inscription S_Sanctity => new Content.Inscription(1, CNCID.Item.ArgenteusClaw);
             /// <summary> 邪恶克星 </summary>
             public static Content.Inscription S_Exorcism => new Content.Inscription(2, CNCID.Item.ArgenteusClaw);
-            /// <summary> 银焰 </summary>
-            public static Content.Inscription S_SilveryFlame => new Content.Inscription(0, CNCID.Item.ArgenteusOathKeeper);
             /// <summary> 神圣惩戒 </summary>
-            public static Content.Inscription S_Judgement => new Content.Inscription(1, CNCID.Item.ArgenteusOathKeeper);
+            public static Content.Inscription S_Judgement => new Content.Inscription(0, CNCID.Item.ArgenteusOathKeeper);
             /// <summary> 银盾 </summary>
-            public static Content.Inscription S_SilveryShield => new Content.Inscription(2, CNCID.Item.ArgenteusOathKeeper);
+            public static Content.Inscription S_SilveryShield => new Content.Inscription(1, CNCID.Item.ArgenteusOathKeeper);
+            /// <summary> 银色火花 </summary>
+            public static Content.Inscription S_SilverySpark => new Content.Inscription(2, CNCID.Item.ArgenteusOathKeeper);
             /// <summary> 银白树立誓 </summary>
             public static Content.Inscription S_SilveryVow => new Content.Inscription(3, CNCID.Item.ArgenteusOathKeeper);
             /// <summary> 岩石 </summary>
@@ -473,9 +480,9 @@ namespace CNC.Common.Utils
                 { new Point(0, CNCID.Item.ArgenteusClaw), "S_SilveryArrow" },
                 { new Point(1, CNCID.Item.ArgenteusClaw), "S_Sanctity" },
                 { new Point(2, CNCID.Item.ArgenteusClaw), "S_Exorcism" },
-                { new Point(0, CNCID.Item.ArgenteusOathKeeper), "S_SilveryFlame" },
-                { new Point(1, CNCID.Item.ArgenteusOathKeeper), "S_Judgement" },
-                { new Point(2, CNCID.Item.ArgenteusOathKeeper), "S_SilveryShield" },
+                { new Point(0, CNCID.Item.ArgenteusOathKeeper), "S_Judgement" },
+                { new Point(1, CNCID.Item.ArgenteusOathKeeper), "S_SilveryShield" },
+                { new Point(2, CNCID.Item.ArgenteusOathKeeper), "S_SilverySpark" },
                 { new Point(3, CNCID.Item.ArgenteusOathKeeper), "S_SilveryVow" },
                 { new Point(0, CNCID.Item.TheLightOfAuzzsia), "S_Rock" },
                 { new Point(1, CNCID.Item.TheLightOfAuzzsia), "S_ActiveChant" },
@@ -537,9 +544,9 @@ namespace CNC.Common.Utils
                 { "S_SilveryArrow", S_SilveryArrow },
                 { "S_Sanctity", S_Sanctity },
                 { "S_Exorcism", S_Exorcism },
-                { "S_SilveryFlame", S_SilveryFlame },
                 { "S_Judgement", S_Judgement },
                 { "S_SilveryShield", S_SilveryShield },
+                { "S_SilverySpark", S_SilverySpark },
                 { "S_SilveryVow", S_SilveryVow },
                 { "S_Rock", S_Rock },
                 { "S_ActiveChant", S_ActiveChant },
@@ -601,9 +608,9 @@ namespace CNC.Common.Utils
                 { new Point(0, CNCID.Item.ArgenteusClaw), S_SilveryArrow },
                 { new Point(1, CNCID.Item.ArgenteusClaw), S_Sanctity },
                 { new Point(2, CNCID.Item.ArgenteusClaw), S_Exorcism },
-                { new Point(0, CNCID.Item.ArgenteusOathKeeper), S_SilveryFlame },
-                { new Point(1, CNCID.Item.ArgenteusOathKeeper), S_Judgement },
-                { new Point(2, CNCID.Item.ArgenteusOathKeeper), S_SilveryShield },
+                { new Point(0, CNCID.Item.ArgenteusOathKeeper), S_Judgement },
+                { new Point(1, CNCID.Item.ArgenteusOathKeeper), S_SilveryShield },
+                { new Point(2, CNCID.Item.ArgenteusOathKeeper), S_SilverySpark },
                 { new Point(3, CNCID.Item.ArgenteusOathKeeper), S_SilveryVow },
                 { new Point(0, CNCID.Item.TheLightOfAuzzsia), S_Rock },
                 { new Point(1, CNCID.Item.TheLightOfAuzzsia), S_ActiveChant },
@@ -644,7 +651,7 @@ namespace CNC.Common.Utils
                 get
                 {
                     Dictionary<string, short> dict = new Dictionary<string, short>();
-                    foreach (var member in typeof(CNCID.Item).GetFields())
+                    foreach (var member in typeof(CNCID.NPC).GetFields())
                         if (member.FieldType == typeof(short)) dict.Add(member.Name, (short)member.GetRawConstantValue());
                     return dict;
                 }
@@ -655,7 +662,7 @@ namespace CNC.Common.Utils
                 get
                 {
                     Dictionary<string, int> dict = new Dictionary<string, int>();
-                    foreach (var member in typeof(CNCID.Item).GetFields())
+                    foreach (var member in typeof(CNCID.NPC).GetFields())
                         if (member.FieldType == typeof(short)) dict.Add(member.Name, LegacyObject[Collection[member.Name]]);
                     return dict;
                 }
@@ -733,15 +740,19 @@ namespace CNC.Common.Utils
             public const short GenericExplosion = 27;
             /// <summary> 斩击 </summary>
             public const short GenericSlash = 28;
-            /// <summary> 银白刀光 </summary>
-            public const short AttackProjectile1 = 29;
+            /// <summary> 斩击效果 </summary>
+            public const short GenericSlashHit = 29;
+            /// <summary> 银盾 </summary>
+            public const short SilveryField = 30;
+            /// <summary> 银白突刺 </summary>
+            public const short SilveryDash = 31;
             #endregion
             public static Dictionary<string, short> Collection
             {
                 get
                 {
                     Dictionary<string, short> dict = new Dictionary<string, short>();
-                    foreach (var member in typeof(CNCID.Item).GetFields())
+                    foreach (var member in typeof(CNCID.Projectile).GetFields())
                         if (member.FieldType == typeof(short)) dict.Add(member.Name, (short)member.GetRawConstantValue());
                     return dict;
                 }
@@ -752,7 +763,7 @@ namespace CNC.Common.Utils
                 get
                 {
                     Dictionary<string, int> dict = new Dictionary<string, int>();
-                    foreach (var member in typeof(CNCID.Item).GetFields())
+                    foreach (var member in typeof(CNCID.Projectile).GetFields())
                         if (member.FieldType == typeof(short)) dict.Add(member.Name, LegacyObject[Collection[member.Name]]);
                     return dict;
                 }
@@ -788,7 +799,9 @@ namespace CNC.Common.Utils
                 { GiantBranch, ProjectileType<Content.Projectiles.Hostile.GiantBranch>() },
                 { GenericExplosion, ProjectileType<Content.Projectiles.GenericExplosion>() },
                 { GenericSlash, ProjectileType<Content.Projectiles.GenericSlash>() },
-                { AttackProjectile1, ProjectileType<Content.Projectiles.ArgenteusOathKeeper.AttackProjectile1>() },
+                { GenericSlashHit, ProjectileType<Content.Projectiles.GenericSlashHit>() },
+                { SilveryField, ProjectileType<Content.Projectiles.ArgenteusOathKeeper.SilveryField>() },
+                { SilveryDash, ProjectileType<Content.Projectiles.ArgenteusOathKeeper.SilveryDash>() },
             };
         }
 
@@ -840,7 +853,7 @@ namespace CNC.Common.Utils
                 get
                 {
                     Dictionary<string, short> dict = new Dictionary<string, short>();
-                    foreach (var member in typeof(CNCID.Item).GetFields())
+                    foreach (var member in typeof(CNCID.Tile).GetFields())
                         if (member.FieldType == typeof(short)) dict.Add(member.Name, (short)member.GetRawConstantValue());
                     return dict;
                 }
@@ -851,7 +864,7 @@ namespace CNC.Common.Utils
                 get
                 {
                     Dictionary<string, int> dict = new Dictionary<string, int>();
-                    foreach (var member in typeof(CNCID.Item).GetFields())
+                    foreach (var member in typeof(CNCID.Tile).GetFields())
                         if (member.FieldType == typeof(short)) dict.Add(member.Name, LegacyObject[Collection[member.Name]]);
                     return dict;
                 }

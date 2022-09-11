@@ -41,7 +41,7 @@ namespace CNC.Content.Projectiles.ArgenteusClaw
             dist = Const._02;
         }
 
-        public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        public override void HitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
             if (target != null && target.active)
             {

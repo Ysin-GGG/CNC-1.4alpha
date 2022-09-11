@@ -36,7 +36,7 @@ namespace CNC.Content.Mounts
 
             // Misc
             MountData.fatigueMax = 0;//×øÆïÆ£ÀÍ
-            MountData.buff = CNCID.Buff.LegacyCollection[Name]; //×øÆïbuff
+            MountData.buff = CNCID.Buff.LegacyObject[CNCID.Buff.MiracleFox]; //×øÆïbuff
             // Effects
             //MountData.spawnDust = ModContent.DustType<Dusts.Sparkle>(); //×øÆïÁ£×Ó
 

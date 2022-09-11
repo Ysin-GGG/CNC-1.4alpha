@@ -47,7 +47,7 @@ namespace CNC.Common.Utils
         public static Point Clamp(Point value, Point min, Point max, out Point extra) => MyMath.Clamp((extra = value - (value = MyMath.Clamp(value, min, max))) + value, min, max);
         public static Vector2 Clamp(Vector2 value, Vector2 min, Vector2 max) => new Vector2(MyMath.Clamp(value.X, min.X, max.X), MyMath.Clamp(value.Y, min.Y, max.Y));
         public static Vector2 Clamp(Vector2 value, Vector2 min, Vector2 max, out Vector2 extra) => MyMath.Clamp((extra = value - (value = MyMath.Clamp(value, min, max))) + value, min, max);
-
+        
         public static byte Max(params byte[] values) => values.Max();
         public static sbyte Max(params sbyte[] values) => values.Max();
         public static short Max(params short[] values) => values.Max();

@@ -112,7 +112,7 @@ namespace CNC.Content.Projectiles
                 int dmg = projectile.damage;
                 float kb = projectile.knockBack;
                 int owner = projectile.owner;
-                MentorMissile child = (MentorMissile)CNCUtils.NewProj(source, pos, vel, type, dmg, kb, owner).ModProjectile;
+                MentorMissile child = (MentorMissile)CNCUtils.NewProj(source, pos, vel, type, dmg, kb, 0, owner, 0f, 1f).ModProjectile;
                 child.stage = 1;
             }
             else for (int i = 0; i < 15; i++)

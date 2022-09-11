@@ -93,6 +93,7 @@ namespace CNC.Content.Projectiles.TheLightOfAuzzsia
                 dust.noGravity = false;
                 dust.alpha = 0;
             }
+            CNCUtils.ScreenShake(projectile.Center, 480f, 0, new Vector2(0, 20), new Vector2(0, 10), .9f);
             CNCUtils.AddLight(projectile.position, Color.Purple, .6f);
             CNCUtils.PlaySound("TheLightOfAuzzsia/RockHit", projectile, .5f);
             GenericExplosion e = CNCUtils.CreateExplosion(projectile);

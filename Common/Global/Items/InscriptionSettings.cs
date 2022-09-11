@@ -166,6 +166,11 @@ namespace CNC.Common.Global.Items
 
         public bool HasInscription(Inscription inscription) => this._inscription1.Contains(inscription);
 
+        /// <summary> 为铭文施加冷却 </summary>
+        /// <param name="inscription">铭文类型</param>
+        /// <param name="newCooldown">铭文冷却时长</param>
+        /// <param name="newCooldownMax">铭文原始冷却时长</param>
+        /// <param name="player">要提供冷却缩减的玩家</param>
         public void SetInscriptionCooldown(Inscription inscription, int newCooldown = -1, int newCooldownMax = -1, Player player = null)
         {
             float add = 0; 
@@ -180,6 +185,8 @@ namespace CNC.Common.Global.Items
                     this._inscription1[i].SetCooldown(newCooldown, newCooldownMax, this.cooldownReductionAdd + add, this.cooldownReductionMul * mul);
         }
 
+        /// <summary> 铭文是否冷却中 </summary>
+        /// <param name="inscription">铭文类型</param>
         public bool GetInscriptionCooldown(Inscription inscription)
         {
             bool flag = false;
@@ -233,6 +240,8 @@ namespace CNC.Common.Global.Items
             }
         }
 
+        /// <summary> 物品可选铭文表预设 </summary>
+        /// <param name="item">当前物品</param>
         public override void SetDefaults(Item item)
         {
             List<Inscription[]> AddToInscriptionList(ref List<Inscription[]> origin, ref int levelMax, int begin, int end, Inscription inscription)
@@ -319,9 +328,9 @@ namespace CNC.Common.Global.Items
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.C_Destroyer);
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.C_SkillPower);
                         AddToInscriptionList(ref list, ref levelMax, 1, 6, CNCID.Inscription.C_Charging);
-                        AddToInscriptionList(ref list, ref levelMax, 0, 0, CNCID.Inscription.S_SilveryFlame);
                         AddToInscriptionList(ref list, ref levelMax, 1, 1, CNCID.Inscription.S_Judgement);
                         AddToInscriptionList(ref list, ref levelMax, 2, 2, CNCID.Inscription.S_SilveryShield);
+                        AddToInscriptionList(ref list, ref levelMax, 4, 4, CNCID.Inscription.S_SilverySpark);
                         AddToInscriptionList(ref list, ref levelMax, 5, 5, CNCID.Inscription.S_SilveryVow);
                         break;
                     case CNCID.Item.TheLightOfAuzzsia:
@@ -366,7 +375,7 @@ namespace CNC.Common.Global.Items
                         break;
                 }
                 itemInscription.innateness = list[0].Length;
-                itemInscription.level = (list[0].Length > 0).ToInt();
+                itemInscription.level = (levelMax > 0).ToInt();
                 itemInscription.levelMax = levelMax;
                 itemInscription._inscription1 = new List<Inscription>(list[0]);
                 itemInscription._inscription2 = list;

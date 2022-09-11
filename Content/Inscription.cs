@@ -18,9 +18,8 @@ namespace CNC.Content
         public string displayName;//铭文名
         public string description;//铭文描述
         public int cooldown;
-        public int cooldownMax;
-        public object[] Data => args;
-        private object[] args = new object[99];
+        public int defCooldown;//预设冷却
+        public object[] Data { get; private set; } = new object[99];
 
         public Inscription() => this.SetDefaults(0, -1);
 
@@ -36,8 +35,8 @@ namespace CNC.Content
                 this.displayName = "";
                 this.description = "";
                 this.cooldown = 0;
-                this.cooldownMax = 0;
-                this.args = new object[0];
+                this.defCooldown = 0;
+                this.Data = new object[0];
                 return;
             }
             this.type = type;
@@ -48,89 +47,91 @@ namespace CNC.Content
             string[] tt = CNCLocalization.GetText(_name).Split('|');
             this._name = CNCID.Inscription.Collection[new Point(type, style)];
             this.cooldown = 0;
-            this.cooldownMax = 0;
+            this.defCooldown = 0;
             this.displayName = tt[0];
             this.description = tt[1];
             switch (style)
             {
                 case 0:
-                    if (type == 0) { this.args = new object[] { 0.20f }; }
-                    if (type == 1) { this.args = new object[] { 0.25f }; }
-                    if (type == 2) { this.args = new object[] { 0.20f }; }
-                    if (type == 3) { this.args = new object[] { 0.13f }; }
-                    if (type == 4) { this.args = new object[] { 0.20f }; }
-                    if (type == 5) { this.args = new object[] { 0.25f }; }
-                    if (type == 6) { this.args = new object[] { 0.20f }; }
-                    if (type == 7) { this.args = new object[] { 0.20f }; }
-                    if (type == 8) { this.args = new object[] { 0.25f }; }
-                    if (type == 9) { this.args = new object[] { 0.20f }; }
-                    if (type == 10) { this.args = new object[] { 0.15f, 0.35f }; }
-                    if (type == 11) { this.args = new object[] { 0.10f }; }
-                    if (type == 12) { this.args = new object[] { 0.25f }; }
-                    if (type == 13) { this.args = new object[] { 0.20f }; }
-                    if (type == 14) { this.args = new object[] { 20 }; }
-                    if (type == 15) { this.args = new object[] { }; }
-                    if (type == 16) { this.args = new object[] { 0.40f }; }
-                    if (type == 17) { this.args = new object[] { 1 }; }
-                    if (type == 18) { this.args = new object[] { 0.30f }; }
-                    if (type == 19) { this.args = new object[] { 0.15f }; }
-                    if (type == 20) { this.args = new object[] { 0.30f, 0.30f }; }
-                    if (type == 21) { this.args = new object[] { 0.27f }; }
-                    if (type == 22) { this.args = new object[] { 0.17f }; }
-                    if (type == 23) { this.args = new object[] { 0.10f, 0.50f }; }
-                    if (type == 24) { this.args = new object[] { 0.35f }; }
-                    if (type == 25) { this.args = new object[] { 0.20f }; }
+                    if (type == 0) { this.Data = new object[] { 0.20f }; }
+                    if (type == 1) { this.Data = new object[] { 0.25f }; }
+                    if (type == 2) { this.Data = new object[] { 0.20f }; }
+                    if (type == 3) { this.Data = new object[] { 0.13f }; }
+                    if (type == 4) { this.Data = new object[] { 0.20f }; }
+                    if (type == 5) { this.Data = new object[] { 0.25f }; }
+                    if (type == 6) { this.Data = new object[] { 0.20f }; }
+                    if (type == 7) { this.Data = new object[] { 0.20f }; }
+                    if (type == 8) { this.Data = new object[] { 0.25f }; }
+                    if (type == 9) { this.Data = new object[] { 0.20f }; }
+                    if (type == 10) { this.Data = new object[] { 0.15f, 0.35f }; }
+                    if (type == 11) { this.Data = new object[] { 0.10f }; }
+                    if (type == 12) { this.Data = new object[] { 0.25f }; }
+                    if (type == 13) { this.Data = new object[] { 0.20f }; }
+                    if (type == 14) { this.Data = new object[] { 20 }; }
+                    if (type == 15) { this.Data = new object[] { }; }
+                    if (type == 16) { this.Data = new object[] { 0.40f }; }
+                    if (type == 17) { this.Data = new object[] { 1 }; }
+                    if (type == 18) { this.Data = new object[] { 0.30f }; }
+                    if (type == 19) { this.Data = new object[] { 0.15f }; }
+                    if (type == 20) { this.Data = new object[] { 0.30f, 0.30f }; }
+                    if (type == 21) { this.Data = new object[] { 0.27f }; }
+                    if (type == 22) { this.Data = new object[] { 0.17f }; }
+                    if (type == 23) { this.Data = new object[] { 0.10f, 0.50f }; }
+                    if (type == 24) { this.Data = new object[] { 0.35f }; }
+                    if (type == 25) { this.Data = new object[] { 0.20f }; }
                     break;
                 case CNCID.Item.FireGrimoire:
-                    if (type == 0) { this.args = new object[] { }; }
-                    if (type == 1) { this.args = new object[] { "[damage3=36]" }; }
-                    if (type == 2) { this.args = new object[] { 8 }; }
-                    if (type == 3) { this.args = new object[] { 0.05f }; }
+                    if (type == 0) { this.Data = new object[] { }; }
+                    if (type == 1) { this.Data = new object[] { "[damage3=36]" }; }
+                    if (type == 2) { this.Data = new object[] { 8 }; }
+                    if (type == 3) { this.Data = new object[] { 0.05f }; }
                     break;
                 case CNCID.Item.IceTooth:
-                    if (type == 0) { this.args = new object[] { }; }
-                    if (type == 1) { this.args = new object[] { }; }
-                    if (type == 2) { this.args = new object[] { "[damage3=30]" }; }
-                    if (type == 3) { this.args = new object[] { 0.40f }; }
-                    if (type == 4) { this.args = new object[] { 10, 14, "[damage3=80]", 15, 10 }; this.cooldownMax = 600; }
+                    if (type == 0) { this.Data = new object[] { }; }
+                    if (type == 1) { this.Data = new object[] { }; }
+                    if (type == 2) { this.Data = new object[] { "[damage3=30]" }; }
+                    if (type == 3) { this.Data = new object[] { 0.40f }; }
+                    if (type == 4) { this.Data = new object[] { 10, 14, "[damage3=80]", 15, 10 }; this.defCooldown = 600; }
                     break;
                 case CNCID.Item.Superconductor:
-                    if (type == 0) { this.args = new object[] { }; }
-                    if (type == 1) { this.args = new object[] { 4, 4, "[damage3=36]" }; this.cooldownMax = 300; }
-                    if (type == 2) { this.args = new object[] { 0.03f, 10, 4, 4, "[damage3=40]" }; }
-                    if (type == 3) { this.args = new object[] { 0.05f }; }
-                    if (type == 4) { this.args = new object[] { 1, 6 }; }
-                    if (type == 5) { this.args = new object[] { 8 }; }
+                    if (type == 0) { this.Data = new object[] { }; }
+                    if (type == 1) { this.Data = new object[] { 4, 4, "[damage3=36]" }; this.defCooldown = 300; }
+                    if (type == 2) { this.Data = new object[] { 0.03f, 10, 4, 4, "[damage3=40]" }; }
+                    if (type == 3) { this.Data = new object[] { 0.05f }; }
+                    if (type == 4) { this.Data = new object[] { 1, 6 }; }
+                    if (type == 5) { this.Data = new object[] { 8 }; }
                     break;
                 case CNCID.Item.ArgenteusClaw:
-                    if (type == 0) { this.args = new object[] { }; }
-                    if (type == 1) { this.args = new object[] { 0.45f, "[damage2=200f]" }; }
-                    if (type == 2) { this.args = new object[] { 3, "[damage2=300f]" }; }
+                    if (type == 0) { this.Data = new object[] { }; }
+                    if (type == 1) { this.Data = new object[] { 0.45f, "[damage2=200f]" }; }
+                    if (type == 2) { this.Data = new object[] { 3, "[damage2=300f]" }; }
                     break;
                 case CNCID.Item.ArgenteusOathKeeper:
-                    if (type == 0) { this.args = new object[] { }; }
-                    if (type == 1) { this.args = new object[] { "[damage1=12]" }; }
-                    if (type == 2) { this.args = new object[] { 30, 15, "[damage1=80]", "[damage1=100]" }; }
-                    if (type == 3) { this.args = new object[] { 6, 8, 0.15f, 0.15f, 10 }; }
+                    if (type == 0) { this.Data = new object[] { 0.60f, "[damage3=90]" }; }
+                    if (type == 1) { this.Data = new object[] { 20, 5, 100, "[damage3=200]" }; }
+                    if (type == 2) { this.Data = new object[] { 2, "[damage1=150f]" }; this.defCooldown = 120; }
+                    if (type == 3) { this.Data = new object[] { 6, 8, 0.15f, 0.15f, 10 }; this.defCooldown = 1200; }
                     break;
                 case CNCID.Item.TheLightOfAuzzsia:
-                    if (type == 0) { this.args = new object[] { "[damage3=50]" }; }
-                    if (type == 1) { this.args = new object[] { }; }
-                    if (type == 2) { this.args = new object[] { "[damage3=30]" }; }
+                    if (type == 0) { this.Data = new object[] { "[damage3=50]" }; }
+                    if (type == 1) { this.Data = new object[] { }; }
+                    if (type == 2) { this.Data = new object[] { "[damage3=30]" }; }
                     break;
                 case CNCID.Item.EmberOfNien:
-                    if (type == 0) { this.args = new object[] { 0.10f, 1 }; }
-                    if (type == 1) { this.args = new object[] { 6, 6 }; }
-                    if (type == 2) { this.args = new object[] { 5, 5, 0.10f }; }
+                    if (type == 0) { this.Data = new object[] { 0.10f, 1 }; }
+                    if (type == 1) { this.Data = new object[] { 6, 6 }; }
+                    if (type == 2) { this.Data = new object[] { 5, 5, 0.10f }; }
                     break;
                 case CNCID.Item.FragmentarySoulDagger:
-                    if (type == 0) { this.args = new object[] { 10, 8, 8, 2.00f }; }
-                    if (type == 1) { this.args = new object[] { 3, 0.10f, 4 }; }
-                    if (type == 2) { this.args = new object[] { 6 }; }
+                    if (type == 0) { this.Data = new object[] { 10, 8, 8, 2.00f }; }
+                    if (type == 1) { this.Data = new object[] { 3, 0.10f, 4 }; }
+                    if (type == 2) { this.Data = new object[] { 6 }; }
                     break;
             }
         }
 
+        /// <summary> 获取铭文描述 </summary>
+        /// <param name="args">数据参数</param>
         private string GetDesc(object[] args)
         {
             try
@@ -150,19 +151,29 @@ namespace CNC.Content
             }
         }
 
+        /// <summary> 设置冷却时间 </summary>
+        /// <param name="newCooldown">冷却</param>
+        /// <param name="newCooldownMax">新预设冷却</param>
+        /// <param name="add">追加倍数</param>
+        /// <param name="mul">追乘倍数</param>
         public void SetCooldown(int newCooldown = -1, int newCooldownMax = -1, float add = 0f, float mul = 1f)
         {
-            if (newCooldownMax >= 0) this.cooldownMax = newCooldownMax;
-            if (newCooldown < 0) newCooldown = this.cooldownMax;
+            if (newCooldownMax >= 0) this.defCooldown = newCooldownMax;
+            if (newCooldown < 0) newCooldown = this.defCooldown;
             this.cooldown = (int)((newCooldown  / (1 + add)) * mul);
         }
 
+        /// <summary> 铭文描述转物品描述 </summary>
+        /// <param name="data">数据参数</param>
         public string GetTooltip(object[] data = default)
         {
             string tt = GetDesc(data == default ? this.Data : data);
             return tt;
         }
 
+        /// <summary> 将文本的伤害表达式转成具体数字 </summary>
+        /// <param name="text">要读取的文本</param>
+        /// <param name="item">目标物品</param>
         public static void GetFirstDamage(ref string text, Item item)
         {
             Player p = Main.LocalPlayer;
@@ -217,6 +228,8 @@ namespace CNC.Content
             text = text.Substring(0, begin) + ColorDamage((int)basicDamage, (int)extraDamage, damageColor[type]) + text.Substring(end + 1);
         }
 
+        /// <summary> 将文本的伤害表达式转成具体数字 </summary>
+        /// <param name="text">要读取的文本</param>
         public static void GetFirstDamageCommon(ref string text)
         {
             int type = 0;
@@ -237,9 +250,18 @@ namespace CNC.Content
             text = text.Substring(0, begin) + damage + extra + text.Substring(end + 1);
         }
 
+        /// <summary> 获取伤害值 </summary>
+        /// <param name="originalDamage">百分比伤害的基础伤害值</param>
+        /// <param name="arg">伤害表达式</param>
+        /// <param name="item">提供加成的物品</param>
         public static int JustGetDamage(int originalDamage, string arg, Item item)
             => JustGetDamage(originalDamage, arg, item.GetGlobalItem<InscriptionSettings>().skillDamageAdd, item.GetGlobalItem<InscriptionSettings>().skillDamageMul);
 
+        /// <summary> 获取伤害值 </summary>
+        /// <param name="originalDamage">百分比伤害的基础伤害值</param>
+        /// <param name="arg">伤害表达式</param>
+        /// <param name="add">追加倍数</param>
+        /// <param name="mul">追乘倍数</param>
         public static int JustGetDamage(int originalDamage, string arg, float add = 0f, float mul = 1f)
         {
             Player p = Main.LocalPlayer;
@@ -309,7 +331,7 @@ namespace CNC.Content
             return base.Equals(obj);
         }
 
-        public override int GetHashCode() => new { type, style, }.GetHashCode();
+        public override int GetHashCode() => new { type, style }.GetHashCode();
         
         public static bool operator ==(Inscription i1, Inscription i2) => i1.Equals(i2);
         public static bool operator !=(Inscription i1, Inscription i2) => !i1.Equals(i2);

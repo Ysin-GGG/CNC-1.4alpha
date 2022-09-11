@@ -69,7 +69,7 @@ namespace CNC.Content.Items.Weapons.Magic
                 }
                 else
                 {
-                    Projectile projectile = CNCUtils.NewProj(source, position, velocity, type, damage, knockback, -1);
+                    Projectile projectile = CNCUtils.NewProj(source, position, velocity, type, damage, knockback, item.crit, -1, 0f, 1f);
                     projectile.GetGlobalProjectile<AllProjectile>().data["overload"] = this.OverloadEnable;
                     projectile.GetGlobalProjectile<AllProjectile>().data["overloadUpgraded"] = this.OverloadUpgrade;
                 }

@@ -30,12 +30,16 @@ namespace CNC.Common.Global.NPCs
         public int lifeRegenCount;
         public int lifeRegen;
 
+        public int[] bleeding = new int[6];
+        public int Tick { get; private set; } = 0;
+
         public override bool InstancePerEntity => true;
 
         public override void ResetEffects(NPC npc)
         {
             for (int i = 0; i < buff.Length; i++) buff[i] = false;
 
+            Tick = (Tick + 1) % 60;
             if (lifeRegen > 0) { lifeRegenCount = 0; }
             lifeRegen = 0;
             if (sanctifiedLevel < 0) sanctifiedLevel = MyMath.Clamp(sanctifiedLevel + 1, -2, 0);
@@ -44,6 +48,7 @@ namespace CNC.Common.Global.NPCs
         public override void FindFrame(NPC npc, int frameHeight)
         {
             if (npc.GetGlobalNPC<AllNPC>().buff[CNCID.Buff.Glacier] && !npc.boss) npc.frameCounter = 0;
+            if (npc.GetGlobalNPC<AllNPC>().buff[CNCID.Buff.Dizzy] && !npc.boss) npc.frameCounter = 0;
         }
 
         public override bool PreAI(NPC npc)
@@ -52,6 +57,13 @@ namespace CNC.Common.Global.NPCs
             {
                 npc.position = npc.oldPosition.ToPoint().ToVector2();
                 npc.velocity = npc.oldVelocity.ToPoint().ToVector2();
+                npc.CheckActive();
+                npc.checkDead();
+                return false;
+            }
+            if (npc.GetGlobalNPC<AllNPC>().buff[CNCID.Buff.Dizzy] && !npc.boss)
+            {
+                if (!npc.noGravity) npc.velocity.Y += MyMath.g * .01f;
                 npc.CheckActive();
                 npc.checkDead();
                 return false;

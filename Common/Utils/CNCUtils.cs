@@ -7,6 +7,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.Localization;
+using CNC.Common.Global.Players;
 using CNC.Common.Global.Projectiles;
 using CNC.Content.Projectiles;
 
@@ -28,6 +29,28 @@ namespace CNC.Common.Utils
         {
             if (owner < 0) { owner = Const.me; }
             int whoAmI = Projectile.NewProjectile(source, position, velocity, type, dmg, kb, owner);
+            Main.projectile[whoAmI].GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().damageAdd = damageAdd;
+            Main.projectile[whoAmI].GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().damageMul = damageMul;
+            if (Main.projectile[whoAmI].ModProjectile != null && (CNCProjectile)Main.projectile[whoAmI].ModProjectile != null) ((CNCProjectile)Main.projectile[whoAmI].ModProjectile).OnSpawn();
+            return Main.projectile[whoAmI];
+        }
+
+        /// <summary> 生成弹幕 </summary>
+        /// <param name="pos">世界坐标</param>
+        /// <param name="vel">初速度</param>
+        /// <param name="type">弹幕id</param>
+        /// <param name="dmg">伤害</param>
+        /// <param name="kb">击退</param>
+        /// <param name="crit">暴击率</param>
+        /// <param name="owner">生成者</param>
+        /// <param name="data0">数据变量1</param>
+        /// <param name="data1">数据变量2</param>
+        /// <returns></returns>
+        public static Projectile NewProj(Terraria.DataStructures.IEntitySource source, Vector2 position, Vector2 velocity, int type, int dmg, float kb, int crit, int owner = -1, float damageAdd = 0, float damageMul = 1)
+        {
+            if (owner < 0) { owner = Const.me; }
+            int whoAmI = Projectile.NewProjectile(source, position, velocity, type, dmg, kb, owner);
+            Main.projectile[whoAmI].CritChance = crit;
             Main.projectile[whoAmI].GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().damageAdd = damageAdd;
             Main.projectile[whoAmI].GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().damageMul = damageMul;
             if (Main.projectile[whoAmI].ModProjectile != null && (CNCProjectile)Main.projectile[whoAmI].ModProjectile != null) ((CNCProjectile)Main.projectile[whoAmI].ModProjectile).OnSpawn();
@@ -120,6 +143,82 @@ namespace CNC.Common.Utils
             Lighting.AddLight((int)(position.X / 16f), (int)(position.Y / 16f), r, g, b);
         }
 
+        /// <summary> 设置Buff </summary>
+        /// <param name="target">目标</param>
+        /// <param name="cncid">CNC内部ID</param>
+        /// <param name="time">持续时间</param>
+        /// <param name="quiet">？？</param>
+        public static void SetBuff(NPC target, short cncid, int time, bool quiet = false)
+        {
+            int id = CNCID.Buff.LegacyObject[cncid];
+            if (time > 0) target.AddBuff(id, time, quiet);
+            else if (target.HasBuff(id)) target.DelBuff(target.FindBuffIndex(id));
+        }
+
+        /// <summary> 设置Buff </summary>
+        /// <param name="target">目标</param>
+        /// <param name="cncid">CNC内部ID</param>
+        /// <param name="time">持续时间</param>
+        /// <param name="quiet">？？</param>
+        public static void SetBuff(Player target, short cncid, int time, bool quiet = false)
+        {
+            int id = CNCID.Buff.LegacyObject[cncid];
+            if (time > 0) target.AddBuff(id, time, quiet);
+            else if (target.HasBuff(id)) target.DelBuff(target.FindBuffIndex(id));
+        }
+
+        /// <summary> 真实伤害 </summary>
+        /// <param name="target">目标</param>
+        /// <param name="damage">百分比伤害值</param>
+        /// <param name="max">伤害值上限</param>
+        /// <param name="kill">致死</param>
+        /// <param name="color">伤害字体颜色</param>
+        public static void TrueDamage(NPC target, float damage, int max, bool kill = true, Color color = default)
+            => TrueDamage(target, (int)(damage * target.lifeMax), max, kill, default);
+
+        /// <summary> 真实伤害 </summary>
+        /// <param name="target">目标</param>
+        /// <param name="damage">伤害值</param>
+        /// <param name="max">伤害值上限</param>
+        /// <param name="kill">致死</param>
+        /// <param name="color">伤害字体颜色</param>
+        public static void TrueDamage(NPC target, int damage, int max, bool kill = true, Color color = default)
+        {
+            if (target.type == 488) return;
+            if (color == default) color = Color.White;
+            damage = MyMath.Min(damage, max);
+            target.life = MyMath.Max(target.life - damage, (!kill).ToInt(1));
+            if (damage > 0) CombatText.NewText(target.getRect(), color, damage, false, true);
+            if (target.life <= 0) target.checkDead();
+        }
+
+        /// <summary> 真实伤害 </summary>
+        /// <param name="target">目标</param>
+        /// <param name="damage">百分比伤害值</param>
+        /// <param name="max">伤害值上限</param>
+        /// <param name="kill">致死</param>
+        /// <param name="color">伤害字体颜色</param>
+        /// <param name="damageSource">死亡因素</param>
+        public static void TrueDamage(Player target, float damage, int max, bool kill = true, Color color = default, Terraria.DataStructures.PlayerDeathReason damageSource = null)
+            => TrueDamage(target, (int)(damage * target.statLifeMax2), max, kill, color, damageSource);
+
+        /// <summary> 真实伤害 </summary>
+        /// <param name="target">目标</param>
+        /// <param name="damage">伤害值</param>
+        /// <param name="max">伤害值上限</param>
+        /// <param name="kill">致死</param>
+        /// <param name="color">伤害字体颜色</param>
+        /// <param name="damageSource">死亡因素</param>
+        public static void TrueDamage(Player target, int damage, int max, bool kill = true, Color color = default, Terraria.DataStructures.PlayerDeathReason damageSource = null)
+        {
+            if (color == default) color = Color.White;
+            damage = MyMath.Min(damage, max);
+            target.statLife = MyMath.Max(target.statLife - damage, (!kill).ToInt(1));
+            target.lifeRegenTime = 0;
+            if (damage > 0) CombatText.NewText(target.getRect(), color, damage, false, true);
+            if (target.statLife <= 0) target.KillMe(damageSource, int.MaxValue, target.direction);
+        }
+   
         public static void SetTile(Point position, int type, bool isWall = false, bool flag = true, int size = 0)
         {
             if (size == 0)
@@ -151,12 +250,12 @@ namespace CNC.Common.Utils
                 }
         }
 
-        /// <summary> 高精度颜色 </summary>
+        /// <summary> 附加原版闪烁的颜色 </summary>
         /// <param name="R">红原色</param>
         /// <param name="G">绿原色</param>
         /// <param name="B">蓝原色</param>
         /// <param name="A">透明度</param>
-        /// <param name="flash">是否闪动</param>
+        /// <param name="flash">是否闪烁</param>
         public static Color AccurateColor(int R, int G, int B, int A = 0, bool flash = true)
         {
             var alpha = Main.mouseTextColor / 255f;
@@ -164,7 +263,7 @@ namespace CNC.Common.Utils
             else return new Color((byte)(R * alpha), (byte)(G * alpha), (byte)(B * alpha), Main.mouseTextColor);
         }
 
-        /// <summary> 高精度颜色 </summary>
+        /// <summary> 附加原版闪烁的颜色 </summary>
         /// <param name="color">输入颜色</param>
         /// <param name="flash">是否闪动</param>
         public static Color AccurateColor(Color color, bool flash = true)
@@ -220,6 +319,24 @@ namespace CNC.Common.Utils
             return res;
         }
 
+        /// <summary> 半径内制造震动 </summary>
+        /// <param name="center">震动中心</param>
+        /// <param name="radius">影响半径（越远震动效果越弱，设为非正数时只对当前坐标的目标完全生效）</param>
+        /// <param name="time"> 震动时长 </param>
+        /// <param name="frequency"> 震动速率 </param>
+        /// <param name="amplitude"> 震动幅度 </param>
+        /// <param name="attenuation"> 震动衰减速度 </param>
+        /// <param name="startOffset"> 初始震动偏移 </param>
+        public static void ScreenShake(Vector2 center, float radius, int time, Vector2 frequency, Vector2 amplitude, float attenuation = .9f, Vector2 startOffset = default)
+        {
+            foreach (Player player in Main.player)
+            {
+                Vector2 pos = player.Center;
+                float mult = radius > 0 ? MyMath.Max(1 - (pos - center).Length() / radius, 0f) : (player.Center != center).ToInt(1);
+                if(mult > 0) player.GetModPlayer<AllPlayer>().ScreenShake((int)(time * mult), frequency * mult, amplitude * mult, attenuation, startOffset);
+            }
+        }
+
         /// <summary> 生成爆炸弹幕 </summary>
         /// <param name="source">实体源</param>
         public static GenericExplosion CreateExplosion(Terraria.DataStructures.IEntitySource source)
@@ -246,6 +363,26 @@ namespace CNC.Common.Utils
                 GenericExplosion explosion = (GenericExplosion)p.ModProjectile;
                 return explosion.
                     SetDefaults(null, proj.Center, Vector2.Zero, null).
+                    SetDamage(0, DamageClass.Default, 0, 0f, 0, 0f, 1f).
+                    SetAlpha(1f, 0f, 1f).
+                    SetScale(0f, 0f, 1f).
+                    SetRotation(0f, 0f, 1f).
+                    SetColor(Color.White, Color.Transparent, 0f);
+            }
+            return null;
+        }
+
+        /// <summary> 生成爆炸弹幕 </summary>
+        /// <param name="player">玩家</param>
+        public static GenericExplosion CreateExplosion(Player player)
+        {
+            if (player != null)
+            {
+                Projectile p = CNCUtils.NewProj(player.GetSource_FromThis(),player.Center,Vector2.Zero, CNCID.Projectile.LegacyObject[CNCID.Projectile.GenericExplosion], 0, 0f, 0, player.whoAmI, 0f, 1f);
+                p.direction = player.direction;
+                GenericExplosion explosion = (GenericExplosion)p.ModProjectile;
+                return explosion.
+                    SetDefaults(null, player.Center, Vector2.Zero, null).
                     SetDamage(0, DamageClass.Default, 0, 0f, 0, 0f, 1f).
                     SetAlpha(1f, 0f, 1f).
                     SetScale(0f, 0f, 1f).
@@ -291,6 +428,23 @@ namespace CNC.Common.Utils
                 return slash.
                     SetDefaults(null, player.Center, Vector2.One, velocity, 1, 10).
                     SetDamage(0, DamageClass.Default, 0, 0f, 0, 0f, 1f).
+                    SetColor(Color.White, Color.Transparent, 0f);
+            }
+            return null;
+        }
+
+        /// <summary> 生成斩击弹幕 </summary>
+        /// <param name="player">生成者</param>
+        /// <param name="velocity">方向</param>
+        public static GenericSlashHit CreateSlashHit(Projectile projectile, Vector2 velocity)
+        {
+            if (projectile != null)
+            {
+                Projectile p = Projectile.NewProjectileDirect(projectile.GetSource_FromThis(), projectile.Center, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.GenericSlashHit], 0, 0, projectile.owner);
+                p.rotation = velocity.ToRotation();
+                GenericSlashHit slash = (GenericSlashHit)p.ModProjectile;
+                return slash.
+                    SetDefaults(null, Vector2.One, projectile.Center, velocity, 10).
                     SetColor(Color.White, Color.Transparent, 0f);
             }
             return null;

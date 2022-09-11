@@ -86,16 +86,22 @@ Mods: {
 				Overloaded: Overloaded
 				Surged: Surged
 				Sanctified: Sanctified
+				Dizzy: Dizzy
+				Bleeding: Bleeding
+				Blessed: Blessed
 			}
 			Desc: {
 				MiracleFox: Her body is indistinct
 				Scorched: Decreased defense by 8
 				Enthused: Increased your attack and movement speed
 				Gelid: Your movement speed has been reduced heavily
-				Glacial: You can not do anything!
+				Glacial: You cannot do anything!
 				Overloaded: Shoot a charged eletric projectile next time
 				Surged: 30% increased magic damage
 				Sanctified: Souls are burning!
+				Dizzy: You cannot do anything!
+				Bleeding: 每秒损失一定生命值
+				Blessed: 减少15%受到的伤害\n神圣惩戒的触发概率提高15%
 			}
 		}
 
@@ -322,10 +328,10 @@ Mods: {
 				SilveryArrow: Silvery Arrow|Wooden arrows turn into Silvery Arrows
 				Sanctity: Sanctity|{0} shoots an Sanctified Arrow, making {1} ranged damage and applying [{$Mods.CNC.Buff.Name.Sanctified}] to targets
 				Exorcism: Exorcism|Explodes all Sanctified Arrows if the target was struck by {0} Sanctified Arrows, dealing {1} ranged damage
-				SilveryFlame: Silvery Flame|污秽之物将被银白圣树的力量烧灼，造成一定的持续伤害
-				Judgement: Judgement|攻击有概率造成{0}的额外魔法伤害
-				SilveryShield: Silvery Shield|每造成{0}次伤害，获得持续{1}s充满神圣能量的护盾，抵挡{2}点伤害，被击破或持续时间结束后爆炸造成{3}点范围魔法伤害
-				SilveryVow: Silvery Vow|右键消耗{0}点神力值，获得持续{1}s的神圣护盾，期间所受伤害减免{2}，神圣惩戒触发概率提高{3}，每次触发神圣惩戒效果获得{4}护盾值
+				Judgement: 神圣惩戒|造成伤害时{0}额外造成{1}的魔法伤害
+				SilveryShield: 银盾|攻击命中{0}次，获得持续{1}s充满神圣能量的护盾，提供{2}点额外生命值，被击破或持续时间结束后爆炸造成{3}点范围魔法伤害
+				SilverySpark: 银色火花|若{0}s内未攻击，则下次攻击变为突刺攻击，造成{1}近战伤害，突刺期间免疫伤害
+				SilveryVow: 银白树立誓|右键消耗{0}点神力值，获得持续{1}s的神圣护盾，期间所受伤害减免{2}，神圣惩戒触发概率提高{3}，每次触发神圣惩戒效果获得{4}护盾值
 				Rock: Rock|使用远古埃兹西亚咒文吟唱，从地面抬起巨岩掷向对手，造成{0}魔法伤害并产生极强击退
 				ActiveChant: Active Chant|你不再需要完全专注于吟唱，将能以缓慢移动进行施法
 				Fragmentation: Fragmentation|向岩石中注入庞大魔力，岩石击中敌人时将爆炸并产生{0}范围魔法伤害

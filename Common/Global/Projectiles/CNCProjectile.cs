@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -23,6 +24,7 @@ namespace CNC.Common.Global.Projectiles
         public Projectile ParentProjectile => projectile.GetGlobalProjectile<ProjectileRelation>().ParentProjectile;
         public Projectile[] ChildrenProjectile => projectile.GetGlobalProjectile<ProjectileRelation>().ChildrenProjectile;
         public Dictionary<string, object> data { get => projectile.GetGlobalProjectile<AllProjectile>().data; set => projectile.GetGlobalProjectile<AllProjectile>().data = value; }
+        public Texture2D Texture2 => ModContent.Request<Texture2D>(Texture).Value;
 
         public Mod mod => Mod;
         public Projectile projectile => Projectile;
@@ -40,6 +42,11 @@ namespace CNC.Common.Global.Projectiles
         public float damageAdd => projectile.GetGlobalProjectile<AllProjectile>().damageAdd;
         /// <summary> 对子弹幕生效 </summary>
         public float damageMul => projectile.GetGlobalProjectile<AllProjectile>().damageMul;
+
+        internal delegate void _ModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit);
+        internal delegate void _OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit);
+        internal _ModifyHitNPC ModifyHitNPCEffect;
+        internal _OnHitNPC OnHitNPCEffect;
 
         public ProjDamageStyle DamageStyle
         {
@@ -99,9 +106,7 @@ namespace CNC.Common.Global.Projectiles
         public Projectile NewProjectile(Vector2 position, Vector2 velocity, int type, float damage, float knockback, float rotation = 0f, float damageAdd = 0f, float damageMul = 1f)
             => NewProjectile(projectile, position, velocity, type, damage, rotation, damageAdd, damageMul);
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <summary> 生成子弹幕 </summary>
         /// <param name="projectile"></param>
         /// <param name="position"></param>
         /// <param name="velocity"></param>
@@ -147,7 +152,7 @@ namespace CNC.Common.Global.Projectiles
             ResetDefaults();
         }
 
-        public void AfterImages(Projectile projectile, Color color, int count, Texture2D image, float scaleAdd, float scaleMult)
+        public void AfterImages(Projectile projectile, Color color, int count, Texture2D image, float scaleAdd, float scaleMult, Rectangle? source = null)
         {
             Main.instance.LoadProjectile(projectile.type);
             var stat = new Content.DataStructures.VariagleStatus(1, scaleAdd, 0f, 1f, 1f, scaleMult);
@@ -158,7 +163,7 @@ namespace CNC.Common.Global.Projectiles
             {
                 Vector2 drawPos = projectile.oldPos[i] - Main.screenPosition + drawOrigin;
                 Color _color = projectile.GetAlpha(color) * ((num - i) / (float)num);
-                Main.EntitySpriteDraw(texture, drawPos, null, _color, projectile.oldRot[i], drawOrigin, projectile.scale * stat.GetNextValue(), SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(texture, drawPos, source, _color, projectile.oldRot[i], drawOrigin, projectile.scale * stat.GetNextValue(), SpriteEffects.None, 0);
             }
         }
 
@@ -179,11 +184,8 @@ namespace CNC.Common.Global.Projectiles
                 Main.EntitySpriteDraw(texture, drawPos, null, _color, projectile.oldRot[i], drawOrigin, projectile.scale * new Vector2(statX.GetNextValue(), statY.GetNextValue()), SpriteEffects.None, 0);
             }
         }
-
-
-        /// <summary>
-        /// 寻找最近的NPC
-        /// </summary>
+        
+        /// <summary> 寻找最近的NPC </summary>
         /// <param name="p">当前弹幕</param>
         /// <param name="range">搜索半径</param>
         /// <param name="friendly">是否为友好NPC</param>
@@ -206,9 +208,7 @@ namespace CNC.Common.Global.Projectiles
             }
             return target;
         }
-        /// <summary>
-        /// 搜索最近玩家
-        /// </summary>
+        /// <summary> 搜索最近玩家 </summary>
         /// <param name="p">当前弹幕</param>
         /// <param name="range">搜索半径</param>
         /// <returns></returns>
@@ -231,9 +231,7 @@ namespace CNC.Common.Global.Projectiles
             }
             return target;
         }
-        /// <summary>
-        /// 记录多帧的旋转和坐标
-        /// </summary>
+        /// <summary> 记录多帧的旋转和坐标 </summary>
         /// <param name="p">当前弹幕</param>
         /// <param name="offset">所有坐标偏移</param>
         public void UpdateOldData(Projectile p, Vector2 offset = default)
@@ -282,6 +280,7 @@ namespace CNC.Common.Global.Projectiles
 
         public sealed override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
+            this.OnHitNPCEffect?.Invoke(this.owner, target, damage, knockback, crit);
             HitNPC(target, damage, knockback, crit);
             OnHit(target, damage, knockback, crit);
         }
@@ -292,10 +291,10 @@ namespace CNC.Common.Global.Projectiles
             OnHit(target, damage, 0f, crit);
         }
         
-
-        public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        public sealed override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
-            HitNPC(target, ref damage, ref knockback, ref crit);
+            this.ModifyHitNPCEffect?.Invoke(this.owner, target, ref damage, ref knockback, ref crit);
+            HitNPC(target, ref damage, ref knockback, ref crit, ref hitDirection);
             ModifyHit(target, ref damage, ref knockback, ref crit);
         }
 
@@ -316,7 +315,7 @@ namespace CNC.Common.Global.Projectiles
         public virtual void ResetStaticDefaults() { }
         public virtual void OnSpawn() { }
         public virtual void HitNPC(NPC target, int damage, float knockback, bool crit) { }
-        public virtual void HitNPC(NPC target, ref int damage, ref float knockback, ref bool crit) { }
+        public virtual void HitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) { }
         public virtual void HitPlayer(Player target, int damage, bool crit) { }
         public virtual void HitPlayer(Player target, ref int damage, ref bool crit) { }
         public virtual void OnHit(Entity target, int damage, float knockback, bool crit) { }

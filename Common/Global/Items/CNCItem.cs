@@ -26,19 +26,14 @@ namespace CNC.Common.Global.Items
         protected Color n => new Color(64, 64, 64, 255);
         
         public byte clazz { get => allItem.clazz; set => allItem.clazz = value; }
-        /// <summary>
-        /// 对原版法杖方法的简化
-        /// </summary>
+        /// <summary> 对原版法杖方法的简化 </summary>
         public bool staff { get => Item.staff[Type]; set => Item.staff[Type] = value; }
 
-        /// <summary>
-        /// 巫师职业的咒能消耗
-        /// </summary>
+        /// <summary> 巫师职业的咒能消耗 </summary>
         /// <param name="player">目标玩家</param>
         /// <param name="amount">将要消耗的咒能数量</param>
-        /// <param name="ignoreCost">某人记大过</param>
+        /// <param name="ignoreCost">无视？%的加成影响，设为1则不计算加成</param>
         /// <param name="convert">是否允许以生命代替消耗</param>
-        /// <returns></returns>
         public bool ConsumeSanity(Player player, int amount, float ignoreCost = 0, bool? convert = null)
         {
             ignoreCost = MyMath.Clamp(ignoreCost, 0, 1);
@@ -77,6 +72,22 @@ namespace CNC.Common.Global.Items
             return false;
         }
 
+        /// <summary> 神力值消耗 </summary>
+        /// <param name="player">目标玩家</param>
+        /// <param name="amount">将要消耗的咒能数量</param>
+        /// <param name="ignoreCost">无视？%的加成影响，设为1则不计算加成</param>
+        public bool ConsumeBlessing(Player player, int amount)
+        {
+            ClassesSettings modPlayer = player.GetModPlayer<ClassesSettings>();
+            float value = modPlayer.clazz_Blessing;
+            if (value >= amount)
+            {
+                modPlayer.clazz_Blessing -= value;
+                return true;
+            }
+            return false;
+        }
+
         public virtual string[] attributeKeys => new string[0];
         public virtual int countFrame => 1;
         public virtual int ticksPerFrame => 30;
@@ -100,7 +111,7 @@ namespace CNC.Common.Global.Items
 
         public sealed override void ModifyTooltips(List<TooltipLine> tooltips) => Tooltips(tooltips);
 
-        public int JustGetDamage(Inscription inscription, int dataIndex = 0, int originalDamage = -1) => Inscription.JustGetDamage(originalDamage, (string)inscription.Data[MyMath.Max(0,dataIndex)], this.item);
+        public int JustGetDamage(Inscription inscription, int dataIndex = 0, int originalDamage = -1) => Inscription.JustGetDamage(originalDamage, (string)inscription.Data[MyMath.Max(0, dataIndex)], this.item);
 
         public override void AddRecipes() { }
         public virtual void ResetDefaults() { }

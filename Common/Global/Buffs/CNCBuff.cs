@@ -12,16 +12,16 @@ namespace CNC.Common.Global.Buffs
 {
     public abstract class CNCBuff : ModBuff
     {
-        private int _damage = 0;
-        public int damage { get => _damage; set => _damage = value; }
+        public int damage { get; set; } = 0;
         public bool pvp { get => Main.pvpBuff[Type]; set => Main.pvpBuff[Type] = value; }
         public bool debuff { get => Main.debuff[Type]; set => Main.debuff[Type] = value; }
         public bool noSave { get => Main.buffNoSave[Type]; set => Main.buffNoSave[Type] = value; }
         public bool noTimeDisplay { get => Main.buffNoTimeDisplay[Type]; set => Main.buffNoTimeDisplay[Type] = value; }
         public bool noClearedByNurse { get => BuffID.Sets.NurseCannotRemoveDebuff[Type]; set => BuffID.Sets.NurseCannotRemoveDebuff[Type] = value; }
         public bool longer { get => BuffID.Sets.LongerExpertDebuff[Type]; set => BuffID.Sets.LongerExpertDebuff[Type] = value; }
-        public string killText { get => _killText; set => _killText = value; }
-        private string _killText = "";
+        public string killText { get; set; } = "";
+
+        public override string Texture => ModContent.Request<Microsoft.Xna.Framework.Graphics.Texture2D>(base.Texture).Value == null ? "CNC/Content/Buffs/" + (this.debuff ? "NullDebuff" : "NullBuff") : base.Texture;
 
         public sealed override void SetStaticDefaults()
         {
@@ -37,22 +37,22 @@ namespace CNC.Common.Global.Buffs
             AllPlayer gt = target.GetModPlayer<AllPlayer>();
             //gt.buff[cid] = true;
             Update(target, gt, ref buffIndex);
-            if (_damage > 0)
+            if (damage > 0)
             {
                 if (gt.lifeRegen > 0) gt.lifeRegen = gt.lifeRegenCount = 0;
                 if (target.lifeRegen > 0) target.lifeRegen = 0;
                 //gt.lifeRegen -= 2 * _damage;
                 gt.lifeRegenCount += gt.lifeRegen;
-                if (gt.lifeRegenCount <= -120 * _damage)
+                if (gt.lifeRegenCount <= -120 * damage)
                 {
-                    gt.lifeRegenCount += 120 * _damage;
-                    target.statLife -= _damage;
+                    gt.lifeRegenCount += 120 * damage;
+                    target.statLife -= damage;
                     ModifyDamage(target, gt, ref buffIndex);
-                    CombatText.NewText(new Rectangle((int)target.position.X, (int)target.position.Y, target.width, target.height), CombatText.LifeRegen, _damage, false, true);
+                    CombatText.NewText(new Rectangle((int)target.position.X, (int)target.position.Y, target.width, target.height), CombatText.LifeRegen, damage, false, true);
                 }
                 if (target.statLife <= 0 && target.whoAmI == Const.me)
                 {
-                    string tt = _killText;
+                    string tt = killText;
                     tt = tt.Replace("[player]", target.name);
                     tt = tt.Replace("[Player]", target.name);
                     target.KillMe(PlayerDeathReason.ByCustomReason(tt), damage, target.direction);
@@ -66,14 +66,14 @@ namespace CNC.Common.Global.Buffs
             AllNPC gt = target.GetGlobalNPC<AllNPC>();
             //gt.buff[cid] = true;
             Update(target, gt, ref buffIndex);
-            if (_damage > 0)
+            if (damage > 0)
             {
                 if (gt.lifeRegen > 0) { gt.lifeRegen = 0; gt.lifeRegenCount = 0; }
                 //gt.lifeRegen -= 2 * _damage;
                 gt.lifeRegenCount += gt.lifeRegen;
-                if (gt.lifeRegenCount <= -120 * _damage)
+                if (gt.lifeRegenCount <= -120 * damage)
                 {
-                    gt.lifeRegenCount += 120 * _damage;
+                    gt.lifeRegenCount += 120 * damage;
                     int whoAmI = target.whoAmI;
                     if (target.realLife >= 0)
                     {
@@ -82,13 +82,13 @@ namespace CNC.Common.Global.Buffs
                     NPC npc = Main.npc[whoAmI];
                     if (!npc.immortal)
                     {
-                        npc.life -= _damage;
+                        npc.life -= damage;
                     }
                     ModifyDamage(target, gt, ref buffIndex);
-                    CombatText.NewText(new Rectangle((int)target.position.X, (int)target.position.Y, target.width, target.height), CombatText.LifeRegenNegative, _damage, false, true);
+                    CombatText.NewText(new Rectangle((int)target.position.X, (int)target.position.Y, target.width, target.height), CombatText.LifeRegenNegative, damage, false, true);
                     if (npc.life <= 0 && !npc.immortal)
                     {
-                        npc.life = _damage;
+                        npc.life = damage;
                         if (Main.netMode == 0)
                         {
                             npc.StrikeNPCNoInteraction(9999, 0f, 0, false, false, false);

@@ -18,31 +18,37 @@ namespace CNC.Common.Global.Players
 
         public int lifeRegen;
         public int lifeRegenCount;
-        private bool shake => this.shakeTime > 0 && this.shakeValue == Vector2.Zero;
-        private int shakeTime;
         /// <summary> 震动数值 </summary>
-        private Vector2 shakeValue;
+        public Vector2 shakeValue;
         /// <summary> 震动方向 </summary>
         private Vector2 shakeDirection;
         /// <summary> 震动频率 </summary>
         private Vector2 shakeFrequency;
         /// <summary> 震动幅度 </summary>
         private Vector2 shakeAmplitude;
-        /// <summary> 震动幅度变化倍数（取值区间为(0, 1)） </summary>
-        private Vector2 shakeAmplitudeMult;
+        /// <summary> 震动持续时长 </summary>
+        private int shakeTime;
+        /// <summary> 震动衰减程度 </summary>
+        public float shakeCur;
+        /// <summary> 震动衰减速度 </summary>
+        private float shakeAttenuation;
         private Vector2 instance;
 
         public bool ZoneTranquility => zone[0];
 
-        public int Tick => _tick;
-        private int _tick = 0;
+        public int Tick { get; private set; } = 0;
+
         public float[] CDReduction = new float[9];
         public float manaReturn = 0;
+        public float dealtDamage { get => player.GetModPlayer<ClassesSettings>().dealtDamage; set => player.GetModPlayer<ClassesSettings>().dealtDamage = value; }
+        public float takenDamage { get => player.GetModPlayer<ClassesSettings>().takenDamage; set => player.GetModPlayer<ClassesSettings>().takenDamage = value; }
+        public float takenDamageFromEnemies { get => player.GetModPlayer<ClassesSettings>().takenDamageFromEnemies; set => player.GetModPlayer<ClassesSettings>().takenDamageFromEnemies = value; }
         public bool[] buff = new bool[CNCID.Buff.MaxObject];
         public bool[] zone = new bool[1];
         public bool IsModDeveloper => name.Contains(player.name);
         public bool EquippedQuartzHead => player.armor[0].type == ModContent.ItemType<Content.Items.Developers.Quartz.QuartzBlock>();
         public string[] developers => name.ToArray();
+        public int[] bleeding = new int[6];
 
         private List<string> name = new List<string>()
         {
@@ -53,51 +59,50 @@ namespace CNC.Common.Global.Players
         public override void ResetEffects()
         {
             manaReturn = 0;
-            _tick = (_tick + 1) % 60;
+            Tick = (Tick + 1) % 60;
             for (int i = 0; i < CDReduction.Length; i++) CDReduction[i] = 1f;
             for (int i = 0; i < buff.Length; i++) buff[i] = false;
-            this.shakeAmplitudeMult = Vector2.One;
 
         }
 
-        public void ScreenShake(int time, float frequency, float amplitude, bool vertical = true)
-            => ScreenShake(time, frequency * new Vector2((!vertical).ToInt(), (vertical).ToInt()), amplitude * new Vector2((!vertical).ToInt(), (vertical).ToInt()));
-
         /// <summary> 屏幕震动 </summary>
         /// <param name="time"> 震动时长 </param>
-        /// <param name="frequency"> 震动频率 </param>
+        /// <param name="frequency"> 震动速率 </param>
         /// <param name="amplitude"> 震动幅度 </param>
-        public void ScreenShake(int time, Vector2 frequency, Vector2 amplitude)
+        /// <param name="attenuation"> 震动衰减速度 </param>
+        /// <param name="startOffset"> 初始震动偏移 </param>
+        public void ScreenShake(int time, Vector2 frequency, Vector2 amplitude, float attenuation, Vector2 startOffset = default)
         {
             this.shakeTime = time;
             this.shakeDirection = new Vector2(amplitude.X < 0 ? -1 : 1, amplitude.Y < 0 ? -1 : 1);
             this.shakeFrequency = frequency;
-            this.shakeAmplitude = amplitude * this.shakeAmplitudeMult;
-            this.shakeValue = Vector2.Zero;
+            this.shakeValue = startOffset;
+            this.shakeAmplitude = amplitude;
+            this.shakeAttenuation = attenuation;
+            this.shakeCur = 1f;
         }
 
         private void UpdateShakeData()
         {
+            Vector2 amplitude = new Vector2(Math.Abs(this.shakeAmplitude.X), Math.Abs(this.shakeAmplitude.Y));
+            if (this.shakeTime-- <= 0) this.shakeCur *= this.shakeCur < .01f ? 0f : this.shakeAttenuation;
+            if (this.shakeValue.X <= -amplitude.X) this.shakeDirection.X = 1;
+            if (this.shakeValue.X >= amplitude.X) this.shakeDirection.X = -1;
+            if (this.shakeValue.Y <= -amplitude.Y) this.shakeDirection.Y = 1;
+            if (this.shakeValue.Y >= amplitude.Y) this.shakeDirection.Y = -1;
+            this.shakeValue.X = MyMath.Clamp(this.shakeValue.X + this.shakeDirection.X * this.shakeFrequency.X, -amplitude.X, amplitude.X);
+            this.shakeValue.Y = MyMath.Clamp(this.shakeValue.Y + this.shakeDirection.Y * this.shakeFrequency.Y, -amplitude.Y, amplitude.Y);
         }
 
         public override void ModifyScreenPosition()
         {
-            if (this.shake) Main.screenPosition += this.shakeValue;
+            if (this.shakeCur > 0) Main.screenPosition += this.shakeValue * this.shakeCur;
         }
 
         public override void PostUpdate()
         {
-            if (this.shake)
-            {
-                Vector2 amplitude = new Vector2(Math.Abs(this.shakeAmplitude.X), Math.Abs(this.shakeAmplitude.Y));
-                Vector2 shakeSpeed = this.shakeAmplitude / this.shakeFrequency / 2f;
-                this.shakeValue += this.shakeDirection * shakeSpeed;
-                this.shakeTime = MyMath.Max(this.shakeTime - 1, 0);
-                if (this.shakeValue.X >= amplitude.X) { this.shakeDirection.X = -1; this.shakeValue.X = amplitude.X; }
-                if (this.shakeValue.X <= amplitude.X) { this.shakeDirection.X = 1; this.shakeValue.X = -amplitude.X; }
-                if (this.shakeValue.Y >= amplitude.Y) { this.shakeDirection.Y = -1; this.shakeValue.Y = amplitude.Y; }
-                if (this.shakeValue.Y <= amplitude.Y) { this.shakeDirection.Y = 1; this.shakeValue.Y = -amplitude.Y; }
-            }
+            if (this.shakeCur > 0) this.UpdateShakeData();
+
         }
     }
 }

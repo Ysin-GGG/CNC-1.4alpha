@@ -97,10 +97,10 @@ namespace CNC.Content.UI.InscriptionMenu
                 Item item = TargetWeapon;
                 string itemName = item.ModItem.Name;
                 string itemDesc = $"[{item.Name}]";
-                if (ModContent.Request<Texture2D>($"CNC/Assets/Inscription/Item/{itemName}").Value != null)
+                //if (ModContent.Request<Texture2D>($"CNC/Assets/Inscriptions/Item/{itemName}").Value != null)
                 {
                     for (int i = 0; i < item.ToolTip.Lines; i++) itemDesc += '\n' + item.ToolTip.GetLine(i);
-                    TargetWeaponIcon.icon = ModContent.Request<Texture2D>($"CNC/Assets/Inscription/Item/{itemName}").Value;
+                    TargetWeaponIcon.icon = ModContent.Request<Texture2D>($"CNC/Assets/Inscriptions/Item/{itemName}").Value ?? ModContent.Request<Texture2D>($"CNC/Assets/Inscriptions/NullItem").Value;
                     TargetWeaponIcon.display = itemDesc + "\n------------\n" + CNCLocalization.GetText($"UI.Enhancement.SelectWeapon");
                 }
                 for (int i = 0; i < TargetWeaponSettings.levelMax - 1; i++)
@@ -121,7 +121,7 @@ namespace CNC.Content.UI.InscriptionMenu
                     Inscription inscription = TargetWeaponSettings.inscription[innate];
                     if (i < TargetWeaponSettings.level)
                     {
-                        InscriptionIcon1[i].icon = ModContent.Request<Texture2D>($"CNC/Assets/Inscription/{(inscription.Name.StartsWith("S_") ? "Special" : "Common")}/{inscription.Name}").Value;
+                        InscriptionIcon1[i].icon = ModContent.Request<Texture2D>($"CNC/Assets/Inscriptions/{(inscription.Name.StartsWith("S_") ? "Special" : "Common")}/{inscription.Name}").Value ?? ModContent.Request<Texture2D>($"CNC/Assets/Inscriptions/NullInscription").Value;
                         string desc = "";
                         string desc2 = inscription.GetTooltip();
                         while (desc != desc2) { desc = desc2; Inscription.GetFirstDamageCommon(ref desc2); }
@@ -140,7 +140,7 @@ namespace CNC.Content.UI.InscriptionMenu
                 if (TargetWeapon == null || TargetWeaponSettings == null || !TargetWeaponSettings.CanUpgrade2) continue;
                 int num = TargetWeaponSettings.inscriptionList[TargetWeaponSettings.level].Length;
                 Inscription inscription = TargetWeaponSettings.inscriptionList[TargetWeaponSettings.level][(middle + page + num) % num];
-                InscriptionIcon2[i].icon = ModContent.Request<Texture2D>($"CNC/Assets/Inscription/{(inscription.Name.StartsWith("S_") ? "Special" : "Common")}/{inscription.Name}").Value;
+                InscriptionIcon2[i].icon = ModContent.Request<Texture2D>($"CNC/Assets/Inscriptions/{(inscription.Name.StartsWith("S_") ? "Special" : "Common")}/{inscription.Name}").Value ?? ModContent.Request<Texture2D>($"CNC/Assets/Inscriptions/NullInscription").Value;
                 string desc = "";
                 string desc2 = inscription.GetTooltip();
                 while (desc != desc2) { desc = desc2; Inscription.GetFirstDamageCommon(ref desc2); }

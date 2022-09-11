@@ -14,7 +14,7 @@ namespace CNC.Content.Projectiles
     public class GenericSlash : CNCProjectile
     {
         public sealed override int countFrame => 1;
-
+        
         public Texture2D image;
         public Texture2D imageTrail;
         public Texture2D imageTrace;
@@ -27,6 +27,7 @@ namespace CNC.Content.Projectiles
         public Vector2 scale;
         public SlashInfo[] attackInfo;
         public Vector2 direction;
+        public Vector2 hitboxOffset;
         public Vector2 imageOffset;
         public int[] afterImageData;
         /// <summary> 弹幕追随玩家 </summary>
@@ -154,12 +155,20 @@ namespace CNC.Content.Projectiles
         }
 
         /// <summary> 获取当前帧的斩击信息 <para> Vector4的XYZW分别对应：横坐标偏移，纵坐标偏移，攻击距离，攻击角度）</para> </summary>
-        public virtual Vector4 GetSlashInfo()
+        public virtual Vector4 GetSlashInfo() => this.GetSlashInfo(1 - (float)projectile.timeLeft / (MyMath.Sum(this.tickPerFrame) * projectile.extraUpdates));
+        /// <summary> 获取当前帧的斩击信息 <para> Vector4的XYZW分别对应：横坐标偏移，纵坐标偏移，攻击距离，攻击角度）</para> </summary>
+        public virtual Vector4 GetSlashInfo(float amount)
         {
             int count = this.attackInfo.Length;
             float len = 1f / count;
-            float amount = 1 - (float)projectile.timeLeft / (MyMath.Sum(this.tickPerFrame) * projectile.extraUpdates);
             float amount2 = amount % len / len;
+            int index = MyMath.Clamp((int)(amount / len) + 1, 1, count - 1);
+            float amount3 = MyMath.pow(amount2, this.attackInfo[index].power);
+            Vector2 offset = MyMath.Lerp(this.attackInfo[index - 1].offset, this.attackInfo[index].offset, amount3);
+            float range = MyMath.Lerp(this.attackInfo[index - 1].range, this.attackInfo[index].range, amount3);
+            float rotation = MyMath.Lerp(this.attackInfo[index - 1].rotation, this.attackInfo[index].rotation, amount3);
+            return new Vector4(offset, range, -rotation * projectile.direction);
+            /*
             if (projectile.direction == 1)
             {
                 int index = MyMath.Clamp((int)(amount / len) + 1, 1, count - 1);
@@ -184,8 +193,8 @@ namespace CNC.Content.Projectiles
                 float range = MyMath.Lerp(this.attackInfo[index].range, this.attackInfo[index - 1].range, amount3);
                 float rotation = MyMath.Lerp(this.attackInfo[index].rotation, this.attackInfo[index - 1].rotation, amount3);
                 return new Vector4(offset, range, -rotation);
-                */
             }
+            */
         }
 
         public override void ResetDefaults()
@@ -204,6 +213,7 @@ namespace CNC.Content.Projectiles
 
         public override void AI()
         {
+            owner.itemRotation = this.GetSlashInfo().W;
             projectile.velocity = Vector2.Zero;
             projectile.direction = (direction.X >= 0).ToDirectionInt(1);
             if (this.bindOwner) projectile.Center = owner.Center;
@@ -213,7 +223,7 @@ namespace CNC.Content.Projectiles
                 for (int i = 10; i <= 10; i++)
                 {
                     float rot = info.W + projectile.rotation;
-                    Vector2 begin = projectile.Center + info.XY().RotatedBy(rot);
+                    Vector2 begin = projectile.Center + (this.hitboxOffset + info.XY()).RotatedBy(rot);
                     Vector2 end = begin + new Vector2(info.Z, 0).RotatedBy(rot);
                     CNCUtils.NewDust(MyMath.Lerp(begin, end, i / 10f), dustToShowHitbox, 1.5f, Vector2.Normalize(end - begin) * 1f).noGravity = true;
                 }
@@ -252,7 +262,7 @@ namespace CNC.Content.Projectiles
             projectile.direction = (direction.X >= 0).ToDirectionInt(1);
             Vector4 info = this.GetSlashInfo();
             float rot = info.W + projectile.rotation;
-            Vector2 begin = projectile.Center + info.XY().RotatedBy(rot);
+            Vector2 begin = projectile.Center + (this.hitboxOffset + info.XY()).RotatedBy(rot);
             Vector2 end = begin + new Vector2(info.Z, 0).RotatedBy(rot);
             projHitbox.X = (int)MyMath.Min(begin.X, end.X);
             projHitbox.Y = (int)MyMath.Min(begin.Y, end.Y);
@@ -263,6 +273,7 @@ namespace CNC.Content.Projectiles
             bool noBarrier2 = true;
             int size = 4;
             float max = begin.Distance(end) / size;
+
             for (int i = 0; i <= max; i++)
             {
                 Vector2 point = MyMath.Lerp(begin, end, i / max);
@@ -273,6 +284,15 @@ namespace CNC.Content.Projectiles
                 if (inRange && noBarrier && noBarrier2) return true;
             }
             return false;
+        }
+
+        public override void HitNPC(NPC target, int damage, float knockback, bool crit)
+        {
+            float rot = this.GetSlashInfo().W + MyMath.deg60 * 2 - CNC.Random.NextDegree(60f);
+            int dir = (this.attackInfo[1].rotation > this.attackInfo[0].rotation).ToDirectionInt();
+            var hit = CNCUtils.CreateSlashHit(projectile, Vector2.Zero);
+            hit.SetDefaults(mod.Assets.Request<Texture2D>("Assets/Projectiles/SlashHit/SlashHit1").Value, new Vector2(MyMath.phi - 1f, 1f) * .5f, target.Center, -10, rot * dir);
+            hit.SetColor(this.imageColor, this.lightColor, .1f);
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -289,8 +309,25 @@ namespace CNC.Content.Projectiles
                 Rectangle source2 = new Rectangle(0, afterImageData[i] * projectile.height, projectile.width, projectile.height);
                 Main.EntitySpriteDraw(this.image, pos, source2, this.imageColor * this.fadeAlphaMult * alpha, projectile.rotation, origin, this.scale, projectile.direction == 1 ? 0 : SpriteEffects.FlipVertically, 0);
             }
-            if (this.fadeTime <= 0) Main.EntitySpriteDraw(this.image, pos, source, this.imageColor, projectile.rotation, origin, this.scale, projectile.direction == 1 ? 0 : SpriteEffects.FlipVertically, 0);
+            if (fadeTime > 0) DrawWeapon();
+            else Main.EntitySpriteDraw(this.image, pos, source, this.imageColor, projectile.rotation, origin, this.scale, projectile.direction == 1 ? 0 : SpriteEffects.FlipVertically, 0);
             return false;
+        }
+
+        private void DrawWeapon()
+        {
+            Texture2D image = Terraria.GameContent.TextureAssets.Item[owner.HeldItem.type].Value;
+            Vector4 info = this.GetSlashInfo(1);
+            Vector2 pos = owner.Center - Main.screenPosition;
+            Vector2 origin = new Vector2(0, image.Height);
+            int direction = (this.attackInfo[1].rotation > this.attackInfo[0].rotation).ToInt(1);
+            int direction2 = projectile.direction * (this.attackInfo[0].rotation > this.attackInfo[1].rotation).ToDirectionInt(1);
+            float alpha = (float)this.fadeTime / this.fadeInterval / this.afterImageData.Length;
+            float rotation = info.W + projectile.rotation;
+            float rotation2 = projectile.direction * (this.attackInfo[0].rotation > this.attackInfo[1].rotation).ToDirectionInt(1) * MyMath.deg45;
+            float scale = info.Z / image.Size().Length();
+            if (direction2 != 1) { origin.X = image.Width; rotation2 += MyMath.pi; }
+            Main.EntitySpriteDraw(image, pos, null, Color.White * alpha, rotation + rotation2, origin, scale, (SpriteEffects)(direction2 != 1).ToInt(1), 0);
         }
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
@@ -314,6 +351,20 @@ namespace CNC.Content.Projectiles
             /// <para> 取1时，为线性插值 </para>
             /// </summary>
             public float power;
+
+            public Vector2 position
+            {
+                get => new Vector2(this.range, 0f).RotatedBy(this.rotation);
+                set { this.range = value.Length(); this.rotation = value.ToRotation(); }
+            }
+
+            public SlashInfo(Vector2 offset, Vector2 pos, float power = 1f)
+            {
+                this.offset = offset;
+                this.rotation = pos.ToRotation();
+                this.range = pos.Length();
+                this.power = power;
+            }
 
             public SlashInfo(Vector2 offset, float range, float rotation, float power = 1f)
             {
