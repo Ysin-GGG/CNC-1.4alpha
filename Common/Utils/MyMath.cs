@@ -12,6 +12,7 @@ namespace CNC.Common.Utils
         public const double Pi = 3.1415926535897931;
         public const double Pi2 = pi * 2;
         public const double Deg01 = Pi / 180;
+        public const double Deg15 = Pi / 12;
         public const double Deg30 = Pi / 6;
         public const double Deg45 = Pi / 4;
         public const double Deg60 = Pi / 3;
@@ -22,6 +23,7 @@ namespace CNC.Common.Utils
         public const float pi = 3.1415927f;
         public const float pi2 = pi * 2;
         public const float deg01 = pi / 180;
+        public const float deg15 = pi / 12;
         public const float deg30 = pi / 6;
         public const float deg45 = pi / 4;
         public const float deg60 = pi / 3;

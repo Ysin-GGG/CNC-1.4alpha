@@ -159,18 +159,18 @@ namespace CNC.Content
                         this.Color * alpha,
                         this.rotation,
                         this.textureGlow.Size() / 2,
-                        scale * scale2 * this.scaleGlow,
+                        scale * this.scaleGlow,
                         0,
                         0);
                 if (this.texture != null)
                     spriteBatch.Draw(
                         this.texture,
-                        (basic * scale2) - Main.ScreenSize.ToVector2() / 2f * (scale2 - Vector2.One),
+                        basic,
                         null,
                         this.Color * alpha,
                         this.rotation,
                         this.texture.Size() / 2,
-                        scale * scale2,
+                        scale,
                         0,
                         0);
             }
@@ -221,10 +221,13 @@ namespace CNC.Content
 
     public class ParticleRenderer : ModSystem
     {
-        public const int maxParticles = 10000;
+        public const int maxParticles = CNC.maxParticle;
         public static Particle[] particle = new Particle[maxParticles + 1];
+        public static bool drawn = false;
 
         public override void PreUpdateDusts() => this.UpdateParticle();
+
+        public override void UpdateUI(GameTime gameTime) => ParticleRenderer.drawn = false;
 
         private void UpdateParticle()
         {

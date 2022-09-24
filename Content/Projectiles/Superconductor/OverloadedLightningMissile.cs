@@ -59,7 +59,7 @@ namespace CNC.Content.Projectiles.Superconductor
             for (int i = 0; i < len2; i++)
             {
                 Vector2 pos = projectile.oldPos[i] + projectile.Size / 2f + new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f)) * projectile.Size * projectile.scale / 2f;
-                Dust dust = CNCUtils.NewDust(projectile, DustId.ElectricCyan, projectile.rotation, 1.2f, projectile.Size / 4f, CNCUtils.AccurateColor(Color.DarkCyan));
+                Dust dust = CNCUtils.NewDust(projectile, DustId.ElectricCyan, projectile.rotation, 1.2f, projectile.Size / 4f, CNCUtils.FlashColor(Color.DarkCyan));
                 dust.position = pos;
                 dust.noGravity = true;
             }

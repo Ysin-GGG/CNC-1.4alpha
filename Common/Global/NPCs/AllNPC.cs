@@ -33,6 +33,12 @@ namespace CNC.Common.Global.NPCs
         public int[] bleeding = new int[6];
         public int Tick { get; private set; } = 0;
 
+        public int[] intData = new int[CNC.maxNPCData];
+        public bool[] boolData = new bool[CNC.maxNPCData];
+        public float[] floatData = new float[CNC.maxNPCData];
+        public double[] doubleData = new double[CNC.maxNPCData];
+        public string[] stringData = new string[CNC.maxNPCData];
+
         public override bool InstancePerEntity => true;
 
         public override void ResetEffects(NPC npc)

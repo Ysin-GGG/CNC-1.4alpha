@@ -215,7 +215,7 @@ namespace CNC.Common.Utils
         public Vector2 NextVector2(Vector2 min, Vector2 max) => this.NextVector2(min.X, min.Y, max.X, max.Y);
         public Vector2 NextVector2(Rectangle? rect) => rect == null ? Vector2.Zero : this.NextVector2(((Rectangle)rect).X, ((Rectangle)rect).Y, ((Rectangle)rect).X + ((Rectangle)rect).Width, ((Rectangle)rect).Y + ((Rectangle)rect).Height);
         public Vector2 NextVector2(Circle? circle, bool onlyEdge = false) => circle == null ? Vector2.Zero : new Vector2((onlyEdge ? ((Circle)circle).radius : this.NextFloat(((Circle)circle).radius)), 0).RotatedBy(this.NextDegree());
-        
+
         /*
         public Point NextPoint(int max) { }
         public Point NextPoint(int maxX, int maxY) { }
@@ -242,16 +242,20 @@ namespace CNC.Common.Utils
         public ulong NextUnsignedLong(ulong min, ulong max) { }
         */
 
-        public T NextAny<T>(List<T> list) where T : class
-        {
-            T result = null;
-            if (list.Count > 0) result = list[this.NextInt(list.Count)];
-            return result;
-        }
-        
+        public T NextAny<T>(List<T> list) where T : class => this.NextAny(list.ToArray());
+
         public T NextAny<T>(params T[] array) where T : class
         {
             T result = null;
+            if (array.Length > 0) result = array[this.NextInt(array.Length)];
+            return result;
+        }
+
+        public int NextAny(List<int> array) => this.NextAny(array.ToArray());
+
+        public int NextAny(params int[] array)
+        {
+            int result = 0;
             if (array.Length > 0) result = array[this.NextInt(array.Length)];
             return result;
         }

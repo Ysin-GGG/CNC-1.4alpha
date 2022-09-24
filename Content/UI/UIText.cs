@@ -93,10 +93,10 @@ namespace CNC.Content.UI
                         for (int i = 0; i < 9; i++) spriteBatch.Draw(box, dRect[i], sRect[i], _color);
                     }
                 }
-                Terraria.UI.Chat.ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Font, text, pos, CNCUtils.AccurateColor(textShadowColor), 0, Vector2.Zero, Vector2.One);
-                //Terraria.UI.Chat.ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Font, text, pos, CNCUtils.AccurateColor(textColor), 0, Vector2.Zero, Vector2.One);
+                Terraria.UI.Chat.ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Font, text, pos, CNCUtils.FlashColor(textShadowColor), 0, Vector2.Zero, Vector2.One);
+                //Terraria.UI.Chat.ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Font, text, pos, CNCUtils.FlashColor(textColor), 0, Vector2.Zero, Vector2.One);
                 DynamicSpriteFontExtensionMethods.DrawString(spriteBatch, Font, text, pos, textColor);
-                //spriteBatch.DrawString(Font, text, pos, CNCUtils.AccurateColor(textColor), 0, Vector2.Zero, 1, 0, 0);
+                //spriteBatch.DrawString(Font, text, pos, CNCUtils.FlashColor(textColor), 0, Vector2.Zero, 1, 0, 0);
             }
         }
 

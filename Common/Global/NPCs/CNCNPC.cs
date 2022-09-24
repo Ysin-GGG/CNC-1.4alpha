@@ -27,23 +27,47 @@ namespace CNC.Common.Global.NPCs
         public Projectile RootProjectile => npc.GetGlobalNPC<NPCRelation>().RootProjectile;
         public Projectile ParentProjectile => npc.GetGlobalNPC<NPCRelation>().ParentProjectile;
         public Projectile[] ChildrenProjectile => npc.GetGlobalNPC<NPCRelation>().ChildrenProjectile;
-        
+        public Texture2D Texture2 => CNC.GetTexture(Texture);
+        public string TexturePath => Texture.Remove(Texture.LastIndexOf('/')) + '/';
+
         public NPC npc => NPC;
         public Mod mod => Mod;
-        public Player Target = null;
+        public Player Target => (0 <= npc.target && npc.target <= 255) ? Main.player[npc.target] : null;
         public int countFrame { get => Main.npcFrameCount[Type]; set => Main.npcFrameCount[Type] = value; }
         public int attackFrame { get => NPCID.Sets.AttackFrameCount[Type]; set => NPCID.Sets.AttackFrameCount[Type] = value; }
         public int extraFrame { get => NPCID.Sets.ExtraFramesCount[Type]; set => NPCID.Sets.ExtraFramesCount[Type] = value; }
+        public int tick { get => npc.GetGlobalNPC<AllNPC>().Tick; }
+        public int frame { get => npc.frame.Y / Texture2.Height; set => npc.frame.Y = Texture2.Height / countFrame * value; }
+        public double frameTick { get => npc.frameCounter; set => npc.frameCounter = value; }
+        public float Alpha1 { get => npc.alpha / 255f; set => npc.alpha = (int)(255 * value); }
+        public float Alpha2 { get => 1 - Alpha1; set => Alpha1 = 1 - value; }
         public IEntitySource source => npc.GetSource_FromThis();
 
-        public float var1 { get => npc.ai[0]; set => npc.ai[0] = value; }
-        public float var2 { get => npc.ai[1]; set => npc.ai[1] = value; }
-        public float var3 { get => npc.ai[2]; set => npc.ai[2] = value; }
-        public float var4 { get => npc.ai[3]; set => npc.ai[3] = value; }
-        public float var5 { get => npc.localAI[0]; set => npc.localAI[0] = value; }
-        public float var6 { get => npc.localAI[1]; set => npc.localAI[1] = value; }
-        public float var7 { get => npc.localAI[2]; set => npc.localAI[2] = value; }
-        public float var8 { get => npc.localAI[3]; set => npc.localAI[3] = value; }
+        public int[] intData => npc.GetGlobalNPC<AllNPC>().intData;
+        public bool[] boolData => npc.GetGlobalNPC<AllNPC>().boolData;
+        public float[] floatData => npc.GetGlobalNPC<AllNPC>().floatData;
+        public double[] doubleData => npc.GetGlobalNPC<AllNPC>().doubleData;
+        public string[] stringData => npc.GetGlobalNPC<AllNPC>().stringData;
+        
+        public void SetData<T>(T data, int index)
+        {
+            if (typeof(T).Equals(typeof(int))) npc.GetGlobalNPC<AllNPC>().intData[index] = (int)(object)data;
+            if (typeof(T).Equals(typeof(bool))) npc.GetGlobalNPC<AllNPC>().boolData[index] = (bool)(object)data;
+            if (typeof(T).Equals(typeof(float))) npc.GetGlobalNPC<AllNPC>().floatData[index] = (float)(object)data;
+            if (typeof(T).Equals(typeof(double))) npc.GetGlobalNPC<AllNPC>().doubleData[index] = (double)(object)data;
+            if (typeof(T).Equals(typeof(string))) npc.GetGlobalNPC<AllNPC>().stringData[index] = (string)(object)data;
+        }
+
+        public T GetData<T>(int index)
+        {
+            T t = default(T);
+            if (typeof(T).Equals(typeof(int))) t = (T)(object)npc.GetGlobalNPC<AllNPC>().intData[index];
+            if (typeof(T).Equals(typeof(bool))) t = (T)(object)npc.GetGlobalNPC<AllNPC>().boolData[index];
+            if (typeof(T).Equals(typeof(float))) t = (T)(object)npc.GetGlobalNPC<AllNPC>().floatData[index];
+            if (typeof(T).Equals(typeof(double))) t = (T)(object)npc.GetGlobalNPC<AllNPC>().doubleData[index];
+            if (typeof(T).Equals(typeof(string))) t = (T)(object)npc.GetGlobalNPC<AllNPC>().stringData[index];
+            return t;
+        }
 
         public NPC NewNPC(short CNCtype, int start = 0)
             => NewNPC(npc, (int)npc.Center.X, (int)npc.Center.Y, CNCID.NPC.LegacyObject[CNCtype], start);
@@ -94,12 +118,25 @@ namespace CNC.Common.Global.NPCs
             int whoAmI = Projectile.NewProjectile(npc.GetSource_FromAI(), position, velocity, type, (int)damage, 0, Main.myPlayer);
             Main.projectile[whoAmI].Center = position;
             Main.projectile[whoAmI].rotation = rotation;
+            Main.projectile[whoAmI].damage = (int)damage;
             Main.projectile[whoAmI].GetGlobalProjectile<ProjectileRelation>().SetParent(npc, true);
             Main.projectile[whoAmI].GetGlobalProjectile<ProjectileRelation>().SetRoot(npc, true);
             if (Main.npc[npc.whoAmI].GetGlobalNPC<NPCRelation>().ChildrenProjectile != null)
                 Main.npc[npc.whoAmI].GetGlobalNPC<NPCRelation>().AddChild(Main.projectile[whoAmI]);
             if (Main.projectile[whoAmI].ModProjectile != null && (CNCProjectile)Main.projectile[whoAmI].ModProjectile != null) ((CNCProjectile)Main.projectile[whoAmI].ModProjectile).OnSpawn();
             return Main.projectile[whoAmI];
+        }
+
+        public static int GetDamage(int normal, int expert, int master)
+        {
+            int dmg = 0;
+            switch (CNC.GameMode)
+            {
+                case 1: dmg = normal; break;
+                case 2: dmg = expert; break;
+                case 3: dmg = master; break;
+            }
+            return dmg / CNC.GameMode;
         }
 
         public sealed override void SetStaticDefaults()
@@ -112,7 +149,13 @@ namespace CNC.Common.Global.NPCs
             ResetStaticDefaults();
         }
 
-        public sealed override void SetDefaults() => ResetDefaults();
+        public sealed override void SetDefaults()
+        {
+            string path = Texture.StartsWith(mod.Name) ? Texture.Substring(Texture.IndexOf('/') + 1) : Texture;
+            Texture2D image = this.mod.Assets.Request<Texture2D>(path).Value;
+            this.npc.Size = new Vector2(image.Width, image.Height / countFrame);
+            ResetDefaults();
+        }
 
         public sealed override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
@@ -197,6 +240,11 @@ namespace CNC.Common.Global.NPCs
         public virtual void ModifyHit(Entity target, ref int damage, ref float knockback, ref bool crit) { }
         public virtual void HitBy(Player attacker, Entity entity, int damage, float knockback, bool crit, bool isItem) { }
         public virtual void ModifyHitBy(Player attacker, Entity entity, ref int damage, ref float knockback, ref bool crit, bool isItem) { }
+        /// <summary> 修改动画 </summary>
+        /// <param name="autoAnim">自动播放动画</param>
+        /// <param name="frameTime">每帧时长</param>
+        /// <param name="frame">第几帧</param>
+        /// <param name="frameHeight">每帧贴图高度</param>
         public virtual void ModifyFrame(ref bool autoAnim, ref int[] frameTime, ref int frame, int frameHeight) { }
     }
 }

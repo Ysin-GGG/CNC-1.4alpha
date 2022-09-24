@@ -24,12 +24,15 @@ namespace CNC.Common.Global.Projectiles
         public Projectile ParentProjectile => projectile.GetGlobalProjectile<ProjectileRelation>().ParentProjectile;
         public Projectile[] ChildrenProjectile => projectile.GetGlobalProjectile<ProjectileRelation>().ChildrenProjectile;
         public Dictionary<string, object> data { get => projectile.GetGlobalProjectile<AllProjectile>().data; set => projectile.GetGlobalProjectile<AllProjectile>().data = value; }
-        public Texture2D Texture2 => ModContent.Request<Texture2D>(Texture).Value;
+        public Texture2D Texture2 => CNC.GetTexture(Texture);
+        public string TexturePath => Texture.Remove(Texture.LastIndexOf('/')) + '/';
 
         public Mod mod => Mod;
         public Projectile projectile => Projectile;
         public Player owner => Main.player[MyMath.Clamp(projectile.owner, 0, 255)];
         public Player Target = null;
+        public float Alpha1 { get => projectile.alpha / 255f; set => projectile.alpha = (int)(255 * value); }
+        public float Alpha2 { get => 1 - Alpha1; set => Alpha1 = 1 - value; }
         public IEntitySource source => projectile.GetSource_FromThis();
         public float posX { get => projectile.position.X; set => projectile.position.X = value; }
         public float posY { get => projectile.position.Y; set => projectile.position.Y = value; }
@@ -41,12 +44,42 @@ namespace CNC.Common.Global.Projectiles
         /// <summary> 对子弹幕生效 </summary>
         public float damageAdd => projectile.GetGlobalProjectile<AllProjectile>().damageAdd;
         /// <summary> 对子弹幕生效 </summary>
-        public float damageMul => projectile.GetGlobalProjectile<AllProjectile>().damageMul;
+        public float damageMul => projectile.GetGlobalProjectile<AllProjectile>().damageMult;
+
+        public int[] intData => projectile.GetGlobalProjectile<AllProjectile>().intData;
+        public bool[] boolData => projectile.GetGlobalProjectile<AllProjectile>().boolData;
+        public float[] floatData => projectile.GetGlobalProjectile<AllProjectile>().floatData;
+        public double[] doubleData => projectile.GetGlobalProjectile<AllProjectile>().doubleData;
+        public string[] stringData => projectile.GetGlobalProjectile<AllProjectile>().stringData;
+
+        public void SetData<T>(T data, int index)
+        {
+            if (typeof(T).Equals(typeof(int))) projectile.GetGlobalProjectile<AllProjectile>().intData[index] = (int)(object)data;
+            if (typeof(T).Equals(typeof(bool))) projectile.GetGlobalProjectile<AllProjectile>().boolData[index] = (bool)(object)data;
+            if (typeof(T).Equals(typeof(float))) projectile.GetGlobalProjectile<AllProjectile>().floatData[index] = (float)(object)data;
+            if (typeof(T).Equals(typeof(double))) projectile.GetGlobalProjectile<AllProjectile>().doubleData[index] = (double)(object)data;
+            if (typeof(T).Equals(typeof(string))) projectile.GetGlobalProjectile<AllProjectile>().stringData[index] = (string)(object)data;
+        }
+
+        public T GetData<T>(int index)
+        {
+            T t = default(T);
+            if (typeof(T).Equals(typeof(int))) t = (T)(object)projectile.GetGlobalProjectile<AllProjectile>().intData[index];
+            if (typeof(T).Equals(typeof(bool))) t = (T)(object)projectile.GetGlobalProjectile<AllProjectile>().boolData[index];
+            if (typeof(T).Equals(typeof(float))) t = (T)(object)projectile.GetGlobalProjectile<AllProjectile>().floatData[index];
+            if (typeof(T).Equals(typeof(double))) t = (T)(object)projectile.GetGlobalProjectile<AllProjectile>().doubleData[index];
+            if (typeof(T).Equals(typeof(string))) t = (T)(object)projectile.GetGlobalProjectile<AllProjectile>().stringData[index];
+            return t;
+        }
 
         internal delegate void _ModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit);
         internal delegate void _OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit);
+        internal delegate void _ModifyHitPlayer(Player target, ref int damage, ref bool crit);
+        internal delegate void _OnHitPlayer(Player target, int damage, bool crit);
         internal _ModifyHitNPC ModifyHitNPCEffect;
         internal _OnHitNPC OnHitNPCEffect;
+        internal _ModifyHitPlayer ModifyHitPlayerEffect;
+        internal _OnHitPlayer OnHitPlayerEffect;
 
         public ProjDamageStyle DamageStyle
         {
@@ -115,14 +148,14 @@ namespace CNC.Common.Global.Projectiles
         /// <param name="knockBack"></param>
         /// <param name="rotation"></param>
         /// <param name="damageAdd"></param>
-        /// <param name="damageMul"></param>
-        public Projectile NewProjectile(Projectile projectile, Vector2 position, Vector2 velocity, int type, float damage, float knockBack = 0f, float rotation = 0f, float damageAdd = 0f, float damageMul = 1f)
+        /// <param name="damageMult"></param>
+        public Projectile NewProjectile(Projectile projectile, Vector2 position, Vector2 velocity, int type, float damage, float knockBack = 0f, float rotation = 0f, float damageAdd = 0f, float damageMult = 1f)
         {
             int whoAmI = Projectile.NewProjectile(projectile.GetSource_FromThis(), position, velocity, type, (int)damage, knockBack, projectile.owner);
             Main.projectile[whoAmI].Center = position;
             Main.projectile[whoAmI].rotation = rotation;
             Main.projectile[whoAmI].GetGlobalProjectile<AllProjectile>().damageAdd = damageAdd;
-            Main.projectile[whoAmI].GetGlobalProjectile<AllProjectile>().damageMul = damageMul;
+            Main.projectile[whoAmI].GetGlobalProjectile<AllProjectile>().damageMult = damageMult;
             Main.projectile[whoAmI].GetGlobalProjectile<ProjectileRelation>().SetParent(projectile, true);
             Main.projectile[whoAmI].GetGlobalProjectile<ProjectileRelation>().SetRoot(projectile, true);
             if (Main.projectile[projectile.whoAmI].GetGlobalProjectile<ProjectileRelation>().ChildrenProjectile != null)
@@ -152,7 +185,7 @@ namespace CNC.Common.Global.Projectiles
             ResetDefaults();
         }
 
-        public void AfterImages(Projectile projectile, Color color, int count, Texture2D image, float scaleAdd, float scaleMult, Rectangle? source = null)
+        public void AfterImages(Projectile projectile, Color color, int count, Texture2D image, float scaleAdd, float scaleMult, Rectangle? source = null, float alphaAdd = 0f)
         {
             Main.instance.LoadProjectile(projectile.type);
             var stat = new Content.DataStructures.VariagleStatus(1, scaleAdd, 0f, 1f, 1f, scaleMult);
@@ -162,12 +195,12 @@ namespace CNC.Common.Global.Projectiles
             for (int i = 0; i < num; i++)
             {
                 Vector2 drawPos = projectile.oldPos[i] - Main.screenPosition + drawOrigin;
-                Color _color = projectile.GetAlpha(color) * ((num - i) / (float)num);
+                Color _color = projectile.GetAlpha(color) * ((num - i) / (float)num - alphaAdd * i);
                 Main.EntitySpriteDraw(texture, drawPos, source, _color, projectile.oldRot[i], drawOrigin, projectile.scale * stat.GetNextValue(), SpriteEffects.None, 0);
             }
         }
 
-        public void AfterImages(Projectile projectile, Color color, int count, Texture2D image, Vector2 scaleAdd, Vector2 scaleMult)
+        public void AfterImages(Projectile projectile, Color color, int count, Texture2D image, Vector2 scaleAdd, Vector2 scaleMult, float alphaAdd = 0f)
         {
             Main.instance.LoadProjectile(projectile.type);
             if (scaleAdd == default) scaleAdd = Vector2.Zero;
@@ -180,7 +213,7 @@ namespace CNC.Common.Global.Projectiles
             for (int i = 0; i < num; i++)
             {
                 Vector2 drawPos = projectile.oldPos[i] - Main.screenPosition + drawOrigin;
-                Color _color = projectile.GetAlpha(color) * ((num - i) / (float)num);
+                Color _color = projectile.GetAlpha(color) * ((num - i) / (float)num - alphaAdd * i);
                 Main.EntitySpriteDraw(texture, drawPos, null, _color, projectile.oldRot[i], drawOrigin, projectile.scale * new Vector2(statX.GetNextValue(), statY.GetNextValue()), SpriteEffects.None, 0);
             }
         }
@@ -287,6 +320,7 @@ namespace CNC.Common.Global.Projectiles
 
         public sealed override void OnHitPlayer(Player target, int damage, bool crit)
         {
+            this.OnHitPlayerEffect?.Invoke(target, damage, crit);
             HitPlayer(target, damage, crit);
             OnHit(target, damage, 0f, crit);
         }
@@ -301,6 +335,7 @@ namespace CNC.Common.Global.Projectiles
         public sealed override void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
         {
             float knockback = 0f;
+            this.ModifyHitPlayerEffect?.Invoke(target, ref damage, ref crit);
             HitPlayer(target, ref damage, ref crit);
             ModifyHit(target, ref damage, ref knockback, ref crit);
         }

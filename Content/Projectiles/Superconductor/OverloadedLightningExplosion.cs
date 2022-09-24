@@ -37,7 +37,7 @@ namespace CNC.Content.Projectiles.Superconductor
             if (projectile.timeLeft > 14)
             for (int i = 0; i < 2; i++)
             {
-                Dust dust = CNCUtils.NewDust(projectile, DustId.ElectricCyan, projectile.rotation, 1.2f, projectile.Size / 4f, CNCUtils.AccurateColor(Color.DarkCyan));
+                Dust dust = CNCUtils.NewDust(projectile, DustId.ElectricCyan, projectile.rotation, 1.2f, projectile.Size / 4f, CNCUtils.FlashColor(Color.DarkCyan));
                 dust.noGravity = true;
                 CNCUtils.AddLight(projectile.Center, dust.color);
             }

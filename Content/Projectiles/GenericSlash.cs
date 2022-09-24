@@ -199,7 +199,7 @@ namespace CNC.Content.Projectiles
 
         public override void ResetDefaults()
         {
-            projectile.timeLeft = 5;
+            projectile.timeLeft = 50;
             projectile.width = 4;
             projectile.height = 4;
             projectile.alpha = 0;
@@ -213,10 +213,10 @@ namespace CNC.Content.Projectiles
 
         public override void AI()
         {
-            owner.itemRotation = this.GetSlashInfo().W;
+            if (projectile.friendly) owner.itemRotation = this.GetSlashInfo().W;
             projectile.velocity = Vector2.Zero;
             projectile.direction = (direction.X >= 0).ToDirectionInt(1);
-            if (this.bindOwner) projectile.Center = owner.Center;
+            if (this.bindOwner && projectile.friendly) projectile.Center = owner.Center;
             if (this.dustToShowHitbox >= 0 && this.fadeTime <= 0)
             {
                 Vector4 info = this.GetSlashInfo();
@@ -281,6 +281,7 @@ namespace CNC.Content.Projectiles
                 if (!inRange) inRange = targetHitbox.Contains(point.ToPoint());
                 if (noBarrier) noBarrier = !Collision.SolidTiles(point, size, size);
                 if (noBarrier2) noBarrier2 = !Collision.SolidTiles(point2, size, size);
+                if (!projectile.friendly) noBarrier = noBarrier2 = true;
                 if (inRange && noBarrier && noBarrier2) return true;
             }
             return false;
@@ -309,7 +310,7 @@ namespace CNC.Content.Projectiles
                 Rectangle source2 = new Rectangle(0, afterImageData[i] * projectile.height, projectile.width, projectile.height);
                 Main.EntitySpriteDraw(this.image, pos, source2, this.imageColor * this.fadeAlphaMult * alpha, projectile.rotation, origin, this.scale, projectile.direction == 1 ? 0 : SpriteEffects.FlipVertically, 0);
             }
-            if (fadeTime > 0) DrawWeapon();
+            if (fadeTime > 0 && projectile.friendly) DrawWeapon();
             else Main.EntitySpriteDraw(this.image, pos, source, this.imageColor, projectile.rotation, origin, this.scale, projectile.direction == 1 ? 0 : SpriteEffects.FlipVertically, 0);
             return false;
         }

@@ -11,7 +11,7 @@ namespace CNC.Common.Utils
 {
     public static class CNCID
     {
-        public static class Buff
+        public abstract class Buff
         {
             public const short MaxObject = 10;
             #region ID
@@ -37,6 +37,8 @@ namespace CNC.Common.Utils
             public const short Bleeding = 10;
             /// <summary> 神圣护盾 </summary>
             public const short Blessed = 11;
+            /// <summary> 星痕 </summary>
+            public const short StarMark = 12;
             #endregion
             public static Dictionary<string, short> Collection
             {
@@ -73,6 +75,7 @@ namespace CNC.Common.Utils
                 { Dizzy, BuffType<Content.Buffs.Dizzy>() },
                 { Bleeding, BuffType<Content.Buffs.Bleeding>() },
                 { Blessed, BuffType<Content.Buffs.Blessed>() },
+                { StarMark, BuffType<Content.Buffs.StarMark>() },
             };
         }
 
@@ -139,41 +142,41 @@ namespace CNC.Common.Utils
         {
             public static Color Expert => Main.DiscoColor;
             public static Color Master => new Color((byte)((double)byte.MaxValue * ((float)Main.mouseTextColor / byte.MaxValue)), (byte)(Main.masterColor * 200.0 * ((float)Main.mouseTextColor / byte.MaxValue)), 0, Main.mouseTextColor);
-            public static Color Barbarian => CNCUtils.AccurateColor(168, 61, 51, 255, false);
-            public static Color Defender => CNCUtils.AccurateColor(46, 109, 153, 255, false);
-            public static Color Crusader => CNCUtils.AccurateColor(219, 173, 89, 255, false);
-            public static Color Ranger => CNCUtils.AccurateColor(57, 153, 46, 255, false);
-            public static Color Gunman => CNCUtils.AccurateColor(126, 229, 218, 255, false);
-            public static Color Thrower => CNCUtils.AccurateColor(109, 81, 57, 255, false);
-            public static Color Musketeer => CNCUtils.AccurateColor(46, 109, 153, 255, false);
-            public static Color Cleric => CNCUtils.AccurateColor(232, 232, 11, 255, false);
-            public static Color Wizard => CNCUtils.AccurateColor(112, 45, 179, 255, false);
-            public static Color SpellBreaker => CNCUtils.AccurateColor(126, 161, 229, 255, false);
-            public static Color Druid => CNCUtils.AccurateColor(188, 242, 170, 255, false);
-            public static Color Shaman => CNCUtils.AccurateColor(122, 36, 70, 255, false);
-            public static Color Warlock => CNCUtils.AccurateColor(76, 46, 77, 255, false);
-            public static Color Monk => CNCUtils.AccurateColor(255, 255, 255, 255, false);
-            public static Color Assassin => CNCUtils.AccurateColor(31, 32, 38, 255, false);
-            public static Color Generic => CNCUtils.AccurateColor(0, 0, 0, 0, true);
-            public static Color Melee => CNCUtils.AccurateColor(217, 60, 60, 0, true);
-            public static Color Ranged => CNCUtils.AccurateColor(67, 230, 57, 0, true);
-            public static Color Magic => CNCUtils.AccurateColor(53, 157, 255, 0, true);
-            public static Color Summon => CNCUtils.AccurateColor(224, 44, 230, 0, true);
-            public static Color Throwing => CNCUtils.AccurateColor(255, 255, 255, 0, true);
-            //public static Color Generic => CNCUtils.AccurateColor(255, 196, 85, 0, true);
-            //public static Color Generic => CNCUtils.AccurateColor(179, 175, 50, 0, true);
-            //public static Color Generic => CNCUtils.AccurateColor(139, 29, 242, 0, true);
-            public static Color GenericCrit => CNCUtils.AccurateColor(0, 0, 0, 0, true);
-            public static Color MeleeCrit => CNCUtils.AccurateColor(163, 29, 29, 0, true);
-            public static Color RangedCrit => CNCUtils.AccurateColor(31, 171, 27, 0, true);
-            public static Color MagicCrit => CNCUtils.AccurateColor(61, 128, 192, 0, true);
-            public static Color SummonCrit => CNCUtils.AccurateColor(224, 44, 230, 0, true);
-            public static Color ThrowingCrit => CNCUtils.AccurateColor(255, 255, 255, 0, true);
-            //public static Color GenericCrit => CNCUtils.AccurateColor(255, 196, 85, 0, true);
-            //public static Color GenericCrit => CNCUtils.AccurateColor(179, 175, 50, 0, true);
-            //public static Color GenericCrit => CNCUtils.AccurateColor(103, 43, 159, 0, true);
-            public static Color SpiritBoss => CNCUtils.AccurateColor(178, 214, 231, 255, true);
-            public static Color SpiritBoss2 => CNCUtils.AccurateColor(178, 214, 231, 0, false);
+            public static Color Barbarian => CNCUtils.FlashColor(168, 61, 51, 255, false);
+            public static Color Defender => CNCUtils.FlashColor(46, 109, 153, 255, false);
+            public static Color Crusader => CNCUtils.FlashColor(219, 173, 89, 255, false);
+            public static Color Ranger => CNCUtils.FlashColor(57, 153, 46, 255, false);
+            public static Color Gunman => CNCUtils.FlashColor(126, 229, 218, 255, false);
+            public static Color Thrower => CNCUtils.FlashColor(109, 81, 57, 255, false);
+            public static Color Musketeer => CNCUtils.FlashColor(46, 109, 153, 255, false);
+            public static Color Cleric => CNCUtils.FlashColor(232, 232, 11, 255, false);
+            public static Color Wizard => CNCUtils.FlashColor(112, 45, 179, 255, false);
+            public static Color SpellBreaker => CNCUtils.FlashColor(126, 161, 229, 255, false);
+            public static Color Druid => CNCUtils.FlashColor(188, 242, 170, 255, false);
+            public static Color Shaman => CNCUtils.FlashColor(122, 36, 70, 255, false);
+            public static Color Warlock => CNCUtils.FlashColor(76, 46, 77, 255, false);
+            public static Color Monk => CNCUtils.FlashColor(255, 255, 255, 255, false);
+            public static Color Assassin => CNCUtils.FlashColor(31, 32, 38, 255, false);
+            public static Color Generic => CNCUtils.FlashColor(0, 0, 0, 0, true);
+            public static Color Melee => CNCUtils.FlashColor(217, 60, 60, 0, true);
+            public static Color Ranged => CNCUtils.FlashColor(67, 230, 57, 0, true);
+            public static Color Magic => CNCUtils.FlashColor(53, 157, 255, 0, true);
+            public static Color Summon => CNCUtils.FlashColor(224, 44, 230, 0, true);
+            public static Color Throwing => CNCUtils.FlashColor(255, 255, 255, 0, true);
+            //public static Color Generic => CNCUtils.FlashColor(255, 196, 85, 0, true);
+            //public static Color Generic => CNCUtils.FlashColor(179, 175, 50, 0, true);
+            //public static Color Generic => CNCUtils.FlashColor(139, 29, 242, 0, true);
+            public static Color GenericCrit => CNCUtils.FlashColor(0, 0, 0, 0, true);
+            public static Color MeleeCrit => CNCUtils.FlashColor(163, 29, 29, 0, true);
+            public static Color RangedCrit => CNCUtils.FlashColor(31, 171, 27, 0, true);
+            public static Color MagicCrit => CNCUtils.FlashColor(61, 128, 192, 0, true);
+            public static Color SummonCrit => CNCUtils.FlashColor(224, 44, 230, 0, true);
+            public static Color ThrowingCrit => CNCUtils.FlashColor(255, 255, 255, 0, true);
+            //public static Color GenericCrit => CNCUtils.FlashColor(255, 196, 85, 0, true);
+            //public static Color GenericCrit => CNCUtils.FlashColor(179, 175, 50, 0, true);
+            //public static Color GenericCrit => CNCUtils.FlashColor(103, 43, 159, 0, true);
+            public static Color SpiritBoss => CNCUtils.FlashColor(178, 214, 231, 255, true);
+            public static Color SpiritBoss2 => CNCUtils.FlashColor(178, 214, 231, 0, false);
         }
 
         public static class Dust
@@ -629,7 +632,7 @@ namespace CNC.Common.Utils
 
         public static class NPC
         {
-            public const short MaxObject = 6;
+            public const short MaxObject = 5;
             #region ID
             /// <summary> 导师 </summary>
             public const short Mentor = 1;
@@ -640,11 +643,9 @@ namespace CNC.Common.Utils
             /// <summary> 灵气史莱姆 </summary>
             public const short PhantomSlime = 4;
             /// <summary> 灵火 </summary>
-            public const short PhantomFlame = 5;
+            //public const short PhantomFlame = 5;
             /// <summary> 森林意志 </summary>
             public const short SpiritBoss = 6;
-            /// <summary> 守护水晶 </summary>
-            public const short SpiritCrystal = 7;
             #endregion
             public static Dictionary<string, short> Collection
             {
@@ -676,7 +677,6 @@ namespace CNC.Common.Utils
                 { PhantomSlime, NPCType<Content.NPCs.PhantomSlime>() },
                 //{ PhantomFlame, NPCType<Content.NPCs.PhantomFlame>() },
                 { SpiritBoss, NPCType<Content.NPCs.SpiritBoss.SpiritBoss>() },
-                { SpiritCrystal, NPCType<Content.NPCs.SpiritBoss.SpiritCrystal>() },
             };
         }
 
@@ -688,18 +688,16 @@ namespace CNC.Common.Utils
             public const short MentorMissile = 1;
             /// <summary> 灵气团 </summary>
             public const short SpiritMass = 2;
+            /// <summary> 能量矢 </summary>
+            public const short EnergyArrow = 3;
+            /// <summary> 能量爆破 </summary>
+            public const short EnergyExplosion = 4;
             /// <summary> 灵气矢 </summary>
-            public const short SpiritArrowV1 = 3;
-            /// <summary> 灵气矢 </summary>
-            public const short SpiritArrowV2 = 4;
-            /// <summary> 灵气矢 </summary>
-            public const short SpiritArrowV3 = 5;
-            /// <summary> 灵气矢 </summary>
-            public const short SpiritArrowV4 = 6;
-            /// <summary> 灵气矢 </summary>
-            public const short SpiritArrowV5 = 7;
-            /// <summary> 灵气矢 </summary>
-            public const short SpiritArrowV6 = 8;
+            public const short SpiritArrow = 5;
+            /// <summary> 银白突刺（Boss） </summary>
+            public const short SilveryDashHostile = 6;
+            /// <summary> 预警线 </summary>
+            public const short WarningLine = 8;
             /// <summary> 火球 </summary>
             public const short FireBall = 9;
             /// <summary> 炎爆 </summary>
@@ -730,10 +728,8 @@ namespace CNC.Common.Utils
             public const short SanctifiedExplosion = 22;
             /// <summary> 魔法岩石 </summary>
             public const short MagicRock = 23;
-            /// <summary> 圣灵光轮 </summary>
-            public const short AnnulusOfPneuma = 24;
-            /// <summary> 众灵之愿 </summary>
-            public const short MeteorSummoner = 25;
+            /// <summary> 震荡波 </summary>
+            public const short ShockWave = 24;
             /// <summary> 破土棘刺 </summary>
             public const short GiantBranch = 26;
             /// <summary> 爆炸 </summary>
@@ -773,12 +769,11 @@ namespace CNC.Common.Utils
             {
                 { MentorMissile, ProjectileType<Content.Projectiles.MentorMissile>() },
                 { SpiritMass, ProjectileType<Content.Projectiles.Hostile.SpiritMass>() },
-                { SpiritArrowV1, ProjectileType<Content.Projectiles.Hostile.SpiritArrow.V1>() },
-                { SpiritArrowV2, ProjectileType<Content.Projectiles.Hostile.SpiritArrow.V2>() },
-                { SpiritArrowV3, ProjectileType<Content.Projectiles.Hostile.SpiritArrow.V3>() },
-                { SpiritArrowV4, ProjectileType<Content.Projectiles.Hostile.SpiritArrow.V4>() },
-                { SpiritArrowV5, ProjectileType<Content.Projectiles.Hostile.SpiritArrow.V5>() },
-                { SpiritArrowV6, ProjectileType<Content.Projectiles.Hostile.SpiritArrow.V6>() },
+                { SpiritArrow, ProjectileType<Content.Projectiles.Hostile.SpiritArrow>() },
+                { EnergyArrow, ProjectileType<Content.Projectiles.Hostile.EnergyArrow>() },
+                { EnergyExplosion, ProjectileType<Content.Projectiles.Hostile.EnergyExplosion>() },
+                { WarningLine, ProjectileType<Content.Projectiles.WarningLine>() },
+                { SilveryDashHostile, ProjectileType<Content.Projectiles.Hostile.SilveryDashHostile>() },
                 { FireBall, ProjectileType<Content.Projectiles.FireGrimoire.FireBall>() },
                 { FireBallExplosion, ProjectileType<Content.Projectiles.FireGrimoire.FireBallExplosion>() },
                 { DentateIce, ProjectileType<Content.Projectiles.IceTooth.DentateIce>() },
@@ -794,8 +789,7 @@ namespace CNC.Common.Utils
                 { SanctifiedArrowShoot, ProjectileType<Content.Projectiles.ArgenteusClaw.SanctifiedArrowShoot>() },
                 { SanctifiedExplosion, ProjectileType<Content.Projectiles.ArgenteusClaw.SanctifiedExplosion>() },
                 { MagicRock, ProjectileType<Content.Projectiles.TheLightOfAuzzsia.MagicRock>() },
-                { AnnulusOfPneuma, ProjectileType<Content.Projectiles.Hostile.AnnulusOfPneuma>() },
-                { MeteorSummoner, ProjectileType<Content.Projectiles.Hostile.MeteorSummoner>() },
+                { ShockWave, ProjectileType<Content.Projectiles.Hostile.ShockWave>() },
                 { GiantBranch, ProjectileType<Content.Projectiles.Hostile.GiantBranch>() },
                 { GenericExplosion, ProjectileType<Content.Projectiles.GenericExplosion>() },
                 { GenericSlash, ProjectileType<Content.Projectiles.GenericSlash>() },

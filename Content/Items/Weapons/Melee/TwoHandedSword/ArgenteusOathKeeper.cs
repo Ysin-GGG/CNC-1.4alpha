@@ -28,8 +28,8 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
         {
             item.width = 74;
             item.height = 76;
-            item.useTime = 50;
-            item.useAnimation = 50;
+            item.useTime = 35;
+            item.useAnimation = 35;
             item.scale = 0f;
             item.rare = 2;
             item.value = 20000;
@@ -43,7 +43,7 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
             item.shoot = CNCID.Projectile.LegacyObject[CNCID.Projectile.SilveryDash];
             item.shootSpeed = 32f;
             comboCount = 2;
-            comboDelay = 60;
+            comboDelay = 45;
             clazz = 13;
         }
 
@@ -64,8 +64,9 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
         {
             if (this.JudgementEnable && target.type != 488 && CNC.Random.NextBool((float)CNCID.Inscription.S_Judgement.Data[0] + (player.HasBuff(CNCID.Buff.LegacyObject[CNCID.Buff.Blessed]) ? (float)CNCID.Inscription.S_SilveryVow.Data[3] : 0f)))
             {
+                damage = Inscription.JustGetDamage(90, (string)CNCID.Inscription.S_Judgement.Data[1], item) - target.defense / 2;
                 CNCUtils.PlaySound($"{Name}/{CNCID.Inscription.S_Judgement.Name.Substring(CNCID.Inscription.S_Judgement.Name.LastIndexOf('_') + 1)}", player);
-                CNCUtils.TrueDamage(target, Inscription.JustGetDamage(90, (string)CNCID.Inscription.S_Judgement.Data[1], item) - target.defense / 2, int.MaxValue, true, CNCID.Colors.Magic);
+                CNCUtils.TrueDamage(target, damage, int.MaxValue, true, CNCID.Colors.Magic);
                 for (int i = 0; i < 32; i++)
                 {
                     float spd = i % 8 + 1f;
@@ -144,7 +145,7 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
                 {
                     float factor = (float)i / info[0].Length;
                     float rotation = MyMath.deg01 * (factor * 305 - 170);
-                    Vector2 pos = new Vector2(8f, 0f).RotatedBy(rotation);
+                    Vector2 pos = new Vector2(9.5f, 0f).RotatedBy(rotation);
                     pos.Y *= .3f;
                     info[0][i].position = pos * 16f;
                 }
@@ -152,14 +153,14 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
                 {
                     float factor = (float)i / info[1].Length;
                     float rotation = MyMath.deg01 * (90 - factor * 310);
-                    Vector2 pos = new Vector2(8f, 0f).RotatedBy(rotation);
+                    Vector2 pos = new Vector2(9.5f, 0f).RotatedBy(rotation);
                     if (rotation < MyMath.deg01 * -60) pos.Y *= .7f;
                     pos.Y *= .3f;
                     info[1][i].position = pos * 16f;
                 }
                 var e = CNCUtils.CreateSlash(player, velocity, -1);
                 e.OnHitNPCEffect += this.NewOnHitNPC;
-                e.SetDefaults(Mod.Assets.Request<Texture2D>("Assets/Projectiles/Slash/SilverSlash").Value, player.Center, Vector2.One * .75f, velocity, frame[num], 7);
+                e.SetDefaults(Mod.Assets.Request<Texture2D>("Assets/Projectiles/Slash/SilverSlash").Value, player.Center, Vector2.One * .85f, velocity, frame[num], 7);
                 e.SetColor(Color.White, Color.Gold, .5f);
                 e.SetDamage(1, DamageClass.Melee, damage, knockback, player.GetWeaponCrit(item));
                 e.SetAttackInfo(info[num]);

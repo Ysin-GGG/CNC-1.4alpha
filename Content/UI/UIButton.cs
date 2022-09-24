@@ -139,8 +139,8 @@ namespace CNC.Content.UI
                 Vector2 size = Font.MeasureString(display);
                 if (pos.X + size.X > screen.X) pos.X = screen.X - size.X;
                 if (pos.Y + size.Y > screen.Y) pos.Y = screen.Y - size.Y;
-                Terraria.UI.Chat.ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, Font, display, pos, CNCUtils.AccurateColor(Color.Black), 0, Vector2.Zero, Vector2.One);
-                Main.spriteBatch.DrawString(Font, display, pos, CNCUtils.AccurateColor(displayColor), 0, Vector2.Zero, 1, 0, 0);
+                Terraria.UI.Chat.ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, Font, display, pos, CNCUtils.FlashColor(Color.Black), 0, Vector2.Zero, Vector2.One);
+                Main.spriteBatch.DrawString(Font, display, pos, CNCUtils.FlashColor(displayColor), 0, Vector2.Zero, 1, 0, 0);
                 */
             }
         }

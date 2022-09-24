@@ -64,26 +64,33 @@ namespace CNC.Content.Projectiles.ArgenteusOathKeeper
             int height = Texture2.Height / this.countFrame;
             Vector2 pos = owner.Bottom - Main.screenPosition;
             Vector2 origin = new Vector2(Texture2.Width / 2f, height);
+            Rectangle source = new Rectangle(0, this.frame * height, Texture2.Width, height);
             Texture2D trace = mod.Assets.Request<Texture2D>("Assets/Effects/Trace6").Value;
             Texture2D image = mod.Assets.Request<Texture2D>(Texture.Substring(4) + "_" + this.frame).Value;
-            pos.Y += 20f;
+            pos.Y += 10f;
 
             Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer);
-            
+            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.ZoomMatrix);
+
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
-            Effect shader = mod.Assets.Request<Effect>("Content/Effects/ShieldLight").Value;
+            Effect shader = CNC.GetEffect("ShieldLight");
             shader.Parameters["uColor"].SetValue(lightColor.ToVector3());
             shader.Parameters["uOffset"].SetValue(new Vector2(-.85f, .85f) * Main.GlobalTimeWrappedHourly);
-            shader.Parameters["uSize"].SetValue(image.Size());
+            shader.Parameters["uCenter"].SetValue(new Vector2(.5f, .75f));
+            shader.Parameters["uSize"].SetValue(source.Size());
+            shader.Parameters["uDist"].SetValue(.5f);
             shader.Parameters["uAlpha"].SetValue(.4f);
+
+            //shader.Parameters["uImageSize"].SetValue(Texture2.Size());
+            //shader.Parameters["uFrame"].SetValue(this.frame);
             shader.CurrentTechnique.Passes[0].Apply();
 
             Main.graphics.GraphicsDevice.Textures[0] = image;
-            Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
+            Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
             Main.graphics.GraphicsDevice.Textures[1] = trace;
             Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.LinearWrap;
             Main.spriteBatch.Draw(image, pos, null, lightColor, 0, origin, 1f, 0, 0);
+            //Main.spriteBatch.Draw(Texture2, pos, source, lightColor, 0, origin, 1f, 0, 0);
 
             Main.graphics.GraphicsDevice.RasterizerState = originalState;
             Main.spriteBatch.End();

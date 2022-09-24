@@ -1,4 +1,5 @@
 using System;
+using System.Timers;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,6 +9,7 @@ using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.DataStructures;
 using CNC.Common.Utils;
+using CNC.Content;
 
 namespace CNC.Common.Global.Players
 {
@@ -34,9 +36,19 @@ namespace CNC.Common.Global.Players
         private float shakeAttenuation;
         private Vector2 instance;
 
+        /// <summary> 视角锁定的坐标 </summary>
+        public Vector2 lockScreenPosition;
+        public int lockScreenTime;
+        public float lockScreenAmount;
+        public float lockScreenSpeedAdd;
+        public float lockScreenSpeedMult;
+        public float unlockScreenSpeedAdd;
+        public float unlockScreenSpeedMult;
+
         public bool ZoneTranquility => zone[0];
 
         public int Tick { get; private set; } = 0;
+        public Item AssistantItem { get; set; } = new Item();
 
         public float[] CDReduction = new float[9];
         public float manaReturn = 0;
@@ -74,7 +86,7 @@ namespace CNC.Common.Global.Players
         public void ScreenShake(int time, Vector2 frequency, Vector2 amplitude, float attenuation, Vector2 startOffset = default)
         {
             this.shakeTime = time;
-            this.shakeDirection = new Vector2(amplitude.X < 0 ? -1 : 1, amplitude.Y < 0 ? -1 : 1);
+            this.shakeDirection = new Vector2(frequency.X < 0 ? -1 : 1, frequency.Y < 0 ? -1 : 1);
             this.shakeFrequency = frequency;
             this.shakeValue = startOffset;
             this.shakeAmplitude = amplitude;
@@ -96,13 +108,32 @@ namespace CNC.Common.Global.Players
 
         public override void ModifyScreenPosition()
         {
+            if (lockScreenTime > 0 && lockScreenAmount == 1) lockScreenTime--;
+            if (lockScreenTime > 0 && lockScreenAmount < 1) lockScreenAmount = MyMath.Min((lockScreenAmount + lockScreenSpeedAdd) * lockScreenSpeedMult, 1f);
+            if (lockScreenTime <= 0 && lockScreenAmount > 0) lockScreenAmount = MyMath.Max((lockScreenAmount - unlockScreenSpeedAdd) * unlockScreenSpeedMult, 0f);
+            if (lockScreenAmount > 0) Main.screenPosition = MyMath.Lerp(player.Center, lockScreenPosition, lockScreenAmount);
+            if (lockScreenTime > 0) Main.screenPosition = lockScreenPosition;
             if (this.shakeCur > 0) Main.screenPosition += this.shakeValue * this.shakeCur;
+        }
+
+        public override void PreUpdate()
+        {
         }
 
         public override void PostUpdate()
         {
             if (this.shakeCur > 0) this.UpdateShakeData();
+        }
 
+        public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+        {
+            if (!ParticleRenderer.drawn)
+            {
+                ParticleRenderer.drawn = true;
+                for (int i = 0; i < ParticleRenderer.maxParticles; i++)
+                    if (ParticleRenderer.particle[i] != null && ParticleRenderer.particle[i].active)
+                        ParticleRenderer.particle[i].Draw(Main.spriteBatch);
+            }
         }
     }
 }

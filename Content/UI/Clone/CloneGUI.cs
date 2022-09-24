@@ -256,7 +256,7 @@ namespace CNC.Content.UI.Clone
 
             MouseText.Visible = false;
             MouseText.textOffset = new Vector2(20f);
-            MouseText.textColor = CNCUtils.AccurateColor(Color.White);
+            MouseText.textColor = CNCUtils.FlashColor(Color.White);
             if (rightHP.mouseOver || leftPanel[0].mouseOver) mouseText = player.statLife + "/" + player.statLifeMax2;
             if (rightMP.mouseOver || leftPanel[1].mouseOver) mouseText = player.statMana + "/" + player.statManaMax2;
             if (rightExtra.mouseOver || leftPanel[2].mouseOver) MouseText.Visible = true;

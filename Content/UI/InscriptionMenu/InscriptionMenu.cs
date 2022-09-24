@@ -146,7 +146,7 @@ namespace CNC.Content.UI.InscriptionMenu
                 while (desc != desc2) { desc = desc2; Inscription.GetFirstDamageCommon(ref desc2); }
                 InscriptionIcon2[i].display = $"[{inscription.displayName}]\n{desc}";
             }
-            TargetInscriptionBox.SetImage(GetImage("CenterInscription"), CNCUtils.AccurateColor(CNCUtils.AccurateColor(Color.White)));
+            TargetInscriptionBox.SetImage(GetImage("CenterInscription"), CNCUtils.FlashColor(CNCUtils.FlashColor(Color.White)));
             TargetInscriptionBox.SetRect(Vector2.Zero, TargetInscriptionBox.image.Size() * scale);
 
             if (Visible)

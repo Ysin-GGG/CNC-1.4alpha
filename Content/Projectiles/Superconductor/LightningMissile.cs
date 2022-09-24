@@ -49,7 +49,7 @@ namespace CNC.Content.Projectiles.Superconductor
             AI001_RollingMissile(projectile, false, true, 90f);
             Anim001_Loop(projectile, 5, 0);
             Vector4 xywh = new Vector4(projectile.Center.X, projectile.Center.Y, 1, 1);
-            Dust dust = CNCUtils.NewDust(xywh, 226, projectile.rotation, .8f, projectile.Size / 2f, CNCUtils.AccurateColor(Color.LightBlue));
+            Dust dust = CNCUtils.NewDust(xywh, 226, projectile.rotation, .8f, projectile.Size / 2f, CNCUtils.FlashColor(Color.LightBlue));
             dust.position = projectile.position + CNC.Random.NextVector2(new Vector2(12f));
             dust.velocity *= .2f;
             dust.noGravity = true;

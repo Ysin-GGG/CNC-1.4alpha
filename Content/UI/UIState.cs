@@ -76,7 +76,7 @@ namespace CNC.Content.UI
         protected virtual void ResetButton(ref UIButton button, Vector2 pos, float scale, string icon, string box, string name, string arg = "", Vector2 offset = default, string UIName = default)
         {
             offset = offset == default ? Vector2.Zero : offset;
-            button.SetIcon(GetImage(icon), Color.White * .8f, CNCUtils.AccurateColor(Color.White));
+            button.SetIcon(GetImage(icon), Color.White * .8f, CNCUtils.FlashColor(Color.White));
             button.SetBox(GetImage(box), Color.Transparent, Color.White, 0f);
             button.SetRect(offset + pos * scale, button.icon.Size() * scale);
             button.SetDisplay(Common.Localization.CNCLocalization.GetText($"UI.{(UIName == default ? Name : UIName)}.{name}", arg));

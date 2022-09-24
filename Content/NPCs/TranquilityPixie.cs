@@ -17,16 +17,16 @@ namespace CNC.Content.NPCs
         
         const int dustid = DustId.CyanShortFx1;
 
-        const int damage = 25;
+        int damage => GetDamage(25, 35, 50);
         const int StandFrame = 12;
         const int AttackFrame = 12;
         const int DeathFrame = 3;
         int var = 0;
         int spawn = 255;
 
-        State state { get => (State)var1; set => var1 = (int)value; }
-        double time { get => (double)var2; set => var2 = (float)value; }
-        int targetID { get => (int)var3; set => var3 = (int)value; }
+        State state { get => (State)npc.ai[0]; set => npc.ai[0] = (int)value; }
+        double time { get => (double)npc.ai[1]; set => npc.ai[1] = (float)value; }
+        int targetID { get => (int)npc.ai[2]; set => npc.ai[2] = (int)value; }
 
         private enum State : byte
         {
@@ -50,11 +50,11 @@ namespace CNC.Content.NPCs
             npc.defense = 10;
             npc.value = 500f;
             npc.noGravity = true;
-            npc.alpha = (int)(var4 = 255);
+            npc.alpha = (int)(npc.ai[3] = 255);
             npc.HitSound = SoundID.NPCHit5;
             npc.DeathSound = SoundID.NPCDeath7;
-            var1 = var2 = 0;
-            var3 = -1;
+            npc.ai[0] = npc.ai[1] = 0;
+            npc.ai[2] = -1;
             spawn = 255;
         }
 
@@ -68,7 +68,7 @@ namespace CNC.Content.NPCs
             float tick = 2f - 1f * npc.GetLifePercent();//蓄力速度
             float attackDelay = 60f * (Main.expertMode ? 2 : 3);//最大蓄力时长
             float velMax = 3f / (state == State.Attacking ? 2 : 1);//移动速度
-            if (var1 != 1 && var1 != 2 && var1 != 3 && var1 != 4) { state = State.NoTarget; }//状态数值不在范围内时，重置为漫游状态
+            if (npc.ai[0] != 1 && npc.ai[0] != 2 && npc.ai[0] != 3 && npc.ai[0] != 4) { state = State.NoTarget; }//状态数值不在范围内时，重置为漫游状态
             if (state != State.Death)
             {
                 if (!npc.HasPlayerTarget) { state = State.NoTarget; }//没有目标时，重置为漫游状态
@@ -144,7 +144,10 @@ namespace CNC.Content.NPCs
                 Vector2 vel = new Vector2(MyMath.cos(rot), MyMath.sin(rot)) * 8f;
                 int proj = CNCID.Projectile.LegacyObject[CNCID.Projectile.SpiritMass];
                 int projDmg = (int)(damage * 1.2f);
-                CNCUtils.NewProj(npc.GetSource_FromThis(), pos, vel, proj, projDmg, 0f, -1, targetID + 1);//发射弹幕
+                var p = NewProjectile(vel, proj, projDmg, 0f);//发射弹幕
+                p.ai[0] = targetID + 1;
+                p.Center = pos;
+                //CNCUtils.NewProj(npc.GetSource_FromThis(), pos, vel, proj, projDmg, 0f, -1, targetID + 1);//发射弹幕
             }
             if (state == State.Attacking && frame >= StandFrame + AttackFrame - 1)//结束攻击动画并退出攻击状态
             {
@@ -180,7 +183,7 @@ namespace CNC.Content.NPCs
                 npc.alpha = (int)(npc.alpha * .6);
             }
             else { npc.frameCounter++; }
-            if (var4 > 0) npc.alpha = (int)var4--;
+            if (npc.ai[3] > 0) npc.alpha = (int)npc.ai[3]--;
             if (state != State.Death)
             {
                 if (frame >= StandFrame + AttackFrame && state == State.Attacking) { frame = 0; }//完成发射弹幕动画，回到常规动画第一帧
@@ -210,7 +213,12 @@ namespace CNC.Content.NPCs
                 npc.dontCountMe = true;
                 npc.dontTakeDamage = true;
                 npc.dontTakeDamageFromHostiles = true;
-                npc.NPCLoot();
+                if (ParentNPC != null && ParentNPC.active)
+                {
+                    (ParentNPC.ModNPC as SpiritBoss.SpiritBoss).MinionCount--;
+                    Item.NewItem(npc.GetSource_Loot(), npc.getRect(), ItemID.Heart, 1);
+                }
+                else npc.NPCLoot();
                 for (int i = 0; i < 15; i++)
                 {
                     float x = npc.Center.X;

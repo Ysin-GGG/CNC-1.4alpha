@@ -12,82 +12,99 @@ namespace CNC.Common.Global.Projectiles
 
         public Projectile projectile => _projectile;
         private Projectile _projectile = null;
-        public NPC RootNPC => _Root1 < 0 || _Root1 >= Main.maxNPCs ? null : Main.npc[_Root1];
-        public NPC ParentNPC => _Parent1 < 0 || _Parent1 >= Main.maxNPCs ? null : Main.npc[_Parent1];
-        public NPC[] ChildrenNPC => _Children1.ToArray();
-        private int _Root1 = -1;
-        private int _Parent1 = -1;
-        private List<NPC> _Children1 = null;
+        public NPC RootNPC => _RootNPC < 0 || _RootNPC >= Main.maxNPCs ? null : Main.npc[_RootNPC];
+        public NPC ParentNPC => _ParentNPC < 0 || _ParentNPC >= Main.maxNPCs ? null : Main.npc[_ParentNPC];
+        public NPC[] ChildrenNPC => _ChildrenNPC.ToArray();
+        private int _RootNPC = -1;
+        private int _ParentNPC = -1;
+        private List<NPC> _ChildrenNPC = null;
 
-        public Projectile RootProjectile => _Root2 < 0 || _Root2 >= Main.maxProjectiles ? null : Main.projectile[_Root2];
-        public Projectile ParentProjectile => _Parent2 < 0 || _Parent2 >= Main.maxProjectiles ? null : Main.projectile[_Parent2];
-        public Projectile[] ChildrenProjectile => _Children2.ToArray();
-        private int _Root2 = -1;
-        private int _Parent2 = -1;
-        private List<Projectile> _Children2 = null;
+        public Projectile RootProjectile => _RootProjectile < 0 || _RootProjectile >= Main.maxProjectiles ? null : Main.projectile[_RootProjectile];
+        public Projectile ParentProjectile => _ParentProjectile < 0 || _ParentProjectile >= Main.maxProjectiles ? null : Main.projectile[_ParentProjectile];
+        public Projectile[] ChildrenProjectile => _ChildrenProjectile.ToArray();
+        private int _RootProjectile = -1;
+        private int _ParentProjectile = -1;
+        private List<Projectile> _ChildrenProjectile = null;
 
+        /// <summary> 设置该弹幕的亲/父NPC（认亲） </summary>
+        /// <param name="newParent">亲NPC</param>
+        /// <param name="ignoreOld">忽略已有的亲NPC（断绝原本的关系，强制替换）</param>
         public bool SetParent(NPC newParent, bool ignoreOld = false)
         {
             bool flag = newParent != null && newParent.whoAmI >= 0 && newParent.whoAmI < Main.maxNPCs && (this.ParentNPC == null || ignoreOld);
-            this._Parent1 = flag ? newParent.whoAmI : -1;
+            this._ParentNPC = flag ? newParent.whoAmI : -1;
             return flag;
         }
 
+        /// <summary> 设置该弹幕的根/祖NPC（认亲） </summary>
+        /// <param name="newRoot">根/祖NPC</param>
+        /// <param name="ignoreOld">忽略已有的根/祖NPC（断绝原本的关系，强制替换）</param>
         public bool SetRoot(NPC newRoot, bool ignoreOld = false)
         {
             bool flag = newRoot != null && newRoot.whoAmI >= 0 && newRoot.whoAmI < Main.maxNPCs && (this.RootNPC == null || ignoreOld);
             NPCRelation root = newRoot.GetGlobalNPC<NPCRelation>();
-            this._Root1 = flag ? (root.RootNPC == null ? newRoot.whoAmI : root.RootNPC.whoAmI) : -1;
+            this._RootNPC = flag ? (root.RootNPC == null ? newRoot.whoAmI : root.RootNPC.whoAmI) : -1;
             return flag;
         }
 
+        /// <summary> 为该弹幕添加子NPC </summary>
+        /// <param name="child">子NPC</param>
         public bool AddChild(NPC child)
         {
             bool flag = child != null && child.whoAmI >= 0 && child.whoAmI < Main.maxNPCs;
-            if (_Children1 != null && flag)
+            if (_ChildrenNPC != null && flag)
             {
-                this._Children1.Add(child);
+                this._ChildrenNPC.Add(child);
                 child.GetGlobalNPC<NPCRelation>().SetParent(projectile, true);
             }
             return flag;
         }
 
+        /// <summary> 设置该弹幕的亲/父Projectile（认亲） </summary>
+        /// <param name="newParent">亲/父Projectile</param>
+        /// <param name="ignoreOld">忽略已有的亲Projectile（断绝原本的关系，强制替换）</param>
         public bool SetParent(Projectile newParent, bool ignoreOld = false)
         {
             bool flag = newParent != null && newParent.whoAmI >= 0 && newParent.whoAmI < Main.maxProjectiles && (this.ParentProjectile == null || ignoreOld);
-            this._Parent2 = flag ? newParent.whoAmI : -1;
+            this._ParentProjectile = flag ? newParent.whoAmI : -1;
             return flag;
         }
 
+        /// <summary> 设置该弹幕的根/祖Projectile（认亲） </summary>
+        /// <param name="newRoot">根/祖Projectile</param>
+        /// <param name="ignoreOld">忽略已有的根/祖Projectile（断绝原本的关系，强制替换）</param>
         public bool SetRoot(Projectile newRoot, bool ignoreOld = false)
         {
             bool flag = newRoot != null && newRoot.whoAmI >= 0 && newRoot.whoAmI < Main.maxProjectiles && (this.RootProjectile == null || ignoreOld);
             ProjectileRelation root = newRoot.GetGlobalProjectile<ProjectileRelation>();
-            this._Root2 = flag ? (root.RootProjectile == null ? newRoot.whoAmI : root.RootProjectile.whoAmI) : -1;
+            this._RootProjectile = flag ? (root.RootProjectile == null ? newRoot.whoAmI : root.RootProjectile.whoAmI) : -1;
             return flag;
         }
 
+        /// <summary> 为该弹幕添加子Projectile </summary>
+        /// <param name="child">子Projectile</param>
         public bool AddChild(Projectile child)
         {
             bool flag = child != null && child.whoAmI >= 0 && child.whoAmI < Main.maxProjectiles;
-            if (_Children1 != null && flag)
+            if (_ChildrenNPC != null && flag)
             {
-                this._Children2.Add(child);
+                this._ChildrenProjectile.Add(child);
                 child.GetGlobalProjectile<ProjectileRelation>().SetParent(projectile, true);
             }
             return flag;
         }
 
+        /// <summary> 移除已消亡的子NPC </summary>
         public int ClearDeadChildren()
         {
             int count = 0;
-            if (_Children1 != null)
+            if (_ChildrenNPC != null)
             {
-                for(int i = 0; i < _Children1.Count; i++)
+                for (int i = 0; i < _ChildrenNPC.Count; i++)
                 {
-                    if (!_Children1[i].active)
+                    if (!_ChildrenNPC[i].active)
                     {
-                        _Children1.RemoveAt(i);
+                        _ChildrenNPC.RemoveAt(i);
                         count++;
                     }
                 }
@@ -97,12 +114,12 @@ namespace CNC.Common.Global.Projectiles
 
         public override void SetDefaults(Projectile projectile)
         {
-            projectile.GetGlobalProjectile<ProjectileRelation>()._Root1 = -1;
-            projectile.GetGlobalProjectile<ProjectileRelation>()._Parent1 = -1;
-            projectile.GetGlobalProjectile<ProjectileRelation>()._Children1 = new List<NPC>();
-            projectile.GetGlobalProjectile<ProjectileRelation>()._Root2 = -1;
-            projectile.GetGlobalProjectile<ProjectileRelation>()._Parent2 = -1;
-            projectile.GetGlobalProjectile<ProjectileRelation>()._Children2 = new List<Projectile>();
+            projectile.GetGlobalProjectile<ProjectileRelation>()._RootNPC = -1;
+            projectile.GetGlobalProjectile<ProjectileRelation>()._ParentNPC = -1;
+            projectile.GetGlobalProjectile<ProjectileRelation>()._ChildrenNPC = new List<NPC>();
+            projectile.GetGlobalProjectile<ProjectileRelation>()._RootProjectile = -1;
+            projectile.GetGlobalProjectile<ProjectileRelation>()._ParentProjectile = -1;
+            projectile.GetGlobalProjectile<ProjectileRelation>()._ChildrenProjectile = new List<Projectile>();
             projectile.GetGlobalProjectile<ProjectileRelation>()._projectile = projectile;
         }
     }

@@ -1,39 +1,66 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Diagnostics;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoMod.Cil;
 using Terraria;
 using Terraria.UI;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
+using Terraria.Graphics.Effects;
 using CNC.Common.Utils;
 using CNC.Common.Localization;
-using MonoMod.Cil;
+using CNC.Content.DataStructures;
 using CNCUI = CNC.Content.UI;
 using CNCGlobal = CNC.Common.Global;
+using ReLogic.Content.Sources;
 
 namespace CNC
 {
-	public class CNC : Mod
-	{
-        public override Version Version => new Version(0, 0, 3, 2);
+    public class CNC : Mod
+    {
+        public override Version Version => new Version(0, 0, 3, 3);
         public Version TMLVersion => TModLoaderVersion;
         public static PseudoRandom Random => CNC.random;
         private static PseudoRandom random;
         public static CNC Instance;
         public static int me => Const.me;
         public static Player Me => Const.Me;
+        public static int GameMode => Main.masterMode ? 3 : (Main.expertMode ? 2 : 1);
         public const int newStatManaMax2 = 1000000;
-        public const int maxParticle = Content.ParticleRenderer.maxParticles;
         public const int maxClassTypes = CNCID.Clazz.MaxObject;
         public const int maxInscriptions = CNCGlobal.Items.InscriptionSettings.maxInscriptionList;
         public const int maxInscriptionTypes = CNCID.Inscription.MaxObject;
         public const int maxStateTypes = CNCID.State.MaxObject;
+        public const int maxParticle = 10000;
+        public const int maxNPCData = 12;
+        public const int maxProjectileData = 6;
 
         public static Dictionary<string, Texture2D> Image { get; private set; }
-        public static Dictionary<string, Effect> Shader;
+        public static Dictionary<string, Effect> Shader { get; private set; }
+
+        public static Texture2D GetTexture(string path)
+        {
+            try
+            {
+                if (!path.StartsWith("CNC/")) path = "CNC/" + path;
+                return ModContent.Request<Texture2D>(path).Value;
+            }
+            catch { return null; }
+        }
+
+        public static Effect GetEffect(string name)
+        {
+            try
+            {
+                name = "CNC/Content/Effects/" + name;
+                return ModContent.Request<Effect>(name).Value;
+            }
+            catch { return null; }
+        }
 
         public override void Load()
         {
@@ -49,6 +76,12 @@ namespace CNC
             Logger.Info($"TML {CNCLocalization.GetText("Misc.Version")}v{TMLVersion}");
             //AddEquipTexture(ModContent.GetModItem(ModContent.ItemType<Content.Items.Developers.HHvs.HHvsRobe>()), EquipType.Legs, "CNC/Content/Items/Developers/HHvs/HHvsRobe_Legs");
             //UIManager.Instance.Load();
+
+            Filters.Scene["CNC:ShockWave"] = new Filter(new FilterShaderData(new Ref<Effect>(CNC.GetEffect("ShockWave")), "ShockWave"), EffectPriority.Medium);
+            Filters.Scene["CNC:ShockWave"].Load();
+
+            SkyManager.Instance["CNC:SpiritBossSky"] = new Content.Skies.SpiritBossSky();
+            base.Load();
         }
 
         public override void Unload()
@@ -78,30 +111,62 @@ namespace CNC
             Image.Clear();
             Shader = new Dictionary<string, Effect>();
             Shader.Clear();
+
+            int[] count = { 0, 0 };
+            int[] countProgress = { 0, 0 };
+            List<string> fx = new List<string>();
             foreach (TmodFile.FileEntry file in modFiles)
             {
-                if (file.Name.EndsWith(".rawimg"))// || file.Name.EndsWith(".png") || file.Name.EndsWith(".jpg"))
+                if (file.Name.EndsWith(".rawimg")) count[0]++;
+                if (file.Name.EndsWith(".fx")) { count[1]++; fx.Add(Path.GetFileNameWithoutExtension(file.Name));}
+            }
+            foreach (TmodFile.FileEntry file in modFiles)
+            {
+                try
                 {
-                    string name = file.Name;
-                    string path = Path.GetFullPath(name);
-                    string key = Path.GetFileNameWithoutExtension(name);
-                    while (Image.ContainsKey(key))
+                    if (file.Name.EndsWith(".rawimg"))// || file.Name.EndsWith(".png") || file.Name.EndsWith(".jpg"))
                     {
-                        int idx = path.LastIndexOf('\\');
-                        int idx2 = path.Substring(0, idx).LastIndexOf('\\');
-                        key = path.Substring(idx2 + 1, idx - idx2 - 1) + '.' + key;
-                        path = path.Substring(0, idx);
+                        string name = file.Name;
+                        string path = Path.GetFullPath(name);
+                        string key = Path.GetFileNameWithoutExtension(name);
+                        while (Image.ContainsKey(key))
+                        {
+                            int idx = path.LastIndexOf('\\');
+                            int idx2 = path.Substring(0, idx).LastIndexOf('\\');
+                            key = path.Substring(idx2 + 1, idx - idx2 - 1) + '.' + key;
+                            path = path.Substring(0, idx);
+                        }
+                        countProgress[0]++;
+                        Image.Add(key, ModContent.Request<Texture2D>("CNC/" + name.Substring(0, name.IndexOf('.'))).Value);
+                        //Logger.Info($"Loading Image: {key}");
                     }
-                    Image.Add(key, ModContent.Request<Texture2D>("CNC/" + name.Substring(0, name.IndexOf('.'))).Value);
                 }
-                if (file.Name.EndsWith(".fx"))
+                catch
                 {
-                    string name = file.Name;
-                    string path = Path.GetFullPath(name);
-                    string key = Path.GetFileNameWithoutExtension(name);
-                    Shader.Add(key, ModContent.Request<Effect>("CNC/" + name.Substring(0, name.IndexOf('.'))).Value);
+                    Logger.Info($"Error Loading Image: {Path.GetFileNameWithoutExtension(file.Name)}");
+                }
+                try
+                {
+                    if (file.Name.EndsWith(".xnb") && fx.Contains(Path.GetFileNameWithoutExtension(file.Name)))
+                    {
+                        string name = file.Name;
+                        string path = Path.GetFullPath(name);
+                        string key = Path.GetFileNameWithoutExtension(name);
+                        Shader.Add(key, ModContent.Request<Effect>("CNC/" + name.Substring(0, name.IndexOf('.'))).Value);
+                        countProgress[1]++;
+                        //Logger.Info($"Loading Shader: {key}");
+                    }
+                }
+                catch
+                {
+                    Logger.Info($"Error Loading Shader: {Path.GetFileNameWithoutExtension(file.Name)}");
                 }
             }
+            Logger.Info($"Loaded Image ({countProgress[0]}/{count[0]})");
+            Logger.Info($"Loaded Shader ({countProgress[1]}/{count[1]})");
+
+            Filters.Scene["CNC:ShockWave"] = new Filter(new FilterShaderData(new Ref<Effect>(CNC.GetEffect("ShockWave")), "ShockWave"), EffectPriority.Medium);
+            Filters.Scene["CNC:ShockWave"].Load();
             #endregion
         }
 
@@ -117,7 +182,7 @@ namespace CNC
         {
             public static UIManager Instance;
 
-            public UserInterface [] UI = new UserInterface[8];
+            public UserInterface [] UI = new UserInterface[7];
             internal CNCUI.UIState[] UIState;
             public bool[] Visible => new bool[]
             {
@@ -128,7 +193,6 @@ namespace CNC
                 CNCUI.InscriptionMenu.InscriptionMenu.Visible,
                 CNCUI.InscriptionMenu.WeaponList.Visible,
                 true,
-                CNCUI.Misc.DrawParticle.Visible,
             };
 
             public override void Load()
@@ -154,7 +218,6 @@ namespace CNC
                     new CNCUI.InscriptionMenu.InscriptionMenu(),
                     new CNCUI.InscriptionMenu.WeaponList(),
                     new CNCUI.InscriptionMenu.DarkScreen(),
-                    new CNCUI.Misc.DrawParticle(),
                 };
                 for(int i = 0; i < UIState.Length; i++)
                 {
@@ -173,7 +236,6 @@ namespace CNC
                 AppendUI(layers, UI[4], Visible[4], -1, "Inscription Menu");//Enhancement
                 AppendUI(layers, UI[5], Visible[5], -1, "Weapon List");
                 AppendUI(layers, UI[6], Visible[6], -1, "Dark Screen Effect 2");
-                AppendUI(layers, UI[7], Visible[7], 0, "Draw Particle");
                 int idx = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
                 if (idx >= 0) layers[idx].Active = false; // layers.RemoveAt(idx);
                 idx = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
@@ -200,6 +262,16 @@ namespace CNC
                         InterfaceScaleType.UI);
                 if (layerID != -1) layers.Insert(layerID, ui);
                 else layers.Add(ui);
+            }
+
+            public override void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor)
+            {
+                if (SkyManager.Instance["CNC:SpiritBossSky"].IsActive())
+                {
+                    var sky = (Content.Skies.SpiritBossSky)SkyManager.Instance["CNC:SpiritBossSky"];
+                    sky.Update();
+                    backgroundColor = Color.Lerp(backgroundColor, sky.skyColor, sky.opacity * sky.intensity);
+                }
             }
         }
     }

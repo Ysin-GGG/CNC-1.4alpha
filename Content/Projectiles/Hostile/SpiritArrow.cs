@@ -13,18 +13,22 @@ using CNC.Common.Global.Projectiles;
 
 namespace CNC.Content.Projectiles.Hostile
 {
-    public abstract class SpiritArrow : CNCProjectile
+    public class SpiritArrow : CNCProjectile
     {
         public override string Texture => "CNC/Content/Projectiles/Hostile/SpiritArrow";
-        protected Projectile p => projectile;
+        private ref float extraRotation => ref projectile.localAI[0];
+        private ref float radius => ref projectile.localAI[1];
+        private ref float radius2 => ref projectile.ai[1];
+        private const int time = 900;
+        private const int len = 25;
+
         protected const int dustid1 = DustId.TrailingCyan;
         protected const int dustid2 = DustId.CyanShortFx1;
         protected virtual Color mainColor => CNCID.Colors.SpiritBoss;
         protected virtual Color mainColor2 => CNCID.Colors.SpiritBoss2;
-        protected virtual int len => 30;
         protected virtual bool update => true;
         protected int attackCD = 0;
-        protected bool rage => RootNPC != null && RootNPC.type == CNCID.NPC.LegacyObject[CNCID.NPC.SpiritBoss] && ((NPCs.SpiritBoss.SpiritBoss)RootNPC.ModNPC).rage;
+        protected bool rage => RootNPC != null && RootNPC.type == CNCID.NPC.LegacyObject[CNCID.NPC.SpiritBoss] && ((NPCs.SpiritBoss.SpiritBoss)RootNPC.ModNPC).Rage;
         private float rand;
         private int fade = 0;
         private float lightAlpha;
@@ -43,7 +47,7 @@ namespace CNC.Content.Projectiles.Hostile
 
         public override void ResetDefaults()
         {
-            projectile.timeLeft = 360;
+            projectile.timeLeft = time;
             projectile.alpha = 255;
             projectile.light = 0;
             projectile.penetrate = -1;
@@ -51,7 +55,7 @@ namespace CNC.Content.Projectiles.Hostile
             projectile.hostile = true;
             projectile.ignoreWater = true;
             projectile.tileCollide = false;
-            projectile.scale = .75f;
+            projectile.scale = 1f;
             if (len != projectile.oldPos.Length)
             {
                 Array.Resize(ref projectile.oldPos, len);
@@ -77,37 +81,83 @@ namespace CNC.Content.Projectiles.Hostile
             lightHeight = new EffectTimer(48, 1, 0, 48, 64, 10, 10, 2, 0);
             lightFlash = new EffectTimer(127, 1, 0, 127, 255, 0, 0, 16, 0);
             rand = CNC.Random.NextFloat(-100f, 100f);
-        }
-
-        public override void AI()
-        {
-            AI001_RollingMissile(p, false, true, 90f);
-            if (update) UpdateOldData(p);
-            p.alpha = MyMath.Clamp(p.alpha + fade, 0, 255);
-            if (p.alpha <= 0 || p.alpha >= 255) fade = 0;
-            projectile.friendly = false;
-            projectile.hostile = true;
-            while (attackCD > 0) attackCD--;
-            Vector2 pos = (p.position + p.Size / 2f) / 16f;
-            float r = mainColor.R / 255f;
-            float g = mainColor.G / 255f;
-            float b = mainColor.B / 255f;
-            Lighting.AddLight((int)pos.X, (int)pos.Y, r, g, b);
-        }
-
-        public override void ModifyDamageHitbox(ref Rectangle hitbox)
-        {
-            int size = 24;
-            Point pos = p.position.ToPoint() + new Point(size, size);
-            hitbox = new Rectangle(pos.X, pos.Y, p.width - size * 2, p.height - size * 2);
+            projectile.oldPosition = projectile.position;
         }
 
         public override void HitPlayer(Player target, int damage, bool crit)
         {
-            if (rage)
+            CNCUtils.SetBuff(target, CNCID.Buff.StarMark, 60);
+            CNCUtils.PlaySound(SoundID.Item27, target);
+            float max = 36f;
+            for (int i = 0; i < max; i++)
             {
-                target.statMana -= (int)(target.statMana * .1f);
-                target.immuneTime = 5;
+                float amount = i / max * MyMath.pi2;
+                Vector2 center = target.Center;
+                Vector2 vel = new Vector2(6f * MyMath.cos(amount), 2f * MyMath.sin(amount));
+                CNCUtils.NewDust(center + vel, DustId.CyanShortFx1, MyMath.sin(amount) + 2.5f, vel).noGravity = true;
+            }
+        }
+
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            if (ParentNPC.ModNPC is NPCs.SpiritBoss.SpiritBoss)
+            {
+                var boss = (NPCs.SpiritBoss.SpiritBoss)ParentNPC.ModNPC;
+                if (boss.MovingTime < 0 || boss.ActionState == 5) return false;
+            }
+            return base.Colliding(projHitbox, targetHitbox);
+        }
+
+        public override void AI()
+        {
+            Vector2 center = Vector2.Zero;
+            if (ParentNPC != null && ParentNPC.active) center = ParentNPC.Center;
+            else projectile.Kill();
+
+            AI001_RollingMissile(projectile, false, true, 90f);
+            projectile.alpha = MyMath.Clamp(projectile.alpha + fade, 0, 255);
+            if (projectile.alpha <= 0 || projectile.alpha >= 255) fade = 0;
+            projectile.friendly = false;
+            projectile.hostile = true;
+            while (attackCD > 0) attackCD--;
+            CNCUtils.AddLight(projectile.Center, mainColor, .3f * Alpha2);
+
+            if (ParentNPC != null && 0 <= ParentNPC.target && ParentNPC.target <= 255)
+            {
+                float dist = ParentNPC.Center.Distance(Main.player[ParentNPC.target].Center) / 16f;
+                float amount = 1f;
+                if (dist <= 15f) amount = 0f;
+                else if (dist <= 35f) amount = .5f;
+                if (amount >= 0) this.radius = MyMath.Lerp(10f, 40f, amount) * 16f;
+            }
+            if (this.radius2 > this.radius) this.radius2 = MyMath.Max(this.radius, this.radius2 - 3f);
+            if (this.radius2 < this.radius) this.radius2 = MyMath.Min(this.radius, this.radius2 + 3f);
+            projectile.Center = center + new Vector2(radius2, 0).RotatedBy(this.extraRotation + MyMath.deg01 * (time - projectile.timeLeft) * MyMath.Clamp(radius2 / 16f / 32f, 2f, 4f) * (int)projectile.ai[0]);
+            projectile.rotation = (projectile.position - projectile.oldPosition).ToRotation() - MyMath.deg90;
+            if (ParentNPC.ModNPC is NPCs.SpiritBoss.SpiritBoss)
+            {
+                var boss = (NPCs.SpiritBoss.SpiritBoss)ParentNPC.ModNPC;/*
+                    if (-12 <= boss.movingTime2 && boss.movingTime2 < 0)
+                    {
+                        for (int i = 0; i < projectile.oldPos.Length; i++)
+                        {
+                            projectile.oldRot[i] = projectile.rotation;
+                            projectile.oldPos[i] = projectile.position;
+                        }
+                    }
+                    else */
+                if (boss.MovingTime != 0)
+                {
+                    for (int i = 0; i < projectile.oldPos.Length; i++)
+                    {
+                        float rot = MyMath.deg01 * (time - projectile.timeLeft - i);
+                        projectile.oldPos[i] = center + new Vector2(radius2, 0).RotatedBy(this.extraRotation + rot * MyMath.Clamp(radius2 / 16f / 32f, 2f, 4f) * (int)projectile.ai[0]);
+                        projectile.oldRot[i] = ((i < 1 ? projectile.position : projectile.oldPos[i - 1]) - projectile.oldPos[i]).ToRotation() - MyMath.deg90;
+                    }
+                    projectile.rotation = (projectile.position - projectile.oldPos[0]).ToRotation() - MyMath.deg90;
+                }
+                else UpdateOldData(projectile);
+                if (boss.MovingTime < 0 || boss.ActionState == 5) { Alpha2 = boss.Alpha2; }
             }
         }
 
@@ -115,46 +165,44 @@ namespace CNC.Content.Projectiles.Hostile
         {
             for (int i = 0; i < 15; i++)
             {
-                float x = p.position.X;
-                float y = p.position.Y;
+                float x = projectile.position.X;
+                float y = projectile.position.Y;
                 float[] rand = { CNC.Random.NextDegree() / 2f, CNC.Random.NextFloat(-1, 1), CNC.Random.NextFloat(-1, 1) };
                 Vector4 xywh = new Vector4(x, y, 9, 9);
                 Dust dust = CNCUtils.NewDust(xywh, dustid2, rand[0], CNC.Random.NextFloat(1f, 2f), default, new Color(0, 234, 118));
-                dust.position = xywh.XY() + p.Size / 2;
+                dust.position = xywh.XY() + projectile.Size / 2;
                 dust.velocity = new Vector2(rand[1], rand[2]) * 8f;
                 dust.color = mainColor;
                 dust.noGravity = true;
             }
-            float max = p.oldPos.Length * 2 / 3;
+            float max = projectile.oldPos.Length * 2 / 3;
             for (int i = 0; i < max; i++)
             {
-                float x = p.oldPos[i].X;
-                float y = p.oldPos[i].Y;
+                float x = projectile.oldPos[i].X;
+                float y = projectile.oldPos[i].Y;
                 float[] rand = { CNC.Random.NextDegree() / 2f, CNC.Random.NextFloat(-1, 1), CNC.Random.NextFloat(-1, 1) };
                 Vector4 xywh = new Vector4(x, y, 9, 9);
-                Dust dust = CNCUtils.NewDust(xywh, dustid1, rand[0], CNC.Random.NextFloat(.8f, 1.2f) * (1 - (i / max)), default, mainColor, MyMath.GetXY(p.oldRot[i] - MyMath.deg90) * 4f);
-                dust.position = xywh.XY() + p.Size / 2;
+                Dust dust = CNCUtils.NewDust(xywh, dustid1, rand[0], CNC.Random.NextFloat(.8f, 1.2f) * (1 - (i / max)), default, mainColor, MyMath.GetXY(projectile.oldRot[i] - MyMath.deg90) * 4f);
+                dust.position = xywh.XY() + projectile.Size / 2;
                 dust.noGravity = true;
             }
         }
 
-        public sealed override bool PreDraw(ref Color lightColor)
+        public override bool PreDraw(ref Color lightColor)
         {
-            lightColor = mainColor;
-            bool afterImage = true;
+            lightColor = mainColor * Alpha2;
             Texture2D trailImage = Mod.Assets.Request<Texture2D>("Assets/Effects/FormalTrail6").Value;
-            Draw(lightColor, false, ref trailImage, ref afterImage);
-            AfterImages(projectile, mainColor * .75f * (255 - p.alpha / 255f), len, null, new Vector2(-1f, 1f) / len / 1.5f, new Vector2(.99f, 1.01f));
+            AfterImages(projectile, mainColor * .75f * Alpha2, len * 2, null, new Vector2(-1f, 1f) / len / 2f / 1.5f, new Vector2(.99f, 1.01f), .01f);
 
             Texture2D glow = Mod.Assets.Request<Texture2D>("Assets/Glow/Refringence").Value;
             Vector2 pos = projectile.Center - Main.screenPosition;
-            Color color = CNCUtils.AccurateColor(mainColor2) * ((255f - p.alpha) / 255f); color.A = 0;
+            Color color = CNCUtils.FlashColor(mainColor2 * Alpha2).NewA(0);
             Main.EntitySpriteDraw(glow, pos, null, color, 0f, glow.Size() / 2f, new Vector2(lightWidth.GetNextValue(), 80f) / 120f, 0, 0);
             Main.EntitySpriteDraw(glow, pos, null, color, MyMath.deg90, glow.Size() / 2f, new Vector2(lightHeight.GetNextValue() / MyMath.phi, 80f) / 120f, 0, 0);
 
             if (trailImage != null)
             {
-                var ef = (Effect)Mod.Assets.Request<Effect>("Content/Effects/Trail").Value;
+                var ef = (Effect)Mod.Assets.Request<Effect>("Content/Effects/Trail2").Value;
                 List<VertexInfo> bars = new List<VertexInfo>();
                 int width = 32;
                 var normalDir = projectile.position - Projectile.oldPos[0];
@@ -174,7 +222,7 @@ namespace CNC.Content.Projectiles.Hostile
 
                     var factor = i / (float)Projectile.oldPos.Length;
                     var factor2 = MyMath.Clamp(factor * 2, 0, 1);
-                    color2 = Color.Lerp(mainColor, Color.Transparent, factor);
+                    color2 = Color.Lerp(CNCID.Colors.SpiritBoss, Color.Transparent, factor);
                     w = MathHelper.Lerp(1f, 0.05f, factor);
 
                     bars.Add(new VertexInfo(Projectile.oldPos[i - 1] + Projectile.Size / 2f + normalDir * (width + 16 * factor2), color2, new Vector3((float)Math.Sqrt(factor), 1, w)));
@@ -203,13 +251,16 @@ namespace CNC.Content.Projectiles.Hostile
                     Matrix model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0)) * Main.GameViewMatrix.ZoomMatrix;
 
                     ef.Parameters["uTransform"].SetValue(model * projection);
+                    ef.Parameters["uColor0"].SetValue(CNCUtils.FlashColor(225, 242, 249).ToVector4());
+                    ef.Parameters["uColor1"].SetValue(Color.Blue.ToVector4());// CNCUtils.FlashColor(61, 80, 112).ToVector4());
+                    ef.Parameters["uAlpha"].SetValue((1f - ParentNPC.alpha / 255f) * 5f);
                     ef.Parameters["uTime"].SetValue(-Main.GlobalTimeWrappedHourly + rand);
                     var trai = new TrailShaderData(ef, projectile, width)
                     {
                         colorBegin = mainColor,
                         trailAnimAdd = rand,
-                        imageHeatmap = Mod.Assets.Request<Texture2D>("Assets/Effects/Heatmap/Blue2").Value,
-                        imageTrace = Mod.Assets.Request<Texture2D>("Assets/Effects/Trace1").Value,
+                        imageHeatmap = Mod.Assets.Request<Texture2D>("Assets/Effects/GlowTrail2").Value,
+                        imageTrace = Mod.Assets.Request<Texture2D>("Assets/Effects/Trace3").Value,
                         imageTrail = trailImage,
                     };
                     trai.Draw(Main.spriteBatch, triangleList.ToArray(), true);
@@ -220,16 +271,13 @@ namespace CNC.Content.Projectiles.Hostile
 
         public sealed override void PostDraw(Color lightColor)
         {
-            Texture2D misc1 = null;
-            bool misc2 = true;
-            Draw(lightColor, true, ref misc1, ref misc2);
             Texture2D[] glow =
             {
-                Mod.Assets.Request<Texture2D>("Assets/Glow/Lamp").Value,
-                Mod.Assets.Request<Texture2D>("Assets/Glow/Teleport").Value,
-            };
+                    Mod.Assets.Request<Texture2D>("Assets/Glow/Lamp").Value,
+                    Mod.Assets.Request<Texture2D>("Assets/Glow/Teleport").Value,
+                };
             Vector2 pos = projectile.Center - Main.screenPosition;
-            Color color = CNCUtils.AccurateColor(mainColor2) * ((255f - p.alpha) / 255f); color.A = 0;
+            Color color = CNCUtils.FlashColor(mainColor2) * ((255f - projectile.alpha) / 255f); color.A = 0;
             Main.EntitySpriteDraw(glow[1], pos, null, color, 0f, glow[1].Size() / 2f, Vector2.One / 4f, 0, 0);
             if (lightAlpha > 0f)
             {
@@ -244,265 +292,6 @@ namespace CNC.Content.Projectiles.Hostile
                 lightRotation = CNC.Random.NextDegree();
                 lightDirection = CNC.Random.NextBool().ToDirectionInt();
                 lightScale = new Vector2(1f, 0f);
-            }
-        }
-
-        public virtual void Draw(Color lightColor, bool post, ref Texture2D trailImage, ref bool afterImage) { }
-
-        public class V1 : SpiritArrow
-        {
-            protected override int len => 15 + (int)(15 * precent);
-            float precent = 0f;
-            Vector2 maxVel = Const._02;
-
-            public override void AI()
-            {
-                base.AI();
-                projectile.extraUpdates = 1;
-                precent = precent + .01f > 1 ? 1 : precent + .01f;
-                if (maxVel == Const._02) maxVel = p.velocity * .75f;
-                else p.velocity = maxVel * precent;
-            }
-
-            public override void Draw(Color lightColor, bool post, ref Texture2D trailImage, ref bool afterImage) => trailImage = Mod.Assets.Request<Texture2D>("Assets/Effects/FormalTrail1").Value;
-        }
-
-        public class V2 : SpiritArrow
-        {
-            protected override bool update => p.timeLeft <= 300;
-            float precent = .01f;
-            Vector2 maxVel = Const._02;
-
-            public override void AI()
-            {
-                base.AI();
-                projectile.extraUpdates = 1;
-                if (!update)
-                {
-                    Player target = FindClosestTarget(p, 800);
-                    if (target.active)
-                    {
-                        Vector2 pos1 = target.Center;
-                        Vector2 pos2 = p.position + new Vector2(32);
-                        Vector2 distVec2 = pos1 - pos2;
-                        maxVel = p.velocity = MyMath.GetXY(distVec2.ToRotation()) * 24f * .75f;
-                    }
-                    if (precent > 0) p.timeLeft = 480;
-                    precent = 0;
-                    p.position = p.oldPosition;
-                }
-                else
-                {
-                    precent = precent + .01f > 1 ? 1 : precent + .01f;
-                    p.velocity = maxVel * precent;
-                }
-                p.hostile = update;
-            }
-        }
-
-        public class V3 : SpiritArrow
-        {
-            public override void AI()
-            {
-                base.AI();
-                if (p.ai[0] > 0 && Main.player[(int)p.ai[0] - 1].active && p.timeLeft < 240)
-                {
-                    Player target = Main.player[(int)p.ai[0] - 1];
-                    Vector2 pos1 = target.Center;
-                    Vector2 pos2 = p.position + new Vector2(32);
-                    Vector2 distVec2 = pos1 - pos2;
-                    float velMax = 12f;
-                    float rot = distVec2.ToRotation();
-                    Vector2 vel = MyMath.GetXY(rot) * velMax / 12f;
-                    p.velocity += vel / 2;
-                    if (Math.Abs(p.velocity.X) > velMax) { p.velocity.X = (p.velocity.X < 0 ? -1 : 1) * velMax; }
-                    if (Math.Abs(p.velocity.Y) > velMax) { p.velocity.Y = (p.velocity.Y < 0 ? -1 : 1) * velMax; }
-                }
-            }
-        }
-
-        public class V4 : SpiritArrow
-        {
-            public int state;
-            public int stateTime { get => this.p.frameCounter; set => this.p.frameCounter = value; }
-
-            public int[] stateOrder = new int[] { 64, 200, 100, 9999 };
-
-            public float rot = 0;
-            protected override bool update => state > 2;
-
-            public override void AI()
-            {
-                base.AI();
-                p.hostile = state == 3;
-                if (state == 0)
-                {
-                    p.alpha = 255;
-                    p.velocity.Y = MyMath.Min(p.velocity.Y + MyMath.g * .025f, 24f);
-                    for (int i = 0; i < 2; i++)
-                    {
-                        float x = p.position.X;
-                        float y = p.position.Y;
-                        float[] rand = { CNC.Random.NextDegree() / 2f, CNC.Random.NextFloat(-1, 1), CNC.Random.NextFloat(-1, 1) };
-                        Vector4 xywh = new Vector4(x, y, 9, 9);
-                        Dust dust = CNCUtils.NewDust(xywh, dustid2, rand[0], CNC.Random.NextFloat(1.5f, 2.5f), default, new Color(0, 234, 118));
-                        dust.position = xywh.XY() + p.Size / 2;
-                        dust.velocity = Vector2.Normalize(p.velocity) * 4f;
-                        dust.color = mainColor;
-                        dust.noGravity = true;
-                    }
-                }
-                if (state == 1)
-                {
-                    fade = -24;
-                    p.velocity = Vector2.Zero;
-                    p.rotation = 0f;
-                }
-                if (state == 2)
-                {
-                    fade = 24;
-                    p.velocity.Y = MyMath.Clamp(p.velocity.Y * 2f, -16f, -1f);
-                }
-                if (state == 3)
-                {
-                    fade = -24;
-                    if (p.velocity.Y < 16f) p.velocity *= 1.1f;
-                    p.tileCollide = true;
-                }
-                if (++stateTime >= stateOrder[state])
-                {
-                    stateTime = 0;
-                    state++;
-                    if (state == 3)
-                    {
-                        p.velocity = new Vector2(0, 4f).RotatedBy(CNC.Random.NextDegree(-15f, 15f));
-                        p.timeLeft = 300;
-                    }
-                }
-                rot += MyMath.deg01 * 5;
-            }
-
-            public override void Draw(Color lightColor, bool post, ref Texture2D trailImage, ref bool afterImage)
-            {
-                afterImage = update;
-            }
-
-            public override bool PreDrawExtras()
-            {
-                if (state == 1)
-                {
-                    const int frameCount = 7;
-                    const int tickPerFrame = 2;
-                    int frame = stateTime / tickPerFrame;
-                    Texture2D effect = mod.Assets.Request<Texture2D>("Content/NPCs/SpiritBoss/Spawn").Value;
-                    Texture2D image = mod.Assets.Request<Texture2D>("Content/Projectiles/Hostile/SpiritArrow").Value;
-                    int height = effect.Height / frameCount;
-                    Vector2 pos = this.p.Center - Main.screenPosition;
-                    Rectangle source = new Rectangle(0, height * frame, effect.Width, height);
-                    Color color = mainColor;
-                    if (frame < frameCount) Main.EntitySpriteDraw(effect, pos, source, color, 0f, new Vector2(effect.Width, height) / 2f, .5f, 0, 0);
-                    Main.EntitySpriteDraw(image, pos, null, color * (1 - p.alpha / 255f), rot, image.Size() / 2f, 1f, 0, 0);
-                }
-                if (state == 2)
-                {
-                    const int tickPerFrame = 1;
-                    int frame = stateTime / tickPerFrame;
-                    Texture2D effect = mod.Assets.Request<Texture2D>("Content/NPCs/SpiritBoss/Teleport").Value;
-                    Vector2 pos = this.p.Center - Main.screenPosition;
-                    Vector2[] scale =
-                    {
-                        new Vector2(2f, .75f),
-                        new Vector2(1.75f, .8f),
-                        new Vector2(1.5f, .85f),
-                        new Vector2(1.25f, .9f),
-                        new Vector2(1f, 1f),
-                        new Vector2(1f, 1f),
-                        new Vector2(.875f, 1.125f),
-                        new Vector2(.75f, 1.25f),
-                        new Vector2(.625f, 1.375f),
-                        new Vector2(.5f, 1.5f),
-                    };
-                    float[] alpha = { .2f, .4f, .6f, .8f, 1f, 1f, .8f, .6f, .4f, .2f };
-                    Color color = CNCUtils.AccurateColor(mainColor);
-                    color.A = 0;
-                    if (frame < 10)
-                    {
-                        Main.EntitySpriteDraw(effect, pos, null, color * alpha[frame], 0f, effect.Size() / 2f, scale[frame], 0, 0);
-                        Main.EntitySpriteDraw(effect, pos, null, color * alpha[frame], 0f, effect.Size() / 2f, scale[frame], 0, 0);
-                    }
-                }
-                return true;
-            }
-
-            public override void Kill(int timeLeft)
-            {
-                base.Kill(timeLeft);
-                SoundEngine.PlaySound(SoundID.Item101, this.p.position);
-            }
-        }
-
-        public class V5 : SpiritArrow
-        {
-            protected override int len => 15;
-
-            public override void AI()
-            {
-                base.AI();
-                if (p.velocity.Y < 24f) p.velocity *= 1.1f;
-                p.tileCollide = true;
-            }
-
-            public override void Kill(int timeLeft)
-            {
-                base.Kill(timeLeft);
-                float max = 36f;
-                for (int i = 0; i < max; i++)
-                {
-                    float amount = i / max * MyMath.pi2;
-                    Vector2 vel = new Vector2(2f * MyMath.cos(amount), 1f * MyMath.sin(amount)).RotatedBy(CNC.Random.NextDegree(-30f, 30f)) * 3f;
-                    CNCUtils.NewDust(projectile.Center, dustid1, .75f, vel).noGravity = true;
-                }
-                SoundEngine.PlaySound(SoundID.Item101, this.p.position);
-                GenericExplosion e = CNCUtils.CreateExplosion(projectile);
-                e.SetDefaults(Mod.Assets.Request<Texture2D>("Content/Projectiles/Hostile/MeteorExplosion").Value, projectile.Center, Vector2.One * 120, new int[7] { 1, 1, 1, 1, 2, 2, 2 });
-                e.SetDamage(2, projectile.DamageType, projectile.damage + 10, projectile.knockBack, projectile.CritChance, 0f, 1f);
-                e.SetColor(mainColor, mainColor, .3f);
-                e.SetAlpha(1f, -.025f, 1f);
-                e.SetScale(.5f, .025f, 1f);
-                e.SetRotation(0f, 0f, 1f);
-            }
-        }
-
-        public class V6 : SpiritArrow
-        {
-            private bool onTile;
-
-            public override void ResetDefaults()
-            {
-                base.ResetDefaults();
-                projectile.timeLeft = 10;
-            }
-            public override void AI()
-            {
-                base.AI();
-                projectile.velocity.Y = MyMath.Min(projectile.velocity.Y + MyMath.g * .025f, 24f);
-                projectile.tileCollide = projectile.velocity.Y > 0;
-                CNCUtils.NewDust(projectile.Center, dustid1, 1).noGravity = true;
-            }
-
-            
-            public override bool OnTileCollide(Vector2 oldVelocity)
-            {
-                if (projectile.velocity.X == 0) return true;
-                projectile.velocity = new Vector2(0, 4f);
-                projectile.extraUpdates = 99;
-                return false;
-            }
-            
-
-            public override void Kill(int timeLeft)
-            {
-                NewProjectile(0f, 0f, CNCID.Projectile.LegacyObject[CNCID.Projectile.GiantBranch], projectile.damage, 0f, 0f, 1f).Bottom = projectile.position;
             }
         }
     }

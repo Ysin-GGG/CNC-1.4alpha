@@ -90,6 +90,7 @@ Mods: {
 				Dizzy: 圣化
 				Bleeding: 出血
 				Blessed: 神圣护盾
+				StarMark: 星痕
 			}
 			Desc: {
 				MiracleFox: 静谧森林里的灵狐
@@ -102,7 +103,8 @@ Mods: {
 				Sanctified: 灵魂正在燃烧
 				Dizzy: 无法行动
 				Bleeding: 每秒损失一定生命值
-				Blessed: 减少15%受到的伤害\n神圣惩戒的触发概率提高15%
+				Blessed: 所受伤害减少15%\n神圣惩戒的触发概率提高15%
+				StarMark: 寸步难行
 			}
 		}
 

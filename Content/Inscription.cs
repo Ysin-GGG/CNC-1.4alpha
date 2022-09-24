@@ -199,15 +199,15 @@ namespace CNC.Content
             };
             Color[] damageColor = new Color[]
             {
-                    CNCUtils.AccurateColor(0  ,0  ,0  ,0,true),
-                    CNCUtils.AccurateColor(217,60 ,60 ,0,true),
-                    CNCUtils.AccurateColor(67 ,230,57 ,0,true),
-                    CNCUtils.AccurateColor(53 ,157,255,0,true),
-                    CNCUtils.AccurateColor(224,44 ,230,0,true),
-                    CNCUtils.AccurateColor(255,255,255,0,true),
-                    CNCUtils.AccurateColor(255,196,85 ,0,true),
-                    CNCUtils.AccurateColor(179,175,50 ,0,true),
-                    CNCUtils.AccurateColor(139,29 ,242,0,true),
+                    CNCUtils.FlashColor(0  ,0  ,0  ,0,true),
+                    CNCUtils.FlashColor(217,60 ,60 ,0,true),
+                    CNCUtils.FlashColor(67 ,230,57 ,0,true),
+                    CNCUtils.FlashColor(53 ,157,255,0,true),
+                    CNCUtils.FlashColor(224,44 ,230,0,true),
+                    CNCUtils.FlashColor(255,255,255,0,true),
+                    CNCUtils.FlashColor(255,196,85 ,0,true),
+                    CNCUtils.FlashColor(179,175,50 ,0,true),
+                    CNCUtils.FlashColor(139,29 ,242,0,true),
             };
             int type = 0;
             text = text.Replace("[Damage", "[damage");
@@ -286,15 +286,15 @@ namespace CNC.Content
             };
             Color[] damageColor = new Color[]
             {
-                    CNCUtils.AccurateColor(0  ,0  ,0  ,0,true),
-                    CNCUtils.AccurateColor(217,60 ,60 ,0,true),
-                    CNCUtils.AccurateColor(67 ,230,57 ,0,true),
-                    CNCUtils.AccurateColor(53 ,157,255,0,true),
-                    CNCUtils.AccurateColor(224,44 ,230,0,true),
-                    CNCUtils.AccurateColor(255,255,255,0,true),
-                    CNCUtils.AccurateColor(255,196,85 ,0,true),
-                    CNCUtils.AccurateColor(179,175,50 ,0,true),
-                    CNCUtils.AccurateColor(139,29 ,242,0,true),
+                    CNCUtils.FlashColor(0  ,0  ,0  ,0,true),
+                    CNCUtils.FlashColor(217,60 ,60 ,0,true),
+                    CNCUtils.FlashColor(67 ,230,57 ,0,true),
+                    CNCUtils.FlashColor(53 ,157,255,0,true),
+                    CNCUtils.FlashColor(224,44 ,230,0,true),
+                    CNCUtils.FlashColor(255,255,255,0,true),
+                    CNCUtils.FlashColor(255,196,85 ,0,true),
+                    CNCUtils.FlashColor(179,175,50 ,0,true),
+                    CNCUtils.FlashColor(139,29 ,242,0,true),
             };
             int type = 0;
             arg = arg.Replace("[Damage", "[damage");

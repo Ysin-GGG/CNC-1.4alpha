@@ -82,7 +82,7 @@ namespace CNC.Common.Global.Items
             float value = modPlayer.clazz_Blessing;
             if (value >= amount)
             {
-                modPlayer.clazz_Blessing -= value;
+                modPlayer.clazz_Blessing -= amount;
                 return true;
             }
             return false;

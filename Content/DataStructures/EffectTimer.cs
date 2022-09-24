@@ -1,5 +1,5 @@
-﻿using System.Timers;
-using System;
+﻿using System;
+using System.Timers;
 using CNC.Common.Utils;
 
 namespace CNC.Content.DataStructures
