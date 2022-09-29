@@ -17,7 +17,7 @@ namespace CNC.Content.Buffs
 
         public override void Update(Player target, AllPlayer gt, ref int index)
         {
-            gt.takenDamage -= (float)CNCID.Inscription.S_SilveryVow.Data[2];
+            gt.takenDamage -= (float)CNCID.Inscription.S_SilveryVow.Data[2];;
         }
     }
 }

@@ -3,7 +3,11 @@ sampler uImage1 : register(s1);//刀尖
 sampler uImage2 : register(s2);//纹理
 
 float4x4 uTransform;
-float3 uColor;
+float4 uColor;//主色调
+float4 uColor0;//主体
+float4 uColor1;//刀尖
+float4 uColor2;//纹理
+float uAlpha;
 float uTime;
 
 struct VSInput {
@@ -18,14 +22,15 @@ struct PSInput {
 	float3 Texcoord : TEXCOORD0;
 };
 
-float4 PixelShaderFunction(PSInput input) : COLOR0 {
+float4 PixelShaderFunction(PSInput input) : COLOR0
+{
 	float3 coord = input.Texcoord;
 	float y = uTime + coord.x;
 	float4 color = float4(uColor.r, uColor.g, uColor.b, 1);
-	float4 c1 = tex2D(uImage0, float2(coord.x, coord.y));
-	float4 c2 = tex2D(uImage1, float2(coord.x, coord.y));
-	float4 c3 = tex2D(uImage2, float2(y, coord.y));
-	return (c1 * c3 + c2) * color;
+	float4 c1 = tex2D(uImage0, float2(coord.x, coord.y)) * uColor0;
+	float4 c2 = tex2D(uImage1, float2(coord.x, coord.y)) * uColor1;
+	float4 c3 = tex2D(uImage2, float2(y, coord.y)) * uColor2;
+	return (c1 * c3 + c2) * input.Color * color * uAlpha;
 }
 
 PSInput VertexShaderFunction(VSInput input)  {

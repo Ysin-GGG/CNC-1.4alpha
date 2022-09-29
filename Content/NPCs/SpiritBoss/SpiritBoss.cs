@@ -684,10 +684,10 @@ namespace CNC.Content.NPCs.SpiritBoss
                     CNCUtils.PlaySound(SoundID.Item71, this.npc);
                     CNCUtils.ScreenShake(npc.Center, 196f, 10, new Vector2(0, 40), new Vector2(0, 20), .8f);
                     int num = (int)(getSlash() % 2);
-                    var info = new Projectiles.GenericSlash.SlashInfo[2][]
+                    var info = new SlashInfo[2][]
                     {
-                        new Projectiles.GenericSlash.SlashInfo[60],
-                        new Projectiles.GenericSlash.SlashInfo[60],
+                        new SlashInfo[60],
+                        new SlashInfo[60],
                     };
                     int[][] frame =
                     {
@@ -708,7 +708,7 @@ namespace CNC.Content.NPCs.SpiritBoss
                     {
                         float factor = (float)i / info[0].Length;
                         float rotation = MyMath.deg01 * (factor * 305 - 170);
-                        Vector2 pos = new Vector2(11f, 0f).RotatedBy(rotation);
+                        Vector2 pos = new Vector2(11f, 0f).RotatedBy(rotation) * (this.Rage ? 1.1f : .8f);
                         pos.Y *= .3f;
                         info[0][i].position = pos * 16f;
                     }
@@ -716,20 +716,42 @@ namespace CNC.Content.NPCs.SpiritBoss
                     {
                         float factor = (float)i / info[1].Length;
                         float rotation = MyMath.deg01 * (90 - factor * 310);
-                        Vector2 pos = new Vector2(11f, 0f).RotatedBy(rotation);
+                        Vector2 pos = new Vector2(11f, 0f).RotatedBy(rotation) * (this.Rage ? 1.1f : .8f);
                         if (rotation < MyMath.deg01 * -60) pos.Y *= .7f;
                         pos.Y *= .3f;
                         info[1][i].position = pos * 16f;
                     }
-                    Vector2 velocity = new Vector2(npc.direction, 0);
-                    var e = CNCUtils.CreateSlash(npc, velocity, DustId.CyanShortFx1);
-                    e.SetDefaults(Mod.Assets.Request<Texture2D>("Assets/Projectiles/Slash/SilverSlash").Value, npc.Center, Vector2.One, velocity, frame[num], 10);
-                    e.SetColor(Color.White, Color.Gold, .5f);
-                    e.SetDamage(2, DamageClass.Default, Damage_Slash, 0, 0);
-                    e.SetAttackInfo(info[num]);
-                    e.SetAfterImages(50, 1, .25f);
-                    e.imageOffset = offset[num];
-                    e.hitboxOffset = offset2[num];
+
+                    if (this.Rage)
+                    {
+                        Texture2D[] t =
+                        {
+                            CNC.GetTexture("Assets/Projectiles/Slash/SilverSlashShader"),
+                            CNC.GetTexture("Assets/Effects/SlashTop1"),
+                            CNC.GetTexture("Assets/Effects/Trace1"),
+                            CNC.GetTexture("Assets/Projectiles/SlashHit/SlashHit2"),
+                        };
+                        Vector2 velocity = new Vector2(npc.direction, 0);
+                        var s = CNCUtils.CreateShaderSlash(npc, velocity);
+                        s.SetDefaults(npc.Center, velocity, 25, 7, 10, 15);
+                        s.SetColor(Color.White, Color.White, Color.White, Color.White, CNCID.Colors.SpiritBoss);
+                        s.SetDamage(2, DamageClass.Default, Damage_Slash, 0, 0);
+                        s.SetDraw(BlendState.AlphaBlend, 2f);
+                        s.SetImage(t[0], t[1], t[2], t[3]);
+                        s.SetAttackInfo(info[num]);
+                    }
+                    else
+                    {
+                        Vector2 velocity = new Vector2(npc.direction, 0);
+                        var e = CNCUtils.CreateSlash(npc, velocity, DustId.CyanShortFx1);
+                        e.SetDefaults(CNC.GetTexture("Assets/Projectiles/Slash/SilverSlash"), npc.Center, Vector2.One * .8f, velocity, frame[num], 10);
+                        e.SetColor(Color.White, Color.Gold, .5f);
+                        e.SetDamage(2, DamageClass.Default, Damage_Slash, 0, 0);
+                        e.SetAttackInfo(info[num]);
+                        e.SetAfterImages(50, 1, .25f);
+                        e.imageOffset = offset[num];
+                        e.hitboxOffset = offset2[num];
+                    }
                 }
                 this.ActionTime2++;
             }
@@ -769,7 +791,7 @@ namespace CNC.Content.NPCs.SpiritBoss
             int beginTime = 120;
             int shakeTime = 120;
             int spawnTime = 180;
-            int endTime = 5400;
+            int endTime = 3600;
             int spawnCount = 10;
             int getCount() => (int)npc.localAI[0];
             void setCount(int value) => npc.localAI[0] = value;

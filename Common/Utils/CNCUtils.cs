@@ -517,6 +517,44 @@ namespace CNC.Common.Utils
         /// <summary> 生成斩击弹幕 </summary>
         /// <param name="player">生成者</param>
         /// <param name="velocity">方向</param>
+        public static ShaderSlash CreateShaderSlash(Player player, Vector2 velocity, int hitboxDust = -1)
+        {
+            if (player != null)
+            {
+                Projectile p = Projectile.NewProjectileDirect(player.GetSource_FromThis(), player.Center, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.ShaderSlash], 0, 0, player.whoAmI);
+                p.direction = player.direction;
+                p.rotation = velocity.ToRotation();
+                ShaderSlash slash = (ShaderSlash)p.ModProjectile;
+                return slash.
+                    SetDefaults(player.Center, velocity, 1, 10, 1).
+                    SetImage(null, null, null).
+                    SetColor(Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent);
+            }
+            return null;
+        }
+
+        /// <summary> 生成斩击弹幕 </summary>
+        /// <param name="npc">生成者</param>
+        /// <param name="velocity">方向</param>
+        public static ShaderSlash CreateShaderSlash(NPC npc, Vector2 velocity, int hitboxDust = -1)
+        {
+            if (npc != null)
+            {
+                Projectile p = Projectile.NewProjectileDirect(npc.GetSource_FromThis(), npc.Center, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.ShaderSlash], 0, 0, 255);
+                p.direction = npc.direction;
+                p.rotation = velocity.ToRotation();
+                ShaderSlash slash = (ShaderSlash)p.ModProjectile;
+                return slash.
+                    SetDefaults(npc.Center, velocity, 1, 10, 1).
+                    SetImage(null, null, null).
+                    SetColor(Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent);
+            }
+            return null;
+        }
+
+        /// <summary> 生成斩击弹幕 </summary>
+        /// <param name="player">生成者</param>
+        /// <param name="velocity">方向</param>
         public static GenericSlash CreateSlash(Player player, Vector2 velocity, int hitboxDust = -1)
         {
             if (player != null)

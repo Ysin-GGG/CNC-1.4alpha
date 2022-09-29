@@ -66,20 +66,20 @@ namespace CNC.Content.Projectiles.Hostile
                 }
             }
 
-            Effect ef = CNC.GetEffect("ShockWave");
+            Effect ef = CNC.Shader["ShockWave"];
             ef.Parameters["uScreenResolution"].SetValue(realScreenSize);
             ef.Parameters["uPosition"].SetValue((targetPos - screen) / size);
             ef.Parameters["uStrength"].SetValue(strength);
             ef.Parameters["uRange"].SetValue(range);
             ef.Parameters["uDist"].SetValue(dist);
 
-            if (!Filters.Scene["CNC:ShockWave"].IsActive()) Filters.Scene.Activate("CNC:ShockWave");
+            CNC.SetFilter("ShockWave", true);
             return false;
         }
 
         public override void Kill(int timeLeft)
         {
-            if (Filters.Scene["CNC:ShockWave"].IsActive()) Filters.Scene.Deactivate("CNC:ShockWave");
+            CNC.SetFilter("ShockWave", false);
         }
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)

@@ -1,16 +1,13 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
+using CNC.Content.DataStructures;
 using CNC.Common.Utils;
 using CNC.Common.Global.Items;
-using Terraria.GameContent;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.UI.BigProgressBar;
-using ReLogic.Content;
 
 namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
 {
@@ -58,6 +55,23 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
                 player.itemRotation = -MyMath.deg45 * player.direction;
             }
             else item.scale = 0f;
+        }
+
+        public override bool? UseItem(Player player)
+        {
+            if (player.HasBuff(CNCID.Buff.LegacyObject[CNCID.Buff.Blessed]))
+            {
+                item.autoReuse = true;
+                item.useTime = 21;//打六折
+                item.useAnimation = 21;
+            }
+            else
+            {
+                item.autoReuse = false;
+                item.useTime = 35;
+                item.useAnimation = 35;
+            }
+            return base.UseItem(player);
         }
 
         public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
@@ -120,11 +134,12 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
             }
             if (!this.SilverySparkEnable)
             {
+                bool upgrade = player.HasBuff(CNCID.Buff.LegacyObject[CNCID.Buff.Blessed]);
                 int num = this.comboCur;
-                var info = new Projectiles.GenericSlash.SlashInfo[2][]
+                var info = new SlashInfo[2][]
                 {
-                    new Projectiles.GenericSlash.SlashInfo[60],
-                    new Projectiles.GenericSlash.SlashInfo[60],
+                    new SlashInfo[120],
+                    new SlashInfo[120],
                 };
                 int[][] frame =
                 {
@@ -145,7 +160,7 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
                 {
                     float factor = (float)i / info[0].Length;
                     float rotation = MyMath.deg01 * (factor * 305 - 170);
-                    Vector2 pos = new Vector2(9.5f, 0f).RotatedBy(rotation);
+                    Vector2 pos = new Vector2(9.5f, 0f).RotatedBy(rotation) * (upgrade ? 1.5f : 1f);
                     pos.Y *= .3f;
                     info[0][i].position = pos * 16f;
                 }
@@ -153,20 +168,42 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
                 {
                     float factor = (float)i / info[1].Length;
                     float rotation = MyMath.deg01 * (90 - factor * 310);
-                    Vector2 pos = new Vector2(9.5f, 0f).RotatedBy(rotation);
+                    Vector2 pos = new Vector2(9.5f, 0f).RotatedBy(rotation) * (upgrade ? 1.5f : 1f);
                     if (rotation < MyMath.deg01 * -60) pos.Y *= .7f;
                     pos.Y *= .3f;
                     info[1][i].position = pos * 16f;
                 }
-                var e = CNCUtils.CreateSlash(player, velocity, -1);
-                e.OnHitNPCEffect += this.NewOnHitNPC;
-                e.SetDefaults(Mod.Assets.Request<Texture2D>("Assets/Projectiles/Slash/SilverSlash").Value, player.Center, Vector2.One * .85f, velocity, frame[num], 7);
-                e.SetColor(Color.White, Color.Gold, .5f);
-                e.SetDamage(1, DamageClass.Melee, damage, knockback, player.GetWeaponCrit(item));
-                e.SetAttackInfo(info[num]);
-                e.SetAfterImages(50, 1, .25f);
-                e.imageOffset = offset[num];
-                e.hitboxOffset = offset2[num];
+                if (upgrade)
+                {
+                    Texture2D[] t =
+                    {
+                        CNC.GetTexture("Assets/Projectiles/Slash/SilverSlashShader"),
+                        CNC.GetTexture("Assets/Effects/SlashTop1"),
+                        CNC.GetTexture("Assets/Effects/Trace1"),
+                        CNC.GetTexture("Assets/Projectiles/SlashHit/SlashHit2"),
+                    };
+                    var s = CNCUtils.CreateShaderSlash(player, velocity.RotatedBy((CNC.Random.NextFloat(30f) - 15f) * MyMath.deg01));
+                    s.OnHitNPCEffect += this.NewOnHitNPC;
+                    s.SetDefaults(player.Center, velocity, 25, 8, 10, 7);
+                    s.SetColor(Color.White, Color.White, Color.White, Color.White, CNCID.Colors.SpiritBoss);
+                    s.SetDamage(1, DamageClass.Melee, damage, knockback, player.GetWeaponCrit(item));
+                    s.SetDraw(BlendState.AlphaBlend, 2f);
+                    s.SetImage(t[0], t[1], t[2], t[3]);
+                    s.SetAttackInfo(info[num]);
+                }
+                else
+                {
+                    var e = CNCUtils.CreateSlash(player, velocity, -1);
+                    e.OnHitNPCEffect += this.NewOnHitNPC;
+                    e.SetDefaults(Mod.Assets.Request<Texture2D>("Assets/Projectiles/Slash/SilverSlash").Value, player.Center, Vector2.One * .85f, velocity, frame[num], 7);
+                    e.SetColor(Color.White, Color.Gold, .5f);
+                    e.SetDamage(1, DamageClass.Melee, damage, knockback, player.GetWeaponCrit(item));
+                    e.SetAttackInfo(info[num]);
+                    e.SetAfterImages(50, 1, .25f);
+                    e.imageOffset = offset[num];
+                    e.hitboxOffset = offset2[num];
+                }
+
             }
             else
             {

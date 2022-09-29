@@ -16,7 +16,6 @@ using CNC.Common.Localization;
 using CNC.Content.DataStructures;
 using CNCUI = CNC.Content.UI;
 using CNCGlobal = CNC.Common.Global;
-using ReLogic.Content.Sources;
 
 namespace CNC
 {
@@ -62,9 +61,22 @@ namespace CNC
             catch { return null; }
         }
 
+        public static void SetSky(string name, bool activate)
+        {
+            name = "CNC:" + name;
+            if (activate && !SkyManager.Instance[name].IsActive()) SkyManager.Instance.Activate(name);
+            if (!activate && SkyManager.Instance[name].IsActive()) SkyManager.Instance.Deactivate(name);
+        }
+
+        public static void SetFilter(string name, bool activate)
+        {
+            name = "CNC:" + name;
+            if (activate && !Filters.Scene[name].IsActive()) Filters.Scene.Activate(name);
+            if (!activate && Filters.Scene[name].IsActive()) Filters.Scene.Deactivate(name);
+        }
+
         public override void Load()
         {
-            IL.Terraria.Player.Update += new ILContext.Manipulator((il) => ResetManaMax(il, newStatManaMax2));
             CNCGlobal.Players.ClassesSettings.ClassKey = KeybindLoader.RegisterKeybind(this, "Class Key", Microsoft.Xna.Framework.Input.Keys.Q);
             CNCGlobal.Items.InscriptionSettings.InscriptionSystem.InscriptionKey = KeybindLoader.RegisterKeybind(this, "Inscription Key", Microsoft.Xna.Framework.Input.Keys.V);
             Instance = this;
@@ -77,16 +89,19 @@ namespace CNC
             //AddEquipTexture(ModContent.GetModItem(ModContent.ItemType<Content.Items.Developers.HHvs.HHvsRobe>()), EquipType.Legs, "CNC/Content/Items/Developers/HHvs/HHvsRobe_Legs");
             //UIManager.Instance.Load();
 
-            Filters.Scene["CNC:ShockWave"] = new Filter(new FilterShaderData(new Ref<Effect>(CNC.GetEffect("ShockWave")), "ShockWave"), EffectPriority.Medium);
-            Filters.Scene["CNC:ShockWave"].Load();
-
-            SkyManager.Instance["CNC:SpiritBossSky"] = new Content.Skies.SpiritBossSky();
+            if (!Main.dedServ)
+            {
+                this.LoadEffects();
+                this.LoadImages();
+                this.LoadFilters();
+                this.LoadSkies();
+            }
+            this.LoadHooks();
             base.Load();
         }
 
         public override void Unload()
         {
-            IL.Terraria.Player.Update -= new ILContext.Manipulator((il) => ResetManaMax(il, newStatManaMax2));
             Logger.Info(CNCLocalization.GetText("Misc.Unloaded"));
             Logger.Info($"Mod {CNCLocalization.GetText("Misc.Version")}v{Version}");
             Logger.Info($"TML {CNCLocalization.GetText("Misc.Version")}v{TMLVersion}");
@@ -100,6 +115,7 @@ namespace CNC
             CNCGlobal.Items.InscriptionSettings.InscriptionSystem.InscriptionKey = null;
             random = null;
             Instance = null;
+            this.UnloadHooks();
         }
 
         public override void PostSetupContent()
@@ -118,7 +134,7 @@ namespace CNC
             foreach (TmodFile.FileEntry file in modFiles)
             {
                 if (file.Name.EndsWith(".rawimg")) count[0]++;
-                if (file.Name.EndsWith(".fx")) { count[1]++; fx.Add(Path.GetFileNameWithoutExtension(file.Name));}
+                if (file.Name.EndsWith(".fx")) { count[1]++; fx.Add(Path.GetFileNameWithoutExtension(file.Name)); }
             }
             foreach (TmodFile.FileEntry file in modFiles)
             {
@@ -164,10 +180,54 @@ namespace CNC
             }
             Logger.Info($"Loaded Image ({countProgress[0]}/{count[0]})");
             Logger.Info($"Loaded Shader ({countProgress[1]}/{count[1]})");
+            this.LoadEffects();
+            this.LoadImages();
+            this.LoadFilters();
+            this.LoadSkies();
+            #endregion
+        }
 
+        private void LoadEffects()
+        {
+
+        }
+
+        private void LoadImages()
+        {
+
+        }
+
+        private void LoadFilters()
+        {
             Filters.Scene["CNC:ShockWave"] = new Filter(new FilterShaderData(new Ref<Effect>(CNC.GetEffect("ShockWave")), "ShockWave"), EffectPriority.Medium);
             Filters.Scene["CNC:ShockWave"].Load();
-            #endregion
+        }
+
+        private void LoadSkies()
+        {
+            SkyManager.Instance["CNC:SpiritBossSky"] = new Content.Skies.SpiritBossSky();
+        }
+
+        private void LoadHooks()
+        {
+            On.Terraria.Main.DrawDust += new On.Terraria.Main.hook_DrawDust(this.DrawParticle);
+            IL.Terraria.Player.Update += new ILContext.Manipulator((il) => ResetManaMax(il, newStatManaMax2));
+        }
+
+        private void UnloadHooks()
+        {
+            //On.Terraria.Main.DrawDust -= new On.Terraria.Main.hook_DrawDust(this.DrawParticle);
+            IL.Terraria.Player.Update -= new ILContext.Manipulator((il) => ResetManaMax(il, newStatManaMax2));
+        }
+
+        private void DrawParticle(global::On.Terraria.Main.orig_DrawDust orig, Main self)
+        {
+            orig.Invoke(self);
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            for (int i = 0; i < Content.ParticleRenderer.maxParticles; i++)
+                if (Content.ParticleRenderer.particle[i] != null && Content.ParticleRenderer.particle[i].active)
+                    Content.ParticleRenderer.particle[i].Draw(Main.spriteBatch);
+            Main.spriteBatch.End();
         }
 
         private void ResetManaMax(ILContext il, int max = 400)

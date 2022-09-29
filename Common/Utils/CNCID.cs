@@ -697,47 +697,49 @@ namespace CNC.Common.Utils
             /// <summary> Òø°×Í»´Ì£¨Boss£© </summary>
             public const short SilveryDashHostile = 6;
             /// <summary> Ô¤¾¯Ïß </summary>
-            public const short WarningLine = 8;
+            public const short WarningLine = 7;
             /// <summary> »ðÇò </summary>
-            public const short FireBall = 9;
+            public const short FireBall = 8;
             /// <summary> Ñ×±¬ </summary>
-            public const short FireBallExplosion = 10;
+            public const short FireBallExplosion = 9;
             /// <summary> ±ùÑÀ </summary>
-            public const short DentateIce = 11;
+            public const short DentateIce = 10;
             /// <summary> ±ù»¨ </summary>
-            public const short DentateIceExplosion = 12;
+            public const short DentateIceExplosion = 11;
             /// <summary> Ëª³± </summary>
-            public const short FrostWave = 13;
+            public const short FrostWave = 12;
             /// <summary> ÉÁµçµ¯ </summary>
-            public const short LightningMissile = 14;
+            public const short LightningMissile = 13;
             /// <summary> ÉÁµç±¬ÆÆ </summary>
-            public const short LightningExplosion = 15;
+            public const short LightningExplosion = 14;
             /// <summary> ¹ýÔØÉÁµçµ¯ </summary>
-            public const short OverloadedLightningMissile = 16;
+            public const short OverloadedLightningMissile = 15;
             /// <summary> ¹ýÔØ±¬ÆÆ </summary>
-            public const short OverloadedLightningExplosion = 17;
+            public const short OverloadedLightningExplosion = 16;
             /// <summary> ÉÁµçÁ´ </summary>
-            public const short LightningChain = 18;
+            public const short LightningChain = 17;
             /// <summary> Òø°×Ê¸ </summary>
-            public const short SilveryArrow = 19;
+            public const short SilveryArrow = 18;
             /// <summary> ÖÁÊ¥Ê¸ </summary>
-            public const short SanctifiedArrow = 20;
+            public const short SanctifiedArrow = 19;
             /// <summary> ÖÁÊ¥Éä»÷ </summary>
-            public const short SanctifiedArrowShoot = 21;
+            public const short SanctifiedArrowShoot = 20;
             /// <summary> ÖÁÊ¥±¬ÆÆ </summary>
-            public const short SanctifiedExplosion = 22;
+            public const short SanctifiedExplosion = 21;
             /// <summary> Ä§·¨ÑÒÊ¯ </summary>
-            public const short MagicRock = 23;
+            public const short MagicRock = 22;
             /// <summary> Õðµ´²¨ </summary>
-            public const short ShockWave = 24;
+            public const short ShockWave = 23;
             /// <summary> ÆÆÍÁ¼¬´Ì </summary>
-            public const short GiantBranch = 26;
+            public const short GiantBranch = 24;
             /// <summary> ±¬Õ¨ </summary>
-            public const short GenericExplosion = 27;
+            public const short GenericExplosion = 25;
             /// <summary> Õ¶»÷ </summary>
-            public const short GenericSlash = 28;
+            public const short GenericSlash = 26;
             /// <summary> Õ¶»÷Ð§¹û </summary>
-            public const short GenericSlashHit = 29;
+            public const short GenericSlashHit = 27;
+            /// <summary> Õ¶»÷Ð§¹û </summary>
+            public const short ShaderSlash = 28;
             /// <summary> Òø¶Ü </summary>
             public const short SilveryField = 30;
             /// <summary> Òø°×Í»´Ì </summary>
@@ -794,6 +796,7 @@ namespace CNC.Common.Utils
                 { GenericExplosion, ProjectileType<Content.Projectiles.GenericExplosion>() },
                 { GenericSlash, ProjectileType<Content.Projectiles.GenericSlash>() },
                 { GenericSlashHit, ProjectileType<Content.Projectiles.GenericSlashHit>() },
+                { ShaderSlash, ProjectileType<Content.Projectiles.ShaderSlash>() },
                 { SilveryField, ProjectileType<Content.Projectiles.ArgenteusOathKeeper.SilveryField>() },
                 { SilveryDash, ProjectileType<Content.Projectiles.ArgenteusOathKeeper.SilveryDash>() },
             };

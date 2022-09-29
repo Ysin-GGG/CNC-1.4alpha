@@ -127,13 +127,6 @@ namespace CNC.Common.Global.Players
 
         public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
-            if (!ParticleRenderer.drawn)
-            {
-                ParticleRenderer.drawn = true;
-                for (int i = 0; i < ParticleRenderer.maxParticles; i++)
-                    if (ParticleRenderer.particle[i] != null && ParticleRenderer.particle[i].active)
-                        ParticleRenderer.particle[i].Draw(Main.spriteBatch);
-            }
         }
     }
 }

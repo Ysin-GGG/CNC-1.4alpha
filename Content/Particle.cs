@@ -223,12 +223,9 @@ namespace CNC.Content
     {
         public const int maxParticles = CNC.maxParticle;
         public static Particle[] particle = new Particle[maxParticles + 1];
-        public static bool drawn = false;
 
         public override void PreUpdateDusts() => this.UpdateParticle();
-
-        public override void UpdateUI(GameTime gameTime) => ParticleRenderer.drawn = false;
-
+        
         private void UpdateParticle()
         {
             for (int i = 0; i < maxParticles; i++)
