@@ -29,6 +29,7 @@ Mods: {
 				HHvsHat: Empyreal Wizzard Hat
 				HHvsLegs: Empyreal Wizzard Boot
 				QuartzBlock: Quartz's Head
+				Anatta: Anatta
 				MiracleGem: Miracle Gem
 				DestineScroll: The Destine Scroll
 				FireGrimoire: Fire Grimoire
@@ -54,6 +55,7 @@ Mods: {
 				HHvsRobe: 'The robe that congealed countless stars'
 				HHvsHat: 'Can you feel the weight of wisdom?'
 				QuartzBlock: 'What are you looking at?'
+				Anatta: 放在背包时，此剑会激发某些武器的力量
 				MiracleGem: Summons a rideable miracle fox
 				DestineScroll: Changes your class once\n'Reading and reading, writing god being'
 				#FireGrimoire: 
@@ -351,6 +353,7 @@ Mods: {
 			Unloaded: Classes & Craft(1.4Alpha) has unloaded, thanks for playing.
 			Inscription: Inscription-<{0}>
 			InscriptionSpecial: <Special Inscription>
+			AnattaPower: 此武器受无我之力影响
 		}
 
 		UI: {

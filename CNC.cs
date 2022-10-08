@@ -29,12 +29,14 @@ namespace CNC
         public static int me => Const.me;
         public static Player Me => Const.Me;
         public static int GameMode => Main.masterMode ? 3 : (Main.expertMode ? 2 : 1);
+
         public const int newStatManaMax2 = 1000000;
         public const int maxClassTypes = CNCID.Clazz.MaxObject;
         public const int maxInscriptions = CNCGlobal.Items.InscriptionSettings.maxInscriptionList;
         public const int maxInscriptionTypes = CNCID.Inscription.MaxObject;
         public const int maxStateTypes = CNCID.State.MaxObject;
-        public const int maxParticle = 10000;
+        public const int maxParticles = 10000;
+        public const int maxEffects = 100;
         public const int maxNPCData = 12;
         public const int maxProjectileData = 6;
 
@@ -63,7 +65,7 @@ namespace CNC
 
         public static void SetSky(string name, bool activate)
         {
-            name = "CNC:" + name;
+            name = "CNC:" + name + "Sky";
             if (activate && !SkyManager.Instance[name].IsActive()) SkyManager.Instance.Activate(name);
             if (!activate && SkyManager.Instance[name].IsActive()) SkyManager.Instance.Deactivate(name);
         }
@@ -189,18 +191,19 @@ namespace CNC
 
         private void LoadEffects()
         {
-
         }
 
         private void LoadImages()
         {
-
         }
 
         private void LoadFilters()
         {
-            Filters.Scene["CNC:ShockWave"] = new Filter(new FilterShaderData(new Ref<Effect>(CNC.GetEffect("ShockWave")), "ShockWave"), EffectPriority.Medium);
-            Filters.Scene["CNC:ShockWave"].Load();
+            string[] names =
+            {
+                "ShockWave",
+            };
+            foreach (string name in names) (Filters.Scene["CNC:" + name] = new Filter(new FilterShaderData(new Ref<Effect>(CNC.GetEffect(name)), name), EffectPriority.Medium)).Load();
         }
 
         private void LoadSkies()
@@ -211,12 +214,18 @@ namespace CNC
         private void LoadHooks()
         {
             On.Terraria.Main.DrawDust += new On.Terraria.Main.hook_DrawDust(this.DrawParticle);
+            On.Terraria.Main.DrawDust += new On.Terraria.Main.hook_DrawDust(this.DrawVisualEffect);
+            On.Terraria.Main.DoDraw_DrawNPCsBehindTiles += new On.Terraria.Main.hook_DoDraw_DrawNPCsBehindTiles(this.DrawVisualEffect);
+            On.Terraria.Main.DoDraw_DrawNPCsOverTiles += new On.Terraria.Main.hook_DoDraw_DrawNPCsOverTiles(this.DrawVisualEffect);
+            On.Terraria.Main.DrawNPC += new On.Terraria.Main.hook_DrawNPC(this.DrawVisualEffect);
+            On.Terraria.Main.DrawProjectiles += new On.Terraria.Main.hook_DrawProjectiles(this.DrawVisualEffect);
+            On.Terraria.Main.DrawPlayers_AfterProjectiles += new On.Terraria.Main.hook_DrawPlayers_AfterProjectiles(this.DrawVisualEffect);
+            On.Terraria.Main.DrawInterface += new On.Terraria.Main.hook_DrawInterface(this.DrawVisualEffect);
             IL.Terraria.Player.Update += new ILContext.Manipulator((il) => ResetManaMax(il, newStatManaMax2));
         }
 
         private void UnloadHooks()
         {
-            //On.Terraria.Main.DrawDust -= new On.Terraria.Main.hook_DrawDust(this.DrawParticle);
             IL.Terraria.Player.Update -= new ILContext.Manipulator((il) => ResetManaMax(il, newStatManaMax2));
         }
 
@@ -224,10 +233,84 @@ namespace CNC
         {
             orig.Invoke(self);
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
-            for (int i = 0; i < Content.ParticleRenderer.maxParticles; i++)
-                if (Content.ParticleRenderer.particle[i] != null && Content.ParticleRenderer.particle[i].active)
-                    Content.ParticleRenderer.particle[i].Draw(Main.spriteBatch);
+            for (int i = 0; i < Content.ParticleManager.maxParticles; i++)
+                if (Content.ParticleManager.particle[i] != null && Content.ParticleManager.particle[i].active)
+                    Content.ParticleManager.particle[i].Draw(Main.spriteBatch);
             Main.spriteBatch.End();
+        }
+
+        private void DrawVisualEffect(global::On.Terraria.Main.orig_DoDraw_DrawNPCsBehindTiles orig, Main self)
+        {
+            orig.Invoke(self);
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            this.DrawVisualEffect(Content.VisualEffect.DrawLayer.overTiles);
+            Main.spriteBatch.End();
+        }
+
+        private void DrawVisualEffect(global::On.Terraria.Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
+        {
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            this.DrawVisualEffect(Content.VisualEffect.DrawLayer.behindTiles);
+            Main.spriteBatch.End();
+            orig.Invoke(self);
+        }
+
+        private void DrawVisualEffect(global::On.Terraria.Main.orig_DrawNPC orig, Main self, int iNPCIndex, bool behindTiles)
+        {
+            orig.Invoke(self, iNPCIndex, behindTiles);
+            Main.spriteBatch.End();
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            this.DrawVisualEffect(Content.VisualEffect.DrawLayer.overNPCs);
+            Main.spriteBatch.End();
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+        }
+
+        private void DrawVisualEffect(global::On.Terraria.Main.orig_DrawProjectiles orig, Main self)
+        {
+            orig.Invoke(self);
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            this.DrawVisualEffect(Content.VisualEffect.DrawLayer.overProjectlies);
+            Main.spriteBatch.End();
+        }
+
+        private void DrawVisualEffect(global::On.Terraria.Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
+        {
+            orig.Invoke(self);
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            this.DrawVisualEffect(Content.VisualEffect.DrawLayer.overPlayers);
+            Main.spriteBatch.End();
+        }
+
+        private void DrawVisualEffect(global::On.Terraria.Main.orig_DrawInterface orig, Main self, GameTime gametime)
+        {
+            if (!Main.drawToScreen)
+            {
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+                this.DrawVisualEffect(Content.VisualEffect.DrawLayer.behindUIs);
+                Main.spriteBatch.End();
+            }
+            orig.Invoke(self, gametime);
+            if (!Main.drawToScreen)
+            {
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+                this.DrawVisualEffect(Content.VisualEffect.DrawLayer.overUIs);
+                Main.spriteBatch.End();
+            }
+        }
+
+        private void DrawVisualEffect(global::On.Terraria.Main.orig_DrawDust orig, Main self)
+        {
+            orig.Invoke(self);
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            this.DrawVisualEffect(Content.VisualEffect.DrawLayer.overDusts);
+            Main.spriteBatch.End();
+        }
+
+        private void DrawVisualEffect(Content.VisualEffect.DrawLayer layer)
+        {
+            for (int i = 0; i < CNC.maxEffects; i++)
+                if (Content.VisualEffectManager.effect[i] != null && Content.VisualEffectManager.effect[i].active)
+                    Content.VisualEffectManager.effect[i].Draw(Main.spriteBatch, layer);
         }
 
         private void ResetManaMax(ILContext il, int max = 400)
@@ -236,103 +319,6 @@ namespace CNC
             ILCursor cursor = new ILCursor(il);
             if (cursor.TryGotoNext(MoveType.Before, i => i.MatchLdfld("Terraria.Player", "statManaMax2"), i => i.MatchLdcI4(400)))//thanks to AnotherRpgMod
                 cursor.Next.Next.Operand = max;
-        }
-
-        class UIManager : ModSystem
-        {
-            public static UIManager Instance;
-
-            public UserInterface [] UI = new UserInterface[7];
-            internal CNCUI.UIState[] UIState;
-            public bool[] Visible => new bool[]
-            {
-                !(CNCUI.ClassesMenu.ClassesMenu.Visible || CNCUI.InscriptionMenu.InscriptionMenu.Visible),
-                CNCUI.ClassesMenu.ClassesMenu.Visible,
-                true,
-                true,
-                CNCUI.InscriptionMenu.InscriptionMenu.Visible,
-                CNCUI.InscriptionMenu.WeaponList.Visible,
-                true,
-            };
-
-            public override void Load()
-            {
-                Instance = this;
-                LoadUI();
-            }
-
-            public override void Unload()
-            {
-                Instance = null;
-            }
-
-            public void LoadUI()
-            {
-                if (Main.dedServ) return;
-                UIState = new CNCUI.UIState[]
-                {
-                    new CNCUI.MainBar.MainBar(),
-                    new CNCUI.ClassesMenu.ClassesMenu(),
-                    new CNCUI.ClassesMenu.DarkScreen(),
-                    new CNCUI.Clone.CloneGUI(),
-                    new CNCUI.InscriptionMenu.InscriptionMenu(),
-                    new CNCUI.InscriptionMenu.WeaponList(),
-                    new CNCUI.InscriptionMenu.DarkScreen(),
-                };
-                for(int i = 0; i < UIState.Length; i++)
-                {
-                    UIState[i].Activate();
-                    UI[i] = new UserInterface();
-                    UI[i].SetState(UIState[i]);
-                }
-            }
-
-            public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
-            {
-                AppendUI(layers, UI[0], Visible[0], 33, "Function Bar");
-                AppendUI(layers, UI[1], Visible[1], -1, "Classes Menu");
-                AppendUI(layers, UI[2], Visible[2], -1, "Dark Screen Effect 1");
-                AppendUI(layers, UI[3], Visible[3], 25, "Clone Resource Bars");
-                AppendUI(layers, UI[4], Visible[4], -1, "Inscription Menu");//Enhancement
-                AppendUI(layers, UI[5], Visible[5], -1, "Weapon List");
-                AppendUI(layers, UI[6], Visible[6], -1, "Dark Screen Effect 2");
-                int idx = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
-                if (idx >= 0) layers[idx].Active = false; // layers.RemoveAt(idx);
-                idx = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
-                //if (idx >= 0) layers[idx].Active = false; // layers.RemoveAt(idx);
-            }
-
-            public override void UpdateUI(GameTime gameTime)
-            {
-                for (int i = 0; i < UIState.Length; i++)
-                    if (UI[i] != null && Visible[i]) UI[i].Update(gameTime);
-            }
-
-            private static void AppendUI(List<GameInterfaceLayer> layers, UserInterface UI, bool showing, string nameUI = "None", string layerName = "Vanilla: Mouse Text")
-            {
-                int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals(layerName));
-                AppendUI(layers, UI, showing, mouseTextIndex, nameUI);
-            }
-
-            private static void AppendUI(List<GameInterfaceLayer> layers, UserInterface UI, bool showing, int layerID = 33, string nameUI = "None")
-            {
-                LegacyGameInterfaceLayer ui = new LegacyGameInterfaceLayer(
-                        "CNC: " + nameUI,
-                        delegate { if (showing) UI.Draw(Main.spriteBatch, new GameTime()); return true; },
-                        InterfaceScaleType.UI);
-                if (layerID != -1) layers.Insert(layerID, ui);
-                else layers.Add(ui);
-            }
-
-            public override void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor)
-            {
-                if (SkyManager.Instance["CNC:SpiritBossSky"].IsActive())
-                {
-                    var sky = (Content.Skies.SpiritBossSky)SkyManager.Instance["CNC:SpiritBossSky"];
-                    sky.Update();
-                    backgroundColor = Color.Lerp(backgroundColor, sky.skyColor, sky.opacity * sky.intensity);
-                }
-            }
         }
     }
 }

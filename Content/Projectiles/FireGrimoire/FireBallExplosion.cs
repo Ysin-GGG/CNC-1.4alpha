@@ -53,8 +53,8 @@ namespace CNC.Content.Projectiles.FireGrimoire
                         new Color(242, 92, 34, 0),
                         new Color(242, 92, 34, 25)
                         );
-                    ParticleRenderer.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.0005f, .0012f));
-                    ParticleRenderer.particle[idx].alphaAdd = (Main.rand.Next(5) + 1) * -.01f;
+                    ParticleManager.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.0005f, .0012f));
+                    ParticleManager.particle[idx].alphaAdd = (Main.rand.Next(5) + 1) * -.01f;
                 }
             }
             Color color = new Color(242, 92, 34); //projectile.scale;

@@ -36,9 +36,9 @@ namespace CNC.Content.Items.Weapons.Magic
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             Projectile projectile = CNCUtils.NewProj(source, position, velocity, type, damage, knockback);
-            if (item.GetGlobalItem<InscriptionSettings>().HasInscription(CNCID.Inscription.S_Scorching))
+            if (item.GetGlobalItem<InscriptionSettings>().ExistInscription(CNCID.Inscription.S_Scorching))
                 projectile.GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().data["level"] = 1;
-            if (item.GetGlobalItem<InscriptionSettings>().HasInscription(CNCID.Inscription.S_Enthusiasm) && CNC.Random.NextBool((float)CNCID.Inscription.S_Enthusiasm.Data[0]))
+            if (item.GetGlobalItem<InscriptionSettings>().ExistInscription(CNCID.Inscription.S_Enthusiasm) && CNC.Random.NextBool((float)CNCID.Inscription.S_Enthusiasm.Data[0]))
                 player.AddBuff(CNCID.Buff.LegacyObject[CNCID.Buff.Enthused], 300);
             return false;
         }

@@ -74,9 +74,9 @@ namespace CNC.Content.Projectiles.IceTooth
                                  new Color(112, 196, 255, 0),
                                  new Color(0, 170, 255, 5)
                                  );
-                    ParticleRenderer.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.001f, .002f));
-                    ParticleRenderer.particle[idx].rotationAdd = Main.rand.NextFloat(0, MyMath.deg30);
-                    ParticleRenderer.particle[idx].velocityMul = new Vector2(.975f);
+                    ParticleManager.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.001f, .002f));
+                    ParticleManager.particle[idx].rotationAdd = Main.rand.NextFloat(0, MyMath.deg30);
+                    ParticleManager.particle[idx].velocityMul = new Vector2(.975f);
                 }
                 projectile.friendly = true;
                 projectile.scale = (float)Math.Tan(MyMath.deg01 * (45f - projectile.timeLeft * 4.5f));//45 40.5
@@ -114,8 +114,8 @@ namespace CNC.Content.Projectiles.IceTooth
                                      new Color(0, 170, 255, 5),
                                      false
                                      );
-                        ParticleRenderer.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.0005f, .0010f));
-                        ParticleRenderer.particle[idx].rotationAdd = Main.rand.NextFloat(-MyMath.deg30 / 5, MyMath.deg30 / 5);
+                        ParticleManager.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.0005f, .0010f));
+                        ParticleManager.particle[idx].rotationAdd = Main.rand.NextFloat(-MyMath.deg30 / 5, MyMath.deg30 / 5);
                     }
                     for (int i = 0; i < 90; i++)
                     {
@@ -143,9 +143,9 @@ namespace CNC.Content.Projectiles.IceTooth
                                      new Color(0, 170, 255, 5),
                                      true
                                      );
-                        ParticleRenderer.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.0005f, .0009f));
-                        ParticleRenderer.particle[idx].rotationAdd = Main.rand.NextFloat(-MyMath.deg30 / 10f, MyMath.deg30 / 10f);
-                        ParticleRenderer.particle[idx].velocityAdd = new Vector2(Main.rand.NextFloat(-.03f, .03f), Main.rand.NextFloat(-.03f, .03f));
+                        ParticleManager.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.0005f, .0009f));
+                        ParticleManager.particle[idx].rotationAdd = Main.rand.NextFloat(-MyMath.deg30 / 10f, MyMath.deg30 / 10f);
+                        ParticleManager.particle[idx].velocityAdd = new Vector2(Main.rand.NextFloat(-.03f, .03f), Main.rand.NextFloat(-.03f, .03f));
                     }
                 }
             }

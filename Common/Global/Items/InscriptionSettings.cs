@@ -164,7 +164,7 @@ namespace CNC.Common.Global.Items
             item.GetGlobalItem<InscriptionSettings>()._inscription1 = list;
         }
 
-        public bool HasInscription(Inscription inscription) => this._inscription1.Contains(inscription);
+        public bool ExistInscription(Inscription inscription) => this._inscription1.Contains(inscription);
 
         /// <summary> 为铭文施加冷却 </summary>
         /// <param name="inscription">铭文类型</param>

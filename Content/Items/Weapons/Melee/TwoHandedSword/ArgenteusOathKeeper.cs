@@ -14,10 +14,10 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
     public class ArgenteusOathKeeper : CNCWeapon.Melee.TwoHandedSword
     {
         public InscriptionSettings modItem => item.GetGlobalItem<InscriptionSettings>();
-        public bool JudgementEnable => modItem.HasInscription(CNCID.Inscription.S_Judgement);
-        public bool SilveryShieldEnable => modItem.HasInscription(CNCID.Inscription.S_SilveryShield);
-        public bool SilverySparkEnable => modItem.HasInscription(CNCID.Inscription.S_SilverySpark) && modItem.GetInscriptionCooldown(CNCID.Inscription.S_SilverySpark);
-        public bool SilveryVowEnable => modItem.HasInscription(CNCID.Inscription.S_SilveryVow) && modItem.GetInscriptionCooldown(CNCID.Inscription.S_SilveryVow);
+        public bool JudgementEnable => modItem.ExistInscription(CNCID.Inscription.S_Judgement);
+        public bool SilveryShieldEnable => modItem.ExistInscription(CNCID.Inscription.S_SilveryShield);
+        public bool SilverySparkEnable => modItem.ExistInscription(CNCID.Inscription.S_SilverySpark) && modItem.GetInscriptionCooldown(CNCID.Inscription.S_SilverySpark);
+        public bool SilveryVowEnable => modItem.ExistInscription(CNCID.Inscription.S_SilveryVow) && modItem.GetInscriptionCooldown(CNCID.Inscription.S_SilveryVow);
         public int hit = 0;
         public int hitCd = 0;
 
@@ -59,7 +59,7 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
 
         public override bool? UseItem(Player player)
         {
-            if (player.HasBuff(CNCID.Buff.LegacyObject[CNCID.Buff.Blessed]))
+            if (modItem.ExistInscription(CNCID.Inscription.S_SilveryVow) && player.HasBuff(CNCID.Buff.LegacyObject[CNCID.Buff.Blessed]))
             {
                 item.autoReuse = true;
                 item.useTime = 21;//打六折
@@ -93,11 +93,11 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
                         Vector2.One * .5f,
                         CNCID.Colors.SpiritBoss2
                         );
-                    ParticleRenderer.particle[idx].velocityMul = Vector2.One * (((1 - spd / 8f) * .08f) + .92f);
-                    ParticleRenderer.particle[idx].rotationAdd = CNC.Random.NextDegree(-8f, 8f);
-                    ParticleRenderer.particle[idx].scaleAdd = Vector2.One * CNC.Random.NextFloat(spd * -.005f);
-                    ParticleRenderer.particle[idx].alphaAdd = -.05f;
-                    ParticleRenderer.particle[idx].alpha = 1f;
+                    ParticleManager.particle[idx].velocityMul = Vector2.One * (((1 - spd / 8f) * .08f) + .92f);
+                    ParticleManager.particle[idx].rotationAdd = CNC.Random.NextDegree(-8f, 8f);
+                    ParticleManager.particle[idx].scaleAdd = Vector2.One * CNC.Random.NextFloat(spd * -.005f);
+                    ParticleManager.particle[idx].alphaAdd = -.05f;
+                    ParticleManager.particle[idx].alpha = 1f;
                 }
             }
             if (this.SilveryShieldEnable && target.type != 488 && hitCd-- > 0)
@@ -136,11 +136,7 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
             {
                 bool upgrade = player.HasBuff(CNCID.Buff.LegacyObject[CNCID.Buff.Blessed]);
                 int num = this.comboCur;
-                var info = new SlashInfo[2][]
-                {
-                    new SlashInfo[120],
-                    new SlashInfo[120],
-                };
+                var info = new SlashInfo[1200];
                 int[][] frame =
                 {
                     new int[6] { 2, 3, 2, 0, 0, 0 },
@@ -156,22 +152,24 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
                     new Vector2(0f, 8f),
                     new Vector2(32f, 0f),
                 };
-                for (int i = 0; i < info[0].Length; i++)
+                if (num == 0)
+                for (int i = 0; i < info.Length; i++)
                 {
-                    float factor = (float)i / info[0].Length;
+                    float factor = (float)i / info.Length;
                     float rotation = MyMath.deg01 * (factor * 305 - 170);
                     Vector2 pos = new Vector2(9.5f, 0f).RotatedBy(rotation) * (upgrade ? 1.5f : 1f);
                     pos.Y *= .3f;
-                    info[0][i].position = pos * 16f;
+                    info[i].position = pos * 16f;
                 }
-                for (int i = 0; i < info[1].Length; i++)
+                else
+                for (int i = 0; i < info.Length; i++)
                 {
-                    float factor = (float)i / info[1].Length;
+                    float factor = (float)i / info.Length;
                     float rotation = MyMath.deg01 * (90 - factor * 310);
                     Vector2 pos = new Vector2(9.5f, 0f).RotatedBy(rotation) * (upgrade ? 1.5f : 1f);
                     if (rotation < MyMath.deg01 * -60) pos.Y *= .7f;
                     pos.Y *= .3f;
-                    info[1][i].position = pos * 16f;
+                    info[i].position = pos * 16f;
                 }
                 if (upgrade)
                 {
@@ -180,30 +178,30 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
                         CNC.GetTexture("Assets/Projectiles/Slash/SilverSlashShader"),
                         CNC.GetTexture("Assets/Effects/SlashTop1"),
                         CNC.GetTexture("Assets/Effects/Trace1"),
-                        CNC.GetTexture("Assets/Projectiles/SlashHit/SlashHit2"),
+                        CNC.GetTexture("Assets/Projectiles/SlashHit/SlashHit1"),
                     };
                     var s = CNCUtils.CreateShaderSlash(player, velocity.RotatedBy((CNC.Random.NextFloat(30f) - 15f) * MyMath.deg01));
                     s.OnHitNPCEffect += this.NewOnHitNPC;
-                    s.SetDefaults(player.Center, velocity, 25, 8, 10, 7);
-                    s.SetColor(Color.White, Color.White, Color.White, Color.White, CNCID.Colors.SpiritBoss);
+                    s.SetDefaults(player.Center, velocity, 1200, 8, 10, 7);
+                    s.SetColor(Color.White, Color.White, Color.White, Color.White, CNCID.Colors.SpiritBoss * .5f);
                     s.SetDamage(1, DamageClass.Melee, damage, knockback, player.GetWeaponCrit(item));
-                    s.SetDraw(BlendState.AlphaBlend, 2f);
+                    s.SetDraw(BlendState.AlphaBlend, 3f, 1f);
                     s.SetImage(t[0], t[1], t[2], t[3]);
-                    s.SetAttackInfo(info[num]);
+                    s.SetAttackInfo(info);
                 }
                 else
                 {
                     var e = CNCUtils.CreateSlash(player, velocity, -1);
                     e.OnHitNPCEffect += this.NewOnHitNPC;
-                    e.SetDefaults(Mod.Assets.Request<Texture2D>("Assets/Projectiles/Slash/SilverSlash").Value, player.Center, Vector2.One * .85f, velocity, frame[num], 7);
+                    e.SetDefaults(CNC.GetTexture("Assets/Projectiles/Slash/SilverSlash"), player.Center, Vector2.One * .85f, velocity, frame[num], 7);
                     e.SetColor(Color.White, Color.Gold, .5f);
                     e.SetDamage(1, DamageClass.Melee, damage, knockback, player.GetWeaponCrit(item));
-                    e.SetAttackInfo(info[num]);
+                    e.SetAttackInfo(info);
                     e.SetAfterImages(50, 1, .25f);
+                    e.imageSlashHit = CNC.GetTexture("Assets/Projectiles/SlashHit/SlashHit2");
                     e.imageOffset = offset[num];
                     e.hitboxOffset = offset2[num];
                 }
-
             }
             else
             {

@@ -18,7 +18,7 @@ namespace CNC.Content.Buffs
         public override void Update(Player target, AllPlayer gt, ref int index)
         {
             Item item = target.HeldItem;
-            if (item.type != CNCID.Item.LegacyObject[CNCID.Item.FireGrimoire] || !item.GetGlobalItem<InscriptionSettings>().HasInscription(CNCID.Inscription.S_Enthusiasm))
+            if (item.type != CNCID.Item.LegacyObject[CNCID.Item.FireGrimoire] || !item.GetGlobalItem<InscriptionSettings>().ExistInscription(CNCID.Inscription.S_Enthusiasm))
             { target.ClearBuff(Type); return; }
             if (target.GetModPlayer<AllPlayer>().Tick % 5 == 0)
             {

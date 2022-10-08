@@ -744,6 +744,12 @@ namespace CNC.Common.Utils
             public const short SilveryField = 30;
             /// <summary> “¯∞◊Õª¥Ã </summary>
             public const short SilveryDash = 31;
+            /// <summary> Ãÿ ‚’∂ª˜ </summary>
+            public const short AnattaSlash = 32;
+            /// <summary> »’‘Œ </summary>
+            public const short SolarHalo = 33;
+            /// <summary> »€—“ª…‡ </summary>
+            public const short FireFlow = 34;
             #endregion
             public static Dictionary<string, short> Collection
             {
@@ -799,6 +805,9 @@ namespace CNC.Common.Utils
                 { ShaderSlash, ProjectileType<Content.Projectiles.ShaderSlash>() },
                 { SilveryField, ProjectileType<Content.Projectiles.ArgenteusOathKeeper.SilveryField>() },
                 { SilveryDash, ProjectileType<Content.Projectiles.ArgenteusOathKeeper.SilveryDash>() },
+                { AnattaSlash, ProjectileType<Content.Projectiles.AnattaSlash>() },
+                { SolarHalo, ProjectileType<Content.Projectiles.SolarHalo>() },
+                { FireFlow, ProjectileType<Content.Projectiles.FireFlow>() },
             };
         }
 

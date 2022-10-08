@@ -146,7 +146,7 @@ namespace CNC.Content
         {
             if (!this.active) return;
             float alpha = MyMath.Clamp(this.Alpha, 0, 1);
-            Vector2 basic = this.position - Main.screenPosition;// + offset;
+            Vector2 basic = this.position - Main.screenPosition + offset;
             Vector2 scale = new Vector2(MyMath.Max(0f, this.Scale.X), MyMath.Max(0f, this.Scale.Y));
             Vector2 scale2 = Main.GameViewMatrix.Zoom / Main.UIScale;
             if (PreDraw(spriteBatch, offset))
@@ -187,41 +187,40 @@ namespace CNC.Content
 
         public static int NewParticle(Texture2D image, Vector2 pos, Vector2 vel, float rot, int timeLeft, Vector2 scale, Color color, Color light = default, bool noGravity = true, int extraUpdate = 0)
         {
-            for (int i = 0; i < ParticleRenderer.maxParticles; i++)
+            for (int i = 0; i < ParticleManager.maxParticles; i++)
             {
-                if (ParticleRenderer.particle[i] == null || !ParticleRenderer.particle[i].active)
+                if (ParticleManager.particle[i] == null || !ParticleManager.particle[i].active)
                 {
-                    ParticleRenderer.particle[i] = new Particle();
-
-                    ParticleRenderer.particle[i].SetDefaults();
-                    ParticleRenderer.particle[i].texture = image;
-                    ParticleRenderer.particle[i].oldPosition = pos;
-                    ParticleRenderer.particle[i].position = pos;
-                    ParticleRenderer.particle[i].velocity = vel;
-                    ParticleRenderer.particle[i].rotation = rot;
-                    ParticleRenderer.particle[i].scale = scale;
-                    ParticleRenderer.particle[i].scale2 = scale;
-                    ParticleRenderer.particle[i].color = color;
-                    ParticleRenderer.particle[i].color2 = color;
-                    ParticleRenderer.particle[i].light = light;
-                    ParticleRenderer.particle[i].light2 = light;
-                    ParticleRenderer.particle[i].noGravity = noGravity;
-                    ParticleRenderer.particle[i].timeLeft = timeLeft;
-                    ParticleRenderer.particle[i].timeLeftMax = timeLeft;
-                    ParticleRenderer.particle[i].extraUpdate = extraUpdate;
-                    ParticleRenderer.particle[i].whoAmI = i;
-                    ParticleRenderer.particle[i].active = true;
-                    ParticleRenderer.particle[i].OnSpawn();
+                    ParticleManager.particle[i] = new Particle();
+                    ParticleManager.particle[i].SetDefaults();
+                    ParticleManager.particle[i].texture = image;
+                    ParticleManager.particle[i].oldPosition = pos;
+                    ParticleManager.particle[i].position = pos;
+                    ParticleManager.particle[i].velocity = vel;
+                    ParticleManager.particle[i].rotation = rot;
+                    ParticleManager.particle[i].scale = scale;
+                    ParticleManager.particle[i].scale2 = scale;
+                    ParticleManager.particle[i].color = color;
+                    ParticleManager.particle[i].color2 = color;
+                    ParticleManager.particle[i].light = light;
+                    ParticleManager.particle[i].light2 = light;
+                    ParticleManager.particle[i].noGravity = noGravity;
+                    ParticleManager.particle[i].timeLeft = timeLeft;
+                    ParticleManager.particle[i].timeLeftMax = timeLeft;
+                    ParticleManager.particle[i].extraUpdate = extraUpdate;
+                    ParticleManager.particle[i].whoAmI = i;
+                    ParticleManager.particle[i].active = true;
+                    ParticleManager.particle[i].OnSpawn();
                     return i;
                 }
             }
-            return ParticleRenderer.maxParticles;
+            return ParticleManager.maxParticles;
         }
     }
 
-    public class ParticleRenderer : ModSystem
+    public class ParticleManager : ModSystem
     {
-        public const int maxParticles = CNC.maxParticle;
+        public const int maxParticles = CNC.maxParticles;
         public static Particle[] particle = new Particle[maxParticles + 1];
 
         public override void PreUpdateDusts() => this.UpdateParticle();
@@ -230,51 +229,51 @@ namespace CNC.Content
         {
             for (int i = 0; i < maxParticles; i++)
             {
-                if (ParticleRenderer.particle[i] == null) ParticleRenderer.particle[i] = new Particle();
-                for (int j = 0; j <= ParticleRenderer.particle[i].extraUpdate; j++)
+                if (ParticleManager.particle[i] == null) ParticleManager.particle[i] = new Particle();
+                for (int j = 0; j <= ParticleManager.particle[i].extraUpdate; j++)
                 {
-                    if (ParticleRenderer.particle[i].active = ParticleRenderer.particle[i].timeLeft-- > 0)
+                    if (ParticleManager.particle[i].active = ParticleManager.particle[i].timeLeft-- > 0)
                     {
-                        if (ParticleRenderer.particle[i].PreUpdate())
+                        if (ParticleManager.particle[i].PreUpdate())
                         {
                             float[] flashSpeed = new float[]
                             {
-                                ParticleRenderer.particle[i].colorFlashSpeed,
-                                ParticleRenderer.particle[i].lightFlashSpeed,
-                                ParticleRenderer.particle[i].alphaFlashSpeed,
-                                ParticleRenderer.particle[i].scaleFlashSpeed,
+                                ParticleManager.particle[i].colorFlashSpeed,
+                                ParticleManager.particle[i].lightFlashSpeed,
+                                ParticleManager.particle[i].alphaFlashSpeed,
+                                ParticleManager.particle[i].scaleFlashSpeed,
                             };
                             for(int k = 0; k < 4; k++)
                             {
-                                ParticleRenderer.particle[i].flash[k] = MyMath.Clamp(ParticleRenderer.particle[i].flash[k] + ParticleRenderer.particle[i].flashDir[k] * flashSpeed[k], 0f, 1f);
-                                if (ParticleRenderer.particle[i].flash[k] >= 1f) ParticleRenderer.particle[i].flashDir[k] = -1;
-                                if (ParticleRenderer.particle[i].flash[k] <= 0f) ParticleRenderer.particle[i].flashDir[k] = 1;
+                                ParticleManager.particle[i].flash[k] = MyMath.Clamp(ParticleManager.particle[i].flash[k] + ParticleManager.particle[i].flashDir[k] * flashSpeed[k], 0f, 1f);
+                                if (ParticleManager.particle[i].flash[k] >= 1f) ParticleManager.particle[i].flashDir[k] = -1;
+                                if (ParticleManager.particle[i].flash[k] <= 0f) ParticleManager.particle[i].flashDir[k] = 1;
                             }
 
-                            ParticleRenderer.particle[i].oldPosition = ParticleRenderer.particle[i].position;
-                            ParticleRenderer.particle[i].position += ParticleRenderer.particle[i].velocity;
-                            ParticleRenderer.particle[i].rotation += ParticleRenderer.particle[i].rotationAdd;
-                            ParticleRenderer.particle[i].scale += ParticleRenderer.particle[i].scaleAdd;
-                            ParticleRenderer.particle[i].scale2 += ParticleRenderer.particle[i].scaleAdd;
-                            ParticleRenderer.particle[i].scale *= ParticleRenderer.particle[i].scaleMul;
-                            ParticleRenderer.particle[i].scale2 *= ParticleRenderer.particle[i].scaleMul;
-                            ParticleRenderer.particle[i].alpha += ParticleRenderer.particle[i].alphaAdd;
-                            ParticleRenderer.particle[i].alpha2 += ParticleRenderer.particle[i].alphaAdd;
-                            ParticleRenderer.particle[i].velocity = (ParticleRenderer.particle[i].velocity + ParticleRenderer.particle[i].velocityAdd) * ParticleRenderer.particle[i].velocityMul;
+                            ParticleManager.particle[i].oldPosition = ParticleManager.particle[i].position;
+                            ParticleManager.particle[i].position += ParticleManager.particle[i].velocity;
+                            ParticleManager.particle[i].rotation += ParticleManager.particle[i].rotationAdd;
+                            ParticleManager.particle[i].scale += ParticleManager.particle[i].scaleAdd;
+                            ParticleManager.particle[i].scale2 += ParticleManager.particle[i].scaleAdd;
+                            ParticleManager.particle[i].scale *= ParticleManager.particle[i].scaleMul;
+                            ParticleManager.particle[i].scale2 *= ParticleManager.particle[i].scaleMul;
+                            ParticleManager.particle[i].alpha += ParticleManager.particle[i].alphaAdd;
+                            ParticleManager.particle[i].alpha2 += ParticleManager.particle[i].alphaAdd;
+                            ParticleManager.particle[i].velocity = (ParticleManager.particle[i].velocity + ParticleManager.particle[i].velocityAdd) * ParticleManager.particle[i].velocityMul;
                             //if (ParticleRenderer.particle[i].scale.X < 0) ParticleRenderer.particle[i].scale.X = 0;
                             //if (ParticleRenderer.particle[i].scale.Y < 0) ParticleRenderer.particle[i].scale.Y = 0;
-                            if (!ParticleRenderer.particle[i].noGravity) ParticleRenderer.particle[i].velocity.Y += MyMath.g * .01f;
-                            if (ParticleRenderer.particle[i].Light != Color.Transparent)
+                            if (!ParticleManager.particle[i].noGravity) ParticleManager.particle[i].velocity.Y += MyMath.g * .01f;
+                            if (ParticleManager.particle[i].Light != Color.Transparent)
                             {
-                                Point pos = (ParticleRenderer.particle[i].position / 16f).ToPoint();
-                                Color light = ParticleRenderer.particle[i].Light;
-                                float r = light.R * light.A / 255f * ParticleRenderer.particle[i].lightAlpha * (ParticleRenderer.particle[i].scale.X + ParticleRenderer.particle[i].scale.Y) / 2f;
-                                float g = light.G * light.A / 255f * ParticleRenderer.particle[i].lightAlpha * (ParticleRenderer.particle[i].scale.X + ParticleRenderer.particle[i].scale.Y) / 2f;
-                                float b = light.B * light.A / 255f * ParticleRenderer.particle[i].lightAlpha * (ParticleRenderer.particle[i].scale.X + ParticleRenderer.particle[i].scale.Y) / 2f;
+                                Point pos = (ParticleManager.particle[i].position / 16f).ToPoint();
+                                Color light = ParticleManager.particle[i].Light;
+                                float r = light.R * light.A / 255f * ParticleManager.particle[i].lightAlpha * (ParticleManager.particle[i].scale.X + ParticleManager.particle[i].scale.Y) / 2f;
+                                float g = light.G * light.A / 255f * ParticleManager.particle[i].lightAlpha * (ParticleManager.particle[i].scale.X + ParticleManager.particle[i].scale.Y) / 2f;
+                                float b = light.B * light.A / 255f * ParticleManager.particle[i].lightAlpha * (ParticleManager.particle[i].scale.X + ParticleManager.particle[i].scale.Y) / 2f;
                                 Lighting.AddLight(pos.X, pos.Y, r, g, b);
                             }
                         }
-                        ParticleRenderer.particle[i].PostUpdate();
+                        ParticleManager.particle[i].PostUpdate();
                     }
                 }
             }

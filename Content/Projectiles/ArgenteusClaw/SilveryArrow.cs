@@ -43,9 +43,9 @@ namespace CNC.Content.Projectiles.ArgenteusClaw
                 color,
                 new Color(color.R, color.G, color.B, 5)
                 );
-            ParticleRenderer.particle[idx].scaleAdd.Y = -.005f;
-            ParticleRenderer.particle[idx].alphaAdd = -.05f;
-            ParticleRenderer.particle[idx].alpha = 1f;
+            ParticleManager.particle[idx].scaleAdd.Y = -.005f;
+            ParticleManager.particle[idx].alphaAdd = -.05f;
+            ParticleManager.particle[idx].alpha = 1f;
         }
 
         public override void Kill(int timeLeft)

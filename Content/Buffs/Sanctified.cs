@@ -66,10 +66,10 @@ namespace CNC.Content.Buffs
                     Vector2.One,
                     color
                     );
-                ParticleRenderer.particle[idx].velocityMul = CNC.Random.NextVector2(.9f, 1f, .95f, 1f);
-                ParticleRenderer.particle[idx].velocityAdd = CNC.Random.NextVector2(0, -1f, 0, -.5f);
-                ParticleRenderer.particle[idx].rotationAdd = CNC.Random.NextDegree(-8f, 8f);
-                ParticleRenderer.particle[idx].scaleAdd = Vector2.One * CNC.Random.NextFloat(-.05f);
+                ParticleManager.particle[idx].velocityMul = CNC.Random.NextVector2(.9f, 1f, .95f, 1f);
+                ParticleManager.particle[idx].velocityAdd = CNC.Random.NextVector2(0, -1f, 0, -.5f);
+                ParticleManager.particle[idx].rotationAdd = CNC.Random.NextDegree(-8f, 8f);
+                ParticleManager.particle[idx].scaleAdd = Vector2.One * CNC.Random.NextFloat(-.05f);
             }
             else
             {
@@ -86,11 +86,11 @@ namespace CNC.Content.Buffs
                         Vector2.One * .5f,
                         color
                         );
-                    ParticleRenderer.particle[idx].velocityMul = Vector2.One * (((1 - spd / 8f) * .08f) + .92f);
-                    ParticleRenderer.particle[idx].rotationAdd = CNC.Random.NextDegree(-8f, 8f);
-                    ParticleRenderer.particle[idx].scaleAdd = Vector2.One * CNC.Random.NextFloat(spd * -.005f);
-                    ParticleRenderer.particle[idx].alphaAdd = -.05f;
-                    ParticleRenderer.particle[idx].alpha = 1f;
+                    ParticleManager.particle[idx].velocityMul = Vector2.One * (((1 - spd / 8f) * .08f) + .92f);
+                    ParticleManager.particle[idx].rotationAdd = CNC.Random.NextDegree(-8f, 8f);
+                    ParticleManager.particle[idx].scaleAdd = Vector2.One * CNC.Random.NextFloat(spd * -.005f);
+                    ParticleManager.particle[idx].alphaAdd = -.05f;
+                    ParticleManager.particle[idx].alpha = 1f;
                 }
             }
         }

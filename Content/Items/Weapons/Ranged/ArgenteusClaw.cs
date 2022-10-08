@@ -13,8 +13,8 @@ namespace CNC.Content.Items.Weapons.Ranged
 	public class ArgenteusClaw : CNCItem
     {
         public InscriptionSettings modItem => item.GetGlobalItem<InscriptionSettings>();
-        public bool SanctityEnable => modItem.HasInscription(CNCID.Inscription.S_Sanctity);
-        public bool ExorcismEnable => modItem.HasInscription(CNCID.Inscription.S_Exorcism);
+        public bool SanctityEnable => modItem.ExistInscription(CNCID.Inscription.S_Sanctity);
+        public bool ExorcismEnable => modItem.ExistInscription(CNCID.Inscription.S_Exorcism);
 
         public override void ResetDefaults()
         {

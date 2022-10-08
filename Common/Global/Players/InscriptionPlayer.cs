@@ -49,7 +49,7 @@ namespace CNC.Common.Global.Players
             this.skillDamageAdd = 0f;
             this.skillDamageMul = 1f;
 
-            if (player.HeldItem.type != CNCID.Item.LegacyObject[CNCID.Item.Superconductor] || !player.HeldItem.GetGlobalItem<InscriptionSettings>().HasInscription(CNCID.Inscription.S_ArcaneOverload)) this.overloadLevelCounter = 0;
+            if (player.HeldItem.type != CNCID.Item.LegacyObject[CNCID.Item.Superconductor] || !player.HeldItem.GetGlobalItem<InscriptionSettings>().ExistInscription(CNCID.Inscription.S_ArcaneOverload)) this.overloadLevelCounter = 0;
             if (this.overloadLevelCounter > 0) this.overloadLevelCounter--;
             else this.overloadLevel = this.overloadLevelCounter = 0;
         }

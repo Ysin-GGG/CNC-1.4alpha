@@ -19,6 +19,7 @@ using Terraria.DataStructures;
 using Terraria.Graphics.Shaders;
 using CNC.Common.Utils;
 using CNC.Common.Localization;
+using CNC.Content;
 using System.Collections.ObjectModel;
 
 namespace CNC.Common.Global.Items
@@ -48,10 +49,7 @@ namespace CNC.Common.Global.Items
         public override GlobalItem Clone(Item item, Item itemClone)
         {
             AllItem clone = (AllItem)base.Clone(item, itemClone);
-            if (clone != null)
-            {
-                clone.clazz = clazz;
-            }
+            if (clone != null) clone.clazz = clazz;
             return clone;
         }
 
@@ -63,13 +61,11 @@ namespace CNC.Common.Global.Items
             if (modItem.comboTime <= 0) modItem.comboCur = 0;
         }
 
-        /// <summary>
-        /// 职业编号
-        /// </summary>
+        /// <summary> 职业编号 </summary>
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(item, tooltips);
-            Dictionary<byte, string> ClazzID = Utils.CNCID.Clazz.Collection;
+            Dictionary<byte, string> ClazzID = CNCID.Clazz.Collection;
             Dictionary<int, Color> ClazzColor = new Dictionary<int, Color>()
             {
                 { 11, new Color(168, 61, 51,255) },
@@ -94,6 +90,209 @@ namespace CNC.Common.Global.Items
                 TooltipLine tt1 = new TooltipLine(mod, item.Name, CNCLocalization.GetText("Class.Format", Class)) { OverrideColor = ClazzColor[ai.clazz] };
                 tooltips.Add(tt1);
             }
+            if (EnableAnatta(CNC.Me))
+            {
+                bool flag = false;
+                Color color = Color.White;
+                switch (item.type)
+                {
+                    case ItemID.FieryGreatsword:
+                        color = new Color(242, 92, 34);
+                        flag = true;
+                        break;
+                    case ItemID.Meowmere:
+                        color = Color.LightPink;
+                        flag = true;
+                        break;
+                }
+                TooltipLine tt2 = new TooltipLine(mod, item.Name, CNCLocalization.GetText("Misc.AnattaPower")) { OverrideColor = color.Flash() };
+                if (flag) tooltips.Add(tt2);
+            }
         }
+
+        public override bool CanUseItem(Item item, Player player)
+        {
+            if (EnableAnatta(player))
+            {
+                switch (item.type)
+                {
+                    case ItemID.FieryGreatsword:
+                        item.shoot = 1;
+                        item.shootSpeed = 1f;
+                        item.useTime = 30;
+                        comboCount = 4;
+                        comboDelay = item.useAnimation + 5;
+                        item.noMelee = true;
+                        item.scale = 0f;
+                        if (player.All().controlMouseRight) return false;
+                        break;
+                    case ItemID.Meowmere:
+                        item.noMelee = true;
+                        item.scale = 0f;
+                        if (player.All().controlMouseRight) return false;
+                        break;
+                }
+            }
+            else
+            {
+                Item clone = new Item(item.type);
+                item.scale = clone.scale;
+                item.noMelee = clone.noMelee;
+            }
+            return base.CanUseItem(item, player);
+        }
+
+        public override bool? UseItem(Item item, Player player)
+        {
+            bool? flag = base.UseItem(item, player);
+            int next = (this.comboCur + 1) % comboCount;
+            int time = this.comboDelay;
+            this.comboNext = next % comboCount;
+            this.comboTime = time;
+            return flag;
+        }
+
+        public override void HoldItem(Item item, Player player)
+        {
+            if (EnableAnatta(player))
+            {
+                bool control = player.All().controlMouseRight;
+                bool release = player.All().releaseMouseRight;
+                float ct = player.All().rightCastTime;
+                float ctMax = 100;
+                float damage = player.GetWeaponDamage(item);
+                float knockback = player.GetWeaponKnockback(item);
+                float crit = player.GetWeaponCrit(item);
+                float type = 0f;
+                IEntitySource source = item.GetSource_ItemUse(item);
+                Vector2 position = player.Center;
+                Vector2 velocity = new Vector2(item.shootSpeed, 0f).RotatedBy((Main.MouseWorld - player.Center).ToRotation());
+                Color mainColor = Color.White;
+                switch (item.type)
+                {
+                    case ItemID.FieryGreatsword:
+                        ctMax = 60;
+                        mainColor = new Color(242, 92, 34);
+                        if (control)
+                        {
+                            if (ct < ctMax)
+                            {
+                                Vector2 vel = new Vector2(CNC.Random.NextFloat(4f) + MyMath.Lerp(12f, 0f, ct / ctMax), 0f).RotatedBy(CNC.Random.NextDegree());
+                                int idx = Particle.NewParticle(
+                                    CNC.GetTexture("Assets/Particles/Light1"),
+                                    player.Center + vel * 10f,
+                                    vel * -.5f,
+                                    CNC.Random.NextDegree(),
+                                    30,
+                                    new Vector2(Main.rand.NextFloat(.03f, .09f)),
+                                    mainColor.NewA(0),
+                                    mainColor.NewA(15)
+                                    );
+                                ParticleManager.particle[idx].velocityMul = Vector2.One * .95f;
+                                ParticleManager.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.0003f, .0010f));
+                                ParticleManager.particle[idx].alphaAdd = (Main.rand.Next(5) + 1) * -.01f;
+                            }
+                            else
+                            {
+                                Vector2 vel = CNC.Random.NextVector2(-4f, -4f, 4f, -2f);
+                                int idx = Particle.NewParticle(
+                                    CNC.GetTexture("Assets/Particles/Light1"),
+                                    player.Bottom,
+                                    vel,
+                                    0,
+                                    60,
+                                    new Vector2(Main.rand.NextFloat(.03f, .09f)),
+                                    mainColor.NewA(0),
+                                    mainColor.NewA(15)
+                                    );
+                                ParticleManager.particle[idx].velocityMul = new Vector2(.9f, .975f);
+                                ParticleManager.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.0003f, .0010f));
+                                ParticleManager.particle[idx].alphaAdd = (Main.rand.Next(5) + 1) * -.01f;
+                            }
+                            if (release && ct >= ctMax)
+                            {
+                                velocity = new Vector2((Main.MouseWorld.X > player.Center.X).ToDirectionInt(1), 0f);
+                                damage = damage * 3 / 2;
+                                knockback *= 1.5f;
+                                crit += 5f;
+                                type = 4f;
+                            }
+                        }
+                        break;
+                    case ItemID.Meowmere:
+                        mainColor = CNCID.Colors.Expert;
+                        if (control)
+                        {
+                            Vector2 vel = new Vector2(CNC.Random.NextFloat(4f) + MyMath.Lerp(12f, 0f, ct / ctMax), 0f).RotatedBy(CNC.Random.NextDegree());
+                            int idx = Particle.NewParticle(
+                                CNC.GetTexture("Assets/Particles/Star1"),
+                                player.Center + vel * 10f,
+                                vel * -.5f,
+                                CNC.Random.NextDegree(),
+                                30,
+                                Vector2.One * 1.5f,
+                                mainColor.NewA(0),
+                                mainColor.NewA(3)
+                                );
+                            ParticleManager.particle[idx].velocityMul = Vector2.One * .95f;
+                            ParticleManager.particle[idx].rotationAdd = CNC.Random.NextBool().ToDirectionInt(16);
+                            ParticleManager.particle[idx].scaleAdd = new Vector2(-.05f);
+                            ParticleManager.particle[idx].alphaAdd = -.033f;
+                            ParticleManager.particle[idx].alpha = 1f;
+                        }
+                        if (release && ct >= ctMax)
+                        {
+                            CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.SolarHalo], (int)damage, 0f, (int)crit, player.whoAmI, 0f, 1f, 0, 0);
+                            damage *= 3;
+                            knockback *= 3f;
+                            crit += 20f;
+                            type = 2f;
+                        }
+                        break;
+                }
+                if (control && ct == ctMax) CNCUtils.PlaySound(SoundID.Item4, player);
+                if (release && ct >= ctMax)
+                {
+                    CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.AnattaSlash], (int)damage, knockback, (int)crit, player.whoAmI, 0f, 1f, type, 0);
+                    player.direction = (velocity.X < 0).ToDirectionInt(-1);
+                    player.itemTimeMax = player.itemTime = item.useTime;
+                    player.itemAnimationMax = player.itemAnimation = item.useAnimation;
+                }
+            }
+        }
+
+        public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            if (EnableAnatta(player) && item.type == ItemID.Meowmere) velocity *= 2f;
+        }
+
+        public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            bool shoot = base.Shoot(item, player, source, position, velocity, type, damage, knockback);
+            type = CNCID.Projectile.LegacyObject[CNCID.Projectile.AnattaSlash];
+            if (EnableAnatta(player))
+            {
+                switch (item.type)
+                {
+                    case ItemID.FieryGreatsword:
+                        float[] mul = { .85f, .95f, .95f, 1.05f };
+                        damage = (int)(damage * mul[this.comboCur]);
+                        CNCUtils.NewProj(source, position, velocity, type, damage, knockback, ai0: 3f + this.comboCur * .1f);
+                        break;
+                    case ItemID.Meowmere:
+                        CNCUtils.NewProj(source, position, velocity, type, damage, knockback, ai0: 1f);
+                        break;
+                }
+            }
+            switch (item.type)
+            {
+                case ItemID.FieryGreatsword:
+                    shoot = false;
+                    break;
+            }
+            return shoot;
+        }
+
+        private bool EnableAnatta(Player player) => player.HasItem(ModContent.ItemType<Content.Items.Developers.Quartz.Anatta>());// && player.GetModPlayer<Players.AllPlayer>().EquippedQuartzHead;
     }
 }

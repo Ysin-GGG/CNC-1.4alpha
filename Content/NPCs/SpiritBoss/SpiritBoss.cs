@@ -33,12 +33,14 @@ namespace CNC.Content.NPCs.SpiritBoss
             CNC.GetTexture("Content/NPCs/SpiritBoss/" + "cowered"),
         };
 
+        /// <summary> 暗淡背景透明度 </summary>
+        public float BlackAlpha { get => this.GetData<float>(4); set => this.SetData<float>(MyMath.Clamp(value, 0f, 1f), 4); }
         /// <summary> 移动行为的目标点 </summary>
         private Vector2 NextPosition { get => new Vector2(this.GetData<float>(0), this.GetData<float>(1)); set { this.SetData<float>(value.X, 0); this.SetData<float>(value.Y, 1); } }
         /// <summary> 出生点 </summary>
         private Vector2 SpawnPosition { get => new Vector2(this.GetData<float>(2), this.GetData<float>(3)); set { this.SetData<float>(value.X, 2); this.SetData<float>(value.Y, 3); } }
-        /// <summary> 暗淡背景透明度 </summary>
-        public float BlackAlpha { get => this.GetData<float>(4); set => this.SetData<float>(value, 4); }
+        /// <summary> 天空滤镜 </summary>
+        private bool Sky { set => CNC.SetSky(Name, value); }
         /// <summary> 绘制残影 </summary>
         private bool DrawShadow { get => this.GetData<bool>(0); set => this.SetData<bool>(value, 0); }
         /// <summary> 自动转向 </summary>
@@ -364,7 +366,7 @@ namespace CNC.Content.NPCs.SpiritBoss
         {
             //boss不需要这个方法（因为没有碰撞伤害），这个方法是给其他弹幕击中玩家时用的
             damage = 100;
-            Vector2 max = Vector2.One * 32f;
+            Vector2 max = Vector2.One * 24f;
             target.velocity = MyMath.Clamp(target.Center - npc.Center, -max, max);
         }
 
@@ -375,10 +377,9 @@ namespace CNC.Content.NPCs.SpiritBoss
             {
                 npc.life = 0;
                 npc.active = false;
+                this.Sky = false;
                 this.ShieldTime = 0;
                 this.ShieldStrength = 0;
-                if (Effects.SkyManager.Instance["CNC:SpiritBossSky"].IsActive())
-                Effects.SkyManager.Instance.Deactivate("CNC:SpiritBossSky");
                 if (this.ActionState == -3)
                 {
                     npc.NPCLoot();
@@ -412,6 +413,7 @@ namespace CNC.Content.NPCs.SpiritBoss
                 if (this.ShieldStrength <= 0)//爆盾
                 {
                     this.ShieldTime = 0;
+                    this.ActionCooldown = 0;
                     CNCUtils.PlaySound(SoundID.Item74, npc);
                     CNCUtils.PlaySound(SoundID.Item122, npc);
                     CNCUtils.ScreenShake(npc.Center, 9000f, 5, new Vector2(0, 40), new Vector2(0, 20), .8f);
@@ -655,7 +657,7 @@ namespace CNC.Content.NPCs.SpiritBoss
                     e.SetRotation(0f, 0f, 1f);
                 }
                 //二阶段时背景暗淡
-                if (this.Rage) this.BlackAlpha = MyMath.Min(this.BlackAlpha + .025f, 1f);
+                if (this.Rage) this.BlackAlpha += .025f;
             }
             //斩击数不足三次时持续进攻
             else if (getSlash() < 3)
@@ -686,8 +688,8 @@ namespace CNC.Content.NPCs.SpiritBoss
                     int num = (int)(getSlash() % 2);
                     var info = new SlashInfo[2][]
                     {
-                        new SlashInfo[60],
-                        new SlashInfo[60],
+                        new SlashInfo[600],
+                        new SlashInfo[600],
                     };
                     int[][] frame =
                     {
@@ -733,7 +735,7 @@ namespace CNC.Content.NPCs.SpiritBoss
                         };
                         Vector2 velocity = new Vector2(npc.direction, 0);
                         var s = CNCUtils.CreateShaderSlash(npc, velocity);
-                        s.SetDefaults(npc.Center, velocity, 25, 7, 10, 15);
+                        s.SetDefaults(npc.Center, velocity, 600, 7, 10, 15);
                         s.SetColor(Color.White, Color.White, Color.White, Color.White, CNCID.Colors.SpiritBoss);
                         s.SetDamage(2, DamageClass.Default, Damage_Slash, 0, 0);
                         s.SetDraw(BlendState.AlphaBlend, 2f);
@@ -815,11 +817,10 @@ namespace CNC.Content.NPCs.SpiritBoss
             }
             if (this.ActionTime == 30)
             {
+                this.Sky = true;
                 this.Rage = true;
                 this.DrawShadow = true;
                 this.AutoTurnAround = false;
-                //npc.dontTakeDamage = true;
-                if (!Effects.SkyManager.Instance["CNC:SpiritBossSky"].IsActive()) Effects.SkyManager.Instance.Activate("CNC:SpiritBossSky");
             }
             else if (this.ActionTime > 30 && BlackAlpha < .7f) BlackAlpha += .01f;
             if (this.ActionTime >= beginTime)
@@ -841,7 +842,6 @@ namespace CNC.Content.NPCs.SpiritBoss
             {
                 setCount(0);
                 this.AutoTurnAround = true;
-                //npc.dontTakeDamage = false;
                 this.FinishAction();
             }
         }
@@ -1042,19 +1042,19 @@ namespace CNC.Content.NPCs.SpiritBoss
                 Vector2 vel = new Vector2(CNC.Random.NextFloat(4f) + 4f, 0f).RotatedBy(CNC.Random.NextDegree());
                 int idx = Particle.NewParticle(
                     ModContent.Request<Texture2D>("CNC/Assets/Particles/Star1").Value,
-                    npc.Center + vel * 10,
-                    -vel * .5f,
+                    npc.Center + vel * 10f,
+                    vel * -.5f,
                     CNC.Random.NextDegree(),
                     30,
                     Vector2.One * 1.5f,
                     themeColor,
                     themeColor.NewA(10)
                     );
-                ParticleRenderer.particle[idx].velocityMul = Vector2.One * .95f;
-                ParticleRenderer.particle[idx].rotationAdd = CNC.Random.NextBool().ToDirectionInt(16);
-                ParticleRenderer.particle[idx].scaleAdd = new Vector2(-.05f);
-                ParticleRenderer.particle[idx].alphaAdd = -.033f;
-                ParticleRenderer.particle[idx].alpha = 1f;
+                ParticleManager.particle[idx].velocityMul = Vector2.One * .95f;
+                ParticleManager.particle[idx].rotationAdd = CNC.Random.NextBool().ToDirectionInt(16);
+                ParticleManager.particle[idx].scaleAdd = new Vector2(-.05f);
+                ParticleManager.particle[idx].alphaAdd = -.033f;
+                ParticleManager.particle[idx].alpha = 1f;
             }
             else
             {
@@ -1115,9 +1115,10 @@ namespace CNC.Content.NPCs.SpiritBoss
             }
             else if (this.ActionTime > 50)
             {
+                this.Sky = true;
                 this.Rage = true;
+                this.AutoTurnAround = false;
                 if (this.BlackAlpha < 1f) this.BlackAlpha += .01f;
-                if (!Effects.SkyManager.Instance["CNC:SpiritBossSky"].IsActive()) Effects.SkyManager.Instance.Activate("CNC:SpiritBossSky");
                 if (this.ActionTime < 250)
                 {
                     this.Alpha2 -= .005f;
@@ -1136,11 +1137,11 @@ namespace CNC.Content.NPCs.SpiritBoss
                         themeColor,
                         themeColor.NewA(10)
                         );
-                    ParticleRenderer.particle[idx].velocityMul = Vector2.One * .95f;
-                    ParticleRenderer.particle[idx].rotationAdd = CNC.Random.NextBool().ToDirectionInt(16);
-                    ParticleRenderer.particle[idx].scaleAdd = new Vector2(-.05f);
-                    ParticleRenderer.particle[idx].alphaAdd = -.033f;
-                    ParticleRenderer.particle[idx].alpha = 1f;
+                    ParticleManager.particle[idx].velocityMul = Vector2.One * .95f;
+                    ParticleManager.particle[idx].rotationAdd = CNC.Random.NextBool().ToDirectionInt(16);
+                    ParticleManager.particle[idx].scaleAdd = new Vector2(-.05f);
+                    ParticleManager.particle[idx].alphaAdd = -.033f;
+                    ParticleManager.particle[idx].alpha = 1f;
                 }
                 else
                 {
@@ -1159,11 +1160,11 @@ namespace CNC.Content.NPCs.SpiritBoss
                             themeColor,
                             themeColor.NewA(10)
                             );
-                        ParticleRenderer.particle[idx].velocityMul = Vector2.One * .93f;
-                        ParticleRenderer.particle[idx].rotationAdd = CNC.Random.NextBool().ToDirectionInt(16);
-                        ParticleRenderer.particle[idx].scaleAdd = new Vector2(-.025f);
-                        ParticleRenderer.particle[idx].alphaAdd = -.02f;
-                        ParticleRenderer.particle[idx].alpha = 1f;
+                        ParticleManager.particle[idx].velocityMul = Vector2.One * .93f;
+                        ParticleManager.particle[idx].rotationAdd = CNC.Random.NextBool().ToDirectionInt(16);
+                        ParticleManager.particle[idx].scaleAdd = new Vector2(-.025f);
+                        ParticleManager.particle[idx].alphaAdd = -.02f;
+                        ParticleManager.particle[idx].alpha = 1f;
                     }
                     CNCUtils.ScreenShake(20, new Vector2(0, 90), new Vector2(0, 20), .95f);
                     this.NewProjectile(0, 0, CNCID.Projectile.LegacyObject[CNCID.Projectile.ShockWave], 0, 0);
@@ -1261,6 +1262,11 @@ namespace CNC.Content.NPCs.SpiritBoss
                 npc.dontTakeDamage = false;
                 npc.velocity = Vector2.Zero;
             }
+        }
+
+        private void Action_MoveRandomly(int style)
+        {
+
         }
 
         public class HealthBar : ModBossBar

@@ -12,7 +12,7 @@ namespace CNC.Content.Items.Weapons.Magic
     public class IceTooth : CNCItem
     {
         public InscriptionSettings modItem => item.GetGlobalItem<InscriptionSettings>();
-        public bool FrostWaveEnable => modItem.HasInscription(CNCID.Inscription.S_FrostWave) && modItem.GetInscriptionCooldown(CNCID.Inscription.S_FrostWave);
+        public bool FrostWaveEnable => modItem.ExistInscription(CNCID.Inscription.S_FrostWave) && modItem.GetInscriptionCooldown(CNCID.Inscription.S_FrostWave);
 
         public override void ResetDefaults()
         {
@@ -52,8 +52,8 @@ namespace CNC.Content.Items.Weapons.Magic
                 Projectile projectile = CNCUtils.NewProj(source, position, velocity, type, damage, knockback);
                 projectile.GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().data["add"] = modItem.skillDamageAdd;
                 projectile.GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().data["mul"] = modItem.skillDamageMul;
-                if (modItem.HasInscription(CNCID.Inscription.S_Iceflake)) projectile.GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().data["flake"] = true;
-                if (modItem.HasInscription(CNCID.Inscription.S_Glacier)) projectile.GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().data["frozen"] = true;
+                if (modItem.ExistInscription(CNCID.Inscription.S_Iceflake)) projectile.GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().data["flake"] = true;
+                if (modItem.ExistInscription(CNCID.Inscription.S_Glacier)) projectile.GetGlobalProjectile<Common.Global.Projectiles.AllProjectile>().data["frozen"] = true;
             }
             return false;
         }

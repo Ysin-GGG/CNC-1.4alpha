@@ -10,6 +10,7 @@ using Terraria.GameContent;
 using Terraria.DataStructures;
 using CNC.Common.Utils;
 using CNC.Content;
+using Terraria.GameInput;
 
 namespace CNC.Common.Global.Players
 {
@@ -20,6 +21,10 @@ namespace CNC.Common.Global.Players
 
         public int lifeRegen;
         public int lifeRegenCount;
+        public int rightCastTime;
+        public bool controlMouseRight;
+        public bool releaseMouseRight;
+        private Item heldItem;
         /// <summary> 震动数值 </summary>
         public Vector2 shakeValue;
         /// <summary> 震动方向 </summary>
@@ -72,9 +77,17 @@ namespace CNC.Common.Global.Players
         {
             manaReturn = 0;
             Tick = (Tick + 1) % 60;
+            if (heldItem != player.HeldItem) { heldItem = player.HeldItem; rightCastTime = 0; }
             for (int i = 0; i < CDReduction.Length; i++) CDReduction[i] = 1f;
             for (int i = 0; i < buff.Length; i++) buff[i] = false;
-
+        }
+        
+        public override void ProcessTriggers(TriggersSet triggersSet)
+        {
+            base.ProcessTriggers(triggersSet);
+            if (controlMouseRight && releaseMouseRight) rightCastTime = (controlMouseRight = releaseMouseRight = false).ToInt(0);
+            if (controlMouseRight && !triggersSet.MouseRight) releaseMouseRight = true; 
+            if (triggersSet.MouseRight) rightCastTime += (controlMouseRight = true).ToInt(1);
         }
 
         /// <summary> 屏幕震动 </summary>
@@ -97,7 +110,7 @@ namespace CNC.Common.Global.Players
         private void UpdateShakeData()
         {
             Vector2 amplitude = new Vector2(Math.Abs(this.shakeAmplitude.X), Math.Abs(this.shakeAmplitude.Y));
-            if (this.shakeTime-- <= 0) this.shakeCur *= this.shakeCur < .01f ? 0f : this.shakeAttenuation;
+            if (this.shakeTime-- <= 0) this.shakeCur *= this.shakeCur < .1f ? 0f : this.shakeAttenuation;
             if (this.shakeValue.X <= -amplitude.X) this.shakeDirection.X = 1;
             if (this.shakeValue.X >= amplitude.X) this.shakeDirection.X = -1;
             if (this.shakeValue.Y <= -amplitude.Y) this.shakeDirection.Y = 1;

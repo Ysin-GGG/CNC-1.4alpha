@@ -16,6 +16,7 @@ namespace CNC.Content.Projectiles
         public sealed override int countFrame => 1;
         
         public Texture2D image;
+        public Texture2D imageSlashHit;
         public int totalFrame => tickPerFrame.Length;
         public int[] tickPerFrame;
         public Color imageColor;
@@ -286,11 +287,14 @@ namespace CNC.Content.Projectiles
 
         public override void HitNPC(NPC target, int damage, float knockback, bool crit)
         {
-            float rot = this.GetSlashInfo().W + MyMath.deg60 * 2 - CNC.Random.NextDegree(60f);
-            int dir = (this.attackInfo[1].rotation > this.attackInfo[0].rotation).ToDirectionInt();
-            var hit = CNCUtils.CreateSlashHit(projectile, Vector2.Zero);
-            hit.SetDefaults(mod.Assets.Request<Texture2D>("Assets/Projectiles/SlashHit/SlashHit1").Value, new Vector2(MyMath.phi - 1f, 1f) * .5f, target.Center, -10, rot * dir);
-            hit.SetColor(this.imageColor, this.lightColor, .1f);
+            if (this.imageSlashHit != null)
+            {
+                float rot = this.GetSlashInfo().W + MyMath.deg60 * 2 - CNC.Random.NextDegree(60f);
+                int dir = (this.attackInfo[1].rotation > this.attackInfo[0].rotation).ToDirectionInt();
+                var hit = CNCUtils.CreateSlashHit(projectile, Vector2.Zero);
+                hit.SetDefaults(this.imageSlashHit, new Vector2(MyMath.phi - 1f, 1f) * .5f, target.Center, -10, rot * dir);
+                hit.SetColor(this.imageColor, this.lightColor, .1f);
+            }
         }
 
         public override bool PreDraw(ref Color lightColor)

@@ -75,7 +75,6 @@ namespace CNC.Common.Global.Items
         /// <summary> 神力值消耗 </summary>
         /// <param name="player">目标玩家</param>
         /// <param name="amount">将要消耗的咒能数量</param>
-        /// <param name="ignoreCost">无视？%的加成影响，设为1则不计算加成</param>
         public bool ConsumeBlessing(Player player, int amount)
         {
             ClassesSettings modPlayer = player.GetModPlayer<ClassesSettings>();

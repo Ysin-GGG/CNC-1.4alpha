@@ -27,12 +27,14 @@ namespace CNC.Common.Utils
         /// <param name="owner">生成者</param>
         /// <param name="data0">数据变量1</param>
         /// <param name="data1">数据变量2</param>
-        public static Projectile NewProj(Terraria.DataStructures.IEntitySource source, Vector2 position, Vector2 velocity, int type, int dmg, float kb, int owner = -1, float damageAdd = 0, float damageMul = 1)
+        public static Projectile NewProj(Terraria.DataStructures.IEntitySource source, Vector2 position, Vector2 velocity, int type, int dmg, float kb, int owner = -1, float damageAdd = 0, float damageMult = 1, float ai0 = 0, float ai1 = 0)
         {
             if (owner < 0) { owner = Const.me; }
             int whoAmI = Projectile.NewProjectile(source, position, velocity, type, dmg, kb, owner);
+            Main.projectile[whoAmI].ai[0] = ai0;
+            Main.projectile[whoAmI].ai[1] = ai1;
             Main.projectile[whoAmI].GetGlobalProjectile<AllProjectile>().damageAdd = damageAdd;
-            Main.projectile[whoAmI].GetGlobalProjectile<AllProjectile>().damageMult = damageMul;
+            Main.projectile[whoAmI].GetGlobalProjectile<AllProjectile>().damageMult = damageMult;
             if (Main.projectile[whoAmI].ModProjectile != null && (CNCProjectile)Main.projectile[whoAmI].ModProjectile != null) ((CNCProjectile)Main.projectile[whoAmI].ModProjectile).OnSpawn();
             return Main.projectile[whoAmI];
         }
@@ -45,10 +47,12 @@ namespace CNC.Common.Utils
         /// <param name="kb">击退</param>
         /// <param name="crit">暴击率</param>
         /// <param name="owner">生成者</param>
-        public static Projectile NewProj(Terraria.DataStructures.IEntitySource source, Vector2 position, Vector2 velocity, int type, int dmg, float kb, int crit, int owner = -1, float damageAdd = 0, float damageMult = 1)
+        public static Projectile NewProj(Terraria.DataStructures.IEntitySource source, Vector2 position, Vector2 velocity, int type, int dmg, float kb, int crit, int owner = -1, float damageAdd = 0, float damageMult = 1, float ai0 = 0, float ai1 = 0)
         {
             if (owner < 0) { owner = Const.me; }
             int whoAmI = Projectile.NewProjectile(source, position, velocity, type, dmg, kb, owner);
+            Main.projectile[whoAmI].ai[0] = ai0;
+            Main.projectile[whoAmI].ai[1] = ai1;
             Main.projectile[whoAmI].CritChance = crit;
             Main.projectile[whoAmI].GetGlobalProjectile<AllProjectile>().damageAdd = damageAdd;
             Main.projectile[whoAmI].GetGlobalProjectile<AllProjectile>().damageMult = damageMult;
@@ -57,7 +61,7 @@ namespace CNC.Common.Utils
         }
 
 
-        public static Projectile NewProjectile(this Projectile projectile, Vector2 position, Vector2 velocity, int type, float damage, float knockBack, int crit, float rotation, float damageAdd = 0f, float damageMult = 1f)
+        public static Projectile NewProjectile(this Projectile projectile, Vector2 position, Vector2 velocity, int type, float damage, float knockBack, int crit, float rotation, float damageAdd = 0f, float damageMult = 1f, float ai0 = 0, float ai1 = 0)
         {
             int whoAmI = Projectile.NewProjectile(projectile.GetSource_FromThis(), position, velocity, type, (int)damage, knockBack, projectile.owner);
             Main.projectile[whoAmI].Center = position;
@@ -70,6 +74,8 @@ namespace CNC.Common.Utils
             Main.projectile[whoAmI].DamageType = projectile.DamageType;
             Main.projectile[whoAmI].hostile = projectile.hostile;
             Main.projectile[whoAmI].friendly = projectile.friendly;
+            Main.projectile[whoAmI].ai[0] = ai0;
+            Main.projectile[whoAmI].ai[1] = ai1;
             Main.projectile[whoAmI].GetGlobalProjectile<AllProjectile>().damageAdd = damageAdd;
             Main.projectile[whoAmI].GetGlobalProjectile<AllProjectile>().damageMult = damageMult;
             Main.projectile[whoAmI].GetGlobalProjectile<ProjectileRelation>().SetParent(projectile, true);
@@ -122,12 +128,16 @@ namespace CNC.Common.Utils
             return Dust.NewDustDirect(pos + _range + CNC.Random.NextVector2(target.Size), 0, 0, id, vel.X, vel.Y, color.A, color, scale);
         }
 
-        public static void PlaySound(SoundStyle sound, Entity target)
+        public static void PlaySound(SoundStyle sound, Entity target, float volume = 1f, float pitch = 1f)
             => PlaySound(sound, target.position);
 
-        public static void PlaySound(SoundStyle sound, Vector2 position)
-            => SoundEngine.PlaySound(sound, position);
-
+        public static void PlaySound(SoundStyle sound, Vector2 position, float volume = 1f, float pitch = 1f)
+        {
+            sound.Volume *= volume;
+            sound.Pitch *= pitch;
+            SoundEngine.PlaySound(sound, position);
+        }
+        
         public static void PlaySound(string path, Entity target, Mod mod = null)
             => PlaySound(path, target.position, 1f, mod ?? CNC.Instance);
 
@@ -138,18 +148,16 @@ namespace CNC.Common.Utils
             => PlaySound(path, position, 1f, mod ?? CNC.Instance);
 
         public static void PlaySound(string path, Vector2 position, float volume, Mod mod = null)
-        {
-            mod = mod ?? CNC.Instance;
-            if (!path.StartsWith("Content/Sounds/Custom/")) path = "Content/Sounds/Custom/" + path;
-            SoundEngine.PlaySound(new SoundStyle(mod.Name + "/" + path, SoundType.Sound), position);
-            //Terraria.Audio.SoundEngine.PlaySound(SoundLoader.CustomSoundType, (int)position.X, (int)position.Y, SoundLoader.GetSoundSlot(mod == default ? CNC.Instance : mod, path), volume);
-        }
+            => PlaySound(path, position, volume, 1f, mod ?? CNC.Instance);
 
         public static void PlaySound(string path, Vector2 position, float volume, float pitch, Mod mod = null)
         {
             mod = mod ?? CNC.Instance;
             if (!path.StartsWith("Content/Sounds/Custom/")) path = "Content/Sounds/Custom/" + path;
-            SoundEngine.PlaySound(new SoundStyle(mod.Name + "/" + path, SoundType.Sound), position);
+            SoundStyle sound = (new SoundStyle(mod.Name + "/" + path, SoundType.Sound));
+            sound.Volume *= volume;
+            sound.Pitch *= pitch;
+            SoundEngine.PlaySound(sound, position);
            // Terraria.Audio.SoundEngine.PlaySound(SoundLoader.CustomSoundType, (int)position.X, (int)position.Y, SoundLoader.GetSoundSlot(mod == default ? CNC.Instance : mod, path), volume, pitch);
         }
 
@@ -460,7 +468,7 @@ namespace CNC.Common.Utils
         {
             if (proj != null && proj.ModProjectile is Global.Projectiles.CNCProjectile)
             {
-                Projectile p = ((Global.Projectiles.CNCProjectile)proj.ModProjectile).NewProjectile(0, 0, CNCID.Projectile.LegacyObject[CNCID.Projectile.GenericExplosion], 0, 0);
+                Projectile p = ((CNCProjectile)proj.ModProjectile).NewProjectile(0, 0, CNCID.Projectile.LegacyObject[CNCID.Projectile.GenericExplosion], 0f, 0f, 0f, 0f, 1f, 0f, 0f);
                 p.direction = proj.direction;
                 GenericExplosion explosion = (GenericExplosion)p.ModProjectile;
                 return explosion.
@@ -713,5 +721,7 @@ namespace CNC.Common.Utils
             color.A = (byte)a;
             return color;
         }
+
+        public static AllPlayer All(this Player player) => player.GetModPlayer<AllPlayer>();
     }
 }

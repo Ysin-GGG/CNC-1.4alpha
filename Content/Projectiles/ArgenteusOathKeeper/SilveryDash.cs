@@ -56,11 +56,11 @@ namespace CNC.Content.Projectiles.ArgenteusOathKeeper
                     color,
                     new Color(color.R, color.G, color.B, 5)
                     );
-                ParticleRenderer.particle[idx].velocityMul = CNC.Random.NextFloat(.95f, .98f) * Vector2.One;
-                ParticleRenderer.particle[idx].rotationAdd = CNC.Random.NextDegree(-16f, 16f);
-                ParticleRenderer.particle[idx].scaleAdd = new Vector2(-.025f);
-                ParticleRenderer.particle[idx].alphaAdd = -.025f;
-                ParticleRenderer.particle[idx].alpha = 1f;
+                ParticleManager.particle[idx].velocityMul = CNC.Random.NextFloat(.95f, .98f) * Vector2.One;
+                ParticleManager.particle[idx].rotationAdd = CNC.Random.NextDegree(-16f, 16f);
+                ParticleManager.particle[idx].scaleAdd = new Vector2(-.025f);
+                ParticleManager.particle[idx].alphaAdd = -.025f;
+                ParticleManager.particle[idx].alpha = 1f;
 
                 idx = Particle.NewParticle(
                     ModContent.Request<Texture2D>("CNC/Assets/Particles/Star1").Value,
@@ -72,11 +72,11 @@ namespace CNC.Content.Projectiles.ArgenteusOathKeeper
                     color,
                     new Color(color.R, color.G, color.B, 5)
                     );
-                ParticleRenderer.particle[idx].velocityMul = CNC.Random.NextFloat(.95f, .98f) * Vector2.One;
-                ParticleRenderer.particle[idx].rotationAdd = CNC.Random.NextDegree(-16f, 16f);
-                ParticleRenderer.particle[idx].scaleAdd = new Vector2(-.025f);
-                ParticleRenderer.particle[idx].alphaAdd = -.025f;
-                ParticleRenderer.particle[idx].alpha = 1f;
+                ParticleManager.particle[idx].velocityMul = CNC.Random.NextFloat(.95f, .98f) * Vector2.One;
+                ParticleManager.particle[idx].rotationAdd = CNC.Random.NextDegree(-16f, 16f);
+                ParticleManager.particle[idx].scaleAdd = new Vector2(-.025f);
+                ParticleManager.particle[idx].alphaAdd = -.025f;
+                ParticleManager.particle[idx].alpha = 1f;
             }
             CNCUtils.AddLight(projectile.position, CNCID.Colors.SpiritBoss, 1.2f);
         }

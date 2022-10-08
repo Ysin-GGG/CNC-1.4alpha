@@ -75,7 +75,7 @@ namespace CNC.Content.Projectiles.IceTooth
         
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            if (this.flake) NewProjectile(0f, 0f, 0, projectile.damage, projectile.knockBack);
+            if (this.flake) NewProjectile(0f, 0f, 0, projectile.damage, projectile.knockBack, 0f, 0f, 1f, 0f, 0f);
             return base.OnTileCollide(oldVelocity);
         }
         
@@ -90,7 +90,7 @@ namespace CNC.Content.Projectiles.IceTooth
             if (this.flake)
             {
                 int type = CNCID.Projectile.LegacyObject[CNCID.Projectile.DentateIceExplosion];
-                Projectile proj = this.NewProjectile(0f, 0f, type, Inscription.JustGetDamage(projectile.damage, (string)CNCID.Inscription.S_Iceflake.Data[0], (float)data["add"], (float)data["mul"]), projectile.knockBack, Main.rand.NextFloat(0, MyMath.pi * 2));
+                Projectile proj = this.NewProjectile(0f, 0f, type, Inscription.JustGetDamage(projectile.damage, (string)CNCID.Inscription.S_Iceflake.Data[0], (float)data["add"], (float)data["mul"]), projectile.knockBack, Main.rand.NextFloat(0, MyMath.pi * 2), 0f, 1f, 0f, 0f);
                 proj.GetGlobalProjectile<AllProjectile>().data["target"] = npc != null ? npc.whoAmI : -1;
                 proj.GetGlobalProjectile<AllProjectile>().data["frozen"] = this.frozen;
                 proj.owner = this.projectile.owner;

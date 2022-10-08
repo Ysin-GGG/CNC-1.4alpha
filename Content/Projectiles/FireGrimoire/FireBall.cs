@@ -75,8 +75,8 @@ namespace CNC.Content.Projectiles.FireGrimoire
                         new Color(242, 92, 34, 0),
                         new Color(242, 92, 34, 25)
                         );
-                    ParticleRenderer.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.0003f, .0010f));
-                    ParticleRenderer.particle[idx].alphaAdd = (Main.rand.Next(5) + 1) * -.01f;
+                    ParticleManager.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.0003f, .0010f));
+                    ParticleManager.particle[idx].alphaAdd = (Main.rand.Next(5) + 1) * -.01f;
                 }
             }
         }
@@ -101,10 +101,10 @@ namespace CNC.Content.Projectiles.FireGrimoire
                     new Color(242, 92, 34, 0),
                     new Color(242, 92, 34, 25)
                     );
-                ParticleRenderer.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.0005f, .0012f));
-                ParticleRenderer.particle[idx].alphaAdd = (Main.rand.Next(5) + 1) * -.01f;
+                ParticleManager.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.0005f, .0012f));
+                ParticleManager.particle[idx].alphaAdd = (Main.rand.Next(5) + 1) * -.01f;
             }
-            Projectile proj = this.NewProjectile(0f, 0f, CNCID.Projectile.LegacyObject[CNCID.Projectile.FireBallExplosion], Inscription.JustGetDamage(projectile.damage, (string)CNCID.Inscription.S_Incinerating.Data[0]), projectile.knockBack, CNC.Random.NextFloat(MyMath.pi2));
+            Projectile proj = this.NewProjectile(0f, 0f, CNCID.Projectile.LegacyObject[CNCID.Projectile.FireBallExplosion], Inscription.JustGetDamage(projectile.damage, (string)CNCID.Inscription.S_Incinerating.Data[0]), projectile.knockBack, CNC.Random.NextFloat(MyMath.pi2), 0f, 1f, 0f, 0f);
             proj.GetGlobalProjectile<AllProjectile>().data["level"] = level;
             proj.owner = this.projectile.owner;
             SoundEngine.PlaySound(SoundID.Item100, projectile.position);

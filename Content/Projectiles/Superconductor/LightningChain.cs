@@ -118,11 +118,11 @@ namespace CNC.Content.Projectiles.Superconductor
                 color,
                 new Color(color.R, color.G, color.B, 255)
                 );
-            ParticleRenderer.particle[idx].scale2 = new Vector2(.25f);
-            ParticleRenderer.particle[idx].scaleFlashSpeed = .25f;
-            ParticleRenderer.particle[idx].scaleAdd = new Vector2(.002f, -.01f);
-            ParticleRenderer.particle[idx].Alpha = .75f;
-            ParticleRenderer.particle[idx].alphaAdd = -.06f;
+            ParticleManager.particle[idx].scale2 = new Vector2(.25f);
+            ParticleManager.particle[idx].scaleFlashSpeed = .25f;
+            ParticleManager.particle[idx].scaleAdd = new Vector2(.002f, -.01f);
+            ParticleManager.particle[idx].Alpha = .75f;
+            ParticleManager.particle[idx].alphaAdd = -.06f;
             idx = Particle.NewParticle(
                 ModContent.Request<Texture2D>("CNC/Assets/Particles/Light3").Value,
                 projectile.Center,
@@ -133,11 +133,11 @@ namespace CNC.Content.Projectiles.Superconductor
                 color,
                 new Color(color.R, color.G, color.B, 255)
                 );
-            ParticleRenderer.particle[idx].scale2 = new Vector2(.15f);
-            ParticleRenderer.particle[idx].scaleFlashSpeed = .25f;
-            ParticleRenderer.particle[idx].scaleAdd = new Vector2(.001f, -.005f);
-            ParticleRenderer.particle[idx].Alpha = .4f;
-            ParticleRenderer.particle[idx].alphaAdd = -.025f;
+            ParticleManager.particle[idx].scale2 = new Vector2(.15f);
+            ParticleManager.particle[idx].scaleFlashSpeed = .25f;
+            ParticleManager.particle[idx].scaleAdd = new Vector2(.001f, -.005f);
+            ParticleManager.particle[idx].Alpha = .4f;
+            ParticleManager.particle[idx].alphaAdd = -.025f;
         }
 
         private void LittleBolt(Vector2 pos, float rotation, float len)
@@ -159,11 +159,11 @@ namespace CNC.Content.Projectiles.Superconductor
                     color,
                     new Color(color.R, color.G, color.B, 55)
                     );
-                ParticleRenderer.particle[idx].scale2 = new Vector2(.25f) * num;
-                ParticleRenderer.particle[idx].scaleFlashSpeed = .25f;
-                ParticleRenderer.particle[idx].scaleAdd = new Vector2(.002f, -.005f) * num;
-                ParticleRenderer.particle[idx].Alpha = .75f;
-                ParticleRenderer.particle[idx].alphaAdd = -.06f;
+                ParticleManager.particle[idx].scale2 = new Vector2(.25f) * num;
+                ParticleManager.particle[idx].scaleFlashSpeed = .25f;
+                ParticleManager.particle[idx].scaleAdd = new Vector2(.002f, -.005f) * num;
+                ParticleManager.particle[idx].Alpha = .75f;
+                ParticleManager.particle[idx].alphaAdd = -.06f;
                 
                 idx = Particle.NewParticle(
                     ModContent.Request<Texture2D>("CNC/Assets/Particles/Light3").Value,
@@ -175,11 +175,11 @@ namespace CNC.Content.Projectiles.Superconductor
                     color,
                     new Color(color.R, color.G, color.B, 55)
                     );
-                ParticleRenderer.particle[idx].scale2 = new Vector2(.15f) * num;
-                ParticleRenderer.particle[idx].scaleFlashSpeed = .25f;
-                ParticleRenderer.particle[idx].scaleAdd = new Vector2(.001f, -.003f) * num;
-                ParticleRenderer.particle[idx].Alpha = .4f;
-                ParticleRenderer.particle[idx].alphaAdd = -.025f;
+                ParticleManager.particle[idx].scale2 = new Vector2(.15f) * num;
+                ParticleManager.particle[idx].scaleFlashSpeed = .25f;
+                ParticleManager.particle[idx].scaleAdd = new Vector2(.001f, -.003f) * num;
+                ParticleManager.particle[idx].Alpha = .4f;
+                ParticleManager.particle[idx].alphaAdd = -.025f;
                 rot2 += CNC.Random.NextFloat(-MyMath.deg30, MyMath.deg30) / 2f;
                 oldPos = pos;
                 pos += new Vector2(0, CNC.Random.NextFloat(3f, 6f)).RotatedBy(rot2) * num;

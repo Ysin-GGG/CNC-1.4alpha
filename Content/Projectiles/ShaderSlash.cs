@@ -28,26 +28,27 @@ namespace CNC.Content.Projectiles
         public SlashInfo[] attackInfo;
         public int timeLeft;
         public int slashLength;
-        public Vector4[] slashPosition;
         public Vector2 direction;
         public Vector2 hitboxOffset;
         public BlendState blendStyle = BlendState.Additive;
         public float opacity = 1f;
-        public float fadeSpeed;
-        public float traceChangeSpeed = -.2f;
-        private bool fading = false;
+        public double fadeSpeed;
+        protected float traceChangeSpeed = -.2f;
+        protected int weaponDirection = 1;
+        protected int slashStyle = 1;
+        protected bool fading = false;
 
         public ShaderSlash SetDefaults(Vector2 position, Vector2 direction, int slashLength, int time, int fadeTime, int precision = 1)
         {
             this.direction = direction;
-            this.slashLength = slashLength * precision;
+            this.slashLength = slashLength;
             this.timeLeft = time * precision;
             this.projectile.timeLeft = time * precision;
             this.projectile.extraUpdates = precision - 1;
             this.projectile.Center = position;
+            this.projectile.rotation = direction.ToRotation();
             this.projectile.ai[1] = this.projectile.timeLeft;
             this.fadeSpeed = 1f / (fadeTime * precision);
-            this.Initialize();
             return this;
         }
 
@@ -105,11 +106,13 @@ namespace CNC.Content.Projectiles
             return this;
         }
 
-        public ShaderSlash SetDraw(BlendState style, float opacity = 1f, float traceChangeSpeed = -.2f)
+        public ShaderSlash SetDraw(BlendState style, float opacity = 1f, float traceChangeSpeed = -.2f, int slashStyle = 1, int weaponDir = 1)
         {
             this.blendStyle = style;
             this.opacity = opacity;
             this.traceChangeSpeed = traceChangeSpeed;
+            this.slashStyle = slashStyle;
+            this.weaponDirection = weaponDir;
             return this;
         }
 
@@ -129,10 +132,9 @@ namespace CNC.Content.Projectiles
 
         public override void AI()
         {
-            this.UpdateData();
             projectile.velocity = Vector2.Zero;
             projectile.direction = (direction.X >= 0).ToDirectionInt(1);
-            if(projectile.friendly) projectile.Center = owner.Center;
+            if (projectile.friendly) projectile.Center = owner.Center;
             if (!this.fading && projectile.timeLeft <= 1) this.fading = true;
             if (this.fading)
             {
@@ -140,19 +142,20 @@ namespace CNC.Content.Projectiles
                 {
                     projectile.friendly = false;
                     projectile.timeLeft = 2;
-                    this.Alpha1 = MyMath.Min(this.Alpha1 + this.fadeSpeed, 1f);
+                    this.Alpha1 = (float)MyMath.Min(this.Alpha1 + this.fadeSpeed, 1d);
                 }
             }
             if (!this.fading) projectile.ai[1]--;
-            else projectile.ai[1] -= fadeSpeed * slashLength * .25f;
+            else projectile.ai[1] = (float)((double)projectile.ai[1] - this.fadeSpeed * this.slashLength * .25d);
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
+            projectile.direction = (direction.X >= 0).ToDirectionInt(1);
             Vector4 info = this.GetSlashInfo();
-            float rot = projectile.rotation;
+            float rot = info.W + projectile.rotation;
             Vector2 begin = projectile.Center + (this.hitboxOffset + info.XY()).RotatedBy(rot);
-            Vector2 end = begin + info.ZW().RotatedBy(rot);
+            Vector2 end = begin + new Vector2(info.Z, 0).RotatedBy(rot);
             Vector2 dist = end - begin;
             bool inRange = false;
             if (targetHitbox.Contains(begin.ToPoint()) || targetHitbox.Contains(end.ToPoint())) inRange = true;
@@ -196,10 +199,10 @@ namespace CNC.Content.Projectiles
             if (this.imageSlashHit != null)
             {
                 float rot = this.GetSlashInfo().W + MyMath.deg60 * 2 - CNC.Random.NextDegree(60f);
-                int dir = (this.attackInfo[1].rotation > this.attackInfo[0].rotation).ToDirectionInt();
+                int dir = (this.attackInfo[1].rotation + MyMath.pi2 > this.attackInfo[0].rotation + MyMath.pi2).ToDirectionInt(this.weaponDirection);
                 var hit = CNCUtils.CreateSlashHit(projectile, Vector2.Zero);
-                hit.SetDefaults(this.imageSlashHit, new Vector2(MyMath.phi - 1f, 1f) * .5f, target.Center, -10, rot * dir);
-                hit.SetColor(this.colorSlash, this.colorSlash, .1f);
+                hit.SetDefaults(this.imageSlashHit, new Vector2(MyMath.phi - 1f, 1f) * .5f, target.Center, -10, rot * dir, 30);
+                hit.SetColor(this.colorSlash.NewA(0), this.colorSlash.NewA(0), .1f);
             }
         }
 
@@ -210,6 +213,7 @@ namespace CNC.Content.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
+            projectile.direction = (direction.X >= 0).ToDirectionInt(1);
             this.DrawSlash(Main.spriteBatch);
             this.DrawWeapon(Main.spriteBatch);
             return false;
@@ -219,30 +223,60 @@ namespace CNC.Content.Projectiles
         {
             Texture2D image = this.imageWeapon ?? Terraria.GameContent.TextureAssets.Item[owner.HeldItem.type].Value;
             Vector4 info = this.GetSlashInfo();
+            float rotation = info.W + projectile.rotation;
+            Vector2 begin = projectile.Center + (this.hitboxOffset + info.XY()).RotatedBy(rotation);
+            Vector2 end = begin + new Vector2(info.Z, 0).RotatedBy(rotation);
             Vector2 pos = owner.Center - Main.screenPosition;
             Vector2 origin = new Vector2(0, image.Height);
-            int direction = (this.attackInfo[1].rotation > this.attackInfo[0].rotation).ToInt(1);
-            int direction2 = projectile.direction * (this.attackInfo[0].rotation > this.attackInfo[1].rotation).ToDirectionInt(1);
+            int direction = projectile.direction * (this.attackInfo[0].rotation + MyMath.pi2 > this.attackInfo[1].rotation + MyMath.pi2).ToDirectionInt(1) * this.weaponDirection;
             float alpha = 1f;
-            float rotation = info.ZW().ToRotation() + projectile.rotation;
-            float rotation2 = projectile.direction * (this.attackInfo[0].rotation > this.attackInfo[1].rotation).ToDirectionInt(1) * MyMath.deg45;
-            float scale = MyMath.Clamp(info.ZW().Length() / image.Size().Length(), .75f, 1.75f);
-            if (direction2 != 1) { origin.X = image.Width; rotation2 += MyMath.pi; }
-            Main.EntitySpriteDraw(image, pos, null, Color.White * this.Alpha2 * alpha, rotation + rotation2, origin, scale, (SpriteEffects)(direction2 != 1).ToInt(1), 0);
+            float rotation2 = direction * MyMath.deg45;
+            float scale = MyMath.Clamp(info.Z / image.Size().Length(), .75f, 1.75f);
+            if (direction != 1) { origin.X = image.Width; rotation2 += MyMath.pi; }
+            Main.EntitySpriteDraw(image, pos, null, Color.White * this.Alpha2 * alpha, rotation + rotation2, origin, scale, (SpriteEffects)(direction != 1).ToInt(1), 0);
         }
 
         private void DrawSlash(SpriteBatch spriteBatch)
         {
+            if (this.slashLength == 0) return;
             List<VertexInfo> vertex = new List<VertexInfo>();
-            float max = MyMath.Lerp(0f, this.slashLength, (float)(this.timeLeft - projectile.timeLeft) / (float)this.slashLength);
-            for (int i = 0; i < max; i++)
+            if (this.slashStyle == 2)
             {
-                if (slashPosition[i].XY() == Vector2.Zero || slashPosition[i].ZW() == Vector2.Zero) break;
-                float amount = i / max;
-                float w = MyMath.Lerp(1f, 0f, amount);
-                Color color = Color.Lerp(this.colorHead, this.colorTail, amount) * w * Alpha2;
-                vertex.Add(new VertexInfo(slashPosition[i].XY(), color, new Vector3(amount, 0f, w)));
-                vertex.Add(new VertexInfo(slashPosition[i].ZW(), color, new Vector3(amount, 1f, 0f)));
+                double time = this.fading ? 1.0d : 1.0d - (double)projectile.timeLeft / this.timeLeft;
+                float alpha = MyMath.Lerp(1f, 0f,  (float)(Math.Abs(time - .5f) * Math.Abs(time - .5f)) * 4f);
+                float max = MyMath.Min(this.slashLength, this.attackInfo.Length);
+                double dist = time > .5d ? ((1.0d - time) / max * 2.0d) : (time / max * 2.0d);
+                for (int i = 0; i < max; i++)
+                {
+                    Vector4 info = this.GetSlashInfo(time - (i - max / 2.0d) * dist);
+                    float rot = info.W + projectile.rotation;
+                    Vector2 begin = projectile.Center + (this.hitboxOffset + info.XY()).RotatedBy(rot);
+                    Vector2 end = begin + new Vector2(info.Z, 0).RotatedBy(rot);
+                    float amount = i / max;
+                    float amount2 = Math.Abs(i - max / 2.0f) / (max / 2.0f);
+                    float w = MyMath.Lerp(1f, 0f, amount2);
+                    Color color = Color.Lerp(this.colorHead, this.colorTail, (float)Math.Sqrt(amount2)) * w * Alpha2 * alpha;
+                    vertex.Add(new VertexInfo(begin, color, new Vector3(amount, 0f, w)));
+                    vertex.Add(new VertexInfo(end, color, new Vector3(amount, 1f, 0f)));
+                }
+            }
+            else
+            {
+                float max = MyMath.Lerp(0f, this.slashLength, (float)(this.timeLeft - projectile.timeLeft) / (float)this.slashLength);
+                for (int i = 0; i < max; i++)
+                {
+                    double time = 1.0d - ((double)projectile.ai[1] + i) / this.timeLeft;
+                    Vector4 info = this.GetSlashInfo(time);
+                    float rot = info.W + projectile.rotation;
+                    Vector2 begin = projectile.Center + (this.hitboxOffset + info.XY()).RotatedBy(rot);
+                    Vector2 end = begin + new Vector2(info.Z, 0).RotatedBy(rot);
+                    //if (begin == Vector2.Zero || end == Vector2.Zero) break;
+                    float amount = i / max;
+                    float w = MyMath.Lerp(1f, 0f, amount);
+                    Color color = Color.Lerp(this.colorHead, this.colorTail, amount) * w * Alpha2;
+                    vertex.Add(new VertexInfo(begin, color, new Vector3(amount, 0f, w)));
+                    vertex.Add(new VertexInfo(end, color, new Vector3(amount, 1f, 0f)));
+                }
             }
             if (vertex.Count > 2)
             {
@@ -276,6 +310,7 @@ namespace CNC.Content.Projectiles
                 shader.Parameters["uColor2"].SetValue(colorSlashTrace.ToVector4());
                 shader.Parameters["uAlpha"].SetValue(this.Alpha2 * this.opacity);
                 shader.Parameters["uTime"].SetValue(Main.GlobalTimeWrappedHourly * this.traceChangeSpeed);
+                this.ModifySlash(ref shader, ref vertex);
                 shader.CurrentTechnique.Passes[0].Apply();
                 
                 Main.pixelShader.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertex.ToArray(), 0, vertex.Count - 2);
@@ -285,54 +320,22 @@ namespace CNC.Content.Projectiles
             }
         }
 
-        private void UpdateData()
-        {
-            projectile.direction = (direction.X >= 0).ToDirectionInt(1);
-            for (int i = 0; i < slashLength; i++)
-            {
-                double time = ((double)projectile.ai[1] + i) / this.timeLeft;
-                Vector4 info = this.GetSlashInfo(time);
-                float rot = projectile.rotation;
-                Vector2 begin = projectile.Center + (this.hitboxOffset + info.XY()).RotatedBy(rot);
-                Vector2 end = begin + info.ZW().RotatedBy(rot);
-                slashPosition[i] = new Vector4(begin.X, begin.Y, end.X, end.Y);
-            }
-        }
-
-        private void Initialize()
-        {
-            int len = slashLength;
-            this.slashPosition = new Vector4[len];
-            while (len-- > 0)
-            {
-                this.slashPosition[len] = new Vector4(projectile.position, projectile.position.X, projectile.position.Y);
-            }
-        }
+        public virtual void ModifySlash(ref Effect shader, ref List<VertexInfo> vertexs) { }
 
         /// <summary> 获取当前帧的斩击信息 <para> Vector4的XYZW分别对应：横坐标偏移，纵坐标偏移，攻击距离，攻击角度）</para> </summary>
-        public virtual Vector4 GetSlashInfo() => this.GetSlashInfo(this.fading ? 0.0d : (double)projectile.timeLeft / this.timeLeft);
+        public virtual Vector4 GetSlashInfo() => this.GetSlashInfo(this.fading ? 1.0d : 1.0d - (double)projectile.timeLeft / this.timeLeft);
         /// <summary> 获取当前帧的斩击信息 <para> Vector4的XYZW分别对应：横坐标偏移，纵坐标偏移，攻击距离，攻击角度）</para> </summary>
         public virtual Vector4 GetSlashInfo(double amount)
         {
-            double clamp(double v, double min, double max) => MyMath.Min(MyMath.Max(min, v), max);
-            Vector2 lerp(Vector2 v1, Vector2 v2, double percentage)
-            {
-                Vector2 v = new Vector2();
-                percentage = clamp(percentage, 0.0d, 1.0d);
-                v.X = (float)(v1.X * (1.0d - percentage) + v2.X * percentage);
-                v.Y = (float)(v1.Y * (1.0d - percentage) + v2.Y * percentage);
-                return v;
-            }
-            amount = clamp(amount, 0.0d, 1.0f);
             int count = this.attackInfo.Length;
-            double eps = 1e5d;
-            double len = eps / count;
-            double amount2 = amount * eps % len / len;
-            int index = MyMath.Clamp((int)(amount * count) + 1, 1, count - 1);
-            double amount3 = Math.Pow(amount2, this.attackInfo[index].power);
-            Vector2 offset = lerp(this.attackInfo[index - 1].offset, this.attackInfo[index].offset, amount3);
-            Vector2 position = lerp(this.attackInfo[index - 1].position, this.attackInfo[index].position, amount3);
-            return new Vector4(offset, position.X, position.Y);
+            float len = 1f / count;
+            float amount2 = (float)amount % len / len;
+            int index = MyMath.Clamp((int)(amount / len) + 1, 1, count - 1);
+            float amount3 = MyMath.pow(amount2, this.attackInfo[index].power);
+            Vector2 offset = MyMath.Lerp(this.attackInfo[index - 1].offset, this.attackInfo[index].offset, amount3);
+            float range = MyMath.Lerp(this.attackInfo[index - 1].range, this.attackInfo[index].range, amount3);
+            float rotation = MyMath.Lerp(this.attackInfo[index - 1].rotation, this.attackInfo[index].rotation, amount3);
+            return new Vector4(offset, range, -rotation * projectile.direction);
         }
     }
 }

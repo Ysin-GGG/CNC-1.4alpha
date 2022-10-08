@@ -89,10 +89,10 @@ namespace CNC.Content.Projectiles.ArgenteusClaw
                         Vector2.One,
                         color
                         );
-                    ParticleRenderer.particle[idx].velocityMul = CNC.Random.NextVector2(.9f, 1f, .95f, 1f);
-                    ParticleRenderer.particle[idx].velocityAdd = CNC.Random.NextVector2(0, -1.2f, 0, -1f);
-                    ParticleRenderer.particle[idx].rotationAdd = CNC.Random.NextDegree(-8f, 8f);
-                    ParticleRenderer.particle[idx].scaleAdd = Vector2.One * CNC.Random.NextFloat(-.05f);
+                    ParticleManager.particle[idx].velocityMul = CNC.Random.NextVector2(.9f, 1f, .95f, 1f);
+                    ParticleManager.particle[idx].velocityAdd = CNC.Random.NextVector2(0, -1.2f, 0, -1f);
+                    ParticleManager.particle[idx].rotationAdd = CNC.Random.NextDegree(-8f, 8f);
+                    ParticleManager.particle[idx].scaleAdd = Vector2.One * CNC.Random.NextFloat(-.05f);
                 }
             }
             else
@@ -107,9 +107,9 @@ namespace CNC.Content.Projectiles.ArgenteusClaw
                     color,
                     new Color(color.R, color.G, color.B, 5)
                     );
-                ParticleRenderer.particle[idx].scaleAdd.Y = -.005f;
-                ParticleRenderer.particle[idx].alphaAdd = -.05f;
-                ParticleRenderer.particle[idx].alpha = 1f;
+                ParticleManager.particle[idx].scaleAdd.Y = -.005f;
+                ParticleManager.particle[idx].alphaAdd = -.05f;
+                ParticleManager.particle[idx].alpha = 1f;
 
                 idx = Particle.NewParticle(
                     ModContent.Request<Texture2D>("CNC/Assets/Particles/Star1").Value,
@@ -121,11 +121,11 @@ namespace CNC.Content.Projectiles.ArgenteusClaw
                     color,
                     new Color(color.R, color.G, color.B, 5)
                     );
-                ParticleRenderer.particle[idx].velocityMul = CNC.Random.NextVector2(.95f, .95f, .98f, .98f);
-                ParticleRenderer.particle[idx].rotationAdd = CNC.Random.NextDegree(-16f, 16f);
-                ParticleRenderer.particle[idx].scaleAdd = new Vector2(-.025f);
-                ParticleRenderer.particle[idx].alphaAdd = -.025f;
-                ParticleRenderer.particle[idx].alpha = 1f;
+                ParticleManager.particle[idx].velocityMul = CNC.Random.NextVector2(.95f, .95f, .98f, .98f);
+                ParticleManager.particle[idx].rotationAdd = CNC.Random.NextDegree(-16f, 16f);
+                ParticleManager.particle[idx].scaleAdd = new Vector2(-.025f);
+                ParticleManager.particle[idx].alphaAdd = -.025f;
+                ParticleManager.particle[idx].alpha = 1f;
             }
         }
 
@@ -154,11 +154,11 @@ namespace CNC.Content.Projectiles.ArgenteusClaw
                     new Color(color.R, color.G, color.B, 5),
                     false
                     );
-                ParticleRenderer.particle[idx].lightAlpha = .2f;
-                ParticleRenderer.particle[idx].rotationAdd = CNC.Random.NextDegree(-16f, 16f);
-                ParticleRenderer.particle[idx].scaleAdd = new Vector2(-.01f);
-                ParticleRenderer.particle[idx].alphaAdd = -.005f;
-                ParticleRenderer.particle[idx].alpha = 1f;
+                ParticleManager.particle[idx].lightAlpha = .2f;
+                ParticleManager.particle[idx].rotationAdd = CNC.Random.NextDegree(-16f, 16f);
+                ParticleManager.particle[idx].scaleAdd = new Vector2(-.01f);
+                ParticleManager.particle[idx].alphaAdd = -.005f;
+                ParticleManager.particle[idx].alpha = 1f;
             }
         }
 

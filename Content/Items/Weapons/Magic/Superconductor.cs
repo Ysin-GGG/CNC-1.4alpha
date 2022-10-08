@@ -14,12 +14,12 @@ namespace CNC.Content.Items.Weapons.Magic
     {
         public InscriptionSettings modItem => item.GetGlobalItem<InscriptionSettings>();
 
-        public bool LightningChainEnable => modItem.HasInscription(CNCID.Inscription.S_SpellLightningChain) && modItem.GetInscriptionCooldown(CNCID.Inscription.S_SpellLightningChain);
-        private bool LightningChainUpgrade => modItem.HasInscription(CNCID.Inscription.S_SpellAugmentated);
-        private bool LightningChainUpgrade2 => modItem.HasInscription(CNCID.Inscription.S_SpellReconstruction);
+        public bool LightningChainEnable => modItem.ExistInscription(CNCID.Inscription.S_SpellLightningChain) && modItem.GetInscriptionCooldown(CNCID.Inscription.S_SpellLightningChain);
+        private bool LightningChainUpgrade => modItem.ExistInscription(CNCID.Inscription.S_SpellAugmentated);
+        private bool LightningChainUpgrade2 => modItem.ExistInscription(CNCID.Inscription.S_SpellReconstruction);
         private int LightningChainDamage => this.JustGetDamage(CNCID.Inscription.S_SpellLightningChain, 2);
-        public bool OverloadEnable => modItem.HasInscription(CNCID.Inscription.S_ArcaneOverload) && modItem.GetInscriptionCooldown(CNCID.Inscription.S_ArcaneOverload);
-        private bool OverloadUpgrade => modItem.HasInscription(CNCID.Inscription.S_StableSpell) && modItem.GetInscriptionCooldown(CNCID.Inscription.S_StableSpell);
+        public bool OverloadEnable => modItem.ExistInscription(CNCID.Inscription.S_ArcaneOverload) && modItem.GetInscriptionCooldown(CNCID.Inscription.S_ArcaneOverload);
+        private bool OverloadUpgrade => modItem.ExistInscription(CNCID.Inscription.S_StableSpell) && modItem.GetInscriptionCooldown(CNCID.Inscription.S_StableSpell);
         private int OverloadDamage => this.JustGetDamage(CNCID.Inscription.S_ArcaneOverload, 3);
         
         public override void ResetDefaults()

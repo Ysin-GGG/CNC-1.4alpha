@@ -29,6 +29,7 @@ Mods: {
 				HHvsHat: 至高巫师帽
 				HHvsLegs: 至高巫师连裤靴
 				QuartzBlock: Quartz的头
+				Anatta: 无我之刃
 				MiracleGem: 静谧宝石
 				DestineScroll: 命定卷轴
 				FireGrimoire: 火焰魔典
@@ -55,6 +56,7 @@ Mods: {
 				HHvsHat: “无上智慧的重压”
 				HHvsLegs: “巫师自创连裤靴”
 				QuartzBlock: “你瞅啥？”
+				Anatta: 放在背包时，此剑会激发某些武器的力量
 				MiracleGem: 召唤可骑乘的灵狐
 				DestineScroll: 得到一次重新变更职业的机会\n“卷轴上记载了更替命定之路的上古咒文。”
 				#FireGrimoire: 
@@ -354,6 +356,7 @@ Mods: {
 			Unloaded: Classes & Craft(1.4Alpha)已卸载，感谢您的使用。
 			Inscription: 铭文-<{0}>
 			InscriptionSpecial: <专有铭文>
+			AnattaPower: 此武器受无我之力影响
 		}
 
 		UI: {

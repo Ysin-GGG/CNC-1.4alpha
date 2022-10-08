@@ -76,10 +76,18 @@ namespace CNC.Common.Global.Projectiles
         internal delegate void _OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit);
         internal delegate void _ModifyHitPlayer(Player target, ref int damage, ref bool crit);
         internal delegate void _OnHitPlayer(Player target, int damage, bool crit);
+        internal delegate void _VanillaModifyHitNPC(NPC target, ref int damage, ref float knockBack, ref bool crit);
+        internal delegate void _VanillaOnHitNPC(NPC target, int damage, float knockBack, bool crit);
+        internal delegate void _VanillaModifyHitPlayer(ref int damage, ref bool crit);
+        internal delegate void _VanillaOnHitPlayer(int damage, bool crit);
         internal _ModifyHitNPC ModifyHitNPCEffect;
         internal _OnHitNPC OnHitNPCEffect;
         internal _ModifyHitPlayer ModifyHitPlayerEffect;
         internal _OnHitPlayer OnHitPlayerEffect;
+        internal _VanillaModifyHitNPC VanillaModifyHitNPCEffect;
+        internal _VanillaOnHitNPC VanillaOnHitNPCEffect;
+        internal _VanillaModifyHitPlayer VanillaModifyHitPlayerEffect;
+        internal _VanillaOnHitPlayer VanillaOnHitPlayerEffect;
 
         public ProjDamageStyle DamageStyle
         {
@@ -127,17 +135,17 @@ namespace CNC.Common.Global.Projectiles
             return Main.npc[whoAmI];
         }
 
-        public Projectile NewProjectile(float velocity, float velocityRot, int type, float knockback = 0f, float rotation = 0f)
-            => NewProjectile(projectile, projectile.Center, MyMath.GetXY(velocityRot) * velocity, type, projectile.damage, rotation, 0f, 1f);
+        public Projectile NewProjectile(float velocity, float velocityRot, int type, float knockback = 0f, float rotation = 0f, float ai0 = 0f, float ai1 = 0f)
+            => NewProjectile(projectile, projectile.Center, MyMath.GetXY(velocityRot) * velocity, type, projectile.damage, rotation, 0f, 1f, ai0, ai1);
 
-        public Projectile NewProjectile(float velocity, float velocityRot, int type, float damage, float knockback, float rotation = 0f, float damageAdd = 0f, float damageMul = 1f)
-            => NewProjectile(projectile, projectile.Center, MyMath.GetXY(velocityRot) * velocity, type, damage, rotation, damageAdd, damageMul);
+        public Projectile NewProjectile(float velocity, float velocityRot, int type, float damage, float knockback, float rotation = 0f, float damageAdd = 0f, float damageMul = 1f, float ai0 = 0f, float ai1 = 0f)
+            => NewProjectile(projectile, projectile.Center, MyMath.GetXY(velocityRot) * velocity, type, damage, rotation, damageAdd, damageMul, ai0, ai1);
 
-        public Projectile NewProjectile(Vector2 velocity, int type, float damage, float knockback, float rotation = 0f, float damageAdd = 0f, float damageMul = 1f)
-            => NewProjectile(projectile, projectile.Center, velocity, type, damage, rotation, damageAdd, damageMul);
+        public Projectile NewProjectile(Vector2 velocity, int type, float damage, float knockback, float rotation = 0f, float damageAdd = 0f, float damageMul = 1f, float ai0 = 0f, float ai1 = 0f)
+            => NewProjectile(projectile, projectile.Center, velocity, type, damage, rotation, damageAdd, damageMul, ai0, ai1);
 
-        public Projectile NewProjectile(Vector2 position, Vector2 velocity, int type, float damage, float knockback, float rotation = 0f, float damageAdd = 0f, float damageMul = 1f)
-            => NewProjectile(projectile, position, velocity, type, damage, rotation, damageAdd, damageMul);
+        public Projectile NewProjectile(Vector2 position, Vector2 velocity, int type, float damage, float knockback, float rotation = 0f, float damageAdd = 0f, float damageMul = 1f, float ai0 = 0f, float ai1 = 0f)
+            => NewProjectile(projectile, position, velocity, type, damage, rotation, damageAdd, damageMul, ai0, ai1);
 
         /// <summary> 生成子弹幕 </summary>
         /// <param name="projectile"></param>
@@ -149,9 +157,11 @@ namespace CNC.Common.Global.Projectiles
         /// <param name="rotation"></param>
         /// <param name="damageAdd"></param>
         /// <param name="damageMult"></param>
-        public Projectile NewProjectile(Projectile projectile, Vector2 position, Vector2 velocity, int type, float damage, float knockBack = 0f, float rotation = 0f, float damageAdd = 0f, float damageMult = 1f)
+        public Projectile NewProjectile(Projectile projectile, Vector2 position, Vector2 velocity, int type, float damage, float knockBack = 0f, float rotation = 0f, float damageAdd = 0f, float damageMult = 1f, float ai0 = 0f, float ai1 = 0f)
         {
-            int whoAmI = Projectile.NewProjectile(projectile.GetSource_FromThis(), position, velocity, type, (int)damage, knockBack, projectile.owner);
+            int whoAmI = Projectile.NewProjectile(projectile.GetSource_FromThis(), position, velocity, type, (int)damage, knockBack, projectile.owner, ai0, ai1);
+            Main.projectile[whoAmI].ai[0] = ai0;
+            Main.projectile[whoAmI].ai[1] = ai1;
             Main.projectile[whoAmI].Center = position;
             Main.projectile[whoAmI].rotation = rotation;
             Main.projectile[whoAmI].GetGlobalProjectile<AllProjectile>().damageAdd = damageAdd;
@@ -244,7 +254,6 @@ namespace CNC.Common.Global.Projectiles
         /// <summary> 搜索最近玩家 </summary>
         /// <param name="p">当前弹幕</param>
         /// <param name="range">搜索半径</param>
-        /// <returns></returns>
         public Player FindClosestTarget(Projectile p, float range)
         {
             if (Main.netMode == 0) return Const.Me;
@@ -280,10 +289,10 @@ namespace CNC.Common.Global.Projectiles
         public int JustGetDamage(Inscription inscription, int dataIndex = 0, int originalDamage = -1) => Inscription.JustGetDamage(originalDamage, (string)inscription.Data[MyMath.Max(0, dataIndex)], this.damageAdd, this.damageMul);
         public int JustGetDamage(Inscription inscription, float damageAdd, float damageMul, int dataIndex = 0, int originalDamage = -1) => Inscription.JustGetDamage(originalDamage, (string)inscription.Data[MyMath.Max(0, dataIndex)], damageAdd, damageMul);
 
-        protected Projectile AI001_RollingMissile(Projectile p, bool gravity = false, bool updateRot = false, float extraAngle = 0)
+        protected Projectile AI001_RollingMissile(Projectile p, bool gravity = false, bool updateRot = false, float extraRot = 0)
         {
             Vector2 realVel = Const._02;
-            float angle = MyMath.pi * extraAngle / 180;
+            float angle = MyMath.pi * extraRot / 180;
             if (p.type == 0 || p.velocity == Const._02) return p;
             p.velocity.Y = gravity ? p.velocity.Y + MyMath.g * .01f : p.oldVelocity.Y;
             if (updateRot && realVel == Const._02)
@@ -314,6 +323,7 @@ namespace CNC.Common.Global.Projectiles
         public sealed override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
             this.OnHitNPCEffect?.Invoke(this.owner, target, damage, knockback, crit);
+            this.VanillaOnHitNPCEffect?.Invoke(target, damage, knockback, crit);
             HitNPC(target, damage, knockback, crit);
             OnHit(target, damage, knockback, crit);
         }
@@ -321,6 +331,7 @@ namespace CNC.Common.Global.Projectiles
         public sealed override void OnHitPlayer(Player target, int damage, bool crit)
         {
             this.OnHitPlayerEffect?.Invoke(target, damage, crit);
+            this.VanillaOnHitPlayerEffect?.Invoke(damage, crit);
             HitPlayer(target, damage, crit);
             OnHit(target, damage, 0f, crit);
         }
@@ -328,6 +339,7 @@ namespace CNC.Common.Global.Projectiles
         public sealed override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
             this.ModifyHitNPCEffect?.Invoke(this.owner, target, ref damage, ref knockback, ref crit);
+            this.VanillaModifyHitNPCEffect?.Invoke(target, ref damage, ref knockback, ref crit);
             HitNPC(target, ref damage, ref knockback, ref crit, ref hitDirection);
             ModifyHit(target, ref damage, ref knockback, ref crit);
         }
@@ -336,6 +348,7 @@ namespace CNC.Common.Global.Projectiles
         {
             float knockback = 0f;
             this.ModifyHitPlayerEffect?.Invoke(target, ref damage, ref crit);
+            this.VanillaModifyHitPlayerEffect?.Invoke(ref damage, ref crit);
             HitPlayer(target, ref damage, ref crit);
             ModifyHit(target, ref damage, ref knockback, ref crit);
         }

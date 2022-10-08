@@ -20,8 +20,8 @@ namespace CNC.Content.Dusts
                 new Color(255, 255, 255, 0),
                 new Color(255, 255, 255, 5)
                 );
-            ParticleRenderer.particle[idx].scaleAdd = new Vector2(-Main.rand.NextFloat(.05f, .01f)) / 2f;
-            ParticleRenderer.particle[idx].rotationAdd = Common.Utils.MyMath.deg01 * Main.rand.Next(1, 16);
+            ParticleManager.particle[idx].scaleAdd = new Vector2(-Main.rand.NextFloat(.05f, .01f)) / 2f;
+            ParticleManager.particle[idx].rotationAdd = Common.Utils.MyMath.deg01 * Main.rand.Next(1, 16);
             dust.scale *= 0;
             dust.active = false;
         }
