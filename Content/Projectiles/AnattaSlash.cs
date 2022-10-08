@@ -46,6 +46,7 @@ namespace CNC.Content.Projectiles
             var time = 10;
             var time2 = 5;
             var dir = -1;
+            var style = 2;
             switch (projectile.ai[0])
             {
                 case 4f:
@@ -63,9 +64,10 @@ namespace CNC.Content.Projectiles
                         CNC.GetTexture("Assets/Projectiles/Slash/FieryGreatsword"),
                         CNC.GetTexture("Assets/Projectiles/SlashHit/SlashHit1"),
                     };
-                    time = 20;
-                    time2 = 10;
+                    time = 15;
+                    time2 = 15;
                     opacity = 2f;
+                    style = 1;
                     dir = 1;
                     CNCUtils.PlaySound(SoundID.DD2_BetsyFireballShot, owner);
                     CNCUtils.ScreenShake(0, new Vector2(0, 40f), new Vector2(0, 20f), .9f, default, owner);
@@ -88,6 +90,7 @@ namespace CNC.Content.Projectiles
                     time = 10;
                     time2 = 20;
                     opacity = 1.5f;
+                    style = 1;
                     dir = 1;
                     CNCUtils.PlaySound(SoundID.Item45, owner, 1f, 2f);
                     CNCUtils.ScreenShake(0, new Vector2(0, 20f), new Vector2(0, 10f), .9f, default, owner);
@@ -220,7 +223,7 @@ namespace CNC.Content.Projectiles
                     break;
             }
             SetDefaults(owner.Center, projectile.velocity, info.Length, time, time2, 10);
-            SetDraw(blendStyle, opacity, 1f, 2, dir);
+            SetDraw(blendStyle, opacity, 1f, style, dir);
             SetImage(t[0], t[1], t[2], t[3]);
             SetAttackInfo(info);
         }
@@ -314,7 +317,6 @@ namespace CNC.Content.Projectiles
                             CNCUtils.NewDust(pos, DustId.Fire, CNC.Random.NextFloat(1f, 2f), vel, c2).noGravity = true;
                         }
                     }
-
                     double time = this.fading ? 1.0d : 1.0d - (double)projectile.timeLeft / this.timeLeft;
                     if (type == 3.3f && !fading && ((int)projectile.timeLeft % (this.timeLeft / 6) == 1))
                     {
@@ -328,7 +330,7 @@ namespace CNC.Content.Projectiles
                     }
                     break;
                 case 2f:
-                    SetColor(c1, c1, c1, c1, c1);
+                    SetColor(c1, c1, c2, c1, c1);
                     if (!fading && projectile.timeLeft % (projectile.extraUpdates / 2) == 0)
                     {
                         Vector4 info = GetSlashInfo();
@@ -360,7 +362,7 @@ namespace CNC.Content.Projectiles
                     }
                     break;
                 case 1f:
-                    SetColor(c1, c2, c1, c1, c1);
+                    SetColor(c1, c2, c2, c1, c1);
                     if (!fading && projectile.timeLeft % projectile.extraUpdates == 0)
                     {
                         Vector4 info = GetSlashInfo();

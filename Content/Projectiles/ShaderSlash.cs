@@ -37,6 +37,7 @@ namespace CNC.Content.Projectiles
         protected int weaponDirection = 1;
         protected int slashStyle = 1;
         protected bool fading = false;
+        private int timer = 0;
 
         public ShaderSlash SetDefaults(Vector2 position, Vector2 direction, int slashLength, int time, int fadeTime, int precision = 1)
         {
@@ -146,7 +147,7 @@ namespace CNC.Content.Projectiles
                 }
             }
             if (!this.fading) projectile.ai[1]--;
-            else projectile.ai[1] = (float)((double)projectile.ai[1] - this.fadeSpeed * this.slashLength * .25d);
+            else if (timer++ % projectile.extraUpdates == 0) projectile.ai[1] = (float)((double)projectile.ai[1] - this.fadeSpeed * this.slashLength * .5d);
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
