@@ -92,17 +92,21 @@ namespace CNC.Common.Global.Items
             }
             if (EnableAnatta(CNC.Me))
             {
-                bool flag = false;
+                bool flag = true;
                 Color color = Color.White;
                 switch (item.type)
                 {
-                    case ItemID.FieryGreatsword:
-                        color = new Color(242, 92, 34);
-                        flag = true;
-                        break;
                     case ItemID.Meowmere:
                         color = Color.LightPink;
-                        flag = true;
+                        break;
+                    case ItemID.FieryGreatsword:
+                        color = new Color(242, 92, 34);
+                        break;
+                    case ItemID.TrueExcalibur:
+                        color = Color.LightGoldenrodYellow;
+                        break;
+                    default:
+                        flag = false;
                         break;
                 }
                 TooltipLine tt2 = new TooltipLine(mod, item.Name, CNCLocalization.GetText("Misc.AnattaPower")) { OverrideColor = color.Flash() };
@@ -114,23 +118,37 @@ namespace CNC.Common.Global.Items
         {
             if (EnableAnatta(player))
             {
+                bool reset = true;
                 switch (item.type)
                 {
+                    case ItemID.TrueExcalibur:
+                        int[] time = { 30, 40, 10, 20, 40 };
+                        int[] time2 = { 30, 40, 10, 20, 40 };
+                        item.useTime = time[comboCur];
+                        item.useAnimation = time2[comboCur];
+                        item.shootSpeed = 32f;
+                        comboCount = 5;
+                        comboDelay = 10;
+                        break;
                     case ItemID.FieryGreatsword:
                         item.shoot = 1;
                         item.shootSpeed = 1f;
                         item.useTime = 30;
+                        item.useAnimation = 30;
                         comboCount = 4;
-                        comboDelay = item.useAnimation + 5;
-                        item.noMelee = true;
-                        item.scale = 0f;
-                        if (player.All().controlMouseRight) return false;
+                        comboDelay = 10;
                         break;
                     case ItemID.Meowmere:
-                        item.noMelee = true;
-                        item.scale = 0f;
-                        if (player.All().controlMouseRight) return false;
                         break;
+                    default:
+                        reset = false;
+                        break;
+                }
+                if (reset)
+                {
+                    item.noMelee = true;
+                    item.scale = 0f;
+                    if (player.All().controlMouseRight) return false;
                 }
             }
             else
@@ -138,6 +156,10 @@ namespace CNC.Common.Global.Items
                 Item clone = new Item(item.type);
                 item.scale = clone.scale;
                 item.noMelee = clone.noMelee;
+                item.useTime = clone.useTime;
+                item.useAnimation = clone.useAnimation;
+                item.shoot = clone.shoot;
+                item.shootSpeed = clone.shootSpeed;
             }
             return base.CanUseItem(item, player);
         }
@@ -145,9 +167,8 @@ namespace CNC.Common.Global.Items
         public override bool? UseItem(Item item, Player player)
         {
             bool? flag = base.UseItem(item, player);
-            int next = (this.comboCur + 1) % comboCount;
             int time = this.comboDelay;
-            this.comboNext = next % comboCount;
+            this.comboNext = (this.comboCur + 1) % comboCount;
             this.comboTime = time;
             return flag;
         }
@@ -170,6 +191,36 @@ namespace CNC.Common.Global.Items
                 Color mainColor = Color.White;
                 switch (item.type)
                 {
+                    case ItemID.Meowmere:
+                        mainColor = CNCID.Colors.Expert;
+                        if (control)
+                        {
+                            Vector2 vel = new Vector2(CNC.Random.NextFloat(4f) + MyMath.Lerp(12f, 0f, ct / ctMax), 0f).RotatedBy(CNC.Random.NextDegree());
+                            int idx = Particle.NewParticle(
+                                CNC.GetTexture("Assets/Particles/Star1"),
+                                player.Center + vel * 10f,
+                                vel * -.5f,
+                                CNC.Random.NextDegree(),
+                                30,
+                                Vector2.One * 1.5f,
+                                mainColor.NewA(0),
+                                mainColor.NewA(3)
+                                );
+                            ParticleManager.particle[idx].velocityMul = Vector2.One * .95f;
+                            ParticleManager.particle[idx].rotationAdd = CNC.Random.NextBool().ToDirectionInt(16);
+                            ParticleManager.particle[idx].scaleAdd = new Vector2(-.05f);
+                            ParticleManager.particle[idx].alphaAdd = -.033f;
+                            ParticleManager.particle[idx].alpha = 1f;
+                        }
+                        if (release && ct >= ctMax)
+                        {
+                            CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.SolarHalo], (int)damage, 0f, (int)crit, player.whoAmI, 0f, 1f, 0, 0);
+                            damage *= 3;
+                            knockback *= 3f;
+                            crit += 20f;
+                            type = 2f;
+                        }
+                        break;
                     case ItemID.FieryGreatsword:
                         ctMax = 60;
                         mainColor = new Color(242, 92, 34);
@@ -212,41 +263,76 @@ namespace CNC.Common.Global.Items
                             if (release && ct >= ctMax)
                             {
                                 velocity = new Vector2((Main.MouseWorld.X > player.Center.X).ToDirectionInt(1), 0f);
-                                damage = damage * 3 / 2;
+                                damage *= 1.5f;
                                 knockback *= 1.5f;
                                 crit += 5f;
                                 type = 4f;
                             }
                         }
                         break;
-                    case ItemID.Meowmere:
-                        mainColor = CNCID.Colors.Expert;
+                    case ItemID.TrueExcalibur:
+                        mainColor = Color.LightGoldenrodYellow;
+                        ctMax = 180;
                         if (control)
                         {
-                            Vector2 vel = new Vector2(CNC.Random.NextFloat(4f) + MyMath.Lerp(12f, 0f, ct / ctMax), 0f).RotatedBy(CNC.Random.NextDegree());
-                            int idx = Particle.NewParticle(
-                                CNC.GetTexture("Assets/Particles/Star1"),
-                                player.Center + vel * 10f,
-                                vel * -.5f,
-                                CNC.Random.NextDegree(),
-                                30,
-                                Vector2.One * 1.5f,
-                                mainColor.NewA(0),
-                                mainColor.NewA(3)
-                                );
-                            ParticleManager.particle[idx].velocityMul = Vector2.One * .95f;
-                            ParticleManager.particle[idx].rotationAdd = CNC.Random.NextBool().ToDirectionInt(16);
-                            ParticleManager.particle[idx].scaleAdd = new Vector2(-.05f);
-                            ParticleManager.particle[idx].alphaAdd = -.033f;
-                            ParticleManager.particle[idx].alpha = 1f;
+                            if (ct < ctMax)
+                            {
+                                if (ct % 20 == 10)
+                                {
+                                    for (int i = 0; i < 18; i++)
+                                    {
+                                        float amount = i / 18f;
+                                        Vector2 vel = new Vector2(MyMath.Lerp(8f, 2f, ct / ctMax), 0f).RotatedBy(amount * MyMath.pi2);
+                                        int idx = Particle.NewParticle(
+                                            CNC.GetTexture("Assets/Particles/Star1"),
+                                            player.Center + vel * 8f,
+                                            -vel,
+                                            CNC.Random.NextDegree(),
+                                            30,
+                                            Vector2.One * MyMath.Lerp(1f, .5f, ct / ctMax),
+                                            mainColor.NewA(0),
+                                            mainColor.NewA(3)
+                                            );
+                                        ParticleManager.particle[idx].velocityMul = Vector2.One * .95f;
+                                        ParticleManager.particle[idx].rotationAdd = CNC.Random.NextBool().ToDirectionInt(16);
+                                        ParticleManager.particle[idx].scaleAdd = new Vector2(-.025f);
+                                        ParticleManager.particle[idx].alphaAdd = -.04f;
+                                        ParticleManager.particle[idx].alpha = 1f;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                for (int i = 0; i < 4; i++)
+                                {
+                                    float rot = i * MyMath.deg90;
+                                    Vector2 vel = new Vector2(1f, 0f).RotatedBy(rot);
+                                    vel.X *= MyMath.phi;
+                                    int idx = Particle.NewParticle(
+                                        CNC.GetTexture("Assets/Particles/Star1"),
+                                        player.Center,
+                                        vel * 3f,
+                                        rot + (ct - ctMax) * MyMath.deg01,
+                                        30,
+                                        Vector2.One * .75f,
+                                        mainColor.NewA(0),
+                                        mainColor.NewA(3)
+                                        );
+                                    ParticleManager.particle[idx].velocityMul = new Vector2(.98f);
+                                    ParticleManager.particle[idx].scaleAdd = new Vector2(-.05f);
+                                    ParticleManager.particle[idx].alphaAdd = -.033f;
+                                    ParticleManager.particle[idx].alpha = 1f;
+                                }
+                            }
                         }
                         if (release && ct >= ctMax)
                         {
-                            CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.SolarHalo], (int)damage, 0f, (int)crit, player.whoAmI, 0f, 1f, 0, 0);
+                            velocity = new Vector2((Main.MouseWorld.X > player.Center.X).ToDirectionInt(1), 0f);
                             damage *= 3;
-                            knockback *= 3f;
+                            knockback *= 1.5f;
                             crit += 20f;
-                            type = 2f;
+                            type = 6f;
+                            CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.PhantomExcalibur], 0, 0f, 0, player.whoAmI, 0f, 1f, 0, 0);
                         }
                         break;
                 }
@@ -255,15 +341,10 @@ namespace CNC.Common.Global.Items
                 {
                     CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.AnattaSlash], (int)damage, knockback, (int)crit, player.whoAmI, 0f, 1f, type, 0);
                     player.direction = (velocity.X < 0).ToDirectionInt(-1);
-                    player.itemTimeMax = player.itemTime = item.useTime;
-                    player.itemAnimationMax = player.itemAnimation = item.useAnimation;
+                    player.ApplyItemTime(item);
+                    player.ApplyItemAnimation(item);
                 }
             }
-        }
-
-        public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            if (EnableAnatta(player) && item.type == ItemID.Meowmere) velocity *= 2f;
         }
 
         public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -274,13 +355,20 @@ namespace CNC.Common.Global.Items
             {
                 switch (item.type)
                 {
-                    case ItemID.FieryGreatsword:
-                        float[] mul = { .85f, .95f, .95f, 1.05f };
-                        damage = (int)(damage * mul[this.comboCur]);
-                        CNCUtils.NewProj(source, position, velocity, type, damage, knockback, ai0: 3f + this.comboCur * .1f);
-                        break;
                     case ItemID.Meowmere:
                         CNCUtils.NewProj(source, position, velocity, type, damage, knockback, ai0: 1f);
+                        break;
+                    case ItemID.FieryGreatsword:
+                        damage = (int)(damage * new float[] { .85f, .95f, .95f, 1.05f }[this.comboCur]);
+                        CNCUtils.NewProj(source, position, velocity, type, damage, knockback, ai0: 3f + this.comboCur * .1f);
+                        break;
+                    case ItemID.TrueExcalibur:
+                        damage = (int)(damage * new float[] { 1.1f, .9f, 1.5f }[this.comboCur / 2]);
+                        CNCUtils.NewProj(source, position, velocity, type, damage, knockback, ai0: 5f + this.comboCur * .1f);
+                        if (this.comboCur < 2) shoot = false;
+                        player.direction = (velocity.X < 0).ToDirectionInt(-1);
+                        player.itemTimeMax = player.itemTime = item.useTime;
+                        player.itemAnimationMax = player.itemAnimation = item.useAnimation;
                         break;
                 }
             }

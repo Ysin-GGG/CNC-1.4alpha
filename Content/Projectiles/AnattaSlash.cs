@@ -47,8 +47,108 @@ namespace CNC.Content.Projectiles
             var time2 = 5;
             var dir = -1;
             var style = 2;
+            var fadeMult = .5d;
             switch (projectile.ai[0])
             {
+                case 6f:
+                    for (int i = 0; i < info.Length; i++)
+                    {
+                        float factor = (float)i / info.Length;
+                        float rotation = MyMath.deg01 * (factor * 210 - 75);
+                        Vector2 pos = new Vector2(16f, 0f).RotatedBy(rotation);
+                        info[i].position = pos * 16f;
+                    }
+                    t = new Texture2D[]
+                    {
+                        CNC.GetTexture("Assets/Effects/Slash4"),
+                        CNC.GetTexture("Assets/Effects/SlashTop6"),
+                        CNC.GetTexture("Assets/Projectiles/Slash/TrueExcalibur"),
+                        CNC.GetTexture("Assets/Projectiles/SlashHit/SlashHit1"),
+                    };
+                    time = 10;
+                    time2 = 20;
+                    opacity = 2f;
+                    style = 1;
+                    dir = 1;
+                    fadeMult = .05d;
+                    CNCUtils.PlaySound(SoundID.Item71, projectile);
+                    CNCUtils.ScreenShake(0, new Vector2(0, 40f), new Vector2(0, 20f), .9f, default, owner);
+                    break;
+                case 5.4f:
+                    for (int i = 0; i < info.Length; i++)
+                    {
+                        float factor = (float)i / info.Length;
+                        float rotation = MyMath.deg01 * (factor * 450 + 145);
+                        Vector2 pos = new Vector2(16f, 0f).RotatedBy(rotation);
+                        pos.Y *= .8f;
+                        info[i].position = pos * 16f;
+                    }
+                    t = new Texture2D[]
+                    {
+                        CNC.GetTexture("Assets/Effects/Slash4"),
+                        CNC.GetTexture("Assets/Effects/SlashTop6"),
+                        CNC.GetTexture("Assets/Projectiles/Slash/TrueExcalibur"),
+                        CNC.GetTexture("Assets/Projectiles/SlashHit/SlashHit1"),
+                    };
+                    time = 20;
+                    time2 = 20;
+                    opacity = 2f;
+                    style = 2;
+                    dir = 1;
+                    CNCUtils.PlaySound(SoundID.Item71, projectile);
+                    CNCUtils.ScreenShake(0, new Vector2(0, 20f), new Vector2(0, 15f), .9f, default, owner);
+                    break;
+                case 5.3f:
+                case 5.2f:
+                    for (int i = 0; i < info.Length; i++)
+                    {
+                        int dir2 = (projectile.ai[0] == 5.2f).ToDirectionInt(1);
+                        float factor = (float)i / info.Length;
+                        float rotation = MyMath.deg01 * (135 - factor * 270) * dir2;
+                        Vector2 pos = new Vector2(10f, 0f).RotatedBy(rotation);
+                        pos.Y *= .5f;
+                        info[i].position = pos * 16f;
+                    }
+                    t = new Texture2D[]
+                    {
+                        CNC.GetTexture("Assets/Effects/Slash2"),
+                        CNC.GetTexture("Assets/Effects/SlashTop3"),
+                        CNC.GetTexture("Assets/Projectiles/Slash/TrueExcalibur"),
+                        CNC.GetTexture("Assets/Projectiles/SlashHit/SlashHit1"),
+                    };
+                    time = 8;
+                    time2 = 10;
+                    opacity = 2f;
+                    style = 1;
+                    dir = 1;
+                    CNCUtils.PlaySound(SoundID.Item60, projectile);
+                    break;
+                case 5.1f:
+                case 5f:
+                    for (int i = 0; i < info.Length; i++)
+                    {
+                        int dir2 = (projectile.ai[0] == 5f).ToDirectionInt(1);
+                        float factor = (float)i / info.Length;
+                        float rotation = MyMath.deg01 * (135 - factor * 270) * dir2;
+                        Vector2 pos = new Vector2(12f, 0f).RotatedBy(rotation + dir2 * MyMath.deg15);
+                        pos.Y *= .75f;
+                        info[i].position = pos * 16f;
+                    }
+                    t = new Texture2D[]
+                    {
+                        CNC.GetTexture("Assets/Effects/Slash4"),
+                        CNC.GetTexture("Assets/Effects/SlashTop4"),
+                        CNC.GetTexture("Assets/Projectiles/Slash/TrueExcalibur"),
+                        CNC.GetTexture("Assets/Projectiles/SlashHit/SlashHit1"),
+                    };
+                    time = 15;
+                    time2 = 15;
+                    opacity = 2f;
+                    style = 2;
+                    dir = 1;
+                    CNCUtils.PlaySound("Slash1", projectile, .3f);
+                    CNCUtils.ScreenShake(0, new Vector2(0, 20f), new Vector2(0, 10f), .8f, default, owner);
+                    break;
                 case 4f:
                     for (int i = 0; i < info.Length; i++)
                     {
@@ -64,7 +164,7 @@ namespace CNC.Content.Projectiles
                         CNC.GetTexture("Assets/Projectiles/Slash/FieryGreatsword"),
                         CNC.GetTexture("Assets/Projectiles/SlashHit/SlashHit1"),
                     };
-                    time = 15;
+                    time = 10;
                     time2 = 15;
                     opacity = 2f;
                     style = 1;
@@ -92,7 +192,7 @@ namespace CNC.Content.Projectiles
                     opacity = 1.5f;
                     style = 1;
                     dir = 1;
-                    CNCUtils.PlaySound(SoundID.Item45, owner, 1f, 2f);
+                    CNCUtils.PlaySound(SoundID.Item45, projectile, 1f, 2f);
                     CNCUtils.ScreenShake(0, new Vector2(0, 20f), new Vector2(0, 10f), .9f, default, owner);
                     break;
                 case 3.2f:
@@ -178,7 +278,7 @@ namespace CNC.Content.Projectiles
                     time2 = 10;
                     dir = 1;
                     opacity = 3f;
-                    CNCUtils.PlaySound(SoundID.Item71, owner);
+                    CNCUtils.PlaySound(SoundID.Item71, projectile);
                     CNCUtils.ScreenShake(0, new Vector2(0, 40f), new Vector2(0, 20f), .9f, default, owner);
                     break;
                 case 1f:
@@ -223,7 +323,7 @@ namespace CNC.Content.Projectiles
                     break;
             }
             SetDefaults(owner.Center, projectile.velocity, info.Length, time, time2, 10);
-            SetDraw(blendStyle, opacity, 1f, style, dir);
+            SetDraw(blendStyle, opacity, 1f, style, dir, fadeMult);
             SetImage(t[0], t[1], t[2], t[3]);
             SetAttackInfo(info);
         }
@@ -235,7 +335,7 @@ namespace CNC.Content.Projectiles
             {
                 case 4f:
                     target.AddBuff(BuffID.OnFire, 180);
-                    if (target.type != 488 && !target.boss) target.velocity.Y -= (1f - target.knockBackResist) * 16f;
+                    if (target.type != 488 && !target.boss && ((target.position.X > projectile.Center.X).ToDirectionInt(1) == projectile.direction)) target.velocity.Y -= (1f - target.knockBackResist) * 16f;
                     break;
                 case 3.3f:
                 case 3.2f:
@@ -255,6 +355,26 @@ namespace CNC.Content.Projectiles
             float type = projectile.ai[0];
             switch (type)
             {
+                case 6f:
+                    c2 = Color.LightGoldenrodYellow;
+                    SetColor(c2, c1, c2, c1, c2);
+                    break;
+                case 5.4f:
+                case 5.3f:
+                case 5.2f:
+                case 5.1f:
+                case 5f:
+                    c2 = Color.LightGoldenrodYellow;
+                    SetColor(c2, c1, c2, c1, c2);
+                    if (!fading && projectile.timeLeft % projectile.extraUpdates == 0)
+                    {
+                        Vector4 info = GetSlashInfo();
+                        float rot = info.W + projectile.rotation;
+                        Vector2 begin = projectile.Center + (this.hitboxOffset + info.XY()).RotatedBy(rot);
+                        Vector2 end = begin + new Vector2(info.Z, 0).RotatedBy(rot);
+                        Color color = c2;
+                    }
+                    break;
                 case 4f:
                     c2 = new Color(242, 92, 34);
                     SetColor(c2, c2, c2, c1, c2);
@@ -269,7 +389,7 @@ namespace CNC.Content.Projectiles
                         {
                             float amount = i / 10f;
                             Vector2 pos = MyMath.Lerp(begin, end, amount) + CNC.Random.NextVector2(-16f, -16f, 16f, 16f);
-                            Vector2 vel = new Vector2(0f, CNC.Random.NextFloat(6f) * -projectile.direction).RotatedBy(rot);
+                            Vector2 vel = new Vector2(0f, CNC.Random.NextFloat(6f) * -projectile.direction * owner.gravDir).RotatedBy(rot);
                             int idx = Particle.NewParticle(
                                 CNC.GetTexture("Assets/Particles/Light1"),
                                 pos + vel,
@@ -313,7 +433,7 @@ namespace CNC.Content.Projectiles
                         {
                             float amount = i / 10f;
                             Vector2 pos = MyMath.Lerp(begin, end, amount) + CNC.Random.NextVector2(-16f, -16f, 16f, 16f);
-                            Vector2 vel = new Vector2(0f, CNC.Random.NextFloat(6f) * projectile.direction).RotatedBy(rot);
+                            Vector2 vel = new Vector2(0f, CNC.Random.NextFloat(6f) * projectile.direction * owner.gravDir).RotatedBy(rot);
                             CNCUtils.NewDust(pos, DustId.Fire, CNC.Random.NextFloat(1f, 2f), vel, c2).noGravity = true;
                         }
                     }
@@ -342,7 +462,7 @@ namespace CNC.Content.Projectiles
                         {
                             float amount = i / 10f;
                             Vector2 pos = MyMath.Lerp(begin, end, amount) + CNC.Random.NextVector2(-16f, -16f, 16f, 16f);
-                            Vector2 vel = new Vector2(0f, CNC.Random.NextFloat(6f) * projectile.direction).RotatedBy(rot);
+                            Vector2 vel = new Vector2(0f, CNC.Random.NextFloat(6f) * projectile.direction * owner.gravDir).RotatedBy(rot);
                             int idx = Particle.NewParticle(
                                 ModContent.Request<Texture2D>("CNC/Assets/Particles/Star1").Value,
                                 pos + vel,
@@ -374,7 +494,7 @@ namespace CNC.Content.Projectiles
                         {
                             float amount = i / 10f;
                             Vector2 pos = MyMath.Lerp(begin, end, amount) + CNC.Random.NextVector2(-16f, -16f, 16f, 16f);
-                            Vector2 vel = new Vector2(0f, CNC.Random.NextFloat(6f) * projectile.direction).RotatedBy(rot);
+                            Vector2 vel = new Vector2(0f, CNC.Random.NextFloat(6f) * projectile.direction * owner.gravDir).RotatedBy(rot);
                             int idx = Particle.NewParticle(
                                 ModContent.Request<Texture2D>("CNC/Assets/Particles/Star1").Value,
                                 pos + vel,

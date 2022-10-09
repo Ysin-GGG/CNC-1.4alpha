@@ -32,11 +32,14 @@ namespace CNC.Content.Projectiles
         public Vector2 hitboxOffset;
         public BlendState blendStyle = BlendState.Additive;
         public float opacity = 1f;
+        public float scale = 1f;
+        public bool fading = false;
+        public bool bindToOwner = true;
         public double fadeSpeed;
-        protected float traceChangeSpeed = -.2f;
-        protected int weaponDirection = 1;
+        public double fadeSpeedMult = 1f;
+        public int weaponDirection = 1;
         protected int slashStyle = 1;
-        protected bool fading = false;
+        protected float traceChangeSpeed = -.2f;
         private int timer = 0;
 
         public ShaderSlash SetDefaults(Vector2 position, Vector2 direction, int slashLength, int time, int fadeTime, int precision = 1)
@@ -107,13 +110,14 @@ namespace CNC.Content.Projectiles
             return this;
         }
 
-        public ShaderSlash SetDraw(BlendState style, float opacity = 1f, float traceChangeSpeed = -.2f, int slashStyle = 1, int weaponDir = 1)
+        public ShaderSlash SetDraw(BlendState style, float opacity = 1f, float traceChangeSpeed = -.2f, int slashStyle = 1, int weaponDir = 1, double fadeSpeedMult = .5f)
         {
             this.blendStyle = style;
             this.opacity = opacity;
             this.traceChangeSpeed = traceChangeSpeed;
             this.slashStyle = slashStyle;
             this.weaponDirection = weaponDir;
+            this.fadeSpeedMult = fadeSpeedMult;
             return this;
         }
 
@@ -135,7 +139,7 @@ namespace CNC.Content.Projectiles
         {
             projectile.velocity = Vector2.Zero;
             projectile.direction = (direction.X >= 0).ToDirectionInt(1);
-            if (projectile.friendly) projectile.Center = owner.Center;
+            if (projectile.friendly && bindToOwner) projectile.Center = owner.Center;
             if (!this.fading && projectile.timeLeft <= 1) this.fading = true;
             if (this.fading)
             {
@@ -147,7 +151,7 @@ namespace CNC.Content.Projectiles
                 }
             }
             if (!this.fading) projectile.ai[1]--;
-            else if (timer++ % projectile.extraUpdates == 0) projectile.ai[1] = (float)((double)projectile.ai[1] - this.fadeSpeed * this.slashLength * .5d);
+            else if (timer++ % projectile.extraUpdates == 0) projectile.ai[1] = (float)((double)projectile.ai[1] - this.fadeSpeed * this.slashLength * this.fadeSpeedMult);
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -230,6 +234,7 @@ namespace CNC.Content.Projectiles
             Vector2 pos = owner.Center - Main.screenPosition;
             Vector2 origin = new Vector2(0, image.Height);
             int direction = projectile.direction * (this.attackInfo[0].rotation + MyMath.pi2 > this.attackInfo[1].rotation + MyMath.pi2).ToDirectionInt(1) * this.weaponDirection;
+            direction *= (int)owner.gravDir;
             float alpha = 1f;
             float rotation2 = direction * MyMath.deg45;
             float scale = MyMath.Clamp(info.Z / image.Size().Length(), .75f, 1.75f);
@@ -251,8 +256,8 @@ namespace CNC.Content.Projectiles
                 {
                     Vector4 info = this.GetSlashInfo(time - (i - max / 2.0d) * dist);
                     float rot = info.W + projectile.rotation;
-                    Vector2 begin = projectile.Center + (this.hitboxOffset + info.XY()).RotatedBy(rot);
-                    Vector2 end = begin + new Vector2(info.Z, 0).RotatedBy(rot);
+                    Vector2 begin = projectile.Center + (this.hitboxOffset + info.XY()).RotatedBy(rot) * new Vector2(1f, owner.gravDir);
+                    Vector2 end = begin + new Vector2(info.Z, 0).RotatedBy(rot) * new Vector2(1f, owner.gravDir);
                     float amount = i / max;
                     float amount2 = Math.Abs(i - max / 2.0f) / (max / 2.0f);
                     float w = MyMath.Lerp(1f, 0f, amount2);
@@ -269,8 +274,8 @@ namespace CNC.Content.Projectiles
                     double time = 1.0d - ((double)projectile.ai[1] + i) / this.timeLeft;
                     Vector4 info = this.GetSlashInfo(time);
                     float rot = info.W + projectile.rotation;
-                    Vector2 begin = projectile.Center + (this.hitboxOffset + info.XY()).RotatedBy(rot);
-                    Vector2 end = begin + new Vector2(info.Z, 0).RotatedBy(rot);
+                    Vector2 begin = projectile.Center + (this.hitboxOffset + info.XY()).RotatedBy(rot) * new Vector2(1f, owner.gravDir);
+                    Vector2 end = begin + new Vector2(info.Z, 0).RotatedBy(rot) * new Vector2(1f, owner.gravDir);
                     //if (begin == Vector2.Zero || end == Vector2.Zero) break;
                     float amount = i / max;
                     float w = MyMath.Lerp(1f, 0f, amount);
@@ -336,7 +341,7 @@ namespace CNC.Content.Projectiles
             Vector2 offset = MyMath.Lerp(this.attackInfo[index - 1].offset, this.attackInfo[index].offset, amount3);
             float range = MyMath.Lerp(this.attackInfo[index - 1].range, this.attackInfo[index].range, amount3);
             float rotation = MyMath.Lerp(this.attackInfo[index - 1].rotation, this.attackInfo[index].rotation, amount3);
-            return new Vector4(offset, range, -rotation * projectile.direction);
+            return new Vector4(offset, range * scale, -rotation * projectile.direction * owner.gravDir);
         }
     }
 }

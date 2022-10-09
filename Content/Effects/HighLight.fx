@@ -23,6 +23,10 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
 		if (any(tex2D(uImage0, coords + pixel * float2(-1, 0)))) return color2;
 		if (any(tex2D(uImage0, coords + pixel * float2(0, 1)))) return color2;
 		if (any(tex2D(uImage0, coords + pixel * float2(0, -1)))) return color2;
+		if (any(tex2D(uImage0, coords + pixel * float2(1, 1)))) return color2;
+		if (any(tex2D(uImage0, coords + pixel * float2(1, -1)))) return color2;
+		if (any(tex2D(uImage0, coords + pixel * float2(-1, 1)))) return color2;
+		if (any(tex2D(uImage0, coords + pixel * float2(-1, -1)))) return color2;
 	}
 	return color;
 }

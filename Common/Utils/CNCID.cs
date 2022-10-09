@@ -750,6 +750,8 @@ namespace CNC.Common.Utils
             public const short SolarHalo = 33;
             /// <summary> »€—“ª…‡ </summary>
             public const short FireFlow = 34;
+            /// <summary> ª√œÛ÷Æ»– </summary>
+            public const short PhantomExcalibur = 35;
             #endregion
             public static Dictionary<string, short> Collection
             {
@@ -808,6 +810,7 @@ namespace CNC.Common.Utils
                 { AnattaSlash, ProjectileType<Content.Projectiles.AnattaSlash>() },
                 { SolarHalo, ProjectileType<Content.Projectiles.SolarHalo>() },
                 { FireFlow, ProjectileType<Content.Projectiles.FireFlow>() },
+                { PhantomExcalibur, ProjectileType<Content.Projectiles.PhantomExcalibur>() },
             };
         }
 
