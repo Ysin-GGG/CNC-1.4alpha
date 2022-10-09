@@ -248,8 +248,8 @@ namespace CNC.Common.Global.Items
                                 Vector2 vel = CNC.Random.NextVector2(-4f, -4f, 4f, -2f);
                                 int idx = Particle.NewParticle(
                                     CNC.GetTexture("Assets/Particles/Light1"),
-                                    player.Bottom,
-                                    vel,
+                                    player.gravDir == 1 ? player.Bottom : player.Top,
+                                    vel * new Vector2(1f, player.gravDir),
                                     0,
                                     60,
                                     new Vector2(Main.rand.NextFloat(.03f, .09f)),
