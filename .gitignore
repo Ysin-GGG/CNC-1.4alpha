@@ -1,8 +1,6 @@
-*.sln
 *.csproj
 .git/
 .vs/
 obj/
 bin/
 Properties/
-CNC.csproj
