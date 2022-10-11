@@ -96,6 +96,9 @@ namespace CNC.Common.Global.Items
                 Color color = Color.White;
                 switch (item.type)
                 {
+                    case ItemID.TrueNightsEdge:
+                        color = Color.Violet;
+                        break;
                     case ItemID.Meowmere:
                         color = Color.LightPink;
                         break;
@@ -121,6 +124,11 @@ namespace CNC.Common.Global.Items
                 bool reset = true;
                 switch (item.type)
                 {
+                    case ItemID.TrueNightsEdge:
+                        reset = false;
+                        comboCount = 5;
+                        comboDelay = 15;
+                        break;
                     case ItemID.TrueExcalibur:
                         int[] time = { 30, 40, 10, 20, 40 };
                         int[] time2 = { 30, 40, 10, 20, 40 };
@@ -272,7 +280,7 @@ namespace CNC.Common.Global.Items
                         break;
                     case ItemID.TrueExcalibur:
                         mainColor = Color.LightGoldenrodYellow;
-                        ctMax = 180;
+                        ctMax = 240;
                         if (control)
                         {
                             if (ct < ctMax)
@@ -335,11 +343,77 @@ namespace CNC.Common.Global.Items
                             CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.PhantomExcalibur], 0, 0f, 0, player.whoAmI, 0f, 1f, 0, 0);
                         }
                         break;
+                    case ItemID.TrueNightsEdge:
+                        mainColor = Color.Lerp(new Color(96, 0, 192), new Color(48, 0, 112), .5f);
+                        ctMax = 240;
+                        if (control)
+                        {
+                            if (ct < ctMax)
+                            {
+                                for (int i = 0; i < 4; i++)
+                                {
+                                    float rot = i * MyMath.deg90 + MyMath.deg01 * 3f * ct;
+                                    Vector2 vel = new Vector2(1f, 0f).RotatedBy(rot);
+                                    vel.X *= MyMath.phi;
+                                    int idx = Particle.NewParticle(
+                                        CNC.GetTexture("Assets/Particles/Star1"),
+                                        player.Center,
+                                        vel * MyMath.Lerp(6f, 1f, ct / ctMax),
+                                        rot + (ct - ctMax) * MyMath.deg01,
+                                        30,
+                                        Vector2.One * .75f,
+                                        mainColor.NewA(0),
+                                        mainColor.NewA(3)
+                                        );
+                                    ParticleManager.particle[idx].velocityMul = new Vector2(.98f);
+                                    ParticleManager.particle[idx].scaleAdd = new Vector2(-.05f);
+                                    ParticleManager.particle[idx].alphaAdd = -.033f;
+                                    ParticleManager.particle[idx].alpha = 1f;
+                                }
+                            }
+                            else
+                            {
+                                if (ct % 20 == 0)
+                                {
+                                    for (int i = 0; i < 36; i++)
+                                    {
+                                        float amount = i / 36f;
+                                        Vector2 vel = new Vector2(2f, 0f).RotatedBy(amount * MyMath.pi2);
+                                        int idx = Particle.NewParticle(
+                                            CNC.GetTexture("Assets/Particles/Star1"),
+                                            player.Center,
+                                            vel + player.velocity * .2f,
+                                            CNC.Random.NextDegree(),
+                                            30,
+                                            Vector2.One,
+                                            mainColor.NewA(0),
+                                            mainColor.NewA(3)
+                                            );
+                                        ParticleManager.particle[idx].velocityMul = Vector2.One * .95f;
+                                        ParticleManager.particle[idx].rotationAdd = CNC.Random.NextBool().ToDirectionInt(16);
+                                        ParticleManager.particle[idx].scaleAdd = new Vector2(-.025f);
+                                        ParticleManager.particle[idx].alphaAdd = .04f;
+                                        ParticleManager.particle[idx].alpha = 0f;
+                                    }
+                                }
+                            }
+                        }
+                        if (release && ct >= ctMax)
+                        {
+                            CNCUtils.NewProj(source, position + velocity * 24f, Vector2.Zero, CNCID.Projectile.LegacyObject[CNCID.Projectile.VoidNightsEdge], (int)(damage * .5f), 0f, (int)crit, player.whoAmI, 0f, 1f, 0, 0);
+                            damage *= 3;
+                            knockback *= 1.5f;
+                            crit += 20f;
+                            type = 8f;
+                        }
+                        break;
                 }
                 if (control && ct == ctMax) CNCUtils.PlaySound(SoundID.Item4, player);
                 if (release && ct >= ctMax)
                 {
                     CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.AnattaSlash], (int)damage, knockback, (int)crit, player.whoAmI, 0f, 1f, type, 0);
+                    this.comboCur = 0;
+                    this.comboNext = 0;
                     player.direction = (velocity.X < 0).ToDirectionInt(-1);
                     player.ApplyItemTime(item);
                     player.ApplyItemAnimation(item);
@@ -369,6 +443,11 @@ namespace CNC.Common.Global.Items
                         player.direction = (velocity.X < 0).ToDirectionInt(-1);
                         player.itemTimeMax = player.itemTime = item.useTime;
                         player.itemAnimationMax = player.itemAnimation = item.useAnimation;
+                        break;
+                    case ItemID.TrueNightsEdge:
+                        //damage = (int)(damage * new float[] { 1.1f, .9f, 1.5f }[this.comboCur / 2]);
+                        //CNCUtils.NewProj(source, position, velocity, type, damage, knockback, ai0: 7f + this.comboCur * .1f);
+                        //if (this.comboCur < 2) shoot = false;
                         break;
                 }
             }

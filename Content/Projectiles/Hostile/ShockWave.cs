@@ -12,9 +12,9 @@ namespace CNC.Content.Projectiles.Hostile
     public class ShockWave : CNCProjectile
     {
         public const int time = 90;
-        private const float maxRange = 32f;
-        private const float maxDist = 800f;
-        private const float maxStrength = 80f;
+        private float maxRange = 32f;
+        private float maxDist = 800f;
+        private float maxStrength = 80f;
 
         public override void ResetDefaults()
         {
@@ -30,7 +30,6 @@ namespace CNC.Content.Projectiles.Hostile
         public override bool PreDraw(ref Color lightColor)
         {
             lightColor = Color.White;
-            projectile.extraUpdates = (int)projectile.ai[0];
 
             Vector2 offScreenRange = new Vector2((float)Main.offScreenRange, (float)Main.offScreenRange);
             Vector2 realScreenSize = new Vector2((float)Main.screenWidth, (float)Main.screenHeight) / Main.GameViewMatrix.Zoom;
@@ -46,24 +45,36 @@ namespace CNC.Content.Projectiles.Hostile
             float range = MyMath.Lerp(1f, maxRange, MyMath.sin(MyMath.pi * amount));
             float dist = MyMath.Lerp(0f, maxDist, amount);
 
-            foreach (Player player in Main.player)
+            if (projectile.ai[0] == 1)
             {
-                if (player != null && player.active) {
-                    Vector2 offset = player.Center - projectile.Center;
-                    float dist2 = offset.Length();
-                    float minRange = dist - range;
-                    float maxRange = dist + range;
-                    if (minRange <= dist2 && dist2 <= maxRange)
+                projectile.extraUpdates = 1;
+                foreach (Player player in Main.player)
+                {
+                    if (player != null && player.active)
                     {
-                        float intensity = (1 - (dist - dist2) / range) * (strength / maxStrength);
-                        player.velocity = Vector2.Normalize(offset) * intensity * 16f;
-                        if (player.velocity.Length() > 16f) player.velocity = Vector2.Normalize(player.velocity) * 16f;
-                        Vector2 shake = Vector2.Normalize(offset) * 8f;
-                        if (shake.X < 0) shake.X *= -1;
-                        if (shake.Y < 0) shake.Y *= -1;
-                        CNCUtils.ScreenShake(30, shake * 2, shake, .8f, default(Vector2), player);
+                        Vector2 offset = player.Center - projectile.Center;
+                        float dist2 = offset.Length();
+                        float minRange = dist - range;
+                        float maxRange = dist + range;
+                        if (minRange <= dist2 && dist2 <= maxRange)
+                        {
+                            float intensity = (1 - (dist - dist2) / range) * (strength / maxStrength);
+                            player.velocity = Vector2.Normalize(offset) * intensity * 16f;
+                            if (player.velocity.Length() > 16f) player.velocity = Vector2.Normalize(player.velocity) * 16f;
+                            Vector2 shake = Vector2.Normalize(offset) * 8f;
+                            if (shake.X < 0) shake.X *= -1;
+                            if (shake.Y < 0) shake.Y *= -1;
+                            CNCUtils.ScreenShake(30, shake * 2, shake, .8f, default(Vector2), player);
+                        }
                     }
                 }
+            }
+
+            if(projectile.ai[0] == 2f)
+            {
+                projectile.extraUpdates = 2;
+                range = MyMath.Lerp(48f, 80f, MyMath.sin(MyMath.pi * amount));
+                dist = MyMath.Lerp(0f, 600f, amount);
             }
 
             Effect ef = CNC.Shader["ShockWave"];

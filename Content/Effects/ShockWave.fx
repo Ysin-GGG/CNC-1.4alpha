@@ -18,13 +18,13 @@ float2 uImageSize1;
 
 float2 uPosition;
 float uStrength;//强度
-float uRange;//16
-float uDist;//16
+float uRange;//影响范围（16f/图格）
+float uDist;//影响点到中心的距离（16f/图格）
 
 float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
 {
 	float2 pixel = float2(1, 1) / uScreenResolution;//像素大小
-	float2 offset = (coords - uPosition) * uScreenResolution;// *float2(uScreenResolution.x / uScreenResolution.y, 1);//像素点到目标坐标的向量
+	float2 offset = (coords - uPosition) * uScreenResolution;//像素点到目标坐标的向量
 	float norm = length(offset);//像素点到目标坐标的长度（模）
 	float rotation = acos(offset * float2(1, 0) / norm);//向量角度
 	float2 unit = pixel * float2(cos(rotation), sin(rotation)) * uStrength;

@@ -11,11 +11,13 @@ namespace CNC.Content
     public abstract class VisualEffect
     {
         public bool active;
+        public bool ignorePause;
         public int time;
         public int deadTime;
         public float opacity;
         public float rotation;
         public Vector2 position;
+        public Vector2 velocity;
         public Vector2 scale;
         public Entity owner;
 
@@ -31,7 +33,7 @@ namespace CNC.Content
             overUIs,
         }
 
-        public static T NewVisualEffect<T>(Vector2 position, float rotation, Entity owner = null)
+        public static T NewVisualEffect<T>(Vector2 position, Vector2 velocity, float rotation, Entity owner = null)
         {
             if (Activator.CreateInstance<T>() is VisualEffect)
             {
@@ -46,6 +48,7 @@ namespace CNC.Content
                         VisualEffectManager.effect[i].opacity = 1f;
                         VisualEffectManager.effect[i].rotation = rotation;
                         VisualEffectManager.effect[i].position = position;
+                        VisualEffectManager.effect[i].velocity = velocity;
                         VisualEffectManager.effect[i].scale = Vector2.One;
                         VisualEffectManager.effect[i].owner = owner;
                         VisualEffectManager.effect[i].SetDefaults();
@@ -65,7 +68,8 @@ namespace CNC.Content
 
         public virtual bool CheckDead() => true;
         public virtual void SetDefaults() { }
-        public virtual void Update(bool isPaused) { }
+        public virtual bool PreUpdate() => !Main.gamePaused;
+        public virtual void PostUpdate() { }
         public virtual void Draw(SpriteBatch spriteBatch, DrawLayer layer) { }
     }
 
@@ -88,8 +92,12 @@ namespace CNC.Content
                     }
                     else
                     {
-                        VisualEffectManager.effect[i].Update(Main.gamePaused);
-                        if (!Main.gamePaused) VisualEffectManager.effect[i].time++;
+                        if (VisualEffectManager.effect[i].PreUpdate())
+                        {
+                            VisualEffectManager.effect[i].time++;
+                            VisualEffectManager.effect[i].position += VisualEffectManager.effect[i].velocity;
+                            VisualEffectManager.effect[i].PostUpdate();
+                        }
                     }
                 }
             }

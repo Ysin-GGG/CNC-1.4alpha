@@ -5,5 +5,4 @@ hideResources = false
 hideCode = false
 includeSource = false
 includePDB = false
-side = Client
 buildIgnore = *.sln, *.suo, *.user, *.gitignore, .git\*, .vs\*, obj\*, bin\*, Libraries\*, Properties\*,

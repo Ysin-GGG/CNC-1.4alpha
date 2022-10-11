@@ -23,7 +23,7 @@ namespace CNC.Content.Projectiles.TheLightOfAuzzsia
             projectile.timeLeft = 600;
             projectile.knockBack = 7f;
             projectile.alpha = 32;
-            projectile.scale = 0.8f;
+            projectile.scale = 0.7f;
             projectile.penetrate = 1;
             projectile.extraUpdates = 1;
             projectile.friendly = true;
@@ -89,7 +89,7 @@ namespace CNC.Content.Projectiles.TheLightOfAuzzsia
             {
                 Vector2 vel = (projectile.oldPosition - projectile.position).RotatedBy(CNC.Random.NextDegree(-16f, 16f)) * CNC.Random.NextFloat(.25f, .75f);
                 if (vel.X > 8f || vel.Y > 8f) vel *= 8f / (vel.X > 8f ? vel.X : vel.Y);
-                Dust dust = CNCUtils.NewDust(projectile, DustId.GreyStone, 1.25f, vel);
+                Dust dust = CNCUtils.NewDust(projectile, DustId.GreyStone, 1.25f, vel * projectile.scale);
                 dust.noGravity = false;
                 dust.alpha = 0;
             }
@@ -119,7 +119,7 @@ namespace CNC.Content.Projectiles.TheLightOfAuzzsia
         public override void PostDraw(Color lightColor)
         {
             Effect ef = Mod.Assets.Request<Effect>("Content/Effects/Trail").Value;
-            List<VertexInfo> bars = TrailShaderData.GetBars(projectile, 64, 2f, 3f, true, 1f, 2.5f, -1, false);
+            List<VertexInfo> bars = TrailShaderData.GetBars(projectile, 64, 3f * projectile.scale, 4f * projectile.scale, true, 1f, 2.5f, -1, false);
             if (bars.Count > 2)
             {
                 ef.Parameters["uTransform"].SetValue(transform);

@@ -151,6 +151,7 @@ namespace CNC.Common.Global.NPCs
 
         public sealed override void SetDefaults()
         {
+            if (Main.dedServ) return;
             string path = Texture.StartsWith(mod.Name) ? Texture.Substring(Texture.IndexOf('/') + 1) : Texture;
             Texture2D image = this.mod.Assets.Request<Texture2D>(path).Value;
             this.npc.Size = new Vector2(image.Width, image.Height / countFrame);

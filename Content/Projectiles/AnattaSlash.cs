@@ -39,7 +39,7 @@ namespace CNC.Content.Projectiles
             lightWidth = new EffectTimer(48, 1, 0, 48, 80, 10, 10, 4, 0);
             lightHeight = new EffectTimer(48, 1, 0, 48, 64, 10, 10, 2, 0);
             lightFlash = new EffectTimer(127, 1, 0, 127, 255, 0, 0, 16, 0);
-            var info = new SlashInfo[1000];
+            var info = new SlashInfo[300];
             var t = new Texture2D[4];
             var blendStyle = BlendState.Additive;
             var opacity = 1f;
@@ -50,6 +50,30 @@ namespace CNC.Content.Projectiles
             var fadeMult = .5d;
             switch (projectile.ai[0])
             {
+                case 8f:
+                    for (int i = 0; i < info.Length; i++)
+                    {
+                        float factor = (float)i / info.Length;
+                        float rotation = MyMath.deg01 * (105 - factor * 210);
+                        Vector2 pos = new Vector2(16f, 0f).RotatedBy(rotation);
+                        info[i].position = pos * 16f;
+                    }
+                    t = new Texture2D[]
+                    {
+                        CNC.GetTexture("Assets/Effects/Slash4"),
+                        CNC.GetTexture("Assets/Effects/SlashTop6"),
+                        CNC.GetTexture("Assets/Projectiles/Slash/TrueNightsEdge"),
+                        CNC.GetTexture("Assets/Projectiles/SlashHit/SlashHit1"),
+                    };
+                    time = 10;
+                    time2 = 20;
+                    opacity = 4f;
+                    style = 1;
+                    dir = 1;
+                    fadeMult = .1d;
+                    CNCUtils.PlaySound(SoundID.Item71, projectile);
+                    CNCUtils.ScreenShake(0, new Vector2(0, 40f), new Vector2(0, 20f), .9f, default, owner);
+                    break;
                 case 6f:
                     for (int i = 0; i < info.Length; i++)
                     {
@@ -355,6 +379,11 @@ namespace CNC.Content.Projectiles
             float type = projectile.ai[0];
             switch (type)
             {
+                case 8f:
+                    c1 = Color.Lerp(new Color(128, 255, 128), Color.DarkGreen, .5f);
+                    c2 = Color.DarkViolet;
+                    SetColor(c2, Color.Lerp(c1, c2, .3f), new Color(128, 255, 128), new Color(0, 255, 0), c2);
+                    break;
                 case 6f:
                     c2 = Color.LightGoldenrodYellow;
                     SetColor(c2, c1, c2, c1, c2);

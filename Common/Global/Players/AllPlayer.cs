@@ -129,10 +129,6 @@ namespace CNC.Common.Global.Players
             if (this.shakeCur > 0) Main.screenPosition += this.shakeValue * this.shakeCur;
         }
 
-        public override void PreUpdate()
-        {
-        }
-
         public override void PostUpdate()
         {
             if (this.shakeCur > 0) this.UpdateShakeData();

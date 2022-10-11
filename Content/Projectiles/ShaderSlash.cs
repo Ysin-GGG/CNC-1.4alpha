@@ -340,8 +340,8 @@ namespace CNC.Content.Projectiles
             float amount3 = MyMath.pow(amount2, this.attackInfo[index].power);
             Vector2 offset = MyMath.Lerp(this.attackInfo[index - 1].offset, this.attackInfo[index].offset, amount3);
             float range = MyMath.Lerp(this.attackInfo[index - 1].range, this.attackInfo[index].range, amount3);
-            float rotation = MyMath.Lerp(this.attackInfo[index - 1].rotation, this.attackInfo[index].rotation, amount3);
-            return new Vector4(offset, range * scale, -rotation * projectile.direction * owner.gravDir);
+            float rotation = Utils.AngleLerp(this.attackInfo[index - 1].rotation, this.attackInfo[index].rotation, amount3);
+            return new Vector4(offset, range * this.scale, -rotation * projectile.direction * owner.gravDir);
         }
     }
 }

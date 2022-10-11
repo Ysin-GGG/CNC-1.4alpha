@@ -9,7 +9,7 @@ using CNC.Common.Global.Projectiles;
 using CNC.Content.DataStructures;
 using System.Collections.Generic;
 
-namespace CNC.Content.Projectiles
+namespace CNC.Content.Projectiles.Remakes
 {
     public class SolarHalo : CNCProjectile
     {

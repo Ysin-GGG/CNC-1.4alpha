@@ -9,12 +9,12 @@ using CNC.Common.Global.Projectiles;
 using CNC.Content.DataStructures;
 using System.Collections.Generic;
 
-namespace CNC.Content.Projectiles
+namespace CNC.Content.Projectiles.Remakes
 {
     public class PhantomExcalibur : CNCProjectile
     {
         private const float capabilityMult = 1.2f;
-        private int time = 900;
+        private int time = 1200;
         private int timer => time - projectile.timeLeft;
         private Color mainColor = Color.LightGoldenrodYellow;
         private bool attack => slash != null && !slash.fading;
@@ -49,10 +49,10 @@ namespace CNC.Content.Projectiles
 
         public override void OnSpawn()
         {
+            oldItem = owner.HeldItem;
             attackPos = projectile.Center;
             attackRot = projectile.rotation;
             atkDatas = new List<AtkData>();
-            oldItem = owner.HeldItem;
         }
 
         public override void AI()
@@ -126,8 +126,8 @@ namespace CNC.Content.Projectiles
                 projectile.Center += (targetPos - projectile.Center) * .05f;
                 if (projectile.Center.Distance(targetPos) < .1f) projectile.Center = targetPos;
                 projectile.direction = (projectile.Center.X > owner.Center.X).ToDirectionInt(1);
-                float extraRot = timer < 30 ? 0f : (owner.Center.Y > projectile.Center.Y).ToDirectionInt(1) * MyMath.Lerp(0f, 32f, Math.Abs(owner.Center.Distance(projectile.Center)) / 100f) * MyMath.deg01;
-                targetRot = MyMath.deg90 - (driftRot.GetNextValue() * MyMath.deg01 / 4f + extraRot) * projectile.direction;
+                float extraRot = timer < 30 ? 0f : (owner.Center.Y > projectile.Center.Y).ToDirectionInt(1) * MyMath.Lerp(0f, 20f, Math.Abs(owner.Center.Distance(projectile.Center)) / 100f) * MyMath.deg01;
+                targetRot = MyMath.deg90 - (MyMath.deg15 + driftRot.GetNextValue() * MyMath.deg01 / 4f + extraRot) * projectile.direction;
                 targetRot %= MyMath.pi2;
                 projectile.rotation %= MyMath.pi2;
                 projectile.rotation = RotLerp(projectile.rotation, targetRot, .025f);
@@ -209,12 +209,11 @@ namespace CNC.Content.Projectiles
         {
             overPlayers.Add(index);
         }
-
-        /* r1  r2
-         * 359 1
-         */
+        
         private float RotLerp(float r1, float r2, float progress)
         {
+            return Utils.AngleLerp(r1, r2, progress);
+            /*
             float pi2 = MyMath.pi2;
             r1 %= pi2;
             r2 %= pi2;
@@ -224,6 +223,7 @@ namespace CNC.Content.Projectiles
             if (Math.Abs(r1 - r2) > Math.Abs(r1 - (r2 + pi2))) r2 += pi2;
             else if (Math.Abs(r1 - r2) > Math.Abs((r1 + pi2) - r2)) r1 += pi2;
             return MyMath.Lerp(r1, r2, progress);
+            */
         }
 
         private void Attack()

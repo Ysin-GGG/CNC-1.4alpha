@@ -122,6 +122,7 @@ namespace CNC
 
         public override void PostSetupContent()
         {
+            //if (Main.dedServ) return;
             #region 映射载入
             TmodFile modFiles = (TmodFile)typeof(Mod).GetProperty("File", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(this);
             CNCLocalization.Load("CNC", modFiles);
@@ -202,6 +203,8 @@ namespace CNC
             string[] names =
             {
                 "ShockWave",
+                "RadialBlur",
+                "Swirl",
             };
             foreach (string name in names) (Filters.Scene["CNC:" + name] = new Filter(new FilterShaderData(new Ref<Effect>(CNC.GetEffect(name)), name), EffectPriority.Medium)).Load();
         }
@@ -232,85 +235,75 @@ namespace CNC
         private void DrawParticle(global::On.Terraria.Main.orig_DrawDust orig, Main self)
         {
             orig.Invoke(self);
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
             for (int i = 0; i < Content.ParticleManager.maxParticles; i++)
                 if (Content.ParticleManager.particle[i] != null && Content.ParticleManager.particle[i].active)
+                {
+                    Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
                     Content.ParticleManager.particle[i].Draw(Main.spriteBatch);
-            Main.spriteBatch.End();
+                    Main.spriteBatch.End();
+                }
         }
 
         private void DrawVisualEffect(global::On.Terraria.Main.orig_DoDraw_DrawNPCsBehindTiles orig, Main self)
         {
             orig.Invoke(self);
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
             this.DrawVisualEffect(Content.VisualEffect.DrawLayer.overTiles);
-            Main.spriteBatch.End();
         }
 
         private void DrawVisualEffect(global::On.Terraria.Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
         {
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
             this.DrawVisualEffect(Content.VisualEffect.DrawLayer.behindTiles);
-            Main.spriteBatch.End();
             orig.Invoke(self);
         }
 
         private void DrawVisualEffect(global::On.Terraria.Main.orig_DrawNPC orig, Main self, int iNPCIndex, bool behindTiles)
         {
             orig.Invoke(self, iNPCIndex, behindTiles);
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
-            this.DrawVisualEffect(Content.VisualEffect.DrawLayer.overNPCs);
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            this.DrawVisualEffect(Content.VisualEffect.DrawLayer.overNPCs, true);
         }
 
         private void DrawVisualEffect(global::On.Terraria.Main.orig_DrawProjectiles orig, Main self)
         {
             orig.Invoke(self);
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
             this.DrawVisualEffect(Content.VisualEffect.DrawLayer.overProjectlies);
-            Main.spriteBatch.End();
         }
 
         private void DrawVisualEffect(global::On.Terraria.Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
         {
             orig.Invoke(self);
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
             this.DrawVisualEffect(Content.VisualEffect.DrawLayer.overPlayers);
-            Main.spriteBatch.End();
         }
 
         private void DrawVisualEffect(global::On.Terraria.Main.orig_DrawInterface orig, Main self, GameTime gametime)
         {
             if (!Main.drawToScreen)
             {
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
                 this.DrawVisualEffect(Content.VisualEffect.DrawLayer.behindUIs);
-                Main.spriteBatch.End();
             }
             orig.Invoke(self, gametime);
             if (!Main.drawToScreen)
             {
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
                 this.DrawVisualEffect(Content.VisualEffect.DrawLayer.overUIs);
-                Main.spriteBatch.End();
             }
         }
 
         private void DrawVisualEffect(global::On.Terraria.Main.orig_DrawDust orig, Main self)
         {
             orig.Invoke(self);
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
             this.DrawVisualEffect(Content.VisualEffect.DrawLayer.overDusts);
-            Main.spriteBatch.End();
         }
 
-        private void DrawVisualEffect(Content.VisualEffect.DrawLayer layer)
+        private void DrawVisualEffect(Content.VisualEffect.DrawLayer layer, bool end = false)
         {
             for (int i = 0; i < CNC.maxEffects; i++)
                 if (Content.VisualEffectManager.effect[i] != null && Content.VisualEffectManager.effect[i].active)
+                {
+                    if (end) Main.spriteBatch.End();
+                    Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
                     Content.VisualEffectManager.effect[i].Draw(Main.spriteBatch, layer);
+                    Main.spriteBatch.End();
+                    if (end) Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+                }
         }
 
         private void ResetManaMax(ILContext il, int max = 400)

@@ -4,7 +4,11 @@ using Microsoft.Xna.Framework;
 using ReLogic.Graphics;
 using Terraria;
 using Terraria.GameContent;
-
+using Cb = CNC.Content.Buffs;
+using Cd = CNC.Content.Dusts;
+using Ci = CNC.Content.Items;
+//using Cw = CNC.Content.Walls;
+using Cp = CNC.Content.Projectiles;
 using static Terraria.ModLoader.ModContent;
 
 namespace CNC.Common.Utils
@@ -752,6 +756,8 @@ namespace CNC.Common.Utils
             public const short FireFlow = 34;
             /// <summary> ª√œÛ÷Æ»– </summary>
             public const short PhantomExcalibur = 35;
+            /// <summary> –Èø’÷Æ”¸ </summary>
+            public const short VoidNightsEdge = 36;
             #endregion
             public static Dictionary<string, short> Collection
             {
@@ -808,9 +814,10 @@ namespace CNC.Common.Utils
                 { SilveryField, ProjectileType<Content.Projectiles.ArgenteusOathKeeper.SilveryField>() },
                 { SilveryDash, ProjectileType<Content.Projectiles.ArgenteusOathKeeper.SilveryDash>() },
                 { AnattaSlash, ProjectileType<Content.Projectiles.AnattaSlash>() },
-                { SolarHalo, ProjectileType<Content.Projectiles.SolarHalo>() },
-                { FireFlow, ProjectileType<Content.Projectiles.FireFlow>() },
-                { PhantomExcalibur, ProjectileType<Content.Projectiles.PhantomExcalibur>() },
+                { SolarHalo, ProjectileType<Content.Projectiles.Remakes.SolarHalo>() },
+                { FireFlow, ProjectileType<Content.Projectiles.Remakes.FireFlow>() },
+                { PhantomExcalibur, ProjectileType<Content.Projectiles.Remakes.PhantomExcalibur>() },
+                { VoidNightsEdge, ProjectileType<Content.Projectiles.Remakes.VoidNightsEdge>() },
             };
         }
 

@@ -23,8 +23,8 @@ namespace CNC.Content.DataStructures
 
         public Vector2 position
         {
-            get => new Vector2(this.range, 0f).RotatedBy(this.rotation + MyMath.pi2);
-            set { this.range = value.Length(); this.rotation = value.ToRotation() + MyMath.pi2; }
+            get => new Vector2(this.range, 0f).RotatedBy(this.rotation);
+            set { this.range = value.Length(); this.rotation = value.ToRotation(); }
         }
 
         public SlashInfo(Vector2 offset, Vector2 pos, float power = 1f)

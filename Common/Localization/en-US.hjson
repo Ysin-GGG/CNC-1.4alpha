@@ -1,402 +1,405 @@
 Mods: {
 	CNC: {
 		BiomeName: {
-			Tranquility: Tranquility Forest
+			Tranquility: 星落之森
 		}
 
 		Projectile: {
-			MentorMissile: Magic Missile
-			SpiritMass: Spirit Mass
-			SpiritArrow: Spirit Arrow
-            FireBall: Fire Ball
-            FireBallExplosion: Fire Explosion
-            DentateIce: Dentate Ice
-            DentateIceExplosion: Ice Flake
+			MentorMissile: 魔法飞弹
+			SpiritMass: 灵气团
+			SpiritArrow: 灵气矢
+            FireBall: 火球
+            FireBallExplosion: 炎爆
+            DentateIce: 冰牙
+            DentateIceExplosion: 冰花
 		}
-		
+
 		Tile: {
 			TranquilityDirt: \0{$Mods.CNC.Item.Name.TranquilityDirt}
 			TranquilityStone: \0{$Mods.CNC.Item.Name.TranquilityStone}
-			TranquilityGrass: Grey Grass
-			SpiritWood: Spirit Wood
-			SpiritSapling: Spirit Sapling
+			TranquilityGrass: 灰草
+			SpiritWood: 星木
+			SpiritSapling: 银白星木树苗
 		}
 
 		Item: {
 			Name: {
-				HHvsRobeCape: Empyreal Wizzard Robe Cape
-				HHvsRobe: Empyreal Wizzard Robe
-				HHvsHat: Empyreal Wizzard Hat
-				HHvsLegs: Empyreal Wizzard Boot
-				QuartzBlock: Quartz's Head
-				Anatta: Anatta
-				MiracleGem: Miracle Gem
-				DestineScroll: The Destine Scroll
-				FireGrimoire: Fire Grimoire
-				IceTooth: Ice Tooth
-				Superconductor: Arcane Lightning Wand
-				ArgenteusClaw: Argenteus Claw
-				SpiritWood: Spirit Wood
-				TranquilityGem: Tranquility Gem
-				SpiritSapling: Spirit Sapling
-				TranquilityDirt: Grey Dirt
-				TranquilityStone: Grey Stone
-				ArgenteusOathKeeper: Argenteus Oath Keeper
-				TheLightOfAuzzsia: The Light of Auzzsia
-				EmberOfNien: Ember of Nien
-				FragmentarySoulDagger: Fragmentary Soul Dagger
-				SpiritIronGreatsword: Spirit Iron Greatsword
-				MysticalLight: Mystical Light
-				ShortDagger: Short Dagger
-				SpiritSparkingWand: Wand of Spirit Sparking
+				HHvsRobeCape: 至高斗篷
+				HHvsRobe: 至高巫师法袍
+				HHvsHat: 至高巫师帽
+				HHvsLegs: 至高巫师连裤靴
+				QuartzBlock: Quartz的头
+				Anatta: 无我之刃
+				MiracleGem: 晨光宝石
+				DestineScroll: 命定卷轴
+				FireGrimoire: 火焰魔典
+				IceTooth: 寒霜尖牙
+				Superconductor: 震击魔杖
+				ArgenteusClaw: 艾因缇奥圣弓
+				SpiritWood: 星木
+				TranquilityGem: 星核
+				SpiritSapling: 银白星木树苗
+				TranquilityDirt: 灰泥
+				TranquilityStone: 灰岩
+				ArgenteusOathKeeper: 艾因缇奥誓剑
+				TheLightOfAuzzsia: 埃兹西亚之光
+				EmberOfNien: 熔铁尼安
+				FragmentarySoulDagger: 残缺灵魂之匕
+				SpiritIronGreatsword: 灵金大剑
+				MysticalLight: 灵光（暂时删除）
+				ShortDagger: 短匕首
+				SpiritSparkingWand: 老魔杖
 			}
 			Tooltip: {
-				HHvsRobeCape: 'The noble symbol of the supreme sorcerer'
-				HHvsRobe: 'The robe that congealed countless stars'
-				HHvsHat: 'Can you feel the weight of wisdom?'
-				QuartzBlock: 'What are you looking at?'
-				Anatta: ���ڱ���ʱ���˽��ἤ��ĳЩ����������
-				MiracleGem: Summons a rideable miracle fox
-				DestineScroll: Changes your class once\n'Reading and reading, writing god being'
-				#FireGrimoire: 
-				IceTooth: All that remains of the wizard Fezien of Auzzsia.\n "As the price of power, Ezisia's hero, Fezien,the great wizard, cannot escape his doomed death."
-				#Superconductor: 
-				ArgenteusClaw: 'Pierces the evil.'
+				HHvsRobeCape: “至高巫师的尊贵象征”
+				HHvsRobe: “浩瀚星辰凝聚的法袍”
+				HHvsHat: “无上智慧的重压”
+				HHvsLegs: “巫师自创连裤靴”
+				QuartzBlock: “你瞅啥？”
+				Anatta: 放在背包时，此剑会激发某些武器的力量
+				MiracleGem: 召唤可骑乘的灵狐
+				DestineScroll: 得到一次重新变更职业的机会\n“卷轴上记载了更替命定之路的上古咒文。”
+				FireGrimoire: 地狱火焰的淬炼产物 
+				IceTooth: 某位埃兹西亚巫师生前最珍贵的遗物。\n“作为接触禁忌的代价，埃兹西亚的英雄也无法逃脱命定之死。”
+				Superconductor: 能凝聚出粗壮电芒的强大魔杖 
+				ArgenteusClaw: 远古银白星树的枝干与内核制成，铭刻着星痕之咒，由它发射的箭矢能击落星辰
 				#SpiritWood: 
 				#TranquilityGem: 
 				#SpiritSapling: 
 				#TranquilityDirt: 
 				#TranquilityStone: 
-				#ArgenteusOathKeeper: 
-				#TheLightOfAuzzsia: 
-				#EmberOfNien: 
+				ArgenteusOathKeeper: 誓言的力量给这把武器注入了新的活力 
+				TheLightOfAuzzsia: 注入了远古魔咒的铁杖，手持时魔咒能自发涌入你的内心
+				EmberOfNien: 一把曾经属于教团异端审判组织的武器，无数鲜血在战锤下得以沐浴圣光
 				#FragmentarySoulDagger: 
 				#SpiritIronGreatsword: 
 				#MysticalLight: 
 				#ShortDagger: 
-				#SpiritSparkingWand: 
+				SpiritSparkingWand: 经典巫师学徒
 			}
 		}
 
 		Buff: {
 			Name: {
-				MiracleFox: Miracle Fox
-				Scorched: Scorched
-				Enthused: Enthused
-				Gelid: Gelid
-				Glacial: Glacial
-				Overloaded: Overloaded
-				Surged: Surged
-				Sanctified: Sanctified
-				Dizzy: Dizzy
-				Bleeding: Bleeding
-				Blessed: Blessed
+				MiracleFox: 灵狐
+				Scorched: 灼热
+				Enthused: 狂热
+				Gelid: 寒霜
+				Glacial: 极寒
+				Overloaded: 超载
+				Surged: 能量涌动
+				Sanctified: 圣化
+				Dizzy: 圣化
+				Bleeding: 出血
+				Blessed: 神圣护盾
+				StarMark: 星痕
 			}
 			Desc: {
-				MiracleFox: Her body is indistinct
-				Scorched: Decreased defense by 8
-				Enthused: Increased your attack and movement speed
-				Gelid: Your movement speed has been reduced heavily
-				Glacial: You cannot do anything!
-				Overloaded: Shoot a charged eletric projectile next time
-				Surged: 30% increased magic damage
-				Sanctified: Souls are burning!
-				Dizzy: You cannot do anything!
-				Bleeding: ÿ����ʧһ������ֵ
-				Blessed: ����15%�ܵ����˺�\n��ʥ�ͽ�Ĵ����������15%
+				MiracleFox: 星落森林里的灵狐
+				Scorched: 防御力减少8点
+				Enthused: 提高移动速度和攻击速度
+				Gelid: 移动速度大幅降低
+				Glacial: 无法行动
+				Overloaded: 下次攻击发射高能闪电弹
+				Surged: 增加30%魔法伤害
+				Sanctified: 灵魂正在燃烧
+				Dizzy: 无法行动
+				Bleeding: 每秒损失一定生命值
+				Blessed: 所受伤害减少15%\n神圣惩戒的触发概率提高15%
+				StarMark: 寸步难行
 			}
 		}
 
 		Command: {
 			LvSet: {
-                Value: (Level)
-                NoLevel: The item ({0}) no level
-                NotPositiveInt: The value ({0}) is not a positive integer
-                OutOfMaxLevel: The value ({0}) out of the max level ({1})
-                Success: Level of the item your held has been set from ({0}) to ({1}) successfully
+				Value: （级别）
+				NoLevel: 所持物品（{0}）无法升级
+				NotPositiveInt: （{0}）不是一个正整数
+				OutOfMaxLevel: 所设值（{0}）超出所持物品级别上限（{1}）
+				Success: 所持物品的级别已成功由（{0}）设置为（{1}）
 			}
 		}
 
 		Config: {
-			Client: Client Config
-			Server: Server Config
-			OnlyFor: CNC and extra contents Only
-			UseModMusic: Applying CNC music for bosses
-			HoverTextBox: Hover text boxes
-			HoverTextBoxAlpha: Opacity
-			HoverTextBoxStyle: Style:
-			HoverTextBoxStyleNone: None
-			HoverTextBoxStyleOrigin: Original
-			HoverTextBoxStyleBrown: Classical
-			HoverTextBoxType1: GUI/Resource bars
-			HoverTextBoxType2: Collapse Bar
-			HoverTextBoxType3: Classes Menu
-			HoverTextBoxType4: Enhancement
-			CollapseBar: Collapse Bar
-			CloseEdge: Close Edge:
-			LeftEdge: Left
-			RightEdge: Right
-			TopEdge: Top
-			BottomEdge: Bottom
-			Offset: Offset
-			MovementSpeed: Movement Speed
+			Client: 客户端设置
+			Server: 服务端设置
+			OnlyFor: 仅限于CNC及其拓展内容
+			UseModMusic: 替换Boss战斗BGM
+			HoverTextBox: 悬浮文本框
+			HoverTextBoxAlpha: 不透明度
+			HoverTextBoxStyle: 样式：
+			HoverTextBoxStyleNone: 透明
+			HoverTextBoxStyleOrigin: 原版
+			HoverTextBoxStyleBrown: 古典
+			HoverTextBoxType1: GUI/资源条
+			HoverTextBoxType2: 功能栏
+			HoverTextBoxType3: 职业菜单
+			HoverTextBoxType4: 铭文强化
+			CollapseBar: 功能栏
+			CloseEdge: 靠拢边缘：
+			LeftEdge: 左边框
+			RightEdge: 右边框
+			TopEdge: 上边框
+			BottomEdge: 下边框
+			Offset: 偏移
+			MovementSpeed: 折叠/展开速度
 		}
 
 		DeathText: {
-			LostSanity: \0[player] lost the mind
+			LostSanity: \0[player]迷失于咒文魔法之中
 		}
 
 		NPC: {
-			TranquilityPixie: Tranquility Pixie
-			PhantomBat: Phantom Bat
-			PhantomSlime: Phantom Slime
-			PhantomFlame: Phantom Flame
-			SpiritBoss: Spirit of Forest
-			SpiritCrystal: Spirit Crystal
+			TranquilityPixie: 星核幽灵
+			PhantomBat: 灵气蝙蝠
+			PhantomSlime: 灵气史莱姆
+			PhantomFlame: 灵火
+			SpiritBoss: 星痕灵体
+			SpiritCrystal: 守护水晶
 		}
 		
 		Bestiary: {
-			TranquilityPixie: ???
-			PhantomBat: ???
-			PhantomSlime: ???
-			PhantomFlame: ???
-			SpiritBoss: ???
-			SpiritCrystal: ???
+			TranquilityPixie: ？？？
+			PhantomBat: ？？？
+			PhantomSlime: ？？？
+			PhantomFlame: ？？？
+			SpiritBoss: ？？？
+			SpiritCrystal: ？？？
 		}
 
 		TownNPC: {
 			Mentor: {
-				Name: Mentor
-				Bestiary: ???
+				Name: 导师
+				Bestiary: ？？？
 			}
 		}
 
 		TownNPCName: {
 			Mentor: {
-                1: Fizban
-                2: Wier
-                3: Mantor
+				1: Fizban
+				2: Wier
+				3: Mantor
 				4: HHvz
 			}
 		}
 
 		TownNPCChat: {
 			Mentor: {
-                1: ���ܰ���羰�ֻ�ǵ�һ��������������Ҳ�Ѿ��ӽ��ݽߣ�����Ҫ��ø�ǿ��
-                2: Have you try to find the new application of crucible? This is an interesting idea.
-                3: ʧȥ�˴���ӻ�֮�󣬾���֮��Ҳ�������ڣ���������Ԥ�Ը����ң��µ�ʹ���Ѿ������ˡ�
-                4: ��������羰�һֱ�ڵȴ�������֮�˵ĵ��������������ڳ��õ��ػ������ģ��Ѿ��ߵ��˾�ͷ��
-                5: In {$Mods.CNC.BiomeName.Tranquility}, my mind will be more active, maybe I can make some new things to relax.
+				1: 星落森林里有一位危险的存在，不过它的力量早已经接近枯竭，你需要击败它来变得更强。
+				2: 你有没有尝试开发坩埚的新用途？往坩埚里逐步放入材料，搅拌。
+				3: 灵金是一种很好的材料，韧性高硬度好，只是难以引导魔力，不过魔力能很好的重构它。
+				4: 星落森林里生长的星木，是良好的魔力材料，能用它来完成很多魔法相关的操作。
+				5: 我很喜欢{$Mods.CNC.BiomeName.Tranquility}，在这里我能想出更多有意思的点子。
 			}
 		}
 
 		TownNPCMood: {
 			Mentor: {
-				Content: Here is good, but can be better.
-				NoHome: I need a house so that I can better contimue my research.
-				LoveSpace: I love this place, and I love to do what I want to do in here.
-				FarFromHome: I wish I can go back to my house before sunset.
-				DislikeCrowded: Actually, I don't like crowded places, too many active people will break my thinking.
-				HateCrowded: It's so noisy here, worse than mobs attack!
-				LikeBiome: "Living in {BiomeName} is not bad, fishing and hunting are my hobits."
-				LoveBiome: "There is tranquil, but {BiomeName} more tranquil, because I can't stand those noisy neighbors."
-				DislikeBiome: "{BiomeName} is a wet and smelly place, where makes me uninspired, no one would want to live there."
-				HateBiome: 
-				LikeNPC: "People who like elegance and fashion never resist nice clothes. I wish {NPCName} can build a clothing store on my doorway."
-				LoveNPC: 
-				DislikeNPC: "Voodoo Magic is just like worm, I am researching how to suppress it."
-				HateNPC: "I don't like the guy in purple robe, {NPCName} has to recognize his foolish magic!"
+				Content: 我并不讨厌现在的环境，但还能继续改善。
+				NoHome: 我需要一个房子，这样我才能更好地继续我的研究，或者指导你。
+				LoveSpace: 这个地方很好。
+				FarFromHome: 在太阳下山之前，我得尽快回到能躲避黑暗的地方。
+				DislikeCrowded: 说实话，我不太喜欢拥挤的地方，太多热闹的人们会打乱我的思绪。
+				HateCrowded: 这儿实在是太吵闹了，甚至比怪物来袭还要糟糕。
+				LikeBiome: "{BiomeName}里的生活还不错，钓鱼打猎对我来说再好不过。"
+				LoveBiome: "这里的生活很安逸，但{$Mods.CNC.BiomeName.Tranquility}更好，因为我无法忍受一个缺乏魔力的环境。"
+				DislikeBiome: "{BiomeName}是个潮湿发臭的地方，在这里我没有任何灵感来钻研我的咒文咒语。"
+				HateBiome: ""
+				LikeNPC: "哪个高贵又时尚的人会拒绝更好的衣服呢？我希望{NPCName}能把服装店开在我家门口。"
+				LoveNPC: ""
+				DislikeNPC: "巫毒魔法就像蛆虫一样，我正在研究压制它的办法。"
+				HateNPC: "我不喜欢穿紫色长袍的那个家伙，{NPCName}的三脚猫功夫有辱巫师的名号"
 			}
 		}
-		
+
 		Class: {
-			Format: ----{0}----
-			Barbarian: Barbarian
-			Defender: Defender
-			Crusader: Crusader
-			Ranger: Ranger
-			Gunman: Gunman
-			Thrower: Thrower
-			Musketeer: Musketeer
-			Cleric: Cleric
-			Wizard: Wizard
-			SpellBreaker: Spell Breaker
-			Druid: Druid
-			Shaman: Shaman
-			Warlock: Warlock
-			Monk: Monk
-			Assassin: Assassin
+			Format: ——{0}——
+			Barbarian: 狂战士
+			Defender: 护卫
+			Crusader: 圣骑士
+			Ranger: 游侠
+			Gunman: 枪手
+			Thrower: 投手
+			Musketeer: 火枪手
+			Cleric: 牧师
+			Wizard: 巫师
+			SpellBreaker: 破法者
+			Druid: 德鲁伊
+			Shaman: 萨满
+			Warlock: 死灵法师
+			Monk: 武僧
+			Assassin: 刺杀者
 		}
 
 		ClassPreview: {
-			Barbarian: \0{$Mods.CNC.Class.Barbarian}: New [Fury] Ability\n\n[Resentment] Talent: \n*When taken damage from enemies or dealing damage to enemies, gains 1 [Fury] stack, this talent can be triggered once every 0.4s\n*While in possession of the maximum [Fury] stacks, enters [Wrath], and [Fury] stacks begin to lose 3 per second\n*While in [Wrath], exits [Wrath] and enters [Cowardice] for 5s if your [Fury] stacks less than 5\n\n[Wrath] State: \n*20% increased attack and movement speed\n*10% increased damage\n\n[Cowardice] State: \n*20% decreased attack and movement speed\n*10% decreased damage\n*Cannot gains any [Fury] stacks
+			Barbarian: \0{$Mods.CNC.Class.Barbarian}：增加[怒气]机制\n\n[愤怒]：\n*受到敌人伤害或对敌人造成伤害时，将积累1点[怒气]，每0.4s最多触发一次\n*[怒气]达到上限时，以每秒3点的消耗速度消耗，并得到[狂怒]\n*[狂怒]状态下，若怒气低于5点，则结束[狂怒]，得到5s[泄气]\n\n[狂怒]：\n*攻击速度和移动速度提高20%\n*攻击力提高10%\n\n[泄气]：\n*攻击速度和移动速度降低20%\n*攻击力降低10%\n*无法获得怒气
 			Defender: \0
-			Crusader: \0{$Mods.CNC.Class.Crusader}: New [Divine Energy] Ability\n\nEquipping a faith emblem to trigger a [Faith] talent, [Divine Energy] stacks will restore continuously\nWhen [Divine Energy] stacks less than 20%, enters [Blasphemy]\n\n[Fanatic Faith] Talent: \n*Increases melee damage by [Divine Energy] stacks\n\n[Divine Faith] Talent: \n*Increases magic damage by [Divine Energy] stacks\n\n[Blasphemy] State: \n*20% decreased movement speed and dealt damage\n*10% increased taken damage
-			Ranger: \0{$Mods.CNC.Class.Ranger}: New [Bow Power] Ability\n\n[Vicinity Ineptitude] Talent: \n*When any enemies close to, enters [Fluster]\n\n[Power Accumulation] Talent: \n*Increases arrow damage and critical strike chance by [Bow Power] stacks, and shooting will exhaust [Bow Power] stacks\n*[Bow Power] stacks will restore continuously, its initial full restoring time is 4s\n*While in possession of the maximum [Bow Power] stacks, increases arrow damage by 60% and increases arrow critial sprike chance by 30% currently\n\n[Fluster] State: \n*30% decreased arrow damage\n*10% decreased arrow critical strike chance
+			Crusader: \0{$Mods.CNC.Class.Crusader}：增加[神力]机制\n\n与装备不同的信仰徽章，以选择相应的[信仰]\n[神力值]能随着时间缓慢增加\n[神力值]低于20%时，得到[信仰裂痕]\n\n[战争信仰]：\n*近战伤害得到与徽章[神力值]对应的增强\n\n[光明信仰]：\n*魔法伤害得到与徽章[神力值]对应的增强\n\n[信仰裂痕]：\n*移动速度和造成的伤害降低20%\n*受到的伤害增加10%
+			Ranger: \0{$Mods.CNC.Class.Ranger}：增加[蓄力]机制\n\n[距离弱势]：\n*当有敌人近身时，进入[慌乱]状态\n\n[精准蓄力]：\n*箭矢攻击力和暴击率加成随[蓄力]提升，每次攻击发射箭矢清空[蓄力]\n*初始达到最大[蓄力]时间为4s\n*当[蓄力]达到最大时，箭矢伤害可增加60%，暴击率可增加30%\n\n[慌乱]：\n*箭矢伤害降低30%\n*暴击率降低10%
 			Gunman: \0
 			Thrower: \0
-			Musketeer: \0{$Mods.CNC.Class.Musketeer}: New [Durability] Ability\n\nSpends some time restoring [Durability] stacks when [Durability] stacks is exhausted\nPresses Class Key to enter or exit [Restoring]\n\n[Bullet Energy] Talent: \n*Requires 1 [Durability] stack every shooting, \n*Counts restoring time according to weapon use time when shooting\n\n[Precision Strike] Talent:\n*Increases critial strike chance by 10%\n*Increases movement speed by 15%\n*Increases dealt damage by 25% to enemies that life more than 75%\n\n[Restoring] State: \n*35% decreased movement speed\n*20% increased taken damage\n*If [Durability] stacks is less than 35%, cannot exit this state or shooting
-			Cleric: \0{$Mods.CNC.Class.Cleric}: New [Divine Energy] Ability\n\nEquipping a faith emblem to trigger a [Faith] talent, [Divine Energy] stacks will restore continuously\nWhen [Divine Energy] stacks less than 20%, enters [Blasphemy]\n\n[Angelic Faith] Talent: \n*Increases regen amount by [Divine Energy] stacks\n\n[Divine Faith] Talent: \n*Increases magic damage by [Divine Energy] stacks\n\n[Blasphemy] State: \n*20% decreased movement speed and dealt damage\n*10% increased taken damage
-			Wizard: \0{$Mods.CNC.Class.Wizard}: New [Spell Mana] Ability\n\n�������飺ħ�������ڣ�100%-85%��ʱ��������+10%���˺�+15%��������ȴʱ��-30%\nħ��������85%-50%��ʱ�������ָ��ٶ�+30%\nħ������С��50%ʱ���ܵ��˺�����10%�������ָ��ٶ�-25%\nħ������С��25%ʱ������˺�-10%�������ָ��ٶ�-50%\nħ������С��5%ʱ������˺�-20%������-30%���ܵ��˺�+10%,���õ�[��������]\n\n[��������]��ÿ���ܵ�10���˺�
+			Musketeer: \0{$Mods.CNC.Class.Musketeer}：增加[枪动力]机制\n\n[枪动力]需花费一定时间进行填充\n可通过快捷键手动[填充]或取消[填充]\n\n[子弹动力]：\n*每次射击消耗1点[枪动力]\n*每次射击时，根据武器攻击速度叠加填充时间\n\n[弱点击破]：\n*暴击率提高10%\n*移动速度提高15%\n*对于生命大于75%的敌人，造成的伤害增加25%\n\n[填充]：\n*移动速度降低35%\n*受到的伤害增加20%\n*若[枪动力]低于35%，无法攻击或取消该状态
+			Cleric: \0{$Mods.CNC.Class.Cleric}：增加[神力]机制\n\n与装备不同的信仰徽章，以选择相应的[信仰]\n[神力值]能随着时间缓慢增加\n[神力值]低于20%时，得到[信仰裂痕]\n\n[治愈信仰]：\n*治愈能力得到与徽章[神力值]对应的增强\n\n[光明信仰]：\n*魔法伤害得到与徽章[神力值]对应的增强\n\n[信仰裂痕]：\n*移动速度和造成的伤害降低20%\n*受到的伤害增加10%
+			Wizard: \0{$Mods.CNC.Class.Wizard}：增加[咒能]机制\n\n法力空虚：魔力容量在（100%-85%）时，暴击率+10%，伤害+15%，法术冷却时间-30%\n魔力容量（85%-50%）时，法力恢复速度+30%\n魔力容量小于50%时，受到伤害增加10%，法力恢复速度-25%\n魔力容量小于25%时，造成伤害-10%，法力恢复速度-50%\n魔力容量小于5%时，造成伤害-20%，移速-30%，受到伤害+10%,并得到[法力虚无]\n\n[法力虚无]：每秒受到10点伤害
 			SpellBreaker: \0
 			Druid: \0
 			Shaman: \0
 			Warlock: \0
 			Monk: \0
-			Assassin: \0{$Mods.CNC.Class.Assassin}: New [Phantom] Ability\n\nWhile in possession of the maximum [Phantom] stacks, presses Class Key to trigger [Wraith]\nWhen [Wraith] is triggered, taken damage from enemies decrease to 1, and will not exhaust [Phantom] stacks instantly\n\n[Wraith] State: \n*40% increased movement speed, 50% increased raid damage and [Phantom] stacks lose continuously\n*If taken damage from enemies, exhausts [Phantom] stacks instantly, exits this state when [Phantom] stacks will be exhausted
+			Assassin: \0{$Mods.CNC.Class.Assassin}：增加[幻影]机制\n\n[幻影]达到最大值时，可通过快捷键启用[隐匿]\n进入[隐匿]状态时，2s内敌人所造成的伤害降为1，且不会清空[幻影]\n\n[隐匿]：\n*持续消耗[幻影]，移动速度增加40%，穿刺伤害增加50%\n*受到敌人攻击时会清空[幻影]，[幻影]耗尽则结束[隐匿]状态
 		}
 
 		ClassAbility: {
-			Barbarian: Fury: {0}
+			Barbarian: 怒气：{0}
 			#Defender: \0
-			Crusader: Divine Energy: {0}
-			Ranger: Bow Power: {0}
+			Crusader: 神力：{0}
+			Ranger: 蓄力：{0}
 			#Gunman: \0
 			#Thrower: \0
-			Musketeer: Durability: {0}
-			Cleric: Divine Energy: {0}
-			Wizard: Spell Mana: {0}
+			Musketeer: 枪动力：{0}
+			Cleric: 神力：{0}
+			Wizard: 咒能：{0}
 			#SpellBreaker: \0
 			#Druid: \0
 			#Shaman: \0
 			#Warlock: \0
 			#Monk: \0
-			Assassin: Phantom: {0}
+			Assassin: 幻影：{0}
 		}
 
 		ClassState: {
-			Wrath: Wrath
-			Cowardice: Cowardice
-			Blasphemy: Blasphemy
-			Fluster: Fluster
-			Restoring: Restoring
-			Wraith: Wraith
+			Wrath: 狂怒
+			Cowardice: 泄气
+			Blasphemy: 信仰裂痕
+			Fluster: 慌乱
+			Restoring: 填充
+			Wraith: 隐匿
 		}
 
 		ClassStateDesc: {
-			Wrath: 20% increased attack and movement speed\n10% increased damage
-			Cowardice: 20% decreased attack and movement speed\n10% decreased damage\nCannot gains any [Rage] stacks
-			Blasphemy: 20% decreased movement speed and dealt damage\n10% increased taken damage
-			Fluster: 30% decreased arrow damage\n10% decreased arrow critical strike chance
-			Restoring: 35% decreased movement speed\n20% increased taken damage
-			Wraith: 40% increased movement speed\n50% increased raid damage\n[Phantom] stacks lose continuously
+			Wrath: 攻击速度和移动速度提高20%\n攻击力提高10%
+			Cowardice: 攻击速度和移动速度降低20%\n攻击力降低10%\n无法获得怒气
+			Blasphemy: 移动速度和造成的伤害降低20%\n受到的伤害增加10%
+			Fluster: 箭矢伤害降低30%\n暴击率降低10%
+			Restoring: 移动速度降低35%\n受到的伤害增加20%。
+			Wraith: 移动速度增加40%\n穿刺伤害增加50%\n[幻影]持续消耗
 		}
 		
 		Inscription: {
 			Common: {
-				Power: Power|{0}�����˺�����
-				Chanter: Chanter|{0}ʩ���ٶ�����
-				Economization: Economization|{0}ħ�����ļ���
-				Arcane: Arcane|{0}����������
-				Charging: Charging|{0}������ȴ����
-				Reiki: Reiki|{0}ħ������
-				Assimilation: Assimilation|{0}ħ���ָ�����
-				SkillPower: SkillPower|{0}�����˺�����
-				MagicAdept: MagicAdept|{0}�����ٶ�����
-				Saint: Saint|{0}����������
-				Evangel: Evangel|��������{0}ʱ������������{1}
-				Destroyer: Destroyer|{0}����������
-				Dexterity: Dexterity|{0}�ƶ��ٶ�����
-				MeleeAdept: Melee Adept|{0}�����ٶ�����
-				Indignation: Indignation|ŭ���������{0}��
-				Force: Force|��������
-				Smiting: Smiting|���ڴ���[ѣ��]״̬�ĵ��ˣ���ɵ��˺�����{0}
-				Shockwave: Shockwave|�Ե������[ѣ��]��ʱ������{0}s
-				RaidAdept: Raid Adept|{0}�����ٶ�����
-				Murder: Murder|{0}����������
-				Torture: Torture|��������ֵ����{0}�ĵ��ˣ���ɵ��˺�����{1}
-				Assassination: Assassination|����[����]ʱ����ɵ��˺�����{0}
-				EagleEye: Eagle Eye|{0}����������
-				Penetration: Penetration|����ʱ��{0}����ʹ�����˺�����{1}
-				EnchantedMagazine: Enchanted Magazine|ǹ������������{0}
-				EnchantedBowstring: Enchanted Bowstring|�����ٶ�����{0}
+				Power: 伤害增幅|{0}基础伤害增幅
+				Chanter: 高速咏唱|{0}施法速度增幅
+				Economization: 朴素|{0}魔力消耗减免
+				Arcane: 奥术掌控|{0}暴击率增幅
+				Charging: 充能|{0}技能冷却缩减
+				Reiki: 秘法能流|{0}魔力返还
+				Assimilation: 能量吸收|{0}魔力恢复增幅
+				SkillPower: 技能增幅|{0}技能伤害增幅
+				MagicAdept: 快速凝聚|{0}攻击速度增幅
+				Saint: 治疗精通|{0}治疗量增幅
+				Evangel: 绝望祈祷|生命低于{0}时，治疗量增加{1}
+				Destroyer: 破绽洞悉|{0}暴击率增幅
+				Dexterity: 轻便|{0}移动速度增幅
+				MeleeAdept: 运用自如|{0}攻击速度增幅
+				Indignation: 义愤填膺|怒气上限提高{0}点
+				Force: 巨力|击退增加
+				Smiting: 晕眩打击|对于处于[眩晕]状态的敌人，造成的伤害增幅{0}
+				Shockwave: 晕眩强化|对敌人造成[眩晕]的时间增加{0}s
+				RaidAdept: 熟练|{0}攻击速度增幅
+				Murder: 有效切割|{0}暴击率增幅
+				Torture: 精准收割|对于生命值低于{0}的敌人，造成的伤害增幅{1}
+				Assassination: 神锋|处于隐匿时，造成的伤害增幅{0}
+				EagleEye: 鹰眼|{0}暴击率增幅
+				Penetration: 贯穿打击|攻击时有{0}概率使本次伤害增加{1}
+				EnchantedMagazine: 增大容量|枪动力上限增加{0}
+				EnchantedBowstring: 附魔弓弦|拉弓速度增幅{0}
 			}
 			Special: {
-				Fireball: Fireball|Shoots a fireball condensed by magic
-				Incinerating: Incinerating|Makes targets on fire, and generates a fire explosion, dealing {0} AoE magic damage
-				Scorching: Scorching|Applys [{$Mods.CNC.Buff.Name.Scorched}] to targets when strikes, decreasing target's defense by {0}
-				Enthusiasm: Enthusiasm|{0} chance to trigger [{$Mods.CNC.Buff.Name.Enthused}] when you attack
-				Gelidity: Gelidity|Reduces target's movement speed
-				Glacier: Glacier|Your attacks may freeze your targets when strikes
-				Iceflake: Iceflake|Generates an extra explosion, and deals {0} AoE magic damage
-				Shattering: Shattering|�����Զ���ĵ�����ɵ�ħ���˺�����{0}
-				FrostWave: Frost Wave|�Ҽ�����{0}�����ܣ�������һ�������Եĺ�����������뾶{1}���ڵĵ��˲����{2}ħ���˺������Ắ������ʱ�ٴ�����˺���ʩ��{3}s����
-				Charging: Charging|Shoots a lightning missile
-				SpellLightningChain: Spell Lightning Chain|�Ҽ�����{0}���ܣ��ͷ�һ�����磬��������{1}�����˲����{2}ħ���˺�
-				ArcaneOverload: ArcaneOverload|���е���ʱ����{0}ħ���˺�������{1}��ʱ���㣬{2}�����´ι����ͷŸ������絯�����{3}��{4}��Χħ���˺�
-				SpellReconstruction: Spell Reconstruction|Attacks have a {0} chance to instantly rebuild and cast the Spell Chain Lightning charm
-				SpellAugmentated: Spell Augmentated|Improved spell research to increase chain lightning target by {0} and search radius by {1}
-				StableSpell: Stable Spell|Overload will be able to hold for {0}s
-				SilveryArrow: Silvery Arrow|Wooden arrows turn into Silvery Arrows
-				Sanctity: Sanctity|{0} shoots an Sanctified Arrow, making {1} ranged damage and applying [{$Mods.CNC.Buff.Name.Sanctified}] to targets
-				Exorcism: Exorcism|Explodes all Sanctified Arrows if the target was struck by {0} Sanctified Arrows, dealing {1} ranged damage
-				Judgement: ��ʥ�ͽ�|����˺�ʱ{0}�������{1}��ħ���˺�
-				SilveryShield: ����|��������{0}�Σ���ó���{1}s������ʥ�����Ļ��ܣ��ṩ{2}���������ֵ�������ƻ����ʱ�������ը���{3}�㷶Χħ���˺�
-				SilverySpark: ��ɫ��|��{0}s��δ���������´ι�����Ϊͻ�̹��������{1}��ս�˺���ͻ���ڼ������˺�
-				SilveryVow: ����������|�Ҽ�����{0}������ֵ����ó���{1}s����ʥ���ܣ��ڼ������˺�����{2}����ʥ�ͽ䴥���������{3}��ÿ�δ�����ʥ�ͽ�Ч�����{4}����ֵ
-				Rock: Rock|ʹ��Զ�Ű������������������ӵ���̧�����������֣����{0}ħ���˺���������ǿ����
-				ActiveChant: Active Chant|�㲻����Ҫ��ȫרע�������������Ի����ƶ�����ʩ��
-				Fragmentation: Fragmentation|����ʯ��ע���Ӵ�ħ������ʯ���е���ʱ����ը������{0}��Χħ���˺�
-				DizzyStrike: Dizzy Strike|������{0}����ʹ�ó�Boss����ĵ�����ѣ���޷��ƶ�{1}s
-				EmberPrayer: Ember Prayer|����{0}������ֵʹ������֮����������һ������{1}��ķ��ķ������ϣ��κνӽ���Ĺ������ۻ�
-				EmberOath: Ember Oath|�Ҽ�����{0}������ֵΪ������ħ��ʥ����{1}�ι����������������ֵ����{2}�Ľ�ս�˺�
-				TameHead: Tame Head|�Ҽ��ٻ���ȱ��꣬�����Χ{0}��뾶���˷�������{1}������{2}s������һ�ι���Ϊ���⹥��������{3}�Ķ����˺����ض�����
-				SoulScorching: Soul Scorching|�������{0}s��������գ������ܵ��˺�����{1}����������{2}
-				IndulgentGhost: Indulgent Ghost|ÿ����{0}�Σ������ٷ��������һ�ι������̳й�����Ч
+				Fireball: 火弹|发射魔法凝聚而成的烈火球
+				Incinerating: 焚焰|灼烧击中的敌人，并造成一次{0}魔法伤害的火焰爆炸
+				Scorching: 熔化|对被击中的敌人附加[{$Mods.CNC.Buff.Name.Scorched}]，使其减少{0}点防御力
+				Enthusiasm: 烈焰狂热|每次攻击有{0}触发[{$Mods.CNC.Buff.Name.Enthused}]
+				Gelidity: 寒冷|造成伤害时，降低敌人的移动速度
+				Glacier: 冻结|造成伤害时，有一定概率冻结敌人
+				Iceflake: 冰裂|冰齿命中时会爆炸，造成{0}魔法伤害
+				Shattering: 碎冰|冰弹对冻结的敌人造成的魔法伤害增加{0}
+				FrostWave: 霜潮|右键消耗{0}点咒能，爆发出一阵扩张性的寒气，冻结你半径{1}格内的敌人并造成{2}魔法伤害，凝结寒气破碎时再次造成伤害并施加{3}s减速
+				Charging: 聚集电能|发射闪电弹攻击敌人
+				SpellLightningChain: 咒文闪电链|右键消耗{0}咒能，释放一道闪电，攻击至多{1}名敌人并造成{2}魔法伤害
+				ArcaneOverload: 奥术过载|命中敌人时增加{0}魔法伤害，叠至{1}层时清零，{2}秒内下次攻击释放高能闪电弹，造成{3}次{4}范围魔法伤害
+				SpellReconstruction: 咒语重构|攻击有{0}概率瞬间重构闪电链咒符并释放
+				SpellAugmentated: 咒文增广|精进咒文研究，使构筑的闪电链可锁定的目标增加{0}，寻敌半径增加{1}格
+				StableSpell: 法术稳定|过载将能够保持{0}s
+				SilveryArrow: 银白之矢|将射出的木箭转变成银白之矢
+				Sanctity: 破空流光|{0}发射至圣之矢，对敌人造成{1}远程伤害并附加[{$Mods.CNC.Buff.Name.Sanctified}]
+				Exorcism: 邪恶克星|敌人附着{0}支至圣之矢时，其身上的至圣之矢将会被引爆，造成{1}远程伤害
+				Judgement: 神圣惩戒|造成伤害时{0}额外造成{1}的魔法伤害
+				SilveryShield: 银盾|攻击命中{0}次，获得持续{1}s充满神圣能量的护盾，提供{2}点额外生命值，被击破或持续时间结束后爆炸造成{3}点范围魔法伤害
+				SilverySpark: 银色火花|若{0}s内未攻击，则下次攻击变为突刺攻击，造成{1}近战伤害，突刺期间免疫伤害
+				SilveryVow: 银白树立誓|右键消耗{0}点神力值，获得持续{1}s的神圣护盾，期间所受伤害减免{2}，神圣惩戒触发概率提高{3}，每次触发神圣惩戒效果获得{4}护盾值
+				Rock: 岩石|使用远古埃兹西亚咒文吟唱，从地面抬起巨岩掷向对手，造成{0}魔法伤害并产生极强击退
+				ActiveChant: 移动施法|你不再需要完全专注于吟唱，将能以缓慢移动进行施法
+				Fragmentation: 爆裂|向岩石中注入庞大魔力，岩石击中敌人时将爆炸并产生{0}范围魔法伤害
+				DizzyStrike: 晕眩|攻击有{0}概率使得除Boss以外的敌人晕眩，无法移动{1}s
+				EmberPrayer: 熔铁祷告|消耗{0}点神力值使用信仰之力，构筑起一道持续{1}秒的符文防御屏障，任何接近你的攻击将熔化
+				EmberOath: 熔铁圣言|右键消耗{0}点神力值为自身附魔上圣火，下{1}次攻击将额外造成神力值上限{2}的近战伤害
+				TameHead: 残缺灵魂诅咒|右键召唤残缺灵魂，你和周围{0}格半径敌人防御降低{1}，持续{2}s，且下一次攻击为特殊攻击，附加{3}的额外伤害并必定暴击
+				SoulScorching: 不灭灵魂火焰|攻击造成{0}s灵魂焰灼烧，敌人受到伤害增加{1}，防御降低{2}
+				IndulgentGhost: 残缺灵魂的协助|每攻击{0}次，将快速发动额外的一次攻击，继承攻击特效
 			}
 		}
 
 		Misc: {
-			Level: Item level: 
-			Version: Version: 
-			Loaded: Classes & Craft(1.4Alpha) has loaded, enjoy yourself.
-			Unloaded: Classes & Craft(1.4Alpha) has unloaded, thanks for playing.
-			Inscription: Inscription-<{0}>
-			InscriptionSpecial: <Special Inscription>
-			AnattaPower: ������������֮��Ӱ��
+			Level: 武器级别：
+			Version: 版本号：
+			Loaded: Classes & Craft(1.4Alpha)已载入，祝您玩得愉快~
+			Unloaded: Classes & Craft(1.4Alpha)已卸载，感谢您的使用。
+			Inscription: 铭文-<{0}>
+			InscriptionSpecial: <专有铭文>
+			AnattaPower: 此武器受无我之力影响
 		}
 
 		UI: {
 			Function: {
-				Open: Open
-				Close: Close
-				Expand: Expand
-				Collapse: Collapse
-				Confirm: Confirm
-				Cancel: Cancel
+				Open: 打开
+				Close: 关闭
+				Expand: 展开
+				Collapse: 收起
+				Confirm: 确认
+				Cancel: 取消
 			}
 			ClassesMenu: {
-				Name: Classes Menu
-				Confirm: Select [{0}] class
-				PreviousClass: Previous class: {0}
-				NextClass: Next class: {0}
-				Reset: Reset class\nRequire {0}
-				SelectClass: Your class has been set to [{0}]
-				ResetClass: Your class has been reset
-				NeedReset: You need to reset your class
-				SameClass: You have selected this class
-				NoMoney: You don't have enough resource to reset your class
-				NoClass: You have not selected any class
+				Name: 职业菜单
+				Confirm: 选定 [{0}] 职业
+				PreviousClass: 上一个职业：{0}
+				NextClass: 下一个职业：{0}
+				Reset: 重置职业\n需要 {0}
+				SelectClass: 职业成功选定为[{0}]
+				ResetClass: 重置职业成功
+				NeedReset: 你需要重置你的职业才能选择该职业
+				SameClass: 你已选定该职业
+				NoMoney: 没有足够的资源重置职业
+				NoClass: 你尚未选定任何职业
 			}
 			Enhancement: {
-				Name: Enhancement
-				EnhanceRequirement: Enhance requirement��\n{0}
-				PreviousInscription: Previous inscription
-				NextInscription: Next inscription
-				SelectWeapon: (Click to select a weapon)
-				CanEnhance: Can enhance currently!
-				CannotEnhance: Cannot enhance currently!
-				NoLevel: (This item cannot be enhanced!)
-				MaxLevel: (This item has already no available inscriptions to select!)
+				Name: 铭文强化
+				EnhanceRequirement: 强化需求：\n{0}
+				PreviousInscription: 上一个铭文
+				NextInscription: 下一个铭文
+				SelectWeapon: （点击选择物品）
+				CanEnhance: 当前状态：可强化！
+				CannotEnhance: 当前状态：不可强化！
+				NoLevel: （该物品无法强化！）
+				MaxLevel: （该物品已无可镶嵌的铭文！）
 			}
 			Archive: {
-				Name: Archive(Coming soon)
+				Name: 图鉴（敬请期待）
 			}
 		}
 
 		WorldGen: {
 			Pass: {
-				Tranquility: Tranquility Forest
+				Tranquility: 正在生成星落森林
 			}
 		}
 	}

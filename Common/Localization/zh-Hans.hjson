@@ -1,7 +1,7 @@
 Mods: {
 	CNC: {
 		BiomeName: {
-			Tranquility: 静谧森林
+			Tranquility: 星落之森
 		}
 
 		Projectile: {
@@ -18,8 +18,8 @@ Mods: {
 			TranquilityDirt: \0{$Mods.CNC.Item.Name.TranquilityDirt}
 			TranquilityStone: \0{$Mods.CNC.Item.Name.TranquilityStone}
 			TranquilityGrass: 灰草
-			SpiritWood: 灵木
-			SpiritSapling: 静谧树苗
+			SpiritWood: 星木
+			SpiritSapling: 银白星木树苗
 		}
 
 		Item: {
@@ -30,52 +30,52 @@ Mods: {
 				HHvsLegs: 至高巫师连裤靴
 				QuartzBlock: Quartz的头
 				Anatta: 无我之刃
-				MiracleGem: 静谧宝石
+				MiracleGem: 晨光宝石
 				DestineScroll: 命定卷轴
 				FireGrimoire: 火焰魔典
 				IceTooth: 寒霜尖牙
 				Superconductor: 震击魔杖
 				ArgenteusClaw: 艾因缇奥圣弓
-				SpiritWood: 灵木
-				TranquilityGem: 静谧能量石
-				SpiritSapling: 静谧树苗
+				SpiritWood: 星木
+				TranquilityGem: 星核
+				SpiritSapling: 银白星木树苗
 				TranquilityDirt: 灰泥
 				TranquilityStone: 灰岩
 				ArgenteusOathKeeper: 艾因缇奥誓剑
 				TheLightOfAuzzsia: 埃兹西亚之光
 				EmberOfNien: 熔铁尼安
 				FragmentarySoulDagger: 残缺灵魂之匕
-				SpiritIronGreatsword: 灵金属巨剑
-				MysticalLight: 灵光
+				SpiritIronGreatsword: 灵金大剑
+				MysticalLight: 灵光（暂时删除）
 				ShortDagger: 短匕首
-				SpiritSparkingWand: 灵木魔杖
+				SpiritSparkingWand: 老魔杖
 			}
 			Tooltip: {
 				HHvsRobeCape: “至高巫师的尊贵象征”
-				HHvsRobe: “浩瀚星辰咒文凝聚的法袍”
+				HHvsRobe: “浩瀚星辰凝聚的法袍”
 				HHvsHat: “无上智慧的重压”
 				HHvsLegs: “巫师自创连裤靴”
 				QuartzBlock: “你瞅啥？”
 				Anatta: 放在背包时，此剑会激发某些武器的力量
 				MiracleGem: 召唤可骑乘的灵狐
 				DestineScroll: 得到一次重新变更职业的机会\n“卷轴上记载了更替命定之路的上古咒文。”
-				#FireGrimoire: 
-				IceTooth: 埃兹西亚巫师费辛生前唯一的遗物。\n“作为权力的代价，埃兹西亚的英雄，大巫师费辛也无法逃脱命定之死。”
-				#Superconductor: 
-				ArgenteusClaw: 残身艾因缇奥，银白圣树最后的子嗣
+				FireGrimoire: 地狱火焰的淬炼产物 
+				IceTooth: 某位埃兹西亚巫师生前最珍贵的遗物。\n“作为接触禁忌的代价，埃兹西亚的英雄也无法逃脱命定之死。”
+				Superconductor: 能凝聚出粗壮电芒的强大魔杖 
+				ArgenteusClaw: 远古银白星树的枝干与内核制成，铭刻着星痕之咒，由它发射的箭矢能击落星辰
 				#SpiritWood: 
 				#TranquilityGem: 
 				#SpiritSapling: 
 				#TranquilityDirt: 
 				#TranquilityStone: 
-				#ArgenteusOathKeeper: 
-				#TheLightOfAuzzsia: 
-				#EmberOfNien: 
+				ArgenteusOathKeeper: 誓言的力量给这把武器注入了新的活力 
+				TheLightOfAuzzsia: 注入了远古魔咒的铁杖，手持时魔咒能自发涌入你的内心
+				EmberOfNien: 一把曾经属于教团异端审判组织的武器，无数鲜血在战锤下得以沐浴圣光
 				#FragmentarySoulDagger: 
 				#SpiritIronGreatsword: 
 				#MysticalLight: 
 				#ShortDagger: 
-				#SpiritSparkingWand: 
+				SpiritSparkingWand: 经典巫师学徒
 			}
 		}
 
@@ -83,7 +83,7 @@ Mods: {
 			Name: {
 				MiracleFox: 灵狐
 				Scorched: 灼热
-				Enthused: 激情
+				Enthused: 狂热
 				Gelid: 寒霜
 				Glacial: 极寒
 				Overloaded: 超载
@@ -95,7 +95,7 @@ Mods: {
 				StarMark: 星痕
 			}
 			Desc: {
-				MiracleFox: 静谧森林里的灵狐
+				MiracleFox: 星落森林里的灵狐
 				Scorched: 防御力减少8点
 				Enthused: 提高移动速度和攻击速度
 				Gelid: 移动速度大幅降低
@@ -150,11 +150,11 @@ Mods: {
 		}
 
 		NPC: {
-			TranquilityPixie: 静谧幽灵
+			TranquilityPixie: 星核幽灵
 			PhantomBat: 灵气蝙蝠
 			PhantomSlime: 灵气史莱姆
 			PhantomFlame: 灵火
-			SpiritBoss: 森林意志
+			SpiritBoss: 星痕灵体
 			SpiritCrystal: 守护水晶
 		}
 		
@@ -185,25 +185,25 @@ Mods: {
 
 		TownNPCChat: {
 			Mentor: {
-				1: 击败艾因缇奥只是第一步，它的力量早也已经接近枯竭，你需要变得更强。
-				2: 你有没有尝试开发坩埚的新用途？这真是一个有趣的想法。
-				3: 失去了达尔庇护之后，静谧之地也不复存在，但命定的预言告诉我，新的使者已经到来。
-				4: 树精艾因缇奥一直在等待着命定之人的到来，它的命运在长久的守护中消耗，已经走到了尽头。
-				5: 在{$Mods.CNC.BiomeName.Tranquility}里，我的头脑会得到解放，也许能做点新玩意解闷。
+				1: 星落森林里有一位危险的存在，不过它的力量早已经接近枯竭，你需要击败它来变得更强。
+				2: 你有没有尝试开发坩埚的新用途？往坩埚里逐步放入材料，搅拌。
+				3: 灵金是一种很好的材料，韧性高硬度好，只是难以引导魔力，不过魔力能很好的重构它。
+				4: 星落森林里生长的星木，是良好的魔力材料，能用它来完成很多魔法相关的操作。
+				5: 我很喜欢{$Mods.CNC.BiomeName.Tranquility}，在这里我能想出更多有意思的点子。
 			}
 		}
 
 		TownNPCMood: {
 			Mentor: {
 				Content: 我并不讨厌现在的环境，但还能继续改善。
-				NoHome: 我需要一个房子，这样我才能更好地继续我的研究。
-				LoveSpace: 这个地方很好，我喜欢在这儿做我喜欢的事情。
-				FarFromHome: 在太阳下山之前，我希望我能赶回室内躲避黑暗的侵袭。
-				DislikeCrowded: 说实话，我不太喜欢拥挤的地方，太多活动的人们会打乱我的思绪。
+				NoHome: 我需要一个房子，这样我才能更好地继续我的研究，或者指导你。
+				LoveSpace: 这个地方很好。
+				FarFromHome: 在太阳下山之前，我得尽快回到能躲避黑暗的地方。
+				DislikeCrowded: 说实话，我不太喜欢拥挤的地方，太多热闹的人们会打乱我的思绪。
 				HateCrowded: 这儿实在是太吵闹了，甚至比怪物来袭还要糟糕。
 				LikeBiome: "{BiomeName}里的生活还不错，钓鱼打猎对我来说再好不过。"
-				LoveBiome: "这里的生活很安逸，但{$Mods.CNC.BiomeName.Tranquility}更好，因为我无法忍受嘈杂的邻居。"
-				DislikeBiome: "{BiomeName}是个潮湿发臭的地方，在丛林里我没有任何灵感，没有人会想在那里居住。"
+				LoveBiome: "这里的生活很安逸，但{$Mods.CNC.BiomeName.Tranquility}更好，因为我无法忍受一个缺乏魔力的环境。"
+				DislikeBiome: "{BiomeName}是个潮湿发臭的地方，在这里我没有任何灵感来钻研我的咒文咒语。"
 				HateBiome: ""
 				LikeNPC: "哪个高贵又时尚的人会拒绝更好的衣服呢？我希望{NPCName}能把服装店开在我家门口。"
 				LoveNPC: ""
@@ -399,7 +399,7 @@ Mods: {
 
 		WorldGen: {
 			Pass: {
-				Tranquility: 正在生成静谧森林
+				Tranquility: 正在生成星落森林
 			}
 		}
 	}
