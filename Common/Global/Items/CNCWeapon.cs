@@ -238,12 +238,63 @@ namespace CNC.Common.Global.Items
 
         public abstract class Ranged : CNCWeapon
         {
+            public abstract class Longbow : Ranged
+            {
 
+            }
+
+            public abstract class Shortbow : Ranged
+            {
+
+            }
+
+            public abstract class Crossbow : Ranged
+            {
+
+            }
+
+            public abstract class Arbalest : Ranged
+            {
+
+            }
+
+            public abstract class Pistol : Ranged
+            {
+
+            }
+
+            public abstract class Heavyweapons : Ranged
+            {
+
+            }
+
+            public abstract class Blowgun : Ranged
+            {
+
+            }
         }
 
         public abstract class Magic : CNCWeapon
         {
+            public abstract class Magicwand : Magic
+            {
 
+            }
+
+            public abstract class Sceptre : Magic
+            {
+
+            }
+
+            public abstract class Grimoire : Magic
+            {
+
+            }
+
+            public abstract class Arcaneitems : Magic
+            {
+
+            }
         }
 
         public abstract class Raid : CNCWeapon
@@ -257,6 +308,22 @@ namespace CNC.Common.Global.Items
                     for (int i = 0; i < max; i++) target.GetGlobalNPC<AllNPC>().bleeding[i] += value / max;
                 }
             }
+
+            public abstract class Spear : Raid
+            {
+
+            }
+
+            public abstract class Rapier : Raid
+            {
+
+            }
+
+            public abstract class Darts : Raid
+            {
+
+            }
+
         }
     }
 }
