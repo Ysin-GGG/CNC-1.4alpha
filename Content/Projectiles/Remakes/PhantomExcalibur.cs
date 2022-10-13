@@ -230,7 +230,7 @@ namespace CNC.Content.Projectiles.Remakes
         {
             Player player = owner;
             Item item = player.HeldItem;
-            Vector2 velocity = new Vector2(item.shootSpeed, 0f).RotatedBy(attackRot);
+            Vector2 velocity = new Vector2(item.shootSpeed * 3f, 0f).RotatedBy(attackRot);
             float damage = player.GetWeaponDamage(item) * capabilityMult;
             float knockback = player.GetWeaponKnockback(item) * capabilityMult;
             float crit = player.GetWeaponCrit(item) * capabilityMult;

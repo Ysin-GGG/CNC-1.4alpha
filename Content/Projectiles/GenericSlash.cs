@@ -157,6 +157,7 @@ namespace CNC.Content.Projectiles
         /// <summary> 获取当前帧的斩击信息 <para> Vector4的XYZW分别对应：横坐标偏移，纵坐标偏移，攻击距离，攻击角度）</para> </summary>
         public virtual Vector4 GetSlashInfo(float amount)
         {
+            if (attackInfo == null) return Vector4.Zero;
             int count = this.attackInfo.Length;
             float len = 1f / count;
             float amount2 = amount % len / len;
@@ -207,6 +208,7 @@ namespace CNC.Content.Projectiles
             projectile.friendly = true;
             projectile.ignoreWater = true;
             projectile.tileCollide = false;
+            projectile.netUpdate2 = true;
         }
 
         public override void AI()
@@ -320,7 +322,7 @@ namespace CNC.Content.Projectiles
         {
             Texture2D image = Terraria.GameContent.TextureAssets.Item[owner.HeldItem.type].Value;
             Vector4 info = this.GetSlashInfo(1);
-            Vector2 pos = owner.Center - Main.screenPosition;
+            Vector2 pos = projectile.Center - Main.screenPosition;
             Vector2 origin = new Vector2(0, image.Height);
             int direction = (this.attackInfo[1].rotation > this.attackInfo[0].rotation).ToInt(1);
             int direction2 = projectile.direction * (this.attackInfo[0].rotation > this.attackInfo[1].rotation).ToDirectionInt(1);

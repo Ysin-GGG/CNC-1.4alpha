@@ -128,6 +128,8 @@ namespace CNC.Common.Utils
             return Dust.NewDustDirect(pos + _range + CNC.Random.NextVector2(target.Size), 0, 0, id, vel.X, vel.Y, color.A, color, scale);
         }
 
+        public static bool IsMe(this Player player) => player.whoAmI == Main.myPlayer;
+
         public static void PlaySound(SoundStyle sound, Entity target, float volume = 1f, float pitch = 1f)
             => PlaySound(sound, target.position);
 
@@ -603,7 +605,7 @@ namespace CNC.Common.Utils
         }
 
         /// <summary> 生成斩击弹幕 </summary>
-        /// <param name="player">生成者</param>
+        /// <param name="projectile">生成者</param>
         /// <param name="velocity">方向</param>
         public static GenericSlashHit CreateSlashHit(Projectile projectile, Vector2 velocity)
         {

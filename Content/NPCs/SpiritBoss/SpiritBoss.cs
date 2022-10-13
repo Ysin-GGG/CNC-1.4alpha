@@ -4,8 +4,10 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
 using Terraria.ID;
+using Terraria.Chat;
 using Terraria.Audio;
 using Terraria.ModLoader;
+using Terraria.Localization;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.UI.BigProgressBar;
@@ -435,10 +437,10 @@ namespace CNC.Content.NPCs.SpiritBoss
         {
             if (!Main.dedServ) Music = Options.useModMusic ? MusicLoader.GetMusicSlot(Mod, "Content/Sounds/Music/SpiritBoss") : MusicID.Boss3;
             if (Effects.SkyManager.Instance["CNC:SpiritBossSky"].IsActive()) (Effects.SkyManager.Instance["CNC:SpiritBossSky"] as Skies.SpiritBossSky).intensity = this.BlackAlpha;
-            if (this.ActionState < 0) npc.target = target = Const.me;
+            npc.target = target = npc.FindClosestPlayer();
 
             //自动转向
-            if (this.AutoTurnAround) npc.direction = (Target.Center.X > npc.Center.X).ToDirectionInt(1);
+            if (this.AutoTurnAround && Target != null) npc.direction = (Target.Center.X > npc.Center.X).ToDirectionInt(1);
             if (this.Fade != 0)
             {
                 npc.alpha = MyMath.Clamp(npc.alpha + this.Fade, 0, 255);
@@ -455,7 +457,7 @@ namespace CNC.Content.NPCs.SpiritBoss
                 CNCUtils.PlaySound(SoundID.Item74, npc);
                 CNCUtils.PlaySound(SoundID.Item122, npc);
                 CNCUtils.ScreenShake(npc.Center, 9000f, 5, new Vector2(0, 40), new Vector2(0, 20), .8f);
-                this.NewProjectile(0, 0, CNCID.Projectile.LegacyObject[CNCID.Projectile.ShockWave], 0, 0).ai[0] = 1;
+                this.NewProjectile(0, 0, CNCID.Projectile.LegacyObject[CNCID.Projectile.ShockWave], 0, 0).ai[0] = 1f;
                 var e = CNCUtils.CreateExplosion(npc);
                 e.SetDefaults(CNC.GetTexture("Assets/Projectiles/Explosion/SilverFieldExplosion"), npc.Center, Vector2.One * 320, new int[5] { 2, 2, 3, 3, 3 });
                 e.SetDamage(2, DamageClass.Default, this.Damage_Shield, 0f, 0, 0f, 1f);
@@ -466,7 +468,7 @@ namespace CNC.Content.NPCs.SpiritBoss
             }
 
             //每2帧刷新一次残影数据
-            if (this.tick % 2 == 0)
+            if (this.tick % 2 == 0 && !Main.dedServ)
             {
                 for (int i = shadowCount - 1; i > 0; i--)
                 {
@@ -480,7 +482,6 @@ namespace CNC.Content.NPCs.SpiritBoss
 
             //每帧都要刷新盾相关的数据
             this.UpdateShield();
-            
             this.ActionTime++;
             if (this.SleepTime == 0)
             {
@@ -567,7 +568,9 @@ namespace CNC.Content.NPCs.SpiritBoss
             for (int i = 0; i < this.attackCooldown.Length; i++)
                 if (this.attackCooldown[i] == 0 && weight[i] == maxWeight)
                     whatCanIdo.Add(i);//筛选出权重最大的可选行动
+            if (CNC.NotMPClient) npc.netUpdate = true;
             return CNC.Random.NextAny(whatCanIdo);
+            
         }
 
         /// <summary> 箭雨 </summary>
@@ -829,7 +832,7 @@ namespace CNC.Content.NPCs.SpiritBoss
                 {
                     CNCUtils.PlaySound(SoundID.Item122, npc);
                     CNCUtils.ScreenShake(npc.Center, 9000f, 5, new Vector2(0, 40), new Vector2(0, 20), .8f);
-                    this.NewProjectile(0, 0, CNCID.Projectile.LegacyObject[CNCID.Projectile.ShockWave], 0, 0);
+                    this.NewProjectile(0, 0, CNCID.Projectile.LegacyObject[CNCID.Projectile.ShockWave], 0, 0).ai[0] = 1f;
                 }
                 if (getCount() > 0 && this.MinionCount < 3 && this.ActionTime % spawnTime == 0 && this.ActionTime <= beginTime + spawnTime * spawnCount)
                 {
@@ -1204,7 +1207,7 @@ namespace CNC.Content.NPCs.SpiritBoss
                     CNCUtils.PlaySound(SoundID.Item74, npc);
                     CNCUtils.PlaySound(SoundID.Item122, npc);
                     CNCUtils.ScreenShake(npc.Center, 9000f, 5, new Vector2(0, 40), new Vector2(0, 20), .8f);
-                    this.NewProjectile(0, 0, CNCID.Projectile.LegacyObject[CNCID.Projectile.ShockWave], 0, 0).ai[0] = 1;
+                    this.NewProjectile(0, 0, CNCID.Projectile.LegacyObject[CNCID.Projectile.ShockWave], 0, 0);
                     var e = CNCUtils.CreateExplosion(npc);
                     e.SetDefaults(CNC.GetTexture("Assets/Projectiles/Explosion/SilverFieldExplosion"), npc.Center, Vector2.One * 320, new int[5] { 2, 2, 3, 3, 3 });
                     e.SetDamage(2, DamageClass.Default, 0, 0f, 0, 0f, 1f);
@@ -1282,12 +1285,16 @@ namespace CNC.Content.NPCs.SpiritBoss
             public override bool? ModifyInfo(ref BigProgressBarInfo info, ref float lifePercent, ref float shieldPercent)
             {
                 NPC npc = Main.npc[info.npcIndexToAimAt];
-                if (!npc.active) return false;
-                SpiritBoss boss = (SpiritBoss)npc.ModNPC;
-                bossHeadIndex = npc.GetBossHeadTextureIndex();
-                lifePercent = npc.GetLifePercent();
-                shieldPercent = (float)boss.ShieldStrength / (float)boss.ShieldStrengthMax;
-                return true;
+                if (npc == null || !npc.active) return false;
+                if((SpiritBoss)npc.ModNPC != null)
+                {
+                    SpiritBoss boss = (SpiritBoss)npc.ModNPC;
+                    bossHeadIndex = npc.GetBossHeadTextureIndex();
+                    lifePercent = npc.GetLifePercent();
+                    shieldPercent = (float)boss.ShieldStrength / (float)boss.ShieldStrengthMax;
+                    return true;
+                }
+                return false;
             }
         }
     }

@@ -45,9 +45,8 @@ namespace CNC.Content.Projectiles.Hostile
             float range = MyMath.Lerp(1f, maxRange, MyMath.sin(MyMath.pi * amount));
             float dist = MyMath.Lerp(0f, maxDist, amount);
 
-            if (projectile.ai[0] == 1)
+            if (projectile.ai[0] == 1f)
             {
-                projectile.extraUpdates = 1;
                 foreach (Player player in Main.player)
                 {
                     if (player != null && player.active)
@@ -70,11 +69,11 @@ namespace CNC.Content.Projectiles.Hostile
                 }
             }
 
-            if(projectile.ai[0] == 2f)
+            if (projectile.ai[0] == 2f)
             {
                 projectile.extraUpdates = 2;
                 range = MyMath.Lerp(48f, 80f, MyMath.sin(MyMath.pi * amount));
-                dist = MyMath.Lerp(0f, 600f, amount);
+                dist = MyMath.Lerp(60f, 600f, amount);
             }
 
             Effect ef = CNC.Shader["ShockWave"];

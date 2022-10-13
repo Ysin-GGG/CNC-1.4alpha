@@ -118,13 +118,13 @@ namespace CNC.Content.Projectiles.Hostile
 
         public override bool PreKill(int timeLeft)
         {
-            ParentNPC.velocity *= 0f;
+            if (CNC.NotMPClient) ParentNPC.velocity *= 0f;
             return base.PreKill(timeLeft);
         }
 
         public override void Kill(int timeLeft)
         {
-            ParentNPC.velocity *= 0f;
+            if (CNC.NotMPClient) ParentNPC.velocity *= 0f;
         }
 
         public override void ModifyDamageHitbox(ref Rectangle hitbox)

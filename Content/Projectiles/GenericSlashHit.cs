@@ -77,6 +77,7 @@ namespace CNC.Content.Projectiles
             projectile.friendly = true;
             projectile.ignoreWater = true;
             projectile.tileCollide = false;
+            projectile.netUpdate2 = true;
         }
 
         public override void AI()
@@ -96,11 +97,6 @@ namespace CNC.Content.Projectiles
             Vector2 origin = this.image.Size() / 2f;
             Main.EntitySpriteDraw(image, pos, null, lightColor * this.alpha, projectile.rotation, origin, this.scale2, 0, 0);
             return false;
-        }
-
-        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-        {
-            //overPlayers.Add(index);
         }
     }
 }

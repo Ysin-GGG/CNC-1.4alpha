@@ -26,7 +26,7 @@ namespace CNC.Content.Items.Weapons.Melee.Hammer
             item.useAnimation = 30;
             item.rare = 2;
             item.value = 20000;
-            item.damage = 30;
+            item.damage = 100;
             item.crit = 5;
             item.knockBack = 3f;
             item.useStyle = ItemUseStyleID.Swing;
@@ -38,6 +38,11 @@ namespace CNC.Content.Items.Weapons.Melee.Hammer
             clazz = 13;
             //staff = false;
             //CNCStaff = true;
+        }
+
+        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+        {
+            base.OnHitNPC(player, target, damage, knockBack, crit);
         }
     }
 }

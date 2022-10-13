@@ -20,6 +20,7 @@ namespace CNC.Content
         public Vector2 velocity;
         public Vector2 scale;
         public Entity owner;
+        public Color color;
 
         public enum DrawLayer
         {
@@ -50,6 +51,7 @@ namespace CNC.Content
                         VisualEffectManager.effect[i].position = position;
                         VisualEffectManager.effect[i].velocity = velocity;
                         VisualEffectManager.effect[i].scale = Vector2.One;
+                        VisualEffectManager.effect[i].color = Color.White;
                         VisualEffectManager.effect[i].owner = owner;
                         VisualEffectManager.effect[i].SetDefaults();
                         return (T)(object)VisualEffectManager.effect[i];

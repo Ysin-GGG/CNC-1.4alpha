@@ -253,8 +253,9 @@ namespace CNC.Content.Projectiles.Hostile
                     ef.Parameters["uTransform"].SetValue(model * projection);
                     ef.Parameters["uColor0"].SetValue(CNCUtils.FlashColor(225, 242, 249).ToVector4());
                     ef.Parameters["uColor1"].SetValue(Color.Blue.ToVector4());// CNCUtils.FlashColor(61, 80, 112).ToVector4());
+                    ef.Parameters["uOffset"].SetValue(new Vector2(-1f, 0f));
                     ef.Parameters["uAlpha"].SetValue((1f - ParentNPC.alpha / 255f) * 5f);
-                    ef.Parameters["uTime"].SetValue(-Main.GlobalTimeWrappedHourly + rand);
+                    ef.Parameters["uTime"].SetValue(Main.GlobalTimeWrappedHourly + rand);
                     var trai = new TrailShaderData(ef, projectile, width)
                     {
                         colorBegin = mainColor,

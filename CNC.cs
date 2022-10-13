@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoMod.Cil;
 using Terraria;
-using Terraria.UI;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using Terraria.Graphics.Effects;
@@ -30,13 +30,21 @@ namespace CNC
         public static Player Me => Const.Me;
         public static int GameMode => Main.masterMode ? 3 : (Main.expertMode ? 2 : 1);
 
+        public static bool IsSPClient => Main.netMode == NetmodeID.SinglePlayer;
+        public static bool IsMPClient => Main.netMode == NetmodeID.MultiplayerClient;
+        public static bool IsMPServer => Main.netMode == NetmodeID.Server;
+        public static bool NotSPClient => Main.netMode != NetmodeID.SinglePlayer;
+        public static bool NotMPClient => Main.netMode != NetmodeID.MultiplayerClient;
+        public static bool NotMPServer => Main.netMode != NetmodeID.Server;
+        //注：MPClient是指多人游戏下的客户端（玩家），MPServer是指多人游戏的服务端（系统）
+
         public const int newStatManaMax2 = 1000000;
         public const int maxClassTypes = CNCID.Clazz.MaxObject;
         public const int maxInscriptions = CNCGlobal.Items.InscriptionSettings.maxInscriptionList;
         public const int maxInscriptionTypes = CNCID.Inscription.MaxObject;
         public const int maxStateTypes = CNCID.State.MaxObject;
         public const int maxParticles = 10000;
-        public const int maxEffects = 100;
+        public const int maxEffects = 200;
         public const int maxNPCData = 12;
         public const int maxProjectileData = 6;
 
@@ -70,11 +78,12 @@ namespace CNC
             if (!activate && SkyManager.Instance[name].IsActive()) SkyManager.Instance.Deactivate(name);
         }
 
-        public static void SetFilter(string name, bool activate)
+        public static Filter SetFilter(string name, bool activate)
         {
             name = "CNC:" + name;
             if (activate && !Filters.Scene[name].IsActive()) Filters.Scene.Activate(name);
             if (!activate && Filters.Scene[name].IsActive()) Filters.Scene.Deactivate(name);
+            return Filters.Scene[name];
         }
 
         public override void Load()
@@ -204,6 +213,7 @@ namespace CNC
             {
                 "ShockWave",
                 "RadialBlur",
+                "Absorption",
                 "Swirl",
             };
             foreach (string name in names) (Filters.Scene["CNC:" + name] = new Filter(new FilterShaderData(new Ref<Effect>(CNC.GetEffect(name)), name), EffectPriority.Medium)).Load();

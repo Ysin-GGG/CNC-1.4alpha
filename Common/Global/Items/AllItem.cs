@@ -125,16 +125,14 @@ namespace CNC.Common.Global.Items
                 switch (item.type)
                 {
                     case ItemID.TrueNightsEdge:
-                        reset = false;
-                        comboCount = 5;
+                        item.useTime = new int[]{ 28, 32, 50 }[comboCur];
+                        item.useAnimation = new int[] { 28, 32, 50 }[comboCur];
+                        comboCount = 3;
                         comboDelay = 15;
                         break;
                     case ItemID.TrueExcalibur:
-                        int[] time = { 30, 40, 10, 20, 40 };
-                        int[] time2 = { 30, 40, 10, 20, 40 };
-                        item.useTime = time[comboCur];
-                        item.useAnimation = time2[comboCur];
-                        item.shootSpeed = 32f;
+                        item.useTime = new int[] { 30, 40, 10, 20, 40 }[comboCur];
+                        item.useAnimation = new int[] { 30, 40, 10, 20, 40 }[comboCur];
                         comboCount = 5;
                         comboDelay = 10;
                         break;
@@ -400,7 +398,7 @@ namespace CNC.Common.Global.Items
                         }
                         if (release && ct >= ctMax)
                         {
-                            CNCUtils.NewProj(source, position + velocity * 24f, Vector2.Zero, CNCID.Projectile.LegacyObject[CNCID.Projectile.VoidNightsEdge], (int)(damage * .5f), 0f, (int)crit, player.whoAmI, 0f, 1f, 0, 0);
+                            CNCUtils.NewProj(source, position + velocity * 24f, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.VoidNightsEdge], (int)(damage * .5f), 0f, (int)crit, player.whoAmI, 0f, 1f, 0, 0);
                             damage *= 3;
                             knockback *= 1.5f;
                             crit += 20f;
@@ -421,6 +419,26 @@ namespace CNC.Common.Global.Items
             }
         }
 
+        public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            if (EnableAnatta(player))
+            {
+                switch (item.type)
+                {
+                    case ItemID.Meowmere:
+                        break;
+                    case ItemID.FieryGreatsword:
+                        break;
+                    case ItemID.TrueExcalibur:
+                        velocity *= 3f;
+                        break;
+                    case ItemID.TrueNightsEdge:
+                        velocity *= this.comboCur + 1f;
+                        break;
+                }
+            }
+        }
+
         public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             bool shoot = base.Shoot(item, player, source, position, velocity, type, damage, knockback);
@@ -430,26 +448,35 @@ namespace CNC.Common.Global.Items
                 switch (item.type)
                 {
                     case ItemID.Meowmere:
-                        CNCUtils.NewProj(source, position, velocity, type, damage, knockback, ai0: 1f);
+                        CNCUtils.NewProj(source, position, velocity, type, damage, knockback, player.whoAmI, 0f, 1f, 1f);
                         break;
                     case ItemID.FieryGreatsword:
                         damage = (int)(damage * new float[] { .85f, .95f, .95f, 1.05f }[this.comboCur]);
-                        CNCUtils.NewProj(source, position, velocity, type, damage, knockback, ai0: 3f + this.comboCur * .1f);
+                        CNCUtils.NewProj(source, position, velocity, type, damage, knockback, player.whoAmI, 0f, 1f, 3f + this.comboCur * .1f);
                         break;
                     case ItemID.TrueExcalibur:
                         damage = (int)(damage * new float[] { 1.1f, .9f, 1.5f }[this.comboCur / 2]);
-                        CNCUtils.NewProj(source, position, velocity, type, damage, knockback, ai0: 5f + this.comboCur * .1f);
+                        CNCUtils.NewProj(source, position, velocity, type, damage, knockback, player.whoAmI, 0f, 1f, 5f + this.comboCur * .1f);
                         if (this.comboCur < 2) shoot = false;
                         player.direction = (velocity.X < 0).ToDirectionInt(-1);
                         player.itemTimeMax = player.itemTime = item.useTime;
                         player.itemAnimationMax = player.itemAnimation = item.useAnimation;
                         break;
                     case ItemID.TrueNightsEdge:
-                        //damage = (int)(damage * new float[] { 1.1f, .9f, 1.5f }[this.comboCur / 2]);
-                        //CNCUtils.NewProj(source, position, velocity, type, damage, knockback, ai0: 7f + this.comboCur * .1f);
-                        //if (this.comboCur < 2) shoot = false;
+                        damage = (int)(damage * new float[] { .95f, 1.1f, 1.2f }[this.comboCur]);
+                        CNCUtils.NewProj(source, position, velocity, type, damage, knockback, ai0: 7f + this.comboCur * .1f);
+                        if (this.comboCur < 1) shoot = false;
+                        player.direction = (velocity.X < 0).ToDirectionInt(-1);
+                        player.itemTimeMax = player.itemTime = item.useTime;
+                        player.itemAnimationMax = player.itemAnimation = item.useAnimation;
                         break;
                 }
+                Item clone = item.Clone();
+                clone.SetDefaults(clone.type);
+                item.useTime = clone.useTime;
+                item.useAnimation = clone.useAnimation;
+                item.shoot = clone.shoot;
+                item.shootSpeed = clone.shootSpeed;
             }
             switch (item.type)
             {
@@ -460,6 +487,6 @@ namespace CNC.Common.Global.Items
             return shoot;
         }
 
-        private bool EnableAnatta(Player player) => player.HasItem(ModContent.ItemType<Content.Items.Developers.Quartz.Anatta>());// && player.GetModPlayer<Players.AllPlayer>().EquippedQuartzHead;
+        private bool EnableAnatta(Player player) => player.IsMe() && player.HasItem(ModContent.ItemType<Content.Items.Developers.Quartz.Anatta>());// && player.GetModPlayer<Players.AllPlayer>().EquippedQuartzHead;
     }
 }

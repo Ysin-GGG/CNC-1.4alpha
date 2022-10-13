@@ -43,16 +43,16 @@ namespace CNC.Content.Items.Weapons.Ranged
             int proj2 = CNCID.Projectile.LegacyObject[CNCID.Projectile.SanctifiedArrow]; 
             if (type == 1) { type = proj1; }
             if (this.SanctityEnable && CNC.Random.NextBool(45)) { type = proj2; damage *= 2; }
-            if (type == proj2) { CNCUtils.PlaySound("ArgenteusClaw/Shoot2", position, 2f, this.mod); }
-            else { CNCUtils.PlaySound("ArgenteusClaw/Shoot1", position, this.mod); }
+            if (type == proj2) { CNCUtils.PlaySound("ArgenteusClaw/Shoot2", player, 2f, this.mod); }
+            else { CNCUtils.PlaySound("ArgenteusClaw/Shoot1", player, this.mod); }
             //if (type == proj2) { CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.SanctifiedArrowShoot], 0, 0); }
             if (this.ExorcismEnable && type == proj2)
             {
-                Projectile p2 = CNCUtils.NewProj(source, position, velocity, proj2, damage, knockback);
+                Projectile p2 = CNCUtils.NewProj(source, position, velocity, proj2, damage, knockback, player.whoAmI, 0f, 1f, 0f, 0f);
                 p2.GetGlobalProjectile<AllProjectile>().data["explosion"] = true;
                 type = 0;// CNCID.Projectile.LegacyObject[CNCID.Projectile.SanctifiedArrowShoot];
             }
-            Projectile p = CNCUtils.NewProj(source, player.Center, velocity, type, damage, knockback);
+            Projectile p = CNCUtils.NewProj(source, player.Center, velocity, type, damage, knockback, player.whoAmI, 0f, 1f, 0f, 0f);
             p.direction = player.direction;
             p.Center = player.Center + velocity;
             return false;

@@ -10,23 +10,24 @@ namespace CNC.Content.VisualEffects
 {
     public class NightsHaze : VisualEffect
     {
-        private Color color = Color.Lerp(new Color(128, 0, 255), new Color(48, 0, 112), (float)CNC.Random.NextDouble());
         private int layer = CNC.Random.NextAny((int)DrawLayer.overTiles, (int)DrawLayer.overNPCs, (int)DrawLayer.overProjectlies, (int)DrawLayer.overPlayers);
+
         public override void SetDefaults()
         {
-            this.deadTime = 100;
+            this.deadTime = 150;
             this.opacity = 1f;
             this.scale = Vector2.One * CNC.Random.NextFloat(1f, 1.5f);
             this.rotation = CNC.Random.NextDegree();
-            this.velocity = new Vector2(CNC.Random.NextFloat(8f, 16f), 0f).RotatedBy(CNC.Random.NextDegree());
             this.velocity.Y *= .75f;
-        }
+            this.color = Color.Lerp(new Color(128, 0, 255), new Color(48, 0, 112), (float)CNC.Random.NextDouble());
+    }
         
         public override void PostUpdate()
         {
-            this.opacity -= .01f;
-            this.scale *= .99f;
-            this.velocity *= .975f;
+            if (time > deadTime - 100) this.opacity -= .01f;
+            if (time > deadTime - 100) this.scale *= .99f;
+            this.velocity.Y -= .01f;
+            this.velocity *= .97f;
         }
 
         public override void Draw(SpriteBatch spriteBatch, DrawLayer layer)
@@ -41,7 +42,7 @@ namespace CNC.Content.VisualEffects
                 shader.Parameters["uImageSize0"].SetValue(light.Size());
                 shader.Parameters["uImageSize1"].SetValue(trace.Size() / 2f);
                 shader.Parameters["uOffset"].SetValue(Vector2.One * .1f * Main.GlobalTimeWrappedHourly);
-                shader.Parameters["uAlpha"].SetValue(this.opacity);
+                shader.Parameters["uAlpha"].SetValue(this.opacity * .75f);
 
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.ZoomMatrix);
@@ -52,8 +53,7 @@ namespace CNC.Content.VisualEffects
                 Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.LinearWrap;
 
                 if (shader != null) shader.CurrentTechnique.Passes[0].Apply();
-
-                spriteBatch.GraphicsDevice.BlendState = BlendState.Additive;
+                
                 spriteBatch.Draw(light, position - Main.screenPosition, null, color * this.opacity, this.rotation, light.Center(), this.scale, 0, 0);
 
                 spriteBatch.End();

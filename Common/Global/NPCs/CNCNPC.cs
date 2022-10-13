@@ -51,6 +51,7 @@ namespace CNC.Common.Global.NPCs
         
         public void SetData<T>(T data, int index)
         {
+            if (CNC.IsMPClient) return;
             if (typeof(T).Equals(typeof(int))) npc.GetGlobalNPC<AllNPC>().intData[index] = (int)(object)data;
             if (typeof(T).Equals(typeof(bool))) npc.GetGlobalNPC<AllNPC>().boolData[index] = (bool)(object)data;
             if (typeof(T).Equals(typeof(float))) npc.GetGlobalNPC<AllNPC>().floatData[index] = (float)(object)data;
@@ -61,6 +62,7 @@ namespace CNC.Common.Global.NPCs
         public T GetData<T>(int index)
         {
             T t = default(T);
+            if (CNC.IsMPClient) return t;
             if (typeof(T).Equals(typeof(int))) t = (T)(object)npc.GetGlobalNPC<AllNPC>().intData[index];
             if (typeof(T).Equals(typeof(bool))) t = (T)(object)npc.GetGlobalNPC<AllNPC>().boolData[index];
             if (typeof(T).Equals(typeof(float))) t = (T)(object)npc.GetGlobalNPC<AllNPC>().floatData[index];

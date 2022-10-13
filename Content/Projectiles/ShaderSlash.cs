@@ -23,6 +23,7 @@ namespace CNC.Content.Projectiles
         public Color colorSlash;
         public Color colorSlashTop;
         public Color colorSlashTrace;
+        public Color colorSlashHit;
         public Color colorHead;
         public Color colorTail;
         public SlashInfo[] attackInfo;
@@ -71,6 +72,18 @@ namespace CNC.Content.Projectiles
             this.colorSlash = slash;
             this.colorSlashTop = slashTop;
             this.colorSlashTrace = slashTrace;
+            this.colorSlashHit = slash;
+            this.colorHead = head;
+            this.colorTail = tail;
+            return this;
+        }
+
+        public ShaderSlash SetColor(Color slash, Color slashTop, Color slashTrace, Color head, Color tail, Color hit)
+        {
+            this.colorSlash = slash;
+            this.colorSlashTop = slashTop;
+            this.colorSlashTrace = slashTrace;
+            this.colorSlashHit = hit;
             this.colorHead = head;
             this.colorTail = tail;
             return this;
@@ -133,6 +146,7 @@ namespace CNC.Content.Projectiles
             projectile.friendly = true;
             projectile.ignoreWater = true;
             projectile.tileCollide = false;
+            projectile.netUpdate2 = true;
         }
 
         public override void AI()
@@ -152,6 +166,19 @@ namespace CNC.Content.Projectiles
             }
             if (!this.fading) projectile.ai[1]--;
             else if (timer++ % projectile.extraUpdates == 0) projectile.ai[1] = (float)((double)projectile.ai[1] - this.fadeSpeed * this.slashLength * this.fadeSpeedMult);
+        }
+
+        public override void ModifyDamageHitbox(ref Rectangle hitbox)
+        {
+            base.ModifyDamageHitbox(ref hitbox);
+            Vector4 info = this.GetSlashInfo();
+            float rot = info.W + projectile.rotation;
+            Vector2 begin = projectile.position + (this.hitboxOffset + info.XY()).RotatedBy(rot);
+            Vector2 end = begin + new Vector2(info.Z, 0).RotatedBy(rot);
+
+            Vector2 min = new Vector2(MyMath.Min(begin.X, end.X), MyMath.Min(begin.Y, end.Y));
+            Vector2 max = new Vector2(MyMath.Max(begin.X, end.X), MyMath.Max(begin.Y, end.Y));
+            hitbox = new Rectangle((int)min.X, (int)min.Y, (int)(max.X - min.X), (int)(max.Y - max.Y));
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -207,7 +234,7 @@ namespace CNC.Content.Projectiles
                 int dir = (this.attackInfo[1].rotation + MyMath.pi2 > this.attackInfo[0].rotation + MyMath.pi2).ToDirectionInt(this.weaponDirection);
                 var hit = CNCUtils.CreateSlashHit(projectile, Vector2.Zero);
                 hit.SetDefaults(this.imageSlashHit, new Vector2(MyMath.phi - 1f, 1f) * .5f, target.Center, -10, rot * dir, 30);
-                hit.SetColor(this.colorSlash.NewA(0), this.colorSlash.NewA(0), .1f);
+                hit.SetColor(this.colorSlashHit.NewA(0), this.colorSlash.NewA(0), .1f);
             }
         }
 

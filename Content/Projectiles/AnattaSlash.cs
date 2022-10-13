@@ -63,16 +63,90 @@ namespace CNC.Content.Projectiles
                         CNC.GetTexture("Assets/Effects/Slash4"),
                         CNC.GetTexture("Assets/Effects/SlashTop6"),
                         CNC.GetTexture("Assets/Projectiles/Slash/TrueNightsEdge"),
-                        CNC.GetTexture("Assets/Projectiles/SlashHit/SlashHit1"),
+                        CNC.GetTexture("Assets/Projectiles/SlashHit/SlashHit4"),
                     };
                     time = 10;
-                    time2 = 20;
-                    opacity = 4f;
+                    time2 = 25;
+                    opacity = 3f;
                     style = 1;
                     dir = 1;
                     fadeMult = .1d;
                     CNCUtils.PlaySound(SoundID.Item71, projectile);
                     CNCUtils.ScreenShake(0, new Vector2(0, 40f), new Vector2(0, 20f), .9f, default, owner);
+                    break;
+                case 7.2f:
+                    for (int i = 0; i < info.Length; i++)
+                    {
+                        float factor = (float)i / info.Length;
+                        float rotation = -MyMath.deg01 * (factor * 450 + 145);
+                        Vector2 pos = new Vector2(18f, 0f).RotatedBy(rotation);
+                        pos.Y *= .8f;
+                        info[i].position = pos * 16f;
+                    }
+                    t = new Texture2D[]
+                    {
+                        CNC.GetTexture("Assets/Effects/Slash4"),
+                        CNC.GetTexture("Assets/Effects/SlashTop6"),
+                        CNC.GetTexture("Assets/Effects/Trace8"),
+                        CNC.GetTexture("Assets/Projectiles/SlashHit/SlashHit4"),
+                    };
+                    time = 20;
+                    time2 = 25;
+                    opacity = 2f;
+                    style = 2;
+                    dir = 1;
+                    CNCUtils.PlaySound(SoundID.Item71, projectile);
+                    CNCUtils.ScreenShake(0, new Vector2(0, 20f), new Vector2(0, 15f), .9f, default, owner);
+                    break;
+                case 7.1f:
+                    for (int i = 0; i < info.Length; i++)
+                    {
+                        float factor = (float)i / info.Length;
+                        float rotation = MyMath.deg01 * (105 - factor * 250);
+                        Vector2 pos = new Vector2(16f, 0f).RotatedBy(rotation);
+                        pos.Y *= .7f;
+                        info[i].position = pos * 16f;
+                    }
+                    t = new Texture2D[]
+                    {
+                        CNC.GetTexture("Assets/Effects/Slash5"),
+                        CNC.GetTexture("Assets/Effects/SlashTop7"),
+                        CNC.GetTexture("Assets/Effects/Trace1"),
+                        CNC.GetTexture("Assets/Projectiles/SlashHit/SlashHit4"),
+                    };
+                    time = 10;
+                    time2 = 10;
+                    opacity = 2f;
+                    style = 1;
+                    dir = 1;
+                    fadeMult = 1.5;
+                    CNCUtils.PlaySound("Slash1", projectile, .3f);
+                    CNCUtils.ScreenShake(0, new Vector2(0, 20f), new Vector2(0, 10f), .8f, default, owner);
+                    break;
+                case 7f:
+                    for (int i = 0; i < info.Length; i++)
+                    {
+                        float factor = (float)i / info.Length;
+                        float rotation = MyMath.deg01 * (factor * 210 - 105);
+                        Vector2 pos = new Vector2(16f, 0f).RotatedBy(rotation);
+                        pos.Y *= .5f;
+                        info[i].position = pos * 16f;
+                    }
+                    t = new Texture2D[]
+                    {
+                        CNC.GetTexture("Assets/Effects/Slash5"),
+                        CNC.GetTexture("Assets/Effects/SlashTop7"),
+                        CNC.GetTexture("Assets/Effects/Trace1"),
+                        CNC.GetTexture("Assets/Projectiles/SlashHit/SlashHit4"),
+                    };
+                    time = 10;
+                    time2 = 10;
+                    opacity = 2f;
+                    style = 1;
+                    dir = 1;
+                    fadeMult = 1.5;
+                    CNCUtils.PlaySound("Slash1", projectile, .3f);
+                    CNCUtils.ScreenShake(0, new Vector2(0, 20f), new Vector2(0, 10f), .8f, default, owner);
                     break;
                 case 6f:
                     for (int i = 0; i < info.Length; i++)
@@ -347,7 +421,7 @@ namespace CNC.Content.Projectiles
                     break;
             }
             SetDefaults(owner.Center, projectile.velocity, info.Length, time, time2, 10);
-            SetDraw(blendStyle, opacity, 1f, style, dir, fadeMult);
+            SetDraw(blendStyle, opacity, .5f, style, dir, fadeMult);
             SetImage(t[0], t[1], t[2], t[3]);
             SetAttackInfo(info);
         }
@@ -380,9 +454,16 @@ namespace CNC.Content.Projectiles
             switch (type)
             {
                 case 8f:
-                    c1 = Color.Lerp(new Color(128, 255, 128), Color.DarkGreen, .5f);
-                    c2 = Color.DarkViolet;
-                    SetColor(c2, Color.Lerp(c1, c2, .3f), new Color(128, 255, 128), new Color(0, 255, 0), c2);
+                    c1 = new Color(64, 192, 64);
+                    c2 = new Color(96, 0, 192);
+                    SetColor(Color.White, Color.Lerp(c1, c2, .3f), c2, c1, Color.White, Color.White);
+                    break;
+                case 7.2f:
+                case 7.1f:
+                case 7f:
+                    c1 = new Color(64, 192, 64);
+                    c2 = new Color(96, 0, 192);
+                    SetColor(Color.White, Color.Lerp(c1, c2, .3f), c2, c1, c2, Color.White);
                     break;
                 case 6f:
                     c2 = Color.LightGoldenrodYellow;
