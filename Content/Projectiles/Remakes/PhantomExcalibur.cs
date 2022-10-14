@@ -71,19 +71,18 @@ namespace CNC.Content.Projectiles.Remakes
             {
                 if (timer == 30)
                 {
-                    Player player = owner;
-                    Item item = player.HeldItem;
-                    float damage = player.GetWeaponDamage(item) * capabilityMult;
-                    float knockback = player.GetWeaponKnockback(item) * capabilityMult;
-                    float crit = player.GetWeaponCrit(item) * capabilityMult;
+                    Item item = owner.HeldItem;
+                    float damage = owner.GetWeaponDamage(item) * capabilityMult;
+                    float knockback = owner.GetWeaponKnockback(item) * capabilityMult;
+                    float crit = owner.GetWeaponCrit(item) * capabilityMult;
                     var source = item.GetSource_ItemUse(item);
-                    Vector2 position = player.Center;
+                    Vector2 position = owner.Center;
                     damage *= 3;
                     knockback *= 1.5f;
                     crit += 20f;
-                    slash = CNCUtils.NewProj(source, projectile.Center, projectile.velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.AnattaSlash], (int)damage, knockback, (int)crit, owner.whoAmI, 0f, 1f, 6f, 0).ModProjectile as ShaderSlash;
+                    slash = CNCUtils.NewProj(source, projectile.Center, projectile.velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.AnattaSlash], (int)damage, knockback, (int)crit, base.owner.whoAmI, 0f, 1f, 6f, 0).ModProjectile as ShaderSlash;
                     slash.imageWeapon = CNC.GetTexture("Assets/Misc/None");
-                    slash.scale *= capabilityMult;
+                    slash.scale *= owner.GetAdjustedItemScale(item) * capabilityMult;
                     slash.bindToOwner = false;
                     slash.projectile.Center = projectile.Center;
                     projectile.velocity = Vector2.Zero;
@@ -228,18 +227,17 @@ namespace CNC.Content.Projectiles.Remakes
 
         private void Attack()
         {
-            Player player = owner;
-            Item item = player.HeldItem;
-            Vector2 velocity = new Vector2(item.shootSpeed * 3f, 0f).RotatedBy(attackRot);
-            float damage = player.GetWeaponDamage(item) * capabilityMult;
-            float knockback = player.GetWeaponKnockback(item) * capabilityMult;
-            float crit = player.GetWeaponCrit(item) * capabilityMult;
+            Item item = owner.HeldItem;
+            Vector2 velocity = new Vector2(item.shootSpeed * 2f, 0f).RotatedBy(attackRot);
+            float damage = owner.GetWeaponDamage(item) * capabilityMult;
+            float knockback = owner.GetWeaponKnockback(item) * capabilityMult;
+            float crit = owner.GetWeaponCrit(item) * capabilityMult;
             var source = item.GetSource_ItemUse(item);
-            if (atkDatas[0].type > 1) CNCUtils.NewProj(source, projectile.Center, velocity, ProjectileID.LightBeam, (int)damage, knockback, (int)crit, owner.whoAmI, 0f, 1f);
-            damage *= new float[] { 1.1f, .9f, 1.5f }[(int)this.atkDatas[0].type / 2];
-            slash = CNCUtils.NewProj(source, projectile.Center, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.AnattaSlash], (int)damage, knockback, (int)crit, owner.whoAmI, 0f, 1f, 5f + atkDatas[0].type * .1f, 0).ModProjectile as ShaderSlash;
+            if (atkDatas[0].type > 1) CNCUtils.NewProj(source, projectile.Center, velocity, ProjectileID.LightBeam, (int)damage, knockback, (int)crit, base.owner.whoAmI, 0f, 1f);
+            damage *= new float[] { 1.1f, .95f, 1.5f }[(int)this.atkDatas[0].type / 2];
+            slash = CNCUtils.NewProj(source, projectile.Center, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.AnattaSlash], (int)damage, knockback, (int)crit, base.owner.whoAmI, 0f, 1f, 5f + atkDatas[0].type * .1f, 0).ModProjectile as ShaderSlash;
             slash.imageWeapon = CNC.GetTexture("Assets/Misc/None");
-            slash.scale *= capabilityMult;
+            slash.scale *= owner.GetAdjustedItemScale(item) * capabilityMult;
             slash.bindToOwner = false;
             slash.projectile.Center = projectile.Center;
             atkDatas.RemoveAt(0);

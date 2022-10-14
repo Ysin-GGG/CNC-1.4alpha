@@ -128,5 +128,12 @@ namespace CNC.Common.Global.Items
             }
             return result;
         }
+
+        public override void ModifyHitPvp(Player player, Player target, ref int damage, ref bool crit)
+        {
+            //pvp伤害修正
+            damage = (int)((double)damage * .5 + (double)damage * (double)MyMath.Max(.5 * (1 - Math.Tanh((double)damage / (double)MyMath.Max(500.0, (double)target.statLifeMax))), .1));
+            if (crit) damage = damage * 3 / 2;
+        }
     }
 }

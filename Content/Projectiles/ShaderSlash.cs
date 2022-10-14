@@ -42,6 +42,7 @@ namespace CNC.Content.Projectiles
         protected int slashStyle = 1;
         protected float traceChangeSpeed = -.2f;
         private int timer = 0;
+        private List<NPC> haveHit = new List<NPC>();
 
         public ShaderSlash SetDefaults(Vector2 position, Vector2 direction, int slashLength, int time, int fadeTime, int precision = 1)
         {
@@ -147,6 +148,15 @@ namespace CNC.Content.Projectiles
             projectile.ignoreWater = true;
             projectile.tileCollide = false;
             projectile.netUpdate2 = true;
+            projectile.noEnchantmentVisuals = true;
+            projectile.usesLocalNPCImmunity = true;
+            projectile.localNPCHitCooldown = 0;
+        }
+
+        public override bool? CanHitNPC(NPC target)
+        {
+            bool flag = base.CanHitNPC(target).HasValue ? base.CanHitNPC(target).Value : true;
+            return flag && !haveHit.Contains(target);
         }
 
         public override void AI()
@@ -164,21 +174,147 @@ namespace CNC.Content.Projectiles
                     this.Alpha1 = (float)MyMath.Min(this.Alpha1 + this.fadeSpeed, 1d);
                 }
             }
-            if (!this.fading) projectile.ai[1]--;
+            if (!this.fading)
+            {
+                projectile.ai[1]--;
+                Vector4 info = this.GetSlashInfo();
+                float rot = info.W + projectile.rotation;
+                Vector2 begin = projectile.position + (this.hitboxOffset + info.XY()).RotatedBy(rot);
+                Vector2 end = begin + new Vector2(info.Z, 0).RotatedBy(rot);
+                float len = (end - begin).Length() / 16f;
+                //以下代码逻辑来自tr源码
+                //Terraria.ItemCheck_CutTiles(Item sItem, Microsoft.Xna.Framework.Rectangle itemRectangle, List< ushort > ignoreList)
+                for (int i = 0; i <= len; i++)
+                {
+                    int x = (int)(MyMath.Lerp(begin, end, i / len) / 16f).X;
+                    int y = (int)(MyMath.Lerp(begin, end, i / len) / 16f).Y;
+                    
+                    if (Main.tile[x, y] != null && Main.tileCut[(int)Main.tile[x, y].TileType])
+                    {
+                        WorldGen.KillTile(x, y);
+                        if (CNC.IsMPClient) NetMessage.SendData(17, number2: ((float)x), number3: ((float)y));
+                    }
+                }
+                //Terraria.Projectiles.UpdateEnchantmentVisuals()
+                if (!projectile.npcProj && CNC.Random.NextBool())
+                {
+                    Vector2 position = MyMath.Lerp(begin, end, (float)CNC.Random.NextDouble() * .75f + .25f);
+                    Vector2 size = Vector2.One * 16f;
+                    byte type = Main.player[projectile.owner].meleeEnchant;
+                    if (Main.player[projectile.owner].frostBurn && CNC.Random.NextBool(1.0 / (2 * (1 + projectile.extraUpdates))))
+                    {
+                        int index = Dust.NewDust(position, (int)size.X, (int)size.Y, 135, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, Scale: 2f);
+                        Main.dust[index].noGravity = true;
+                        Main.dust[index].velocity *= 0.7f;
+                        Main.dust[index].velocity.Y -= 0.5f;
+                    }
+                    if (Main.player[projectile.owner].magmaStone && !CNC.Random.NextBool(1.0 / 3))
+                    {
+                        int index = Dust.NewDust(new Vector2(position.X - 4f, position.Y - 4f), (int)size.X + 8, (int)size.Y + 8, 6, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 100, Scale: 2f);
+                        if (CNC.Random.NextBool(1.0 / 2)) Main.dust[index].scale = 1.5f;
+                        Main.dust[index].noGravity = true;
+                        Main.dust[index].velocity.X *= 2f;
+                        Main.dust[index].velocity.Y *= 2f;
+                    }
+                    switch (Main.player[projectile.owner].meleeEnchant)
+                    {
+                        case (byte)1:
+                            if (CNC.Random.NextBool(1.0 / 3))
+                            {
+                                int index = Dust.NewDust(position, (int)size.X, (int)size.Y, 171, Alpha: 100);
+                                Main.dust[index].noGravity = true;
+                                Main.dust[index].fadeIn = 1.5f;
+                                Main.dust[index].velocity *= 0.25f;
+                            }
+                            if (CNC.Random.NextBool(1.0 / 3))
+                            {
+                                int index = Dust.NewDust(position, (int)size.X, (int)size.Y, 171, Alpha: 100);
+                                Main.dust[index].noGravity = true;
+                                Main.dust[index].fadeIn = 1.5f;
+                                Main.dust[index].velocity *= 0.25f;
+                            }
+                            break;
+                        case (byte)2:
+                            if (CNC.Random.NextBool(1.0 / 2))
+                            {
+                                int index = Dust.NewDust(position, (int)size.X, (int)size.Y, 75, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, Scale: 2.5f);
+                                Main.dust[index].noGravity = true;
+                                Main.dust[index].velocity *= 0.7f;
+                                Main.dust[index].velocity.Y -= 0.5f;
+                            }
+                            break;
+                        case (byte)3:
+                            if (CNC.Random.NextBool(1.0 / 2))
+                            {
+                                int index = Dust.NewDust(position, (int)size.X, (int)size.Y, 6, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, Scale: 2.5f);
+                                Main.dust[index].noGravity = true;
+                                Main.dust[index].velocity *= 0.7f;
+                                Main.dust[index].velocity.Y -= 0.5f;
+                            }
+                            break;
+                        case (byte)4:
+                            if (CNC.Random.NextBool(1.0 / 2))
+                            {
+                                int index = Dust.NewDust(position, (int)size.X, (int)size.Y, 57, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, Scale: 1.1f);
+                                Main.dust[index].noGravity = true;
+                                Main.dust[index].velocity.X /= 2f;
+                                Main.dust[index].velocity.Y /= 2f;
+                            }
+                            break;
+                        case (byte)5:
+                            if (CNC.Random.NextBool(1.0 / 2))
+                            {
+                                int index = Dust.NewDust(position, (int)size.X, (int)size.Y, 169, Alpha: 100);
+                                Main.dust[index].velocity.X += (float)projectile.direction;
+                                Main.dust[index].velocity.Y += 0.2f;
+                                Main.dust[index].noGravity = true;
+                            }
+                            break;
+                        case (byte)6:
+                            if (CNC.Random.NextBool(1.0 / 2))
+                            {
+                                int index = Dust.NewDust(position, (int)size.X, (int)size.Y, 135, Alpha: 100);
+                                Main.dust[index].velocity.X += (float)projectile.direction;
+                                Main.dust[index].velocity.Y += 0.2f;
+                                Main.dust[index].noGravity = true;
+                            }
+                            break;
+                        case (byte)7:
+                            Vector2 velocity = projectile.velocity;
+                            if ((double)velocity.Length() > 4.0) velocity *= 4f / velocity.Length();
+                            if (CNC.Random.NextBool(1.0 / 20))
+                            {
+                                int index = Dust.NewDust(position, (int)size.X, (int)size.Y, Main.rand.Next(139, 143), velocity.X, velocity.Y, Scale: 1.2f);
+                                Main.dust[index].velocity.X *= (float)(1.0 + (double)Main.rand.Next(-50, 51) * 0.00999999977648258);
+                                Main.dust[index].velocity.Y *= (float)(1.0 + (double)Main.rand.Next(-50, 51) * 0.00999999977648258);
+                                Main.dust[index].velocity.X += (float)Main.rand.Next(-50, 51) * 0.05f;
+                                Main.dust[index].velocity.Y += (float)Main.rand.Next(-50, 51) * 0.05f;
+                                Main.dust[index].scale *= (float)(1.0 + (double)Main.rand.Next(-30, 31) * 0.00999999977648258);
+                            }
+                            if (CNC.Random.NextBool(1.0 / 40))
+                            {
+                                int Type = Main.rand.Next(276, 283);
+                                int index1 = Gore.NewGore(source, position, velocity, Type);
+                                Main.gore[index1].velocity.X *= (float)(1.0 + (double)Main.rand.Next(-50, 51) * 0.00999999977648258);
+                                Main.gore[index1].velocity.Y *= (float)(1.0 + (double)Main.rand.Next(-50, 51) * 0.00999999977648258);
+                                Main.gore[index1].scale *= (float)(1.0 + (double)Main.rand.Next(-20, 21) * 0.00999999977648258);
+                                Main.gore[index1].velocity.X += (float)Main.rand.Next(-50, 51) * 0.05f;
+                                Main.gore[index1].velocity.Y += (float)Main.rand.Next(-50, 51) * 0.05f;
+                            }
+                            break;
+                        case (byte)8:
+                            if (CNC.Random.NextBool(1.0 / 4))
+                            {
+                                int index = Dust.NewDust(position, (int)size.X, (int)size.Y, 46, Alpha: 100);
+                                Main.dust[index].noGravity = true;
+                                Main.dust[index].fadeIn = 1.5f;
+                                Main.dust[index].velocity *= 0.25f;
+                            }
+                            break;
+                    }
+                }
+            }
             else if (timer++ % projectile.extraUpdates == 0) projectile.ai[1] = (float)((double)projectile.ai[1] - this.fadeSpeed * this.slashLength * this.fadeSpeedMult);
-        }
-
-        public override void ModifyDamageHitbox(ref Rectangle hitbox)
-        {
-            base.ModifyDamageHitbox(ref hitbox);
-            Vector4 info = this.GetSlashInfo();
-            float rot = info.W + projectile.rotation;
-            Vector2 begin = projectile.position + (this.hitboxOffset + info.XY()).RotatedBy(rot);
-            Vector2 end = begin + new Vector2(info.Z, 0).RotatedBy(rot);
-
-            Vector2 min = new Vector2(MyMath.Min(begin.X, end.X), MyMath.Min(begin.Y, end.Y));
-            Vector2 max = new Vector2(MyMath.Max(begin.X, end.X), MyMath.Max(begin.Y, end.Y));
-            hitbox = new Rectangle((int)min.X, (int)min.Y, (int)(max.X - min.X), (int)(max.Y - max.Y));
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -236,6 +372,7 @@ namespace CNC.Content.Projectiles
                 hit.SetDefaults(this.imageSlashHit, new Vector2(MyMath.phi - 1f, 1f) * .5f, target.Center, -10, rot * dir, 30);
                 hit.SetColor(this.colorSlashHit.NewA(0), this.colorSlash.NewA(0), .1f);
             }
+            if (!haveHit.Contains(target)) haveHit.Add(target);
         }
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)

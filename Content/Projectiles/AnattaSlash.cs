@@ -55,7 +55,7 @@ namespace CNC.Content.Projectiles
                     {
                         float factor = (float)i / info.Length;
                         float rotation = MyMath.deg01 * (105 - factor * 210);
-                        Vector2 pos = new Vector2(16f, 0f).RotatedBy(rotation);
+                        Vector2 pos = new Vector2(18f, 0f).RotatedBy(rotation);
                         info[i].position = pos * 16f;
                     }
                     t = new Texture2D[]
@@ -79,7 +79,7 @@ namespace CNC.Content.Projectiles
                     {
                         float factor = (float)i / info.Length;
                         float rotation = -MyMath.deg01 * (factor * 450 + 145);
-                        Vector2 pos = new Vector2(18f, 0f).RotatedBy(rotation);
+                        Vector2 pos = new Vector2(14f, 0f).RotatedBy(rotation);
                         pos.Y *= .8f;
                         info[i].position = pos * 16f;
                     }
@@ -103,7 +103,7 @@ namespace CNC.Content.Projectiles
                     {
                         float factor = (float)i / info.Length;
                         float rotation = MyMath.deg01 * (105 - factor * 250);
-                        Vector2 pos = new Vector2(16f, 0f).RotatedBy(rotation);
+                        Vector2 pos = new Vector2(12f, 0f).RotatedBy(rotation);
                         pos.Y *= .7f;
                         info[i].position = pos * 16f;
                     }
@@ -128,7 +128,7 @@ namespace CNC.Content.Projectiles
                     {
                         float factor = (float)i / info.Length;
                         float rotation = MyMath.deg01 * (factor * 210 - 105);
-                        Vector2 pos = new Vector2(16f, 0f).RotatedBy(rotation);
+                        Vector2 pos = new Vector2(12f, 0f).RotatedBy(rotation);
                         pos.Y *= .5f;
                         info[i].position = pos * 16f;
                     }
@@ -177,7 +177,7 @@ namespace CNC.Content.Projectiles
                     {
                         float factor = (float)i / info.Length;
                         float rotation = MyMath.deg01 * (factor * 450 + 145);
-                        Vector2 pos = new Vector2(16f, 0f).RotatedBy(rotation);
+                        Vector2 pos = new Vector2(14f, 0f).RotatedBy(rotation);
                         pos.Y *= .8f;
                         info[i].position = pos * 16f;
                     }
@@ -298,7 +298,7 @@ namespace CNC.Content.Projectiles
                     {
                         float factor = (float)i / info.Length;
                         float rotation = MyMath.deg01 * (factor * 360 + 90);
-                        Vector2 pos = new Vector2(12f, 0f).RotatedBy(rotation);
+                        Vector2 pos = new Vector2(10f, 0f).RotatedBy(rotation);
                         pos.Y *= .4f;
                         info[i].position = pos * 16f;
                     }
@@ -319,7 +319,7 @@ namespace CNC.Content.Projectiles
                     {
                         float factor = (float)i / info.Length;
                         float rotation = MyMath.deg01 * (factor * 270 - 100);
-                        Vector2 pos = new Vector2(12f, 0f).RotatedBy(rotation);
+                        Vector2 pos = new Vector2(10f, 0f).RotatedBy(rotation);
                         pos.Y *= .4f;
                         info[i].position = pos * 16f;
                     }
@@ -340,7 +340,7 @@ namespace CNC.Content.Projectiles
                     {
                         float factor = (float)i / info.Length;
                         float rotation = MyMath.deg01 * (180 - factor * 270);
-                        Vector2 pos = new Vector2(10f, 0f).RotatedBy(rotation);
+                        Vector2 pos = new Vector2(9f, 0f).RotatedBy(rotation);
                         pos.Y *= .3f;
                         info[i].position = pos * 16f;
                     }
@@ -422,7 +422,7 @@ namespace CNC.Content.Projectiles
             }
             SetDefaults(owner.Center, projectile.velocity, info.Length, time, time2, 10);
             SetDraw(blendStyle, opacity, .5f, style, dir, fadeMult);
-            SetImage(t[0], t[1], t[2], t[3]);
+            SetImage(t[0], t[1], t[2], t[3], Terraria.GameContent.TextureAssets.Item[owner.HeldItem.type].Value);
             SetAttackInfo(info);
         }
 

@@ -874,6 +874,7 @@ namespace CNC.Common.Global.Players
             }
             return base.CanUseItem(item);
         }
+
         public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
         {
             bool flag = base.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref damageSource, ref cooldownCounter);
@@ -896,7 +897,7 @@ namespace CNC.Common.Global.Players
 
         public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
         {
-            if(target.type != 488) this.UpdateClassVar(CNCID.Clazz.Barbarian, 0);
+            if (target.type != 488) this.UpdateClassVar(CNCID.Clazz.Barbarian, 0);
         }
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
@@ -1011,7 +1012,7 @@ namespace CNC.Common.Global.Players
                 }
                 for (int i = 0; i < Main.maxItemTypes; i++)
                 {
-                    Item item = new Item();
+                    Item item = new Item(i);
                     item.SetDefaults(i);
                     if (item.ammo == AmmoID.Arrow) this.arrowList.Add(item.shoot);
                     if (item.ammo == AmmoID.Bullet) this.bulletList.Add(item.shoot);

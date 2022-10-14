@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using CNC.Common.Global.NPCs;
+using CNC.Common.Utils;
 
 namespace CNC.Common.Global.Projectiles
 {
@@ -25,6 +27,19 @@ namespace CNC.Common.Global.Projectiles
             this.data = new Dictionary<string, object>();
             this.damageAdd = 0f;
             this.damageMult = 1f;
+        }
+
+        public override void ModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit)
+        {
+            damage = (int)((double)damage * .5 + (double)damage * (double)MyMath.Max(.5 * (1 - Math.Tanh((double)damage / (double)MyMath.Max(500.0, (double)target.statLifeMax))), .1));
+            if (crit) damage = damage * 3 / 2;
+        }
+
+        public override void ModifyHitPvp(Projectile projectile, Player target, ref int damage, ref bool crit)
+        {
+            //pvpÉËº¦ÐÞÕý
+            damage = (int)((double)damage * .5 + (double)damage * (double)MyMath.Max(.5 * (1 - Math.Tanh((double)damage / (double)MyMath.Max(500.0, (double)target.statLifeMax))), .1));
+            if (crit) damage = damage * 3 / 2;
         }
     }
 }

@@ -24,6 +24,7 @@ namespace CNC.Content.Projectiles.Remakes
         private EffectTimer et = new EffectTimer(80, 1, 0, 80, 180, 10, 10, 1, 0);
         private EffectTimer et2 = new EffectTimer(75, 1, 0, 75, 100, 10, 10, 1, 0);
         private Vector4[] light = new Vector4[15];
+        private List<NPC> haveHit = new List<NPC>();
 
         public override void ResetDefaults()
         {
@@ -32,12 +33,14 @@ namespace CNC.Content.Projectiles.Remakes
             projectile.alpha = 255;
             projectile.light = 0f;
             projectile.scale = 0f;
-            projectile.damage = 100;
             projectile.penetrate = -1;
             projectile.friendly = false;
             projectile.hostile = false;
             projectile.ignoreWater = true;
             projectile.tileCollide = false;
+            projectile.noEnchantmentVisuals = true;
+            projectile.usesLocalNPCImmunity = true;
+            projectile.localNPCHitCooldown = 25;
         }
 
         public override void OnSpawn()
@@ -47,6 +50,13 @@ namespace CNC.Content.Projectiles.Remakes
             CNCUtils.ScreenShake(10, new Vector2(0, 60f), new Vector2(0, 40f), .9f, default, owner);
             projectile.ai[0] = (projectile.velocity.X < 0).ToDirectionInt(1);
             projectile.velocity = Vector2.Zero;
+        }
+
+        public override void HitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        {
+            damage = 1;
+            knockback = -15f;
+            crit = false;
         }
 
         public override void AI()
@@ -89,7 +99,7 @@ namespace CNC.Content.Projectiles.Remakes
                     this.NewProjectile(0, 0, CNCID.Projectile.LegacyObject[CNCID.Projectile.ShockWave], 0, 0f, 0f, 0f, 1f, 2f, 0f).ai[0] = 2f;
                     var e = CNCUtils.CreateExplosion(projectile);
                     e.SetDefaults(CNC.GetTexture("Assets/Projectiles/Explosion/SilverFieldExplosion"), projectile.Center, Vector2.One * defRange * 1.125f, 1, 5);
-                    e.SetDamage(1, projectile.DamageType, projectile.damage * 10, 5f, projectile.CritChance, 0f, 1f);
+                    e.SetDamage(1, projectile.DamageType, projectile.damage, 15f, projectile.CritChance, 0f, 1f);
                     e.SetColor(Color.Transparent, Color.Transparent, 0f);
                     e.SetAlpha(0f, 0f, 0f);
                     e.SetScale(1f, 0f, 0f);
@@ -103,6 +113,12 @@ namespace CNC.Content.Projectiles.Remakes
                         Vector2 scale = new Vector2(CNC.Random.NextFloat(.5f, 1f), CNC.Random.NextFloat(2f, 4f));
                         light[i] = new Vector4(scale * 7.5f, CNC.Random.NextDegree(), 0f);
                     }
+                    for (int i = 0; i < haveHit.Count; i++)
+                        if (haveHit[i] != null && haveHit[i].active)
+                        {
+                            haveHit[i].rotation = 0f;
+                            haveHit[i].noGravity = false;
+                        }
                 }
                 if(projectile.timeLeft == 24)
                 {
@@ -110,7 +126,7 @@ namespace CNC.Content.Projectiles.Remakes
                     {
                         if (Main.gore[i] != null && Main.gore[i].active)
                         {
-                            float dist = Main.gore[i].position.Distance(projectile.position);
+                            float dist = Main.gore[i].position.Distance(projectile.Center);
                             float size = new Vector2(Main.gore[i].Width, Main.gore[i].Height).Length() * Main.gore[i].scale;
                             float range = defRange * .25f;
                             if (size < range && dist < range) Main.gore[i].active = false;
@@ -121,7 +137,6 @@ namespace CNC.Content.Projectiles.Remakes
             }
             else
             {
-                
                 Vector2 offScreenRange = new Vector2((float)Main.offScreenRange, (float)Main.offScreenRange);
                 Vector2 realScreenSize = new Vector2((float)Main.screenWidth, (float)Main.screenHeight) / Main.GameViewMatrix.Zoom;
                 Vector2 screenCenter = new Vector2((float)Main.screenWidth, (float)Main.screenHeight) * 0.5f;
@@ -154,7 +169,7 @@ namespace CNC.Content.Projectiles.Remakes
                     }
                     if (CNC.Random.NextBool()) VisualEffect.NewVisualEffect<VisualEffects.Electrospark>(projectile.Center, new Vector2(CNC.Random.NextFloat(12f, 24f), 0f).RotatedBy(CNC.Random.NextDegree()), 0f).color = mainColor2;
                 }
-                projectile.friendly = projectile.timeLeft >= 35;
+                projectile.friendly = true;
                 Swirl();
             }
             if (timer >= 25 && projectile.timeLeft >= 25)
@@ -230,9 +245,9 @@ namespace CNC.Content.Projectiles.Remakes
             
             float width = CNC.GetTexture(Texture + 2).Width * projectile.scale * MyMath.Lerp(.15f, .05f, timer / (float)time);
             List<VertexInfo> vertex = new List<VertexInfo>();
-            for (int i = 0; i <= 180; ++i)
+            for (int i = 0; i <= 360; ++i)
             {
-                var factor = i / 180f;
+                var factor = i / 360f;
                 vertex.Add(new VertexInfo(projectile.Center, mainColor2, new Vector3(factor, 0, 0)));
                 vertex.Add(new VertexInfo(projectile.Center + new Vector2(width, 0f).RotatedBy(MyMath.pi2 * factor), mainColor, new Vector3(factor, 1, 0)));
             }
@@ -284,13 +299,19 @@ namespace CNC.Content.Projectiles.Remakes
         {
             void swirl(Entity e)
             {
-                float dist = e.position.Distance(projectile.position);
+                float dist = e.Center.Distance(projectile.Center);
                 float range = defRange * projectile.scale * 1.5f;
                 float power = defPower * projectile.scale * 1.2f;
                 if (dist < range)
                 {
                     e.velocity *= (dist / range) * .05f + .95f;
-                    e.velocity -= new Vector2(MyMath.Lerp(power, 0f, dist / range), 0f).RotatedBy((e.position - projectile.position).ToRotation());
+                    e.velocity -= new Vector2(MyMath.Lerp(power, 0f, dist / range), 0f).RotatedBy((e.Center - projectile.Center).ToRotation());
+                    if (e is NPC n)
+                    {
+                        if (n.rotation == 0 && !n.noGravity && !haveHit.Contains(n)) haveHit.Add(n);
+                        n.rotation -= projectile.direction * MyMath.deg15 * MyMath.Lerp(1f, 0f, dist / range);
+                        n.noGravity = true;
+                    }
                 }
             }
             int max = MyMath.Max(Main.maxNPCs, Main.maxItems, Main.maxGore);
@@ -302,13 +323,13 @@ namespace CNC.Content.Projectiles.Remakes
                     swirl(Main.item[i]);
                 if (i < Main.maxGore && Main.gore[i] != null && Main.gore[i].active)
                 {
-                    float dist = Main.gore[i].position.Distance(projectile.position);
+                    float dist = Main.gore[i].position.Distance(projectile.Center);
                     float range = defRange * projectile.scale * 1.5f;
                     float power = defPower * projectile.scale * 1.2f;
                     if (dist < range)
                     {
                         Main.gore[i].velocity *= (dist / range) * .05f + .95f;
-                        Main.gore[i].velocity -= new Vector2(MyMath.Lerp(power, 0f, dist / range), 0f).RotatedBy((Main.gore[i].position - projectile.position).ToRotation());
+                        Main.gore[i].velocity -= new Vector2(MyMath.Lerp(power, 0f, dist / range), 0f).RotatedBy((Main.gore[i].position - projectile.Center).ToRotation());
                     }
                     if (dist < range * .1f)
                     {

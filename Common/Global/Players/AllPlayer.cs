@@ -21,7 +21,10 @@ namespace CNC.Common.Global.Players
 
         public int lifeRegen;
         public int lifeRegenCount;
-        public int rightCastTime;
+        public int castTime;
+        public float castTimePrecent { get; }
+        public bool controlMouseLeft;
+        public bool releaseMouseLeft;
         public bool controlMouseRight;
         public bool releaseMouseRight;
         private Item heldItem;
@@ -77,7 +80,7 @@ namespace CNC.Common.Global.Players
         {
             manaReturn = 0;
             Tick = (Tick + 1) % 60;
-            if (heldItem != player.HeldItem) { heldItem = player.HeldItem; rightCastTime = 0; }
+            if (heldItem != player.HeldItem) { heldItem = player.HeldItem; castTime = 0; }
             for (int i = 0; i < CDReduction.Length; i++) CDReduction[i] = 1f;
             for (int i = 0; i < buff.Length; i++) buff[i] = false;
         }
@@ -85,9 +88,9 @@ namespace CNC.Common.Global.Players
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
             base.ProcessTriggers(triggersSet);
-            if (controlMouseRight && releaseMouseRight) rightCastTime = (controlMouseRight = releaseMouseRight = false).ToInt(0);
-            if (controlMouseRight && !triggersSet.MouseRight) releaseMouseRight = true; 
-            if (triggersSet.MouseRight) rightCastTime += (controlMouseRight = true).ToInt(1);
+            if (controlMouseRight && releaseMouseRight) castTime = (controlMouseRight = releaseMouseRight = false).ToInt(0);
+            if (controlMouseRight && !triggersSet.MouseRight) releaseMouseRight = true;
+            if (triggersSet.MouseRight) castTime += (controlMouseRight = true).ToInt(1);
         }
 
         /// <summary> ÆÁÄ»Õð¶¯ </summary>
@@ -136,6 +139,25 @@ namespace CNC.Common.Global.Players
 
         public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
+        }
+
+        public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
+        {
+            if (drawInfo.drawPlayer.IsMe() && drawInfo.drawPlayer.HasItem(ModContent.ItemType<Content.Items.Developers.Quartz.Anatta>()))
+                switch (drawInfo.heldItem.type)
+                {
+                    case ItemID.TrueNightsEdge:
+                    case ItemID.TrueExcalibur:
+                    case ItemID.FieryGreatsword:
+                    case ItemID.Meowmere:
+                        drawInfo.ItemLocation = Vector2.Zero;
+                        break;
+                }
+        }
+
+        public override bool CanUseItem(Item item)
+        {
+            return base.CanUseItem(item);
         }
     }
 }
