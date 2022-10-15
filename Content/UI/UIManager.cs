@@ -11,7 +11,7 @@ namespace CNC.Content.UI
     {
         public static UIManager Instance;
 
-        public UserInterface[] UI = new UserInterface[7];
+        public UserInterface[] UI = new UserInterface[8];
         internal UIState[] UIState;
         public bool[] Visible => new bool[]
         {
@@ -21,6 +21,7 @@ namespace CNC.Content.UI
                 true,
                 InscriptionMenu.InscriptionMenu.Visible,
                 InscriptionMenu.WeaponList.Visible,
+                true,
                 true,
         };
 
@@ -40,13 +41,14 @@ namespace CNC.Content.UI
             if (Main.dedServ) return;
             UIState = new UIState[]
             {
-                    new MainBar.MainBar(),
-                    new ClassesMenu.ClassesMenu(),
-                    new ClassesMenu.DarkScreen(),
-                    new Clone.CloneGUI(),
-                    new InscriptionMenu.InscriptionMenu(),
-                    new InscriptionMenu.WeaponList(),
-                    new InscriptionMenu.DarkScreen(),
+                new MainBar.MainBar(),
+                new ClassesMenu.ClassesMenu(),
+                new ClassesMenu.DarkScreen(),
+                new Clone.CloneGUI(),
+                new InscriptionMenu.InscriptionMenu(),
+                new InscriptionMenu.WeaponList(),
+                new InscriptionMenu.DarkScreen(),
+                new CastTimeBar.CastTimeBar(),
             };
             for (int i = 0; i < UIState.Length; i++)
             {
@@ -65,6 +67,7 @@ namespace CNC.Content.UI
             AppendUI(layers, UI[4], Visible[4], -1, "Inscription Menu");//Enhancement
             AppendUI(layers, UI[5], Visible[5], -1, "Weapon List");
             AppendUI(layers, UI[6], Visible[6], -1, "Dark Screen Effect 2");
+            AppendUI(layers, UI[7], Visible[7], 25, "Cast Time Bar");
             int idx = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
             if (idx >= 0) layers[idx].Active = false; // layers.RemoveAt(idx);
             idx = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));

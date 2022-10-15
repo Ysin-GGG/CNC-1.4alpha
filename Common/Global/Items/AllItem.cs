@@ -176,7 +176,7 @@ namespace CNC.Common.Global.Items
                 bool control = player.All().controlMouseRight;
                 bool release = player.All().releaseMouseRight;
                 float ct = player.All().castTime;
-                float ctMax = 100;
+                float ctMax = 0;
                 float damage = player.GetWeaponDamage(item);
                 float knockback = player.GetWeaponKnockback(item);
                 float crit = player.GetWeaponCrit(item);
@@ -189,6 +189,7 @@ namespace CNC.Common.Global.Items
                 {
                     case ItemID.Meowmere:
                         mainColor = CNCID.Colors.Expert;
+                        ctMax = 100;
                         if (control)
                         {
                             Vector2 vel = new Vector2(CNC.Random.NextFloat(4f) + MyMath.Lerp(12f, 0f, ct / ctMax), 0f).RotatedBy(CNC.Random.NextDegree());
@@ -396,12 +397,18 @@ namespace CNC.Common.Global.Items
                         }
                         break;
                 }
+                if (control && ctMax > 0)
+                {
+                    player.All().ShowCastTimeBar = true;
+                    player.All().castTimeMax = ctMax;
+                }
                 if (control && ct == ctMax) CNCUtils.PlaySound(SoundID.Item4, player);
                 if (release && ct >= ctMax)
                 {
                     CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.AnattaSlash], (int)damage, knockback, (int)crit, player.whoAmI, 0f, 1f, type, 0);
                     this.comboCur = 0;
                     this.comboNext = 0;
+                    player.All().castTime = 0;
                     player.direction = (velocity.X < 0).ToDirectionInt(-1);
                     ApplyUse(player, item, item.useAnimation);
                 }

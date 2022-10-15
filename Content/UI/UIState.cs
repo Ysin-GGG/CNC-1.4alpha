@@ -36,6 +36,14 @@ namespace CNC.Content.UI
         public Player player => Main.LocalPlayer;
         public virtual string Name => "";// System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name;
         public string mouseText { get => MouseText.text; set { if (MouseText.Visible = value.Length > 0) MouseText.text = value;else MouseText.text = ""; } }// System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name;
+        public Vector2 TopLeft { get => new Vector2(left, top); set { left = value.X; top = value.Y; } }
+        public Vector2 TopCenter { get => new Vector2(left, top) + new Vector2(width / 2f, 0f); set { left = value.X - width / 2f; top = value.Y; } }
+        public Vector2 TopRight { get => new Vector2(left, top) + new Vector2(width, 0f); set { left = value.X - width; top = value.Y; } }
+        public Vector2 LeftCenter { get => new Vector2(left, top) + new Vector2(0f, height / 2f); set { left = value.X; top = value.Y - height / 2f; } }
+        public Vector2 RightCenter { get => new Vector2(left, top) + new Vector2(width, height / 2f); set { left = value.X - width; top = value.Y - height / 2f; } }
+        public Vector2 BottomLeft { get => new Vector2(left, top); set { left = value.X; top = value.Y; } }
+        public Vector2 BottomCenter { get => new Vector2(left, top) + new Vector2(width / 2f, height); set { left = value.X - width / 2f; top = value.Y - height; } }
+        public Vector2 BottomRight { get => new Vector2(left, top) + new Vector2(width, height); set { left = value.X - width; top = value.Y - height; } }
 
         public Texture2D GetImage(string key) => ModContent.Request<Texture2D>($"CNC/Content/UI/{Name}/Images/{key}").Value;
 

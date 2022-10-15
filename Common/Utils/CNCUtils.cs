@@ -639,12 +639,22 @@ namespace CNC.Common.Utils
         public static Vector2 TopLeft(this Texture2D texture) => GetPoint(texture.Bounds, 0, 0);
         public static Vector2 Top(this Texture2D texture) => GetPoint(texture.Bounds, 1, 0);
         public static Vector2 TopRight(this Texture2D texture) => GetPoint(texture.Bounds, 2, 0);
-        public static Vector2 Left(this Texture2D texture) => GetPoint(texture.Bounds, 0, 0);
+        public static Vector2 Left(this Texture2D texture) => GetPoint(texture.Bounds, 0, 1);
         public static Vector2 Center(this Texture2D texture) => GetPoint(texture.Bounds, 1, 1);
         public static Vector2 Right(this Texture2D texture) => GetPoint(texture.Bounds, 2, 1);
         public static Vector2 BottomLeft(this Texture2D texture) => GetPoint(texture.Bounds, 0, 2);
         public static Vector2 Bottom(this Texture2D texture) => GetPoint(texture.Bounds, 1, 2);
         public static Vector2 BottomRight(this Texture2D texture) => GetPoint(texture.Bounds, 2, 2);
+        
+        public static Vector2 TopLeft(this Texture2D texture, Vector2 pos) => pos - GetPoint(texture.Bounds, 0, 0);
+        public static Vector2 Top(this Texture2D texture, Vector2 pos) => pos - GetPoint(texture.Bounds, 1, 0);
+        public static Vector2 TopRight(this Texture2D texture, Vector2 pos) => pos - GetPoint(texture.Bounds, 2, 0);
+        public static Vector2 Left(this Texture2D texture, Vector2 pos) => pos - GetPoint(texture.Bounds, 0, 1);
+        public static Vector2 Center(this Texture2D texture, Vector2 pos) => pos - GetPoint(texture.Bounds, 1, 1);
+        public static Vector2 Right(this Texture2D texture, Vector2 pos) => pos - GetPoint(texture.Bounds, 2, 1);
+        public static Vector2 BottomLeft(this Texture2D texture, Vector2 pos) => pos - GetPoint(texture.Bounds, 0, 2);
+        public static Vector2 Bottom(this Texture2D texture, Vector2 pos) => pos - GetPoint(texture.Bounds, 1, 2);
+        public static Vector2 BottomRight(this Texture2D texture, Vector2 pos) => pos - GetPoint(texture.Bounds, 2, 2);
 
         public static void SetData<T>(this NPC npc, T data, int index)
         {

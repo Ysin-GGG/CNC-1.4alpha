@@ -124,10 +124,12 @@ Mods: {
 			Client: 客户端设置
 			Server: 服务端设置
 			OnlyFor: 仅限于CNC及其拓展内容
+			Enabled: 客户端设置
+			Disabled: 服务端设置
 			UseModMusic: 替换Boss战斗BGM
 			HoverTextBox: 悬浮文本框
 			HoverTextBoxAlpha: 不透明度
-			HoverTextBoxStyle: 样式：
+			HoverTextBoxStyle: 文本框样式：
 			HoverTextBoxStyleNone: 透明
 			HoverTextBoxStyleOrigin: 原版
 			HoverTextBoxStyleBrown: 古典
@@ -136,13 +138,31 @@ Mods: {
 			HoverTextBoxType3: 职业菜单
 			HoverTextBoxType4: 铭文强化
 			CollapseBar: 功能栏
+			MovementSpeed: 折叠/展开速度
 			CloseEdge: 靠拢边缘：
+			Offset: 偏移
 			LeftEdge: 左边框
 			RightEdge: 右边框
 			TopEdge: 上边框
 			BottomEdge: 下边框
-			Offset: 偏移
-			MovementSpeed: 折叠/展开速度
+			CastTimeBar_Title: 充能条
+			CastTimeBar_Style: 样式：
+			CastTimeBar_Style_Simple: 简洁
+			CastTimeBar_Style_Fancy: 精致
+			CastTimeBar_Opacity: 不透明度
+			CastTimeBar_Side: 布局：
+			CastTimeBar_Side_Left: 玩家左侧
+			CastTimeBar_Side_Right: 玩家右侧
+			CastTimeBar_Side_Top: 玩家上方
+			CastTimeBar_Side_Bottom: 玩家下方
+			CastTimeBar_Side_Front: 玩家前方
+			CastTimeBar_Side_Back: 玩家后方
+			CastTimeBar_Scale: 缩放
+			CastTimeBar_Offset: 偏移：
+			CastTimeBar_CancelColor: 中断颜色：
+			CastTimeBar_Flip: 翻转
+			CastTimeBar_Allys: 队友
+			CastTimeBar_ShowAllys: 显示友方玩家的充能条
 		}
 
 		DeathText: {

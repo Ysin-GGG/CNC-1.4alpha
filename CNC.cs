@@ -289,6 +289,9 @@ namespace CNC
             if (!Main.drawToScreen)
             {
                 this.DrawVisualEffect(Content.VisualEffect.DrawLayer.behindUIs);
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+                Common.Global.Players.AllPlayer.DrawCastTimeBar(CNC.Me);
+                Main.spriteBatch.End();
             }
             orig.Invoke(self, gametime);
             if (!Main.drawToScreen)

@@ -34,6 +34,14 @@ namespace CNC.Content.UI
         public bool Visible { get => !dead3; internal set => dead3 = !value; }
         public bool Updating { get => !dead4; internal set => dead4 = !value; }
         public bool Updating2 { get => !dead5; internal set => dead5 = dead4 = !value; }
+        public Vector2 TopLeft { get => new Vector2(left, top); set { left = value.X; top = value.Y; } }
+        public Vector2 TopCenter { get => new Vector2(left, top) + new Vector2(width / 2f, 0f); set { left = value.X - width / 2f; top = value.Y; } }
+        public Vector2 TopRight { get => new Vector2(left, top) + new Vector2(width, 0f); set { left = value.X - width; top = value.Y; } }
+        public Vector2 LeftCenter { get => new Vector2(left, top) + new Vector2(0f, height / 2f); set { left = value.X; top = value.Y - height / 2f; } }
+        public Vector2 RightCenter { get => new Vector2(left, top) + new Vector2(width, height / 2f); set { left = value.X - width; top = value.Y - height / 2f; } }
+        public Vector2 BottomLeft { get => new Vector2(left, top); set { left = value.X; top = value.Y; } }
+        public Vector2 BottomCenter { get => new Vector2(left, top) + new Vector2(width / 2f, height); set { left = value.X - width / 2f; top = value.Y - height; } }
+        public Vector2 BottomRight { get => new Vector2(left, top) + new Vector2(width, height); set { left = value.X - width; top = value.Y - height; } }
 
         protected Color TryGetValue(Color value1, Color value2) => value1 == default ? value2 : value1;
         protected Color TryGetValue(Color? value1, Color value2) => value1 == null ? value2 : (Color)value1;
