@@ -28,7 +28,7 @@ namespace CNC.Common.Global.Players
         public bool releaseMouseLeft;
         public bool controlMouseRight;
         public bool releaseMouseRight;
-        public bool ShowCastTimeBar { get => CastTimeBarTime == 60; set => CastTimeBarTime = value ? 60 : 0; }
+        public bool ShowCastTimeBar { get => CastTimeBarTime == Options.CastTimeBar.showTime; set => CastTimeBarTime = value ? Options.CastTimeBar.showTime : 0; }
         private int CastTimeBarTime;
         private Item heldItem;
         /// <summary> Õð¶¯ÊýÖµ </summary>
@@ -159,15 +159,18 @@ namespace CNC.Common.Global.Players
             };
             if (player.IsMe())
             {
-                if (player.All().CastTimeBarTime > 0 && player.All().castTimeMax > 0)
+                AllPlayer ap = player.GetModPlayer<AllPlayer>();
+                if (ap.CastTimeBarTime > 0 && ap.castTimeMax > 0)
                 {
                     int side = (int)Options.CastTimeBar.side;
                     bool flip = Options.CastTimeBar.flip;
                     float scale = Options.CastTimeBar.scale;
-                    float opacity = Options.CastTimeBar.opacity * MyMath.Lerp(0f, 1f, player.All().CastTimeBarTime / 10f);
-                    float progress = MyMath.Lerp(0f, (t[3].Width - 10) / t[2].Width, (player.All().castTime2 / player.All().castTimeMax));
+                    float opacity = Options.CastTimeBar.opacity * MyMath.Lerp(0f, 1f, (float)MyMath.Min(Options.CastTimeBar.showTime, Options.CastTimeBar.fadeTime) > 0 ? ap.CastTimeBarTime / (float)MyMath.Min(Options.CastTimeBar.showTime, Options.CastTimeBar.fadeTime) : 1f);
+                    float progress = MyMath.Lerp(0f, (t[3].Width - 10) / t[2].Width, (ap.castTime2 / ap.castTimeMax));
                     float rotation = 0f;
+                    float alpha = Math.Abs(MyMath.sin((ap.castTime - ap.castTimeMax) * MyMath.deg01 * 3f));
                     Vector2 pos = -new Vector2((t[0].Width + t[3].Width + t[4].Width - 8f) / 2f, t[0].Height / 2f) * scale;
+                    Color color = (ap.castTime2 == ap.castTime ? Color.Lerp(Color.White, Options.CastTimeBar.fullColor, ap.castTime >= ap.castTimeMax ? alpha : 0f) : Options.CastTimeBar.cancelColor);
                     if (side == 0)
                     {
                         rotation = MyMath.deg90 * 2;
@@ -192,12 +195,12 @@ namespace CNC.Common.Global.Players
                     pos = pos.ToPoint().ToVector2();
                     drawData[] d =
                     {
-                    new drawData(t[0], pos, flip, scale, opacity),
-                    new drawData(t[1], pos, flip, scale, opacity),
-                    new drawData(t[2], pos, flip, scale, opacity, flip ? t[2].TopRight() : t[2].TopLeft(), new Vector2(progress, 1f), player.All().castTime2 == player.All().castTime ? Color.White : Options.CastTimeBar.cancelColor),
-                    new drawData(t[3], pos, flip, scale, opacity),
-                    new drawData(t[4], pos, flip, scale, opacity),
-                };
+                        new drawData(t[0], pos, flip, scale, opacity),
+                        new drawData(t[1], pos, flip, scale, opacity),
+                        new drawData(t[2], pos, flip, scale, opacity, flip ? t[2].TopRight() : t[2].TopLeft(), new Vector2(progress, 1f), color),
+                        new drawData(t[3], pos, flip, scale, opacity),
+                        new drawData(t[4], pos, flip, scale, opacity),
+                    };
                     d[0].Center = d[1].Center;
                     d[3].Left = d[1].Right;
                     d[4].Left = d[3].Right;

@@ -124,28 +124,30 @@ Mods: {
 			Client: 客户端设置
 			Server: 服务端设置
 			OnlyFor: 仅限于CNC及其拓展内容
-			Enabled: 客户端设置
-			Disabled: 服务端设置
+			Enabled: 启用
+			Disabled: 禁用
 			UseModMusic: 替换Boss战斗BGM
-			HoverTextBox: 悬浮文本框
-			HoverTextBoxAlpha: 不透明度
-			HoverTextBoxStyle: 文本框样式：
-			HoverTextBoxStyleNone: 透明
-			HoverTextBoxStyleOrigin: 原版
-			HoverTextBoxStyleBrown: 古典
-			HoverTextBoxType1: GUI/资源条
-			HoverTextBoxType2: 功能栏
-			HoverTextBoxType3: 职业菜单
-			HoverTextBoxType4: 铭文强化
-			CollapseBar: 功能栏
-			MovementSpeed: 折叠/展开速度
-			CloseEdge: 靠拢边缘：
-			Offset: 偏移
-			LeftEdge: 左边框
-			RightEdge: 右边框
-			TopEdge: 上边框
-			BottomEdge: 下边框
-			CastTimeBar_Title: 充能条
+			HoverTextBox_Label: 悬浮文本框
+			HoverTextBox_Opacity: 不透明度
+			HoverTextBox_Style: 文本框样式：
+			HoverTextBox_Style_None: 透明
+			HoverTextBox_Style_Origin: 原版
+			HoverTextBox_Style_Brown: 古典
+			HoverTextBox_Type_1: GUI/资源条
+			HoverTextBox_Type_2: 功能栏
+			HoverTextBox_Type_3: 职业菜单
+			HoverTextBox_Type_4: 铭文强化
+			HoverTextBox_Type_5: 充能条
+			CollapseBar_Label: 功能栏
+			CollapseBar_MovementSpeed: 折叠/展开速度
+			CollapseBar_Offset: 偏移
+			CollapseBar_Edge: 靠拢边缘：
+			CollapseBar_Edge_Left: 左边框
+			CollapseBar_Edge_Right: 右边框
+			CollapseBar_Edge_Top: 上边框
+			CollapseBar_Edge_Bottom: 下边框
+			CastTimeBar_Label: 充能条
+			CastTimeBar_ShowUI: 显示UI
 			CastTimeBar_Style: 样式：
 			CastTimeBar_Style_Simple: 简洁
 			CastTimeBar_Style_Fancy: 精致
@@ -157,12 +159,19 @@ Mods: {
 			CastTimeBar_Side_Bottom: 玩家下方
 			CastTimeBar_Side_Front: 玩家前方
 			CastTimeBar_Side_Back: 玩家后方
+			CastTimeBar_ShowTime: 淡出前显示时长
+			CastTimeBar_FadeTime: 淡出时所需时长
 			CastTimeBar_Scale: 缩放
 			CastTimeBar_Offset: 偏移：
-			CastTimeBar_CancelColor: 中断颜色：
+			CastTimeBar_CancelColor: 充能中断色调：
+			CastTimeBar_FullColor: 充能完成色调：
 			CastTimeBar_Flip: 翻转
-			CastTimeBar_Allys: 队友
-			CastTimeBar_ShowAllys: 显示友方玩家的充能条
+			CastTimeBar_Allys: 队友效果
+			CastTimeBar_Allys_Tooltip: 
+				'''
+				左键打开【{$Mods.CNC.Config.CastTimeBar_Allys}】界面
+				设置你从队友身上看到的【{$Mods.CNC.Config.CastTimeBar_Label}】UI
+				'''
 		}
 
 		DeathText: {
