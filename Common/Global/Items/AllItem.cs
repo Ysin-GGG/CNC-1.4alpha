@@ -397,20 +397,23 @@ namespace CNC.Common.Global.Items
                         }
                         break;
                 }
-                if (control && ctMax > 0)
+                if (ctMax > 0)
                 {
-                    player.All().ShowCastTimeBar = true;
-                    player.All().castTimeMax = ctMax;
-                }
-                if (control && ct == ctMax) CNCUtils.PlaySound(SoundID.Item4, player);
-                if (release && ct >= ctMax)
-                {
-                    CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.AnattaSlash], (int)damage, knockback, (int)crit, player.whoAmI, 0f, 1f, type, 0);
-                    this.comboCur = 0;
-                    this.comboNext = 0;
-                    player.All().castTime = 0;
-                    player.direction = (velocity.X < 0).ToDirectionInt(-1);
-                    ApplyUse(player, item, item.useAnimation);
+                    if (control)
+                    {
+                        player.All().ShowCastTimeBar = true;
+                        player.All().castTimeMax = ctMax;
+                    }
+                    if (control && ct == ctMax) CNCUtils.PlaySound(SoundID.Item4, player);
+                    if (release && ct >= ctMax)
+                    {
+                        CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.AnattaSlash], (int)damage, knockback, (int)crit, player.whoAmI, 0f, 1f, type, 0);
+                        this.comboCur = 0;
+                        this.comboNext = 0;
+                        player.All().castTime = 0;
+                        player.direction = (velocity.X < 0).ToDirectionInt(-1);
+                        ApplyUse(player, item, item.useAnimation);
+                    }
                 }
             }
         }

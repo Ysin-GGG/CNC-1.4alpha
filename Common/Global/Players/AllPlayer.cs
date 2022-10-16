@@ -160,7 +160,7 @@ namespace CNC.Common.Global.Players
             if (player.IsMe())
             {
                 AllPlayer ap = player.GetModPlayer<AllPlayer>();
-                if (ap.CastTimeBarTime > 0 && ap.castTimeMax > 0)
+                if (Options.CastTimeBar.showUI && ap.CastTimeBarTime > 0 && ap.castTimeMax > 0)
                 {
                     int side = (int)Options.CastTimeBar.side;
                     bool flip = Options.CastTimeBar.flip;

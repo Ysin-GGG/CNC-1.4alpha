@@ -234,12 +234,18 @@ namespace CNC
             On.Terraria.Main.DrawProjectiles += new On.Terraria.Main.hook_DrawProjectiles(this.DrawVisualEffect);
             On.Terraria.Main.DrawPlayers_AfterProjectiles += new On.Terraria.Main.hook_DrawPlayers_AfterProjectiles(this.DrawVisualEffect);
             On.Terraria.Main.DrawInterface += new On.Terraria.Main.hook_DrawInterface(this.DrawVisualEffect);
+            On.Terraria.Player.DropTombstone += new On.Terraria.Player.hook_DropTombstone(this.NoGrave);
             IL.Terraria.Player.Update += new ILContext.Manipulator((il) => ResetManaMax(il, newStatManaMax2));
         }
 
         private void UnloadHooks()
         {
             IL.Terraria.Player.Update -= new ILContext.Manipulator((il) => ResetManaMax(il, newStatManaMax2));
+        }
+
+        private void NoGrave(global::On.Terraria.Player.orig_DropTombstone orig, Player self, int coinsOwned, Terraria.Localization.NetworkText deathText, int hitDirection)
+        {
+            if (!self.All().IsModDeveloper) orig.Invoke(self, coinsOwned, deathText, hitDirection);
         }
 
         private void DrawParticle(global::On.Terraria.Main.orig_DrawDust orig, Main self)
