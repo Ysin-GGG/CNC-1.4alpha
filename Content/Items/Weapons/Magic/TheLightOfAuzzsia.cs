@@ -11,12 +11,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.UI.BigProgressBar;
 using ReLogic.Content;
+using Terraria.Audio;
 
 namespace CNC.Content.Items.Weapons.Magic
 {
-    public class TheLightOfAuzzsia : CNCItem
+    public class TheLightOfAuzzsia : CNCWeapon.Magic.Sceptre
     {
-        public InscriptionSettings modItem => item.GetGlobalItem<InscriptionSettings>();
 
         public override void ResetDefaults()
         {
@@ -42,36 +42,11 @@ namespace CNC.Content.Items.Weapons.Magic
             CNCStaff = true;
         }
 
-        public override bool CanUseItem(Player player)
+        public override bool OnCast(Player player, ref int mouse, ref float castTime, ref float castTimeMax, ref bool allowRelease)
         {
-            if (!player.All().casting) player.All().SetCasting(1, 0, 60, false);
-            if (player.All().casting && player.All().castTime >= player.All().castTimeMax) return false;
-            return false;
-        }
-
-        public override void HoldItem(Player player)
-        {
-            if (player.All().castTimeMax > 0 && player.All().leftCastTime > player.All().castTimeMax)
-            {
-                float damage = player.GetWeaponDamage(item);
-                float knockback = player.GetWeaponKnockback(item);
-                float crit = player.GetWeaponCrit(item);
-                float type = 0f;
-                IEntitySource source = item.GetSource_ItemUse(item);
-                Vector2 position = player.Center;
-                Vector2 velocity = new Vector2(item.shootSpeed, 0f).RotatedBy((Main.MouseWorld - player.Center).ToRotation());
-                CNCUtils.PlaySound(SoundID.Item20, player);
-                CNCUtils.NewProj(source, position, velocity, item.shoot, (int)damage, knockback, (int)crit, player.whoAmI, 0f, 1f, 0f, 0f);
-                player.All().ResetCasting(false);
-                ApplyUse(player, item, item.useTime);
-            }
-        }
-
-        private void ApplyUse(Player player, Item item, int time) => player.itemAnimationMax = player.itemAnimation = player.itemTimeMax = player.itemTime = (int)(time / player.GetWeaponAttackSpeed(item));
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            return false;
+            mouse = 1;
+            castTimeMax = 60;
+            return base.OnCast(player, ref mouse, ref castTime, ref castTimeMax, ref allowRelease);
         }
     }
 }

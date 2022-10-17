@@ -8,6 +8,7 @@ using Terraria.ID;
 using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.Localization;
+using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using CNC.Common.Utils;
 using CNC.Common.Localization;
@@ -20,11 +21,87 @@ namespace CNC.Common.Global.Items
     public abstract class CNCWeapon : CNCItem
     {
         public virtual bool NoAssistant => false;
+        public InscriptionSettings insp => this.inscriptions;
 
-        public virtual void ModifyCasting()
+        public sealed override bool CanUseItem(Player player)
         {
-
+            bool flag = this.NewCanUseItem(player);
+            if (flag)
+            {
+                int mouse = 0;
+                float castTime = 0;
+                float castTimeMax = 0;
+                bool allowRelease = true;
+                if (!player.All().casting && this.OnCast(player, ref mouse, ref castTime, ref castTimeMax, ref allowRelease))
+                {
+                    if ((mouse == 1 || mouse == 2) && castTimeMax > 0)
+                        player.All().SetCasting(mouse, castTime, castTimeMax, allowRelease);
+                }
+                if (player.All().casting) return false;
+            }
+            return flag;
         }
+
+        public sealed override void HoldItem(Player player)
+        {
+            if (player.IsMe() && player.All().castTimeMax > 0)
+            {
+                SoundStyle? useSound = SoundID.Item4;
+                if (ModifyCasting(player, player.All().MouseToCast, player.All().castTime >= player.All().castTimeMax, ref useSound, ref player.All().castTime, ref player.All().castTimeMax))
+                {
+                    if(player.All().castTime == player.All().castTimeMax && useSound != null) CNCUtils.PlaySound(useSound.Value, player);
+                    float damage = player.GetWeaponDamage(item);
+                    float knockback = player.GetWeaponKnockback(item);
+                    float crit = player.GetWeaponCrit(item);
+                    int type = item.shoot;
+                    IEntitySource source = item.GetSource_ItemUse(item);
+                    Vector2 position = player.Center;
+                    Vector2 velocity = new Vector2(item.shootSpeed, 0f).RotatedBy((Main.MouseWorld - player.Center).ToRotation());
+                    if (CastingShoot(player, ref position, ref velocity, ref type, ref damage, ref knockback, ref crit))
+                    {
+                        CNCUtils.NewProj(source, position, velocity, item.shoot, (int)damage, knockback, (int)crit, player.whoAmI, 0f, 1f, 0f, 0f);
+                        CNCUtils.PlaySound(item.UseSound.Value, player);
+                    }
+                    player.All().ResetCasting(false);
+                    player.ApplyItemTime(item);
+                    player.ApplyItemAnimation(item);
+                }
+            }
+            this.NewHoldItem(player);
+        }
+
+        /// <summary> 修改充能属性 </summary>
+        /// <param name="player">当前玩家</param>
+        /// <param name="mouse">触发充能的鼠标键（左键=1，右键=2）</param>
+        /// <param name="accepted">自然地完成充能</param>
+        /// <param name="acceptedSound">充能完成时的音效（默认SoundID.Item4）</param>
+        /// <param name="castTime">当前充能时长</param>
+        /// <param name="castTimeMax">当前充能时长需求</param>
+        /// <returns>是否执行充能完成后的动作（默认返回accepted的值）</returns>
+        public virtual bool ModifyCasting(Player player, int mouse, bool accepted, ref SoundStyle? acceptedSound, ref float castTime, ref float castTimeMax) => accepted;
+
+        /// <summary> 充能预备 </summary>
+        /// <param name="player">当前玩家</param>
+        /// <param name="mouse">触发充能的鼠标键（左键=1，右键=2，需要选择其一才能充能）</param>
+        /// <param name="castTime">充能的起始时间（默认0）</param>
+        /// <param name="castTimeMax">充能时长需求（需要大于0才能充能）</param>
+        /// <param name="allowRelease">充能时是否不需要按紧（默认true）</param>
+        /// <returns>是否开始充能（默认在castTimeMax大于0时返回true，反之false）</returns>
+        public virtual bool OnCast(Player player, ref int mouse, ref float castTime, ref float castTimeMax, ref bool allowRelease) => castTimeMax > 0;
+
+        /// <summary> 充能完成后的弹幕发射 </summary>
+        /// <param name="player">该弹幕归属的玩家</param>
+        /// <param name="position">生成坐标（默认玩家中心，即Player.Center）</param>
+        /// <param name="velocity">发射速度（速度大小默认为item.shootSpeed，方向默认为(Main.MouseWorld - player.Center).ToRotation()）</param>
+        /// <param name="type">发射的弹幕类型（默认item.shoot）</param>
+        /// <param name="damage">弹幕伤害（默认player.GetWeaponDamage(item)）</param>
+        /// <param name="knockback">弹幕击退率（默认player.GetWeaponKnockback(item)）</param>
+        /// <param name="crit">弹幕暴击率（默认player.GetWeaponCrit(item)）</param>
+        /// <returns>是否发射默认弹幕（默认返回true）</returns>
+        public virtual bool CastingShoot(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref float damage, ref float knockback, ref float crit) => true;
+
+        protected virtual void NewHoldItem(Player player) { }
+        protected virtual bool NewCanUseItem(Player player) => base.CanUseItem(player);
 
         public abstract class Melee : CNCWeapon
         {
@@ -51,16 +128,13 @@ namespace CNC.Common.Global.Items
                 this.comboTime = time;
                 return flag;
             }
-
             public sealed override void UpdateInventory(Player player) => this.NewUpdateInventory(player);
-            public sealed override void HoldItem(Player player) => this.NewHoldItem(player);
             public sealed override void ModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit) => this.NewModifyHitNPC(player, target, ref damage, ref knockBack, ref crit);
             public sealed override void ModifyHitPvp(Player player, Player target, ref int damage, ref bool crit) => this.NewModifyHitPvp(player, target, ref damage, ref crit);
             public sealed override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit) => this.NewOnHitNPC(player, target, damage, knockBack, crit);
             public sealed override void OnHitPvp(Player player, Player target, int damage, bool crit) => this.NewOnHitPvp(player, target, damage, crit);
 
             protected virtual bool? NewUseItem(Player player) => base.UseItem(player);
-            protected virtual void NewHoldItem(Player player) { }
             protected virtual void NewUpdateInventory(Player player) { }
             protected virtual void NewModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit) { }
             protected virtual void NewModifyHitPvp(Player player, Player target, ref int damage, ref bool crit) { }
@@ -293,6 +367,19 @@ namespace CNC.Common.Global.Items
 
         public abstract class Magic : CNCWeapon
         {
+            public sealed override void UpdateInventory(Player player) => this.NewUpdateInventory(player);
+            public sealed override void ModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit) => this.NewModifyHitNPC(player, target, ref damage, ref knockBack, ref crit);
+            public sealed override void ModifyHitPvp(Player player, Player target, ref int damage, ref bool crit) => this.NewModifyHitPvp(player, target, ref damage, ref crit);
+            public sealed override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit) => this.NewOnHitNPC(player, target, damage, knockBack, crit);
+            public sealed override void OnHitPvp(Player player, Player target, int damage, bool crit) => this.NewOnHitPvp(player, target, damage, crit);
+
+            protected virtual bool? NewUseItem(Player player) => base.UseItem(player);
+            protected virtual void NewUpdateInventory(Player player) { }
+            protected virtual void NewModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit) { }
+            protected virtual void NewModifyHitPvp(Player player, Player target, ref int damage, ref bool crit) { }
+            protected virtual void NewOnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit) { }
+            protected virtual void NewOnHitPvp(Player player, Player target, int damage, bool crit) { }
+
             /// <summary> 魔杖 </summary>
             public abstract class MagicWand : Magic
             {
@@ -302,7 +389,22 @@ namespace CNC.Common.Global.Items
             /// <summary> 法杖 </summary>
             public abstract class Sceptre : Magic
             {
+                #region Default
+                public new virtual bool? UseItem(Player player) => base.NewUseItem(player);
+                public new virtual bool CanUseItem(Player player) => base.NewCanUseItem(player);
+                public new virtual void UpdateInventory(Player player) { }
+                public new virtual void HoldItem(Player player) { }
+                public new virtual void ModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit) { }
+                public new virtual void ModifyHitPvp(Player player, Player target, ref int damage, ref bool crit) { }
+                public new virtual void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit) { }
+                public new virtual void OnHitPvp(Player player, Player target, int damage, bool crit) { }
 
+                protected sealed override bool? NewUseItem(Player player) => this.UseItem(player);
+                protected sealed override bool NewCanUseItem(Player player) => this.CanUseItem(player);
+                protected sealed override void NewModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit) => this.ModifyHitNPC(player, target, ref damage, ref knockBack, ref crit);
+                protected sealed override void NewModifyHitPvp(Player player, Player target, ref int damage, ref bool crit) => this.ModifyHitPvp(player, target, ref damage, ref crit);
+                protected sealed override void NewOnHitPvp(Player player, Player target, int damage, bool crit) => this.OnHitPvp(player, target, damage, crit);
+                #endregion
             }
 
             /// <summary> 魔典 </summary>

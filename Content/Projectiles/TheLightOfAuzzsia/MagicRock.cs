@@ -8,6 +8,7 @@ using Terraria.ID;
 using CNC.Content.DataStructures;
 using CNC.Common.Utils;
 using CNC.Common.Global.Projectiles;
+using Terraria.DataStructures;
 
 namespace CNC.Content.Projectiles.TheLightOfAuzzsia
 {
@@ -36,6 +37,12 @@ namespace CNC.Content.Projectiles.TheLightOfAuzzsia
                 projectile.oldPos[i].X = 0f;
                 projectile.oldPos[i].Y = 0f;
             }
+        }
+
+        public override void OnSpawn(IEntitySource source)
+        {
+            base.OnSpawn(source);
+            OnSpawn();
         }
 
         public override void OnSpawn()

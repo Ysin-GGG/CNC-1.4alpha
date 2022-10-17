@@ -399,7 +399,7 @@ namespace CNC.Common.Global.Items
                 }
                 if (ctMax > 0)
                 {
-                    if (control && !player.All().casting) player.All().SetCasting(2, 0f, ctMax, true);
+                    if (control && !player.All().casting) player.All().SetCasting(2, 0f, ctMax, false);
                     if (control && ct == ctMax) CNCUtils.PlaySound(SoundID.Item4, player);
                     if (accepted)
                     {

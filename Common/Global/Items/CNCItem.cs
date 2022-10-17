@@ -18,6 +18,7 @@ namespace CNC.Common.Global.Items
 {
     public abstract class CNCItem : ModItem
     {
+        public InscriptionSettings inscriptions => item.GetGlobalItem<InscriptionSettings>();
         public AllItem allItem => item.GetGlobalItem<AllItem>();
         public Item item => Item;
         public Mod mod => Mod;
