@@ -21,6 +21,11 @@ namespace CNC.Common.Global.Items
     {
         public virtual bool NoAssistant => false;
 
+        public virtual void ModifyCasting()
+        {
+
+        }
+
         public abstract class Melee : CNCWeapon
         {
             public int comboCur { get => allItem.comboCur; set => allItem.comboCur = value; }
@@ -62,6 +67,7 @@ namespace CNC.Common.Global.Items
             protected virtual void NewOnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit) { }
             protected virtual void NewOnHitPvp(Player player, Player target, int damage, bool crit) { }
 
+            /// <summary> ³¤½£ </summary>
             public abstract class LongSword : Melee
             {
                 #region Default
@@ -83,6 +89,7 @@ namespace CNC.Common.Global.Items
                 #endregion
             }
 
+            /// <summary> ×µ </summary>
             public abstract class Hammer : Melee
             {
                 public virtual float DizzyStrikeChance => .1f;
@@ -116,6 +123,7 @@ namespace CNC.Common.Global.Items
                 #endregion
             }
 
+            /// <summary> Õ½´¸ </summary>
             public abstract class BattleHammer : Melee
             {
                 public override bool NoAssistant => true;
@@ -153,6 +161,7 @@ namespace CNC.Common.Global.Items
                 #endregion
             }
 
+            /// <summary> Õ½¸« </summary>
             public abstract class BattleAxe : Melee
             {
                 public override bool NoAssistant => true;
@@ -187,6 +196,7 @@ namespace CNC.Common.Global.Items
                 #endregion
             }
 
+            /// <summary> Ë«ÊÖ½£ </summary>
             public abstract class TwoHandedSword : Melee
             {
                 public override bool NoAssistant => true;
@@ -238,37 +248,44 @@ namespace CNC.Common.Global.Items
 
         public abstract class Ranged : CNCWeapon
         {
+            /// <summary> ³¤¹­ </summary>
             public abstract class Longbow : Ranged
             {
 
             }
 
+            /// <summary> ¶Ì¹­ </summary>
             public abstract class Shortbow : Ranged
             {
 
             }
 
+            /// <summary> Ê®×Öåó </summary>
             public abstract class Crossbow : Ranged
             {
 
             }
 
+            /// <summary> ¾¢åó </summary>
             public abstract class Arbalest : Ranged
             {
 
             }
 
+            /// <summary> ÊÖÇ¹ </summary>
             public abstract class Pistol : Ranged
             {
 
             }
 
-            public abstract class Heavyweapons : Ranged
+            /// <summary> ´µ¼ýÍ² </summary>
+            public abstract class Blowgun : Ranged
             {
 
             }
 
-            public abstract class Blowgun : Ranged
+            /// <summary> ÖØÎäÆ÷ </summary>
+            public abstract class HeavyWeapon : Ranged
             {
 
             }
@@ -276,29 +293,34 @@ namespace CNC.Common.Global.Items
 
         public abstract class Magic : CNCWeapon
         {
-            public abstract class Magicwand : Magic
+            /// <summary> Ä§ÕÈ </summary>
+            public abstract class MagicWand : Magic
             {
 
             }
 
+            /// <summary> ·¨ÕÈ </summary>
             public abstract class Sceptre : Magic
             {
 
             }
 
+            /// <summary> Ä§µä </summary>
             public abstract class Grimoire : Magic
             {
 
             }
 
-            public abstract class Arcaneitems : Magic
+            /// <summary> ·¨Æ÷ </summary>
+            public abstract class ArcaneItem : Magic
             {
 
             }
         }
-
+        
         public abstract class Raid : CNCWeapon
         {
+            /// <summary> Ø°Ê× </summary>
             public abstract class Knife : Raid
             {
                 public static void AddBleeding(NPC target, int value)
@@ -309,16 +331,19 @@ namespace CNC.Common.Global.Items
                 }
             }
 
+            /// <summary> ÇáÐÍÃ¬ </summary>
             public abstract class Spear : Raid
             {
 
             }
 
+            /// <summary> ´Ì½£ </summary>
             public abstract class Rapier : Raid
             {
 
             }
 
+            /// <summary> ·ÉïÚ </summary>
             public abstract class Darts : Raid
             {
 

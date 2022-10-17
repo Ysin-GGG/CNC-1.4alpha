@@ -222,7 +222,12 @@ namespace CNC.Common.Utils
             damage = MyMath.Min(damage, max);
             target.life = MyMath.Max(target.life - damage, (!kill).ToInt(1));
             if (damage > 0) CombatText.NewText(target.getRect(), color, damage, false, true);
-            if (target.life <= 0) target.checkDead();
+            if (target.life <= 0 && !target.immortal)
+            {
+                target.life = 0;
+                if (CNC.IsSPClient) target.StrikeNPCNoInteraction(9999, 0f, 0, false, false, false);
+                if (CNC.IsMPServer) NetMessage.SendData(28, -1, -1, null, target.whoAmI, 9999f, 0f, 0f, 0, 0, 0);
+            }
         }
 
         /// <summary> ’Ê µ…À∫¶ </summary>
@@ -250,6 +255,7 @@ namespace CNC.Common.Utils
             target.lifeRegenTime = 0;
             if (damage > 0) CombatText.NewText(target.getRect(), color, damage, false, true);
             if (target.statLife <= 0) target.KillMe(damageSource, int.MaxValue, target.direction);
+            if (CNC.IsMPClient) NetMessage.SendData(16, -1, -1, null, target.whoAmI, 0f, 0f, 0f, 0, 0, 0);
         }
    
         public static void SetTile(Point position, int type, bool isWall = false, bool flag = true, int size = 0)

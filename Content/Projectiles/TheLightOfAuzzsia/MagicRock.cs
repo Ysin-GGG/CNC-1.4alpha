@@ -107,12 +107,6 @@ namespace CNC.Content.Projectiles.TheLightOfAuzzsia
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D MagicAura = Mod.Assets.Request<Texture2D>("Content/Projectiles/TheLightOfAuzzsia/MagicAura").Value;
-            Vector2 pos = Main.player[projectile.owner].position - Main.screenPosition;
-            Color color = Color.White;
-            lightColor = color;
-            color.A = 0;
-            Main.EntitySpriteDraw(MagicAura, pos, null, color * (1 - projectile.alpha / 255f), projectile.rotation, MagicAura.Size() / 2, .25f, 0, 1);
             return true;
         }
 

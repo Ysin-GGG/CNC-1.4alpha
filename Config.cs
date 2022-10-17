@@ -19,6 +19,7 @@ namespace CNC
         public static float offset = 0;
         public static float movementSpeed = 5;
         public static CNCConfigElement.AllysCastTimeBar CastTimeBar = new CNCConfigElement.AllysCastTimeBar();
+        public static CNCConfigElement.CancelCasting CancelCasting = new CNCConfigElement.CancelCasting();
     }
 
     [Label("$Mods.CNC.Config.Client")]
@@ -40,6 +41,9 @@ namespace CNC
         [Label("$Mods.CNC.Config.CastTimeBar_Label")]
         public CNCConfigElement.AllysCastTimeBar.MyCastTimeBar castTimeBar = new CNCConfigElement.AllysCastTimeBar.MyCastTimeBar();
 
+        [Label("$Mods.CNC.Config.CancelCasting_Label")]
+        public CNCConfigElement.CancelCasting cancelCasting = new CNCConfigElement.CancelCasting();
+
         public override void OnChanged()
         {
             Options.useModMusic = useModMusic;
@@ -57,6 +61,7 @@ namespace CNC
             Options.offset = collapseBar.offset;
             Options.movementSpeed = collapseBar.movementSpeed;
             Options.CastTimeBar = this.castTimeBar;
+            Options.CancelCasting = this.cancelCasting;
         }
     }
     /*
@@ -447,6 +452,66 @@ namespace CNC
                     "CastTimeBar_Side_Right",
                     "CastTimeBar_Side_Front",
                     "CastTimeBar_Side_Back",
+                };
+
+                public override void Click(UIMouseEvent evt) => SetValue<Type>(GetValue<Type>().NextEnum());
+                public override void RightClick(UIMouseEvent evt) => SetValue<Type>(GetValue<Type>().PreviousEnum());
+            }
+        }
+        
+        public class CancelCasting
+        {
+            [Label("$Mods.CNC.Config.CancelCasting_CancelType")]
+            [Tooltip("$Mods.CNC.Config.CancelCasting_CancelType_Tooltip")]
+            [DefaultValue(0)]
+            public Element_CancelType.Type type;
+
+            [Slider]
+            [Label("$Mods.CNC.Config.CancelCasting_ClickDelay")]
+            [Tooltip("$Mods.CNC.Config.CancelCasting_ClickDelay_Tooltip")]
+            [DefaultValue(10)]
+            [Range(0, 60)]
+            public int clickDelay;
+
+            [Slider]
+            [Label("$Mods.CNC.Config.CancelCasting_ReleaseDelay")]
+            [Tooltip("$Mods.CNC.Config.CancelCasting_ReleaseDelay_Tooltip")]
+            [DefaultValue(10)]
+            [Range(0, 60)]
+            public int releaseDelay;
+
+            public override string ToString() => "";
+
+            public CancelCasting() { type = 0; releaseDelay = 10; clickDelay = 10; }
+
+            public override bool Equals(object obj)
+            {
+                if (obj is CancelCasting other) return this.type == other.type && this.clickDelay == other.clickDelay && this.releaseDelay == other.releaseDelay;
+                return base.Equals(obj);
+            }
+
+            public override int GetHashCode()
+            {
+                return new { this.type, this.clickDelay, this.releaseDelay }.GetHashCode();
+            }
+
+            public class Element_CancelType : GenericConfigElement
+            {
+                [CustomModConfigItem(typeof(Element_CancelType))]
+                public enum Type
+                {
+                    ClickAgain,
+                    DoubleClickAgain,
+                    LeftToRight,
+                    RightToLeft,
+                }
+
+                protected override string[] ValueString => new string[]
+                {
+                    "CancelCasting_CancelType_ClickAgain",
+                    "CancelCasting_CancelType_DoubleClickAgain",
+                    "CancelCasting_CancelType_LeftToRight",
+                    "CancelCasting_CancelType_RightToLeft",
                 };
 
                 public override void Click(UIMouseEvent evt) => SetValue<Type>(GetValue<Type>().NextEnum());

@@ -148,7 +148,7 @@ namespace CNC.Common.Global.Items
                 if (reset)
                 {
                     item.noMelee = true;
-                    if (player.All().controlMouseRight) return false;
+                    if (player.All().rightCastTime > 0) return false;
                 }
             }
             else
@@ -173,8 +173,8 @@ namespace CNC.Common.Global.Items
         {
             if (EnableAnatta(player))
             {
-                bool control = player.All().controlMouseRight;
-                bool release = player.All().releaseMouseRight;
+                bool control = player.All().pressingMouseRight;
+                bool accepted = player.All().rightCastTime < 0f;
                 float ct = player.All().castTime;
                 float ctMax = 0;
                 float damage = player.GetWeaponDamage(item);
@@ -209,7 +209,7 @@ namespace CNC.Common.Global.Items
                             ParticleManager.particle[idx].alphaAdd = -.033f;
                             ParticleManager.particle[idx].alpha = 1f;
                         }
-                        if (release && ct >= ctMax)
+                        if (accepted)
                         {
                             CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.SolarHalo], (int)damage, 0f, (int)crit, player.whoAmI, 0f, 1f, 0, 0);
                             damage *= 3;
@@ -257,14 +257,14 @@ namespace CNC.Common.Global.Items
                                 ParticleManager.particle[idx].scaleAdd = -new Vector2(Main.rand.NextFloat(.0003f, .0010f));
                                 ParticleManager.particle[idx].alphaAdd = (Main.rand.Next(5) + 1) * -.01f;
                             }
-                            if (release && ct >= ctMax)
-                            {
-                                velocity = new Vector2((Main.MouseWorld.X > player.Center.X).ToDirectionInt(1), 0f);
-                                damage *= 1.5f;
-                                knockback *= 1.5f;
-                                crit += 5f;
-                                type = 4f;
-                            }
+                        }
+                        if (accepted)
+                        {
+                            velocity = new Vector2((Main.MouseWorld.X > player.Center.X).ToDirectionInt(1), 0f);
+                            damage *= 1.5f;
+                            knockback *= 1.5f;
+                            crit += 5f;
+                            type = 4f;
                         }
                         break;
                     case ItemID.TrueExcalibur:
@@ -322,7 +322,7 @@ namespace CNC.Common.Global.Items
                                 }
                             }
                         }
-                        if (release && ct >= ctMax)
+                        if (accepted)
                         {
                             velocity = new Vector2((Main.MouseWorld.X > player.Center.X).ToDirectionInt(1), 0f);
                             damage *= 3;
@@ -387,7 +387,7 @@ namespace CNC.Common.Global.Items
                                 }
                             }
                         }
-                        if (release && ct >= ctMax)
+                        if (accepted)
                         {
                             CNCUtils.NewProj(source, position + velocity * 24f, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.VoidNightsEdge], (int)(damage * 15f), 0f, (int)crit, player.whoAmI, 0f, 1f, 0, 0);
                             damage *= 3;
@@ -399,18 +399,13 @@ namespace CNC.Common.Global.Items
                 }
                 if (ctMax > 0)
                 {
-                    if (control)
-                    {
-                        player.All().ShowCastTimeBar = true;
-                        player.All().castTimeMax = ctMax;
-                    }
+                    if (control && !player.All().casting) player.All().SetCasting(2, 0f, ctMax, true);
                     if (control && ct == ctMax) CNCUtils.PlaySound(SoundID.Item4, player);
-                    if (release && ct >= ctMax)
+                    if (accepted)
                     {
                         CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.AnattaSlash], (int)damage, knockback, (int)crit, player.whoAmI, 0f, 1f, type, 0);
                         this.comboCur = 0;
                         this.comboNext = 0;
-                        player.All().castTime = 0;
                         player.direction = (velocity.X < 0).ToDirectionInt(-1);
                         ApplyUse(player, item, item.useAnimation);
                     }

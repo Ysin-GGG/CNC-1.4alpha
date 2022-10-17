@@ -196,18 +196,19 @@ namespace CNC.Content.Projectiles
                     }
                 }
                 //Terraria.Projectiles.UpdateEnchantmentVisuals()
-                if (!projectile.npcProj && CNC.Random.NextBool())
+                if (!projectile.npcProj)
                 {
                     Vector2 position = MyMath.Lerp(begin, end, (float)CNC.Random.NextDouble() * .75f + .25f);
                     Vector2 size = Vector2.One * 16f;
-                    byte type = Main.player[projectile.owner].meleeEnchant;
-                    if (Main.player[projectile.owner].frostBurn && CNC.Random.NextBool(1.0 / (2 * (1 + projectile.extraUpdates))))
+                    //º®ËªÌ×
+                    if (Main.player[projectile.owner].frostBurn && CNC.Random.NextBool(1.0 / 3))//CNC.Random.NextBool(1.0 / (2 * (1 + projectile.extraUpdates))))
                     {
                         int index = Dust.NewDust(position, (int)size.X, (int)size.Y, 135, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, Scale: 2f);
                         Main.dust[index].noGravity = true;
                         Main.dust[index].velocity *= 0.7f;
                         Main.dust[index].velocity.Y -= 0.5f;
                     }
+                    //ÑÒ½¬Ê¯
                     if (Main.player[projectile.owner].magmaStone && !CNC.Random.NextBool(1.0 / 3))
                     {
                         int index = Dust.NewDust(new Vector2(position.X - 4f, position.Y - 4f), (int)size.X + 8, (int)size.Y + 8, 6, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 100, Scale: 2f);
@@ -218,7 +219,7 @@ namespace CNC.Content.Projectiles
                     }
                     switch (Main.player[projectile.owner].meleeEnchant)
                     {
-                        case (byte)1:
+                        case (byte)1://¾ç¶¾¸½Ä§
                             if (CNC.Random.NextBool(1.0 / 3))
                             {
                                 int index = Dust.NewDust(position, (int)size.X, (int)size.Y, 171, Alpha: 100);
@@ -234,7 +235,7 @@ namespace CNC.Content.Projectiles
                                 Main.dust[index].velocity *= 0.25f;
                             }
                             break;
-                        case (byte)2:
+                        case (byte)2://ÖäÑæ¸½Ä§
                             if (CNC.Random.NextBool(1.0 / 2))
                             {
                                 int index = Dust.NewDust(position, (int)size.X, (int)size.Y, 75, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, Scale: 2.5f);
@@ -243,7 +244,7 @@ namespace CNC.Content.Projectiles
                                 Main.dust[index].velocity.Y -= 0.5f;
                             }
                             break;
-                        case (byte)3:
+                        case (byte)3://»ð¸½Ä§
                             if (CNC.Random.NextBool(1.0 / 2))
                             {
                                 int index = Dust.NewDust(position, (int)size.X, (int)size.Y, 6, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, Scale: 2.5f);
@@ -252,7 +253,7 @@ namespace CNC.Content.Projectiles
                                 Main.dust[index].velocity.Y -= 0.5f;
                             }
                             break;
-                        case (byte)4:
+                        case (byte)4://½ð¸½Ä§
                             if (CNC.Random.NextBool(1.0 / 2))
                             {
                                 int index = Dust.NewDust(position, (int)size.X, (int)size.Y, 57, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, Scale: 1.1f);
@@ -261,7 +262,7 @@ namespace CNC.Content.Projectiles
                                 Main.dust[index].velocity.Y /= 2f;
                             }
                             break;
-                        case (byte)5:
+                        case (byte)5://ÁéÒº¸½Ä§
                             if (CNC.Random.NextBool(1.0 / 2))
                             {
                                 int index = Dust.NewDust(position, (int)size.X, (int)size.Y, 169, Alpha: 100);
@@ -270,7 +271,7 @@ namespace CNC.Content.Projectiles
                                 Main.dust[index].noGravity = true;
                             }
                             break;
-                        case (byte)6:
+                        case (byte)6://ÄÉÃ×¸½Ä§£¨Ô­À´ÓÃµÄºÍËªÑæÒ»¸öÁ£×ÓÃ´£©
                             if (CNC.Random.NextBool(1.0 / 2))
                             {
                                 int index = Dust.NewDust(position, (int)size.X, (int)size.Y, 135, Alpha: 100);
@@ -279,7 +280,7 @@ namespace CNC.Content.Projectiles
                                 Main.dust[index].noGravity = true;
                             }
                             break;
-                        case (byte)7:
+                        case (byte)7://ÅÉ¶Ô¸½Ä§
                             Vector2 velocity = projectile.velocity;
                             if ((double)velocity.Length() > 4.0) velocity *= 4f / velocity.Length();
                             if (CNC.Random.NextBool(1.0 / 20))
@@ -302,7 +303,7 @@ namespace CNC.Content.Projectiles
                                 Main.gore[index1].velocity.Y += (float)Main.rand.Next(-50, 51) * 0.05f;
                             }
                             break;
-                        case (byte)8:
+                        case (byte)8://¶¾Òº¸½Ä§
                             if (CNC.Random.NextBool(1.0 / 4))
                             {
                                 int index = Dust.NewDust(position, (int)size.X, (int)size.Y, 46, Alpha: 100);

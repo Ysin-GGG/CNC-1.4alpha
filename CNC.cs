@@ -209,7 +209,7 @@ namespace CNC
 
         private void LoadFilters()
         {
-            string[] names =
+            string[] names =//把滤镜的文件名加到这里即可
             {
                 "ShockWave",
                 "RadialBlur",

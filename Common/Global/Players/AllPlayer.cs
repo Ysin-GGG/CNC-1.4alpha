@@ -21,16 +21,6 @@ namespace CNC.Common.Global.Players
 
         public int lifeRegen;
         public int lifeRegenCount;
-        public float castTime;
-        private float castTime2;
-        public float castTimeMax;
-        public bool controlMouseLeft;
-        public bool releaseMouseLeft;
-        public bool controlMouseRight;
-        public bool releaseMouseRight;
-        public bool ShowCastTimeBar { get => CastTimeBarTime == Options.CastTimeBar.showTime; set => CastTimeBarTime = value ? Options.CastTimeBar.showTime : 0; }
-        private int CastTimeBarTime;
-        private Item heldItem;
         /// <summary> 震动数值 </summary>
         public Vector2 shakeValue;
         /// <summary> 震动方向 </summary>
@@ -46,6 +36,23 @@ namespace CNC.Common.Global.Players
         /// <summary> 震动衰减速度 </summary>
         private float shakeAttenuation;
         private Vector2 instance;
+
+        private int mouseToCast;
+        private int preMouse = 0;
+        private int mouseTime = 0;
+        private int ignoreMouseTime = 0;
+        public bool pressingMouseLeft = false;
+        public bool pressingMouseRight = false;
+        public float castTime;
+        private float castTime2;
+        public float castTimeMax;
+        public bool ShowCastTimeBar { get => CastTimeBarTime == Options.CastTimeBar.showTime; set => CastTimeBarTime = (value ? Options.CastTimeBar.showTime : 0); }
+        private int CastTimeBarTime;
+        public bool casting;
+        public bool cancelCastingIfRelease;
+        public float leftCastTime;
+        public float rightCastTime;
+        private Item heldItem;
 
         /// <summary> 视角锁定的坐标 </summary>
         public Vector2 lockScreenPosition;
@@ -81,22 +88,71 @@ namespace CNC.Common.Global.Players
 
         public override void ResetEffects()
         {
-            manaReturn = 0;
-            Tick = (Tick + 1) % 60;
-            if (castTime >= castTimeMax && releaseMouseRight) castTime2 = 0;
-            if (CastTimeBarTime > 0) CastTimeBarTime--;
-            else castTimeMax = castTime2 = 0;
-            if (heldItem != player.HeldItem) { heldItem = player.HeldItem; castTime2 = castTime = 0; }
-            for (int i = 0; i < CDReduction.Length; i++) CDReduction[i] = 1f;
-            for (int i = 0; i < buff.Length; i++) buff[i] = false;
+            this.manaReturn = 0;
+            this.Tick = (Tick + 1) % 60;
+
+            if (this.mouseTime > 0) this.mouseTime--;
+            else preMouse = 0;
+
+            if (this.CastTimeBarTime > 0) { if (mouseToCast == 0) this.CastTimeBarTime--; }
+            else this.castTimeMax = this.castTime2 = 0;
+
+            if (this.heldItem != player.HeldItem)
+            {
+                this.heldItem = player.HeldItem;
+                this.ResetCasting(false);
+            }
+
+            if (this.mouseToCast == 1) this.castTime2 = this.castTime = this.leftCastTime++;
+            if (this.mouseToCast == 2) this.castTime2 = this.castTime = this.rightCastTime++;
+            if (this.leftCastTime < 0) this.leftCastTime++;
+            if (this.rightCastTime < 0) this.rightCastTime++;
+
+            for (int i = 0; i < this.CDReduction.Length; i++) this.CDReduction[i] = 1f;
+            for (int i = 0; i < this.buff.Length; i++) this.buff[i] = false;
         }
-        
+
+        public void SetCasting(int mouse, float time, float timeMax, bool cancelCastingIfRelease = false)
+        {
+            this.preMouse = 0;
+            this.casting = true;
+            this.castTimeMax = timeMax;
+            this.cancelCastingIfRelease = cancelCastingIfRelease;
+            this.ShowCastTimeBar = true;
+            if (this.mouseToCast == 0) this.mouseToCast = mouse;
+            if (this.mouseToCast == 1) this.leftCastTime = this.castTime2 = time;
+            if (this.mouseToCast == 2) this.rightCastTime = this.castTime2 = time;
+        }
+
+        public bool ResetCasting(bool resetTimeMax = false)
+        {
+            bool accepted = this.castTime >= this.castTimeMax;
+            if (accepted)
+            {
+                this.castTime2 = 0f;
+                this.leftCastTime = this.mouseToCast == 1 ? -2f : 0f;
+                this.rightCastTime = this.mouseToCast == 2 ? -2f : 0f;
+            }
+            else
+            {
+                this.leftCastTime = 0f;
+                this.rightCastTime = 0f;
+            }
+            this.casting = false;
+            this.mouseToCast = 0;
+            this.castTime = 0f;
+            this.castTimeMax = resetTimeMax ? 0f : this.castTimeMax;
+            return accepted;
+        }
+
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
             base.ProcessTriggers(triggersSet);
-            if (controlMouseRight && releaseMouseRight) castTime = (controlMouseRight = releaseMouseRight = false).ToInt(0);
-            if (controlMouseRight && !triggersSet.MouseRight) releaseMouseRight = true;
-            if (triggersSet.MouseRight) castTime2 = castTime += (controlMouseRight = true).ToInt(1);
+            if (triggersSet.MouseLeft && !pressingMouseLeft) this.OnClickMouse(this.pressingMouseLeft = true, false, false);
+            if (triggersSet.MouseRight && !pressingMouseRight) this.OnClickMouse(false, this.pressingMouseRight = true, false);
+            if (!triggersSet.MouseLeft && pressingMouseLeft) { this.OnReleaseMouse(!(this.pressingMouseLeft = false), false, false); this.preMouse = 1; }
+            if (!triggersSet.MouseRight && pressingMouseRight) { this.OnReleaseMouse(false, !(this.pressingMouseRight = false), false); this.preMouse = 2; }
+
         }
 
         /// <summary> 屏幕震动 </summary>
@@ -143,8 +199,48 @@ namespace CNC.Common.Global.Players
             if (this.shakeCur > 0) this.UpdateShakeData();
         }
 
-        public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+        public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
         {
+            if (this.casting) this.casting = false;
+        }
+
+        public void OnClickMouse(bool left, bool right, bool middle)
+        {
+        }
+
+        public void OnReleaseMouse(bool left, bool right, bool middle)
+        {
+            mouseTime = Options.CancelCasting.clickDelay;
+            if (this.cancelCastingIfRelease)
+            {
+                if (left && this.mouseToCast == 1) this.ResetCasting(false);
+                if (right && this.mouseToCast == 2) this.ResetCasting(false);
+            }
+            else
+            {
+                if (this.ignoreMouseTime <= 0)
+                {
+                    int type = (int)Options.CancelCasting.type;
+                    bool cancel = false;
+                    switch (type)
+                    {
+                        case 0:
+                            cancel = true;
+                            break;
+                        case 1:
+                            cancel = (left && this.preMouse == 1) || (right && this.preMouse == 2);
+                            break;
+                        case 2:
+                            cancel = right && preMouse == 1;
+                            break;
+                        case 3:
+                            cancel = left && preMouse == 2;
+                            break;
+                    }
+                    if (cancel) { this.ResetCasting(false); Main.NewText("canceled"); }
+                }
+                else this.ignoreMouseTime = Options.CancelCasting.releaseDelay;
+            }
         }
 
         public static void DrawCastTimeBar(Player player)

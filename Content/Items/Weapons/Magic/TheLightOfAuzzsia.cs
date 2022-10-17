@@ -26,7 +26,7 @@ namespace CNC.Content.Items.Weapons.Magic
             item.useAnimation = 30;
             item.rare = 2;
             item.value = 20000;
-            item.damage = 80;
+            item.damage = 120;
             item.crit = 5;
             item.knockBack = 20f;
             item.useStyle = 5;
@@ -42,10 +42,35 @@ namespace CNC.Content.Items.Weapons.Magic
             CNCStaff = true;
         }
 
+        public override bool CanUseItem(Player player)
+        {
+            if (!player.All().casting) player.All().SetCasting(1, 0, 60, false);
+            if (player.All().casting && player.All().castTime >= player.All().castTimeMax) return false;
+            return false;
+        }
+
+        public override void HoldItem(Player player)
+        {
+            if (player.All().castTimeMax > 0 && player.All().leftCastTime > player.All().castTimeMax)
+            {
+                float damage = player.GetWeaponDamage(item);
+                float knockback = player.GetWeaponKnockback(item);
+                float crit = player.GetWeaponCrit(item);
+                float type = 0f;
+                IEntitySource source = item.GetSource_ItemUse(item);
+                Vector2 position = player.Center;
+                Vector2 velocity = new Vector2(item.shootSpeed, 0f).RotatedBy((Main.MouseWorld - player.Center).ToRotation());
+                CNCUtils.PlaySound(SoundID.Item20, player);
+                CNCUtils.NewProj(source, position, velocity, item.shoot, (int)damage, knockback, (int)crit, player.whoAmI, 0f, 1f, 0f, 0f);
+                player.All().ResetCasting(false);
+                ApplyUse(player, item, item.useTime);
+            }
+        }
+
+        private void ApplyUse(Player player, Item item, int time) => player.itemAnimationMax = player.itemAnimation = player.itemTimeMax = player.itemTime = (int)(time / player.GetWeaponAttackSpeed(item));
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            CNCUtils.PlaySound("TheLightOfAuzzsia/Shoot1", player, .5f);
-            CNCUtils.NewProj(source, position, velocity, type, damage, knockback);
             return false;
         }
     }

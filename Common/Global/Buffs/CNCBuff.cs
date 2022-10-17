@@ -57,7 +57,7 @@ namespace CNC.Common.Global.Buffs
                     tt = tt.Replace("[Player]", target.name);
                     target.KillMe(PlayerDeathReason.ByCustomReason(tt), damage, target.direction);
                 }
-                if (Main.netMode == 1) { NetMessage.SendData(16, -1, -1, null, target.whoAmI, 0f, 0f, 0f, 0, 0, 0); }
+                if (CNC.IsMPClient) NetMessage.SendData(16, -1, -1, null, target.whoAmI, 0f, 0f, 0f, 0, 0, 0);
             }
         }
 
@@ -89,14 +89,8 @@ namespace CNC.Common.Global.Buffs
                     if (npc.life <= 0 && !npc.immortal)
                     {
                         npc.life = damage;
-                        if (Main.netMode == 0)
-                        {
-                            npc.StrikeNPCNoInteraction(9999, 0f, 0, false, false, false);
-                        }
-                        if (Main.netMode == 2)
-                        {
-                            NetMessage.SendData(28, -1, -1, null, whoAmI, 9999f, 0f, 0f, 0, 0, 0);
-                        }
+                        if (CNC.IsSPClient) npc.StrikeNPCNoInteraction(9999, 0f, 0, false, false, false);
+                        if (CNC.IsMPServer) NetMessage.SendData(28, -1, -1, null, whoAmI, 9999f, 0f, 0f, 0, 0, 0);
                     }
                 }
             }

@@ -172,6 +172,17 @@ Mods: {
 				左键打开【{$Mods.CNC.Config.CastTimeBar_Allys}】界面
 				设置你从队友身上看到的【{$Mods.CNC.Config.CastTimeBar_Label}】UI
 				'''
+			CancelCasting_Label: 取消吟唱
+			CancelCasting_CancelType: 取消方式：
+			CancelCasting_CancelType_Tooltip: 每次按下鼠标并释放视作一次点击
+            CancelCasting_CancelType_ClickAgain: 再次点击鼠标
+            CancelCasting_CancelType_DoubleClickAgain: 双击鼠标
+            CancelCasting_CancelType_LeftToRight: 从[c/FF0000:左]到[c/00FF00:右]点击鼠标
+            CancelCasting_CancelType_RightToLeft: 从[c/00FF00:右]到[c/FF0000:左]点击鼠标
+			CancelCasting_ClickDelay: 点击间隔
+			CancelCasting_ClickDelay_Tooltip: 连续点击的有效判定时间
+			CancelCasting_ReleaseDelay: 防误取消时长
+			CancelCasting_ReleaseDelay_Tooltip: 开始吟唱后的这段时间内，禁止取消吟唱的操作
 		}
 
 		DeathText: {
