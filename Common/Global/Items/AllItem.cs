@@ -117,6 +117,40 @@ namespace CNC.Common.Global.Items
                 TooltipLine tt2 = new TooltipLine(mod, item.Name, CNCLocalization.GetText("Misc.AnattaPower")) { OverrideColor = color.Flash() };
                 if (flag) tooltips.Add(tt2);
             }
+            if (PrefixLoader.GetPrefix(item.prefix) != null && PrefixLoader.GetPrefix(item.prefix).Mod == this.Mod)
+            {
+                string tip = null;
+                byte id = CNCID.Prefix.LegacyObject.FirstOrDefault(q => q.Value == item.prefix).Key;
+                float value = (PrefixLoader.GetPrefix(CNCID.Prefix.LegacyObject[id]) as Prefixes.AccessoryPrefix).Value;
+                switch (id)
+                {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                        tip = $"+{value}{CNCLocalization.GetText("PrefixAccTip.CastingSpeed")}";
+                        break;
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                        tip = $"{value}{CNCLocalization.GetText("PrefixAccTip.CastTimeReduction")}";
+                        break;
+                }
+                if (tip != null)
+                {
+                    int index = tooltips.FindLastIndex(tooltip => tooltip.Mod == "Terraria");
+                    bool ok = false;
+                    while (!ok)
+                    {
+                        string[] tag = { "Expert", "Master", "JourneyResearch" };
+                        if (tag.Contains<string>(tooltips[index].Name)) { index--; continue; }
+                        ok = true;
+                    }
+                    TooltipLine tt3 = new TooltipLine(mod, item.Name, tip) { IsModifier = true };
+                    tooltips.Insert(index + 1, tt3);
+                }
+            }
         }
 
         public override bool CanUseItem(Item item, Player player)
@@ -174,9 +208,10 @@ namespace CNC.Common.Global.Items
             if (EnableAnatta(player))
             {
                 bool control = player.All().pressingMouseRight;
-                bool accepted = player.All().rightCastTime < 0f;
+                bool attack = player.All().rightCastTime < 0f;
                 float ct = player.All().castTime;
                 float ctMax = 0;
+                float progress = player.All().CastTimePrecent;
                 float damage = player.GetWeaponDamage(item);
                 float knockback = player.GetWeaponKnockback(item);
                 float crit = player.GetWeaponCrit(item);
@@ -192,7 +227,7 @@ namespace CNC.Common.Global.Items
                         ctMax = 100;
                         if (control)
                         {
-                            Vector2 vel = new Vector2(CNC.Random.NextFloat(4f) + MyMath.Lerp(12f, 0f, ct / ctMax), 0f).RotatedBy(CNC.Random.NextDegree());
+                            Vector2 vel = new Vector2(CNC.Random.NextFloat(4f) + MyMath.Lerp(12f, 0f, progress), 0f).RotatedBy(CNC.Random.NextDegree());
                             int idx = Particle.NewParticle(
                                 CNC.GetTexture("Assets/Particles/Star1"),
                                 player.Center + vel * 10f,
@@ -209,7 +244,7 @@ namespace CNC.Common.Global.Items
                             ParticleManager.particle[idx].alphaAdd = -.033f;
                             ParticleManager.particle[idx].alpha = 1f;
                         }
-                        if (accepted)
+                        if (attack)
                         {
                             CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.SolarHalo], (int)damage, 0f, (int)crit, player.whoAmI, 0f, 1f, 0, 0);
                             damage *= 3;
@@ -223,9 +258,9 @@ namespace CNC.Common.Global.Items
                         mainColor = new Color(242, 92, 34);
                         if (control)
                         {
-                            if (ct < ctMax)
+                            if (!player.All().CastingAccepted)
                             {
-                                Vector2 vel = new Vector2(CNC.Random.NextFloat(4f) + MyMath.Lerp(12f, 0f, ct / ctMax), 0f).RotatedBy(CNC.Random.NextDegree());
+                                Vector2 vel = new Vector2(CNC.Random.NextFloat(4f) + MyMath.Lerp(12f, 0f, progress), 0f).RotatedBy(CNC.Random.NextDegree());
                                 int idx = Particle.NewParticle(
                                     CNC.GetTexture("Assets/Particles/Light1"),
                                     player.Center + vel * 10f,
@@ -258,7 +293,7 @@ namespace CNC.Common.Global.Items
                                 ParticleManager.particle[idx].alphaAdd = (Main.rand.Next(5) + 1) * -.01f;
                             }
                         }
-                        if (accepted)
+                        if (attack)
                         {
                             velocity = new Vector2((Main.MouseWorld.X > player.Center.X).ToDirectionInt(1), 0f);
                             damage *= 1.5f;
@@ -272,21 +307,21 @@ namespace CNC.Common.Global.Items
                         ctMax = 240;
                         if (control)
                         {
-                            if (ct < ctMax)
+                            if (!player.All().CastingAccepted)
                             {
-                                if (ct % 20 == 10)
+                                if (player.All().Tick % 20 == 10)
                                 {
                                     for (int i = 0; i < 18; i++)
                                     {
                                         float amount = i / 18f;
-                                        Vector2 vel = new Vector2(MyMath.Lerp(8f, 2f, ct / ctMax), 0f).RotatedBy(amount * MyMath.pi2);
+                                        Vector2 vel = new Vector2(MyMath.Lerp(8f, 2f, progress), 0f).RotatedBy(amount * MyMath.pi2);
                                         int idx = Particle.NewParticle(
                                             CNC.GetTexture("Assets/Particles/Star1"),
                                             player.Center + vel * 8f,
                                             -vel,
                                             CNC.Random.NextDegree(),
                                             30,
-                                            Vector2.One * MyMath.Lerp(1f, .5f, ct / ctMax),
+                                            Vector2.One * MyMath.Lerp(1f, .5f, progress),
                                             mainColor.NewA(0),
                                             mainColor.NewA(3)
                                             );
@@ -322,7 +357,7 @@ namespace CNC.Common.Global.Items
                                 }
                             }
                         }
-                        if (accepted)
+                        if (attack)
                         {
                             velocity = new Vector2((Main.MouseWorld.X > player.Center.X).ToDirectionInt(1), 0f);
                             damage *= 3;
@@ -337,7 +372,7 @@ namespace CNC.Common.Global.Items
                         ctMax = 240;
                         if (control)
                         {
-                            if (ct < ctMax)
+                            if (!player.All().CastingAccepted)
                             {
                                 for (int i = 0; i < 4; i++)
                                 {
@@ -347,8 +382,8 @@ namespace CNC.Common.Global.Items
                                     int idx = Particle.NewParticle(
                                         CNC.GetTexture("Assets/Particles/Star1"),
                                         player.Center,
-                                        vel * MyMath.Lerp(6f, 1f, ct / ctMax),
-                                        rot + (ct - ctMax) * MyMath.deg01,
+                                        vel * MyMath.Lerp(6f, 1f, progress),
+                                        rot + (ct - player.All().CastTimeMax2) * MyMath.deg01,
                                         30,
                                         Vector2.One * .75f,
                                         mainColor.NewA(0),
@@ -362,7 +397,7 @@ namespace CNC.Common.Global.Items
                             }
                             else
                             {
-                                if (ct % 20 == 0)
+                                if (player.All().Tick % 20 == 0)
                                 {
                                     for (int i = 0; i < 36; i++)
                                     {
@@ -387,7 +422,7 @@ namespace CNC.Common.Global.Items
                                 }
                             }
                         }
-                        if (accepted)
+                        if (attack)
                         {
                             CNCUtils.NewProj(source, position + velocity * 24f, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.VoidNightsEdge], (int)(damage * 15f), 0f, (int)crit, player.whoAmI, 0f, 1f, 0, 0);
                             damage *= 3;
@@ -399,9 +434,9 @@ namespace CNC.Common.Global.Items
                 }
                 if (ctMax > 0)
                 {
-                    if (control && !player.All().casting) player.All().SetCasting(2, 0f, ctMax, false);
-                    if (control && ct == ctMax) CNCUtils.PlaySound(SoundID.Item4, player);
-                    if (accepted)
+                    if (control && !player.All().Casting) player.All().SetCasting(2, 0f, ctMax, false, true);
+                    if (control && player.All().CastingAccept) CNCUtils.PlaySound(SoundID.Item4, player);
+                    if (attack)
                     {
                         CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.AnattaSlash], (int)damage, knockback, (int)crit, player.whoAmI, 0f, 1f, type, 0);
                         this.comboCur = 0;
@@ -424,7 +459,7 @@ namespace CNC.Common.Global.Items
                     case ItemID.FieryGreatsword:
                         break;
                     case ItemID.TrueExcalibur:
-                        velocity *= 2f;
+                        velocity = Vector2.Normalize(velocity) * item.shootSpeed * 2.5f;
                         break;
                     case ItemID.TrueNightsEdge:
                         velocity *= this.comboCur + 1f;

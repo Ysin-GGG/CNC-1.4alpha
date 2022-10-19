@@ -33,6 +33,8 @@ namespace CNC.Content.Items.Developers.Quartz
                 //P.statDefense = 9999;
                 P.GetModPlayer<Common.Global.Players.InscriptionPlayer>().cooldownReductionMul = .1f;
                 P.GetModPlayer<Common.Global.Players.InscriptionPlayer>().skillDamageAdd = 1f;
+                P.GetModPlayer<Common.Global.Players.AllPlayer>().castTimeReduction += .5f;
+                P.GetModPlayer<Common.Global.Players.AllPlayer>().castingSpeed += .5f;
                 P.wingTime = 1;
                 P.statLifeMax2 *= 100;
                 P.statManaMax2 *= 100;

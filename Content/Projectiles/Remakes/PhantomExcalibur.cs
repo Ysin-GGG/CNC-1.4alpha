@@ -211,8 +211,7 @@ namespace CNC.Content.Projectiles.Remakes
         
         private float RotLerp(float r1, float r2, float progress)
         {
-            return Utils.AngleLerp(r1, r2, progress);
-            /*
+            //return Utils.AngleLerp(r1, r2, progress);
             float pi2 = MyMath.pi2;
             r1 %= pi2;
             r2 %= pi2;
@@ -222,13 +221,12 @@ namespace CNC.Content.Projectiles.Remakes
             if (Math.Abs(r1 - r2) > Math.Abs(r1 - (r2 + pi2))) r2 += pi2;
             else if (Math.Abs(r1 - r2) > Math.Abs((r1 + pi2) - r2)) r1 += pi2;
             return MyMath.Lerp(r1, r2, progress);
-            */
         }
 
         private void Attack()
         {
             Item item = owner.HeldItem;
-            Vector2 velocity = new Vector2(item.shootSpeed * 2f, 0f).RotatedBy(attackRot);
+            Vector2 velocity = new Vector2(item.shootSpeed * 2.5f, 0f).RotatedBy(attackRot);
             float damage = owner.GetWeaponDamage(item) * capabilityMult;
             float knockback = owner.GetWeaponKnockback(item) * capabilityMult;
             float crit = owner.GetWeaponCrit(item) * capabilityMult;

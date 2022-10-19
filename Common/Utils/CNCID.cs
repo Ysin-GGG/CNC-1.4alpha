@@ -289,30 +289,6 @@ namespace CNC.Common.Utils
                 //{ ShortDagger, ItemType<Content.Items.>() },
                 //{ SpiritSparkingWand, ItemType<Content.Items.>() },
             };
-
-            public static Dictionary<int, short> LegacyObjectReturn => new Dictionary<int, short>()
-            {
-
-                { LegacyObject[MiracleGem], MiracleGem },
-                { LegacyObject[DestineScroll], DestineScroll },
-                { LegacyObject[FireGrimoire], FireGrimoire },
-                { LegacyObject[IceTooth], IceTooth },
-                { LegacyObject[Superconductor], Superconductor },
-                { LegacyObject[ArgenteusClaw], ArgenteusClaw },
-                { LegacyObject[SpiritWood], SpiritWood },
-                { LegacyObject[TranquilityGem], TranquilityGem },
-                { LegacyObject[SpiritSapling], SpiritSapling },
-                { LegacyObject[TranquilityDirt], TranquilityDirt },
-                { LegacyObject[TranquilityStone], TranquilityStone },
-                { LegacyObject[ArgenteusOathKeeper], ArgenteusOathKeeper },
-                { LegacyObject[TheLightOfAuzzsia], TheLightOfAuzzsia },
-                //{ LegacyObject[EmberOfNien], EmberOfNien },
-                //{ LegacyObject[FragmentarySoulDagger], FragmentarySoulDagger },
-                //{ LegacyObject[SpiritIronGreatsword], SpiritIronGreatsword },
-                //{ LegacyObject[MysticalLight], MysticalLight },
-                //{ LegacyObject[ShortDagger], ShortDagger },
-                //{ LegacyObject[SpiritSparkingWand], SpiritSparkingWand },
-            };
         }
 
         public static class Inscription
@@ -681,6 +657,62 @@ namespace CNC.Common.Utils
                 { PhantomSlime, NPCType<Content.NPCs.PhantomSlime>() },
                 //{ PhantomFlame, NPCType<Content.NPCs.PhantomFlame>() },
                 { SpiritBoss, NPCType<Content.NPCs.SpiritBoss.SpiritBoss>() },
+            };
+        }
+
+        public static class Prefix
+        {
+            public const byte MaxObject = 8;
+            #region ID
+            /// <summary> 娴熟 </summary>
+			public const byte Memorable = 1;
+            /// <summary> 精通 </summary>
+            public const byte Proficient = 2; 
+            /// <summary> 集中 </summary>
+            public const byte Concentrated = 3; 
+            /// <summary> 回响 </summary>
+            public const byte Reverberant = 4; 
+            /// <summary> 简明 </summary>
+            public const byte Concise = 5; 
+            /// <summary> 精练 </summary>
+            public const byte Conversant = 6; 
+            /// <summary> 透彻 </summary>
+            public const byte Incisive = 7; 
+            /// <summary> 全知 </summary>
+            public const byte Omniscient = 8;
+            #endregion
+            public static Dictionary<string, byte> Collection
+            {
+                get
+                {
+                    Dictionary<string, byte> dict = new Dictionary<string, byte>();
+                    foreach (var member in typeof(CNCID.Prefix).GetFields())
+                        if (member.FieldType == typeof(byte)) dict.Add(member.Name, (byte)member.GetRawConstantValue());
+                    return dict;
+                }
+            }
+
+            public static Dictionary<string, int> LegacyCollection
+            {
+                get
+                {
+                    Dictionary<string, int> dict = new Dictionary<string, int>();
+                    foreach (var member in typeof(CNCID.Prefix).GetFields())
+                        if (member.FieldType == typeof(byte)) dict.Add(member.Name, LegacyObject[Collection[member.Name]]);
+                    return dict;
+                }
+            }
+
+            public static Dictionary<byte, int> LegacyObject => new Dictionary<byte, int>()
+            {
+                { Memorable, PrefixType<Content.Prefixes.Memorable>() },
+                { Proficient, PrefixType<Content.Prefixes.Proficient>() },
+                { Concentrated, PrefixType<Content.Prefixes.Concentrated>() },
+                { Reverberant, PrefixType<Content.Prefixes.Reverberant>() },
+                { Concise, PrefixType<Content.Prefixes.Concise>() },
+                { Conversant, PrefixType<Content.Prefixes.Conversant>() },
+                { Incisive, PrefixType<Content.Prefixes.Incisive>() },
+                { Omniscient, PrefixType<Content.Prefixes.Omniscient>() },
             };
         }
 

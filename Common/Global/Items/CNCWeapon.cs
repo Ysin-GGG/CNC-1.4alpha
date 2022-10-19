@@ -32,12 +32,13 @@ namespace CNC.Common.Global.Items
                 float castTime = 0;
                 float castTimeMax = 0;
                 bool allowRelease = true;
-                if (!player.All().casting && this.OnCast(player, ref mouse, ref castTime, ref castTimeMax, ref allowRelease))
+                bool cannotBeCanceled = false;
+                if (!player.All().Casting && this.OnCast(player, ref mouse, ref castTime, ref castTimeMax, ref allowRelease, ref cannotBeCanceled))
                 {
                     if ((mouse == 1 || mouse == 2) && castTimeMax > 0)
-                        player.All().SetCasting(mouse, castTime, castTimeMax, allowRelease);
+                        player.All().SetCasting(mouse, castTime, castTimeMax, allowRelease, cannotBeCanceled);
                 }
-                if (player.All().casting) return false;
+                if (player.All().Casting) return false;
             }
             return flag;
         }
@@ -47,9 +48,9 @@ namespace CNC.Common.Global.Items
             if (player.IsMe() && player.All().castTimeMax > 0)
             {
                 SoundStyle? useSound = SoundID.Item4;
-                if (ModifyCasting(player, player.All().MouseToCast, player.All().castTime >= player.All().castTimeMax, ref useSound, ref player.All().castTime, ref player.All().castTimeMax))
+                if (ModifyCasting(player, player.All().MouseToCast, player.All().CastingAccepted, ref useSound, ref player.All().castTime, ref player.All().castTimeMax))
                 {
-                    if(player.All().castTime == player.All().castTimeMax && useSound != null) CNCUtils.PlaySound(useSound.Value, player);
+                    if(player.All().CastingAccept && useSound != null) CNCUtils.PlaySound(useSound.Value, player);
                     float damage = player.GetWeaponDamage(item);
                     float knockback = player.GetWeaponKnockback(item);
                     float crit = player.GetWeaponCrit(item);
@@ -76,7 +77,7 @@ namespace CNC.Common.Global.Items
         /// <param name="accepted">自然地完成充能</param>
         /// <param name="acceptedSound">充能完成时的音效（默认SoundID.Item4）</param>
         /// <param name="castTime">当前充能时长</param>
-        /// <param name="castTimeMax">当前充能时长需求</param>
+        /// <param name="castTimeMax">当前充能时长原始需求（即无缩减的充能时长需求）</param>
         /// <returns>是否执行充能完成后的动作（默认返回accepted的值）</returns>
         public virtual bool ModifyCasting(Player player, int mouse, bool accepted, ref SoundStyle? acceptedSound, ref float castTime, ref float castTimeMax) => accepted;
 
@@ -86,8 +87,9 @@ namespace CNC.Common.Global.Items
         /// <param name="castTime">充能的起始时间（默认0）</param>
         /// <param name="castTimeMax">充能时长需求（需要大于0才能充能）</param>
         /// <param name="allowRelease">充能时是否不需要按紧（默认true）</param>
+        /// <param name="cannotBeCanceled">充能不受被击影响（默认false）</param>
         /// <returns>是否开始充能（默认在castTimeMax大于0时返回true，反之false）</returns>
-        public virtual bool OnCast(Player player, ref int mouse, ref float castTime, ref float castTimeMax, ref bool allowRelease) => castTimeMax > 0;
+        public virtual bool OnCast(Player player, ref int mouse, ref float castTime, ref float castTimeMax, ref bool allowReleasem, ref bool cannotBeCanceled) => castTimeMax > 0;
 
         /// <summary> 充能完成后的弹幕发射 </summary>
         /// <param name="player">该弹幕归属的玩家</param>

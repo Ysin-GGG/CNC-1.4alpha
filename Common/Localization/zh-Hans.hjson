@@ -251,6 +251,22 @@ Mods: {
 				HateNPC: "我不喜欢穿紫色长袍的那个家伙，{NPCName}的三脚猫功夫有辱巫师的名号"
 			}
 		}
+		
+		Prefix: {
+			Memorable: 娴熟
+			Proficient: 精通
+			Concentrated: 集中
+			Reverberant: 回响
+			Concise: 简明
+			Conversant: 精练
+			Incisive: 透彻
+			Omniscient: 全知
+		}
+
+		PrefixAccTip: {
+			CastingSpeed: %吟唱/蓄力速度
+			CastTimeReduction: %吟唱/蓄力时间
+		}
 
 		Class: {
 			Format: ——{0}——

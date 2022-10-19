@@ -93,7 +93,7 @@ namespace CNC.Content.Projectiles.Remakes
                 {
                     projectile.friendly = false;
                     CNCUtils.PlaySound(SoundID.Item122, projectile, .8f, 1f);
-                    CNCUtils.PlaySound("Remakes/TrueNightsEdge/Explode2", projectile.Center, .2f, 1.25f);
+                    //CNCUtils.PlaySound("Remakes/TrueNightsEdge/Explode2", projectile.Center, .2f, 1.25f);
                     CNCUtils.PlaySound("Remakes/TrueNightsEdge/Explode3", projectile.Center, 1f, 1f);
                     CNCUtils.ScreenShake(projectile.Center, defRange * 10f, 5, new Vector2(0, 60f), new Vector2(0, 20f), .9f, default);
                     this.NewProjectile(0, 0, CNCID.Projectile.LegacyObject[CNCID.Projectile.ShockWave], 0, 0f, 0f, 0f, 1f, 2f, 0f).ai[0] = 2f;
@@ -199,7 +199,7 @@ namespace CNC.Content.Projectiles.Remakes
                     idx = Particle.NewParticle(
                         CNC.GetTexture("Assets/Particles/Light1"),
                         projectile.Center,
-                        vel * MyMath.Lerp(1f, 6f, projectile.scale),
+                        vel * MyMath.Lerp(1f, 4f, projectile.scale),
                         rot,
                         40,
                         Vector2.One * projectile.scale * .375f,
@@ -229,7 +229,7 @@ namespace CNC.Content.Projectiles.Remakes
             Texture2D l = CNC.GetTexture("Assets/Glow/Refringence");
             Rectangle half = new Rectangle(0, 0, l.Width / 2, l.Height);
             Vector2 pos = projectile.Center - Main.screenPosition;
-            Main.EntitySpriteDraw(t, pos, null, mainColor.Flash().NewA(0) * alpha, MyMath.deg30 * projectile.ai[0], t.Center(), scale * .75f * MyMath.phi, 0, 0);
+            Main.EntitySpriteDraw(t, pos, null, mainColor.Flash().NewA(0) * alpha, MyMath.deg30 * projectile.ai[0], t.Center(), scale * MyMath.phi, 0, 0);
             Main.EntitySpriteDraw(t, pos, null, mainColor.Flash().NewA(0) * alpha, MyMath.deg60 * 2 * projectile.ai[0], t.Center(), scale * .75f, 0, 0);
 
             Matrix projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
@@ -243,7 +243,7 @@ namespace CNC.Content.Projectiles.Remakes
             ef.Parameters["uAlpha"].SetValue(this.Alpha2 * 3);
             ef.Parameters["uTime"].SetValue(Main.GlobalTimeWrappedHourly * 3f);
             
-            float width = CNC.GetTexture(Texture + 2).Width * projectile.scale * MyMath.Lerp(.15f, .05f, timer / (float)time);
+            float width = CNC.GetTexture(Texture + 2).Width * projectile.scale * MyMath.Lerp(.15f, .02f, timer / (float)time);
             List<VertexInfo> vertex = new List<VertexInfo>();
             for (int i = 0; i <= 360; ++i)
             {
@@ -285,7 +285,7 @@ namespace CNC.Content.Projectiles.Remakes
                 for (int i = 0; i < light.Length; i++)
                     Main.EntitySpriteDraw(l, pos, half, mainColor2.NewA(0) * Alpha2 * amount, light[i].Z + time * MyMath.deg01, l.Center(), projectile.scale * light[i].XY() * MyMath.Lerp(.5f, .2f, amount2) * amount2, 0, 0);
             }
-            Main.EntitySpriteDraw(Texture2, pos, null, Color.Lerp(new Color(0, 255, 0), Color.White, timer / (float)time).Flash().NewA(0) * Alpha2 * .5f, 0f, Texture2.Center(), projectile.scale * MyMath.Lerp(.6f, .025f, timer / (float)time / 1.2f) / MyMath.phi, 0, 0);
+            Main.EntitySpriteDraw(Texture2, pos, null, Color.Lerp(new Color(0, 255, 0), Color.White, timer / (float)time).Flash().NewA(0) * Alpha2 * .5f, 0f, Texture2.Center(), projectile.scale * MyMath.Lerp(.6f, .001f, timer / (float)time / 1.2f) / MyMath.phi, 0, 0);
             return false;
         }
 

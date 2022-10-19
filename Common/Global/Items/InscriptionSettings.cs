@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -257,9 +258,9 @@ namespace CNC.Common.Global.Items
                 return origin;
             }
 
-            if (item.ModItem != null && item.ModItem.Mod == mod && item.type > 0 && CNCID.Item.LegacyObjectReturn.ContainsKey(item.type))
+            if (item.ModItem != null && item.ModItem.Mod == mod && item.type > 0 && CNCID.Item.LegacyObject.ContainsValue(item.type))
             {
-                short type = CNCID.Item.LegacyObjectReturn[item.type];
+                short type = CNCID.Item.LegacyObject.FirstOrDefault(q => q.Value == item.type).Key;
                 InscriptionSettings itemInscription = item.GetGlobalItem<InscriptionSettings>();
                 int level = itemInscription.level = -1;
                 int levelMax = itemInscription.levelMax = -1;

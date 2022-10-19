@@ -26,7 +26,7 @@ namespace CNC.Content.Items.Weapons.Magic
             item.useAnimation = 30;
             item.rare = 2;
             item.value = 20000;
-            item.damage = 120;
+            item.damage = 100;
             item.crit = 5;
             item.knockBack = 20f;
             item.useStyle = 5;
@@ -42,11 +42,11 @@ namespace CNC.Content.Items.Weapons.Magic
             CNCStaff = true;
         }
 
-        public override bool OnCast(Player player, ref int mouse, ref float castTime, ref float castTimeMax, ref bool allowRelease)
+        public override bool OnCast(Player player, ref int mouse, ref float castTime, ref float castTimeMax, ref bool allowRelease, ref bool cannotBecanceled)
         {
             mouse = 1;
-            castTimeMax = 60;
-            return base.OnCast(player, ref mouse, ref castTime, ref castTimeMax, ref allowRelease);
+            castTimeMax = 120;
+            return base.OnCast(player, ref mouse, ref castTime, ref castTimeMax, ref allowRelease, ref cannotBecanceled);
         }
     }
 }

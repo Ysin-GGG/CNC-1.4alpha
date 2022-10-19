@@ -155,7 +155,7 @@ namespace CNC.Content.Projectiles
 
         public override bool? CanHitNPC(NPC target)
         {
-            bool flag = base.CanHitNPC(target).HasValue ? base.CanHitNPC(target).Value : true;
+            bool flag = base.CanHitNPC(target).HasValue ? base.CanHitNPC(target).Value : !target.friendly;
             return flag && !haveHit.Contains(target);
         }
 
