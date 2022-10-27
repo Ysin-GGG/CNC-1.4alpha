@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -42,6 +43,7 @@ namespace CNC.Content.Projectiles
         protected int slashStyle = 1;
         protected float traceChangeSpeed = -.2f;
         private int timer = 0;
+        private double leftTimer = 0;
         private List<NPC> haveHit = new List<NPC>();
 
         public ShaderSlash SetDefaults(Vector2 position, Vector2 direction, int slashLength, int time, int fadeTime, int precision = 1)
@@ -53,7 +55,7 @@ namespace CNC.Content.Projectiles
             this.projectile.extraUpdates = precision - 1;
             this.projectile.Center = position;
             this.projectile.rotation = direction.ToRotation();
-            this.projectile.ai[1] = this.projectile.timeLeft;
+            this.leftTimer = this.projectile.timeLeft;
             this.fadeSpeed = 1f / (fadeTime * precision);
             return this;
         }
@@ -147,10 +149,15 @@ namespace CNC.Content.Projectiles
             projectile.friendly = true;
             projectile.ignoreWater = true;
             projectile.tileCollide = false;
-            projectile.netUpdate2 = true;
             projectile.noEnchantmentVisuals = true;
             projectile.usesLocalNPCImmunity = true;
             projectile.localNPCHitCooldown = 0;
+        }
+
+        public override void OnSpawn(IEntitySource source)
+        {
+            base.OnSpawn(source);
+            this.OnSpawn();
         }
 
         public override bool? CanHitNPC(NPC target)
@@ -176,7 +183,8 @@ namespace CNC.Content.Projectiles
             }
             if (!this.fading)
             {
-                projectile.ai[1]--;
+                leftTimer--;
+                if (this.attackInfo == null) return;
                 Vector4 info = this.GetSlashInfo();
                 float rot = info.W + projectile.rotation;
                 Vector2 begin = projectile.position + (this.hitboxOffset + info.XY()).RotatedBy(rot);
@@ -315,11 +323,12 @@ namespace CNC.Content.Projectiles
                     }
                 }
             }
-            else if (timer++ % projectile.extraUpdates == 0) projectile.ai[1] = (float)((double)projectile.ai[1] - this.fadeSpeed * this.slashLength * this.fadeSpeedMult);
+            else if (timer++ % projectile.extraUpdates == 0) leftTimer = (float)((double)leftTimer - this.fadeSpeed * this.slashLength * this.fadeSpeedMult);
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
+            if (this.attackInfo == null) return false;
             projectile.direction = (direction.X >= 0).ToDirectionInt(1);
             Vector4 info = this.GetSlashInfo();
             float rot = info.W + projectile.rotation;
@@ -383,6 +392,7 @@ namespace CNC.Content.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
+            if (CNC.IsMPServer || this.attackInfo == null) return false;
             projectile.direction = (direction.X >= 0).ToDirectionInt(1);
             this.DrawSlash(Main.spriteBatch);
             this.DrawWeapon(Main.spriteBatch);
@@ -436,7 +446,7 @@ namespace CNC.Content.Projectiles
                 float max = MyMath.Lerp(0f, this.slashLength, (float)(this.timeLeft - projectile.timeLeft) / (float)this.slashLength);
                 for (int i = 0; i < max; i++)
                 {
-                    double time = 1.0d - ((double)projectile.ai[1] + i) / this.timeLeft;
+                    double time = 1.0d - ((double)leftTimer + i) / this.timeLeft;
                     Vector4 info = this.GetSlashInfo(time);
                     float rot = info.W + projectile.rotation;
                     Vector2 begin = projectile.Center + (this.hitboxOffset + info.XY()).RotatedBy(rot) * new Vector2(1f, owner.gravDir);
@@ -491,6 +501,34 @@ namespace CNC.Content.Projectiles
             }
         }
 
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            if (this.attackInfo == null)
+            {
+                writer.Write(-1);
+                return;
+            }
+            writer.Write(attackInfo.Length);
+            for(int i = 0; i < attackInfo.Length; i++)
+            {
+                writer.WritePackedVector2(attackInfo[i].offset);
+                writer.Write(attackInfo[i].range);
+                writer.Write(attackInfo[i].power);
+            }
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            if (reader.ReadInt32() == -1) return;
+            attackInfo = new SlashInfo[reader.ReadInt32()];
+            for (int i = 0; i < attackInfo.Length; i++)
+            {
+                attackInfo[i].offset = reader.ReadPackedVector2();
+                attackInfo[i].range = reader.ReadSingle();
+                attackInfo[i].power = reader.ReadSingle();
+            }
+        }
+
         public virtual void ModifySlash(ref Effect shader, ref List<VertexInfo> vertexs) { }
 
         /// <summary> 获取当前帧的斩击信息 <para> Vector4的XYZW分别对应：横坐标偏移，纵坐标偏移，攻击距离，攻击角度）</para> </summary>
@@ -498,6 +536,7 @@ namespace CNC.Content.Projectiles
         /// <summary> 获取当前帧的斩击信息 <para> Vector4的XYZW分别对应：横坐标偏移，纵坐标偏移，攻击距离，攻击角度）</para> </summary>
         public virtual Vector4 GetSlashInfo(double amount)
         {
+            if (this.attackInfo == null) return Vector4.Zero;
             int count = this.attackInfo.Length;
             float len = 1f / count;
             float amount2 = (float)amount % len / len;

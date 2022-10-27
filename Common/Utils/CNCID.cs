@@ -281,7 +281,7 @@ namespace CNC.Common.Utils
                 { TranquilityDirt, ItemType<Content.Items.TranquilityDirt>() },
                 { TranquilityStone, ItemType<Content.Items.TranquilityStone>() },
                 { ArgenteusOathKeeper, ItemType<Content.Items.Weapons.Melee.TwoHandedSword.ArgenteusOathKeeper>() },
-                { TheLightOfAuzzsia, ItemType<Content.Items.Weapons.Magic.TheLightOfAuzzsia>() },
+                { TheLightOfAuzzsia, ItemType<Content.Items.Weapons.Magic.Sceptre.TheLightOfAuzzsia>() },
                 { EmberOfNien, ItemType<Content.Items.Weapons.Melee.Hammer.EmberOfNien>() },
                 //{ FragmentarySoulDagger, ItemType<Content.Items.>() },
                 //{ SpiritIronGreatsword, ItemType<Content.Items.>() },

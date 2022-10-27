@@ -49,6 +49,7 @@ namespace CNC.Content.Projectiles.Remakes
 
         public override void OnSpawn()
         {
+            projectile.netUpdate2 = true;
             oldItem = owner.HeldItem;
             attackPos = projectile.Center;
             attackRot = projectile.rotation;

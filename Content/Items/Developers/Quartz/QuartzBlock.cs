@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
@@ -27,13 +28,12 @@ namespace CNC.Content.Items.Developers.Quartz
 
         public override void UpdateEquip(Player P)
         {
-            base.UpdateEquip(P);
             if (P.name == "Quartz" || P.name == "HHvs")
             {
                 //P.statDefense = 9999;
                 P.GetModPlayer<Common.Global.Players.InscriptionPlayer>().cooldownReductionMul = .1f;
                 P.GetModPlayer<Common.Global.Players.InscriptionPlayer>().skillDamageAdd = 1f;
-                P.GetModPlayer<Common.Global.Players.AllPlayer>().castTimeReduction += .5f;
+                P.GetModPlayer<Common.Global.Players.AllPlayer>().castTimeReduction += 1f;
                 P.GetModPlayer<Common.Global.Players.AllPlayer>().castingSpeed += .5f;
                 P.wingTime = 1;
                 P.statLifeMax2 *= 100;

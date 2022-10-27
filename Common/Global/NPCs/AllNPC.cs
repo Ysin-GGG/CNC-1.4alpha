@@ -77,6 +77,11 @@ namespace CNC.Common.Global.NPCs
             return base.PreAI(npc);
         }
 
+        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+        {
+            base.SendExtraAI(npc, bitWriter, binaryWriter);
+        }
+
         public override void DrawEffects(NPC npc, ref Color drawColor)
         {
             if (npc.GetGlobalNPC<AllNPC>().buff[CNCID.Buff.Glacier] && !npc.boss)

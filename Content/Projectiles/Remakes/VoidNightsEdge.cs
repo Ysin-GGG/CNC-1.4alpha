@@ -8,6 +8,7 @@ using CNC.Common.Utils;
 using CNC.Common.Global.Projectiles;
 using CNC.Content.DataStructures;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 
 namespace CNC.Content.Projectiles.Remakes
 {
@@ -43,6 +44,11 @@ namespace CNC.Content.Projectiles.Remakes
             projectile.localNPCHitCooldown = 25;
         }
 
+        public override void OnSpawn(IEntitySource source)
+        {
+            OnSpawn();
+        }
+
         public override void OnSpawn()
         {
             CNCUtils.PlaySound("Remakes/TrueNightsEdge/Spawn", projectile.Center, .25f, 1f);
@@ -50,12 +56,19 @@ namespace CNC.Content.Projectiles.Remakes
             CNCUtils.ScreenShake(10, new Vector2(0, 60f), new Vector2(0, 40f), .9f, default, owner);
             projectile.ai[0] = (projectile.velocity.X < 0).ToDirectionInt(1);
             projectile.velocity = Vector2.Zero;
+            projectile.netUpdate = true;
         }
 
         public override void HitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
             damage = 1;
             knockback = -15f;
+            crit = false;
+        }
+
+        public override void ModifyHitPvp(Player target, ref int damage, ref bool crit)
+        {
+            damage = 1;
             crit = false;
         }
 
@@ -256,10 +269,10 @@ namespace CNC.Content.Projectiles.Remakes
             {
                 Texture2D[] t2 =
                 {
-                        CNC.GetTexture("Assets/Effects/Trace1"),
-                        CNC.GetTexture(Texture + 2),
-                        CNC.GetTexture("Assets/Effects/Trace7"),
-                    };
+                    CNC.GetTexture("Assets/Effects/Trace1"),
+                    CNC.GetTexture(Texture + 2),
+                    CNC.GetTexture("Assets/Effects/Trace7"),
+                };
 
                 Main.spriteBatch.End();
                 Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
@@ -311,7 +324,10 @@ namespace CNC.Content.Projectiles.Remakes
                         if (n.rotation == 0 && !n.noGravity && !haveHit.Contains(n)) haveHit.Add(n);
                         n.rotation -= projectile.direction * MyMath.deg15 * MyMath.Lerp(1f, 0f, dist / range);
                         n.noGravity = true;
+                        n.netUpdate = true;
                     }
+                    if (e is Item i) NetMessage.SendData(MessageID.SyncItem, -1, -1, null, i.whoAmI);
+
                 }
             }
             int max = MyMath.Max(Main.maxNPCs, Main.maxItems, Main.maxGore);

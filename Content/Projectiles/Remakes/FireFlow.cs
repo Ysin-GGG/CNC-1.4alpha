@@ -1,4 +1,4 @@
-using System;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -16,6 +16,7 @@ namespace CNC.Content.Projectiles.Remakes
         private int time = 60;
         private int timer => time - projectile.timeLeft;
         private Color mainColor = new Color(242, 92, 34);
+        private bool upgrade = false;
         public override int countFrame => 4;
 
         public override void ResetDefaults()
@@ -37,6 +38,7 @@ namespace CNC.Content.Projectiles.Remakes
         {
             if (projectile.ai[0] != 0f)
             {
+                upgrade = true;
                 time = (int)(time * 1.5f);
                 projectile.timeLeft = time;
                 projectile.damage /= 2;
@@ -44,6 +46,8 @@ namespace CNC.Content.Projectiles.Remakes
                 projectile.extraUpdates = 1;
                 projectile.ignoreWater = true;
                 projectile.tileCollide = false;
+                projectile.netUpdate2 = true;
+                projectile.ai[0] = 0f;
             }
         }
 
@@ -52,8 +56,21 @@ namespace CNC.Content.Projectiles.Remakes
             if (CNC.Random.NextBool() || projectile.ai[0] != 0f) target.AddBuff(BuffID.OnFire, 180);
         }
 
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(time);
+            writer.Write(upgrade);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            time = reader.ReadInt32();
+            upgrade = reader.ReadBoolean();
+        }
+
         public override void AI()
         {
+            if (projectile.ai[0] != 0f) OnSpawn();
             if (timer < 25 && Alpha2 < 1f) Alpha2 += .04f;
             if (projectile.timeLeft < 30 && Alpha2 > 0f) Alpha2 -= .0334f;
             float extra = MyMath.sin(projectile.timeLeft % 10 / 10f * MyMath.pi2);
@@ -61,7 +78,7 @@ namespace CNC.Content.Projectiles.Remakes
             Anim001_Loop(projectile, 4, 0);
             projectile.position += new Vector2(0f, extra * 4f).RotatedBy(projectile.velocity.ToRotation());
             CNCUtils.AddLight(projectile.position, mainColor, .8f);
-            if (projectile.ai[0] == 0) CNCUtils.NewDust(projectile.Center, DustId.Fire, CNC.Random.NextFloat(1f, 2f), projectile.velocity * .2f, mainColor.Flash()).noGravity = true;
+            if (!upgrade) CNCUtils.NewDust(projectile.Center, DustId.Fire, CNC.Random.NextFloat(1f, 2f), projectile.velocity * .2f, mainColor.Flash()).noGravity = true;
             else
             {
                 int idx = Particle.NewParticle(
@@ -86,7 +103,7 @@ namespace CNC.Content.Projectiles.Remakes
             Rectangle? source = new Rectangle(0, projectile.frame * t.Height / countFrame, t.Width, t.Height / countFrame);
             Vector2 pos = projectile.Center - Main.screenPosition;
             Vector2 origin = source.Value.Size() / 2f;
-            if (projectile.ai[0] == 0)
+            if (!upgrade)
             {
                 t = ModContent.Request<Texture2D>("Terraria/Images/Projectile_666").Value;
                 source = null;
@@ -99,7 +116,7 @@ namespace CNC.Content.Projectiles.Remakes
 
         public override void Kill(int timeLeft)
         {
-            if(projectile.ai[0] != 0)
+            if(upgrade)
             {
                 CNCUtils.PlaySound(SoundID.Item14, projectile);
                 GenericExplosion e = CNCUtils.CreateExplosion(projectile);

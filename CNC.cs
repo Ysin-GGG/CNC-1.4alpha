@@ -97,8 +97,6 @@ namespace CNC
             Logger.Info(CNCLocalization.GetText("Misc.Loaded"));
             Logger.Info($"Mod {CNCLocalization.GetText("Misc.Version")}v{Version}");
             Logger.Info($"TML {CNCLocalization.GetText("Misc.Version")}v{TMLVersion}");
-            //AddEquipTexture(ModContent.GetModItem(ModContent.ItemType<Content.Items.Developers.HHvs.HHvsRobe>()), EquipType.Legs, "CNC/Content/Items/Developers/HHvs/HHvsRobe_Legs");
-            //UIManager.Instance.Load();
 
             if (!Main.dedServ)
             {
@@ -131,7 +129,7 @@ namespace CNC
 
         public override void PostSetupContent()
         {
-            //if (Main.dedServ) return;
+            if (Main.dedServ) return;
             #region 映射载入
             TmodFile modFiles = (TmodFile)typeof(Mod).GetProperty("File", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(this);
             CNCLocalization.Load("CNC", modFiles);

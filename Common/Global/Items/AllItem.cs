@@ -246,7 +246,7 @@ namespace CNC.Common.Global.Items
                         }
                         if (attack)
                         {
-                            CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.SolarHalo], (int)damage, 0f, (int)crit, player.whoAmI, 0f, 1f, 0, 0);
+                            CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.SolarHalo], (int)damage, 0f, (int)crit, player.whoAmI, 0f, 1f, 0, 0).netUpdate2 = true;
                             damage *= 3;
                             knockback *= 3f;
                             crit += 20f;
@@ -364,7 +364,7 @@ namespace CNC.Common.Global.Items
                             knockback *= 1.5f;
                             crit += 20f;
                             type = 6f;
-                            CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.PhantomExcalibur], 0, 0f, 0, player.whoAmI, 0f, 1f, 0, 0);
+                            CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.PhantomExcalibur], 0, 0f, 0, player.whoAmI, 0f, 1f, 0, 0).netUpdate2 = true;
                         }
                         break;
                     case ItemID.TrueNightsEdge:
@@ -424,7 +424,7 @@ namespace CNC.Common.Global.Items
                         }
                         if (attack)
                         {
-                            CNCUtils.NewProj(source, position + velocity * 24f, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.VoidNightsEdge], (int)(damage * 15f), 0f, (int)crit, player.whoAmI, 0f, 1f, 0, 0);
+                            CNCUtils.NewProj(source, position + velocity * 24f, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.VoidNightsEdge], (int)(damage * 15f), 0f, (int)crit, player.whoAmI, 0f, 1f, 0, 0).netUpdate2 = true;
                             damage *= 3;
                             knockback *= 1.5f;
                             crit += 20f;
@@ -438,7 +438,10 @@ namespace CNC.Common.Global.Items
                     if (control && player.All().CastingAccept) CNCUtils.PlaySound(SoundID.Item4, player);
                     if (attack)
                     {
-                        CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.AnattaSlash], (int)damage, knockback, (int)crit, player.whoAmI, 0f, 1f, type, 0);
+                        var slash = CNCUtils.NewProj(source, position, velocity, CNCID.Projectile.LegacyObject[CNCID.Projectile.AnattaSlash], (int)damage, knockback, (int)crit, player.whoAmI, 0f, 1f, type, 0).ModProjectile as Content.Projectiles.ShaderSlash;
+                        slash.projectile.ai[0] = type;
+                        slash.projectile.netUpdate2 = true;
+                        slash.scale *= player.GetAdjustedItemScale(item);
                         this.comboCur = 0;
                         this.comboNext = 0;
                         player.direction = (velocity.X < 0).ToDirectionInt(-1);
@@ -472,53 +475,60 @@ namespace CNC.Common.Global.Items
         public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             bool shoot = base.Shoot(item, player, source, position, velocity, type, damage, knockback);
-            type = CNCID.Projectile.LegacyObject[CNCID.Projectile.AnattaSlash];
-            velocity = new Vector2(1f, 0f).RotatedBy((Main.MouseWorld - player.Center).ToRotation());
-            float dmg = player.GetWeaponDamage(item);
-            float kb = player.GetWeaponKnockback(item);
-            float crit = player.GetWeaponCrit(item);
-            if (EnableAnatta(player))
+            if (player.IsMe())
             {
-                int ti = 0, ta = 0;
-                float ai0 = 0f;
+                type = CNCID.Projectile.LegacyObject[CNCID.Projectile.AnattaSlash];
+                velocity = new Vector2(1f, 0f).RotatedBy((Main.MouseWorld - player.Center).ToRotation());
+                float dmg = player.GetWeaponDamage(item);
+                float kb = player.GetWeaponKnockback(item);
+                float crit = player.GetWeaponCrit(item);
+                if (EnableAnatta(player))
+                {
+                    int ti = 0, ta = 0;
+                    float ai0 = 0f;
+                    switch (item.type)
+                    {
+                        case ItemID.Meowmere:
+                            ti = item.useTime;
+                            ta = item.useAnimation;
+                            ai0 = 1f;
+                            break;
+                        case ItemID.FieryGreatsword:
+                            ta = ti = 30;
+                            dmg *= new float[] { .9f, .95f, 1.05f, 1.2f }[this.comboCur];
+                            ai0 = 3f + this.comboCur * .1f;
+                            break;
+                        case ItemID.TrueExcalibur:
+                            ta = ti = new int[] { 30, 40, 10, 20, 40 }[comboCur];
+                            dmg *= new float[] { 1.1f, .95f, 1.5f }[this.comboCur / 2];
+                            ai0 = 5f + this.comboCur * .1f;
+                            if (this.comboCur < 2) shoot = false;
+                            break;
+                        case ItemID.TrueNightsEdge:
+                            ta = ti = new int[] { 32, 44, 50 }[comboCur];
+                            dmg *= new float[] { 1.05f, 1.2f, 1.3f }[this.comboCur];
+                            ai0 = 7f + this.comboCur * .1f;
+                            if (this.comboCur < 1) shoot = false;
+                            break;
+                    }
+                    if (ti > 0 && ta > 0)
+                    {
+                        player.direction = (velocity.X < 0).ToDirectionInt(-1);
+                        player.itemTimeMax = player.itemTime = (int)(ti / player.GetAttackSpeed(DamageClass.Melee));
+                        player.itemAnimationMax = player.itemAnimation = (int)(ta / player.GetAttackSpeed(DamageClass.Melee));
+                        var slash = CNCUtils.NewProj(source, position, velocity, type, (int)dmg, kb, (int)crit, player.whoAmI, 0f, 1f, ai0, 0f).ModProjectile as Content.Projectiles.ShaderSlash;
+                        slash.projectile.ai[0] = ai0;
+                        slash.scale *= player.GetAdjustedItemScale(item);
+                        slash.projectile.netUpdate2 = true;
+
+                    }
+                }
                 switch (item.type)
                 {
-                    case ItemID.Meowmere:
-                        ti = item.useTime;
-                        ta = item.useAnimation;
-                        ai0 = 1f;
-                        break;
                     case ItemID.FieryGreatsword:
-                        ta = ti = 30;
-                        dmg *= new float[] { .9f, .95f, 1.05f, 1.2f }[this.comboCur];
-                        ai0 = 3f + this.comboCur * .1f;
-                        break;
-                    case ItemID.TrueExcalibur:
-                        ta = ti = new int[] { 30, 40, 10, 20, 40 }[comboCur];
-                        dmg *= new float[] { 1.1f, .95f, 1.5f }[this.comboCur / 2];
-                        ai0 = 5f + this.comboCur * .1f;
-                        if (this.comboCur < 2) shoot = false;
-                        break;
-                    case ItemID.TrueNightsEdge:
-                        ta = ti = new int[] { 32, 44, 50 }[comboCur];
-                        dmg *= new float[] { 1.05f, 1.2f, 1.3f }[this.comboCur];
-                        ai0 = 7f + this.comboCur * .1f;
-                        if (this.comboCur < 1) shoot = false;
+                        shoot = false;
                         break;
                 }
-                if (ti > 0 && ta > 0)
-                {
-                    player.direction = (velocity.X < 0).ToDirectionInt(-1);
-                    player.itemTimeMax = player.itemTime = (int)(ti / player.GetAttackSpeed(DamageClass.Melee));
-                    player.itemAnimationMax = player.itemAnimation = (int)(ta / player.GetAttackSpeed(DamageClass.Melee));
-                    (CNCUtils.NewProj(source, position, velocity, type, (int)dmg, kb, (int)crit, player.whoAmI, 0f, 1f, ai0, 0f).ModProjectile as Content.Projectiles.ShaderSlash).scale *= player.GetAdjustedItemScale(item);
-                }
-            }
-            switch (item.type)
-            {
-                case ItemID.FieryGreatsword:
-                    shoot = false;
-                    break;
             }
             return shoot;
         }

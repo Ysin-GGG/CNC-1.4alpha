@@ -42,7 +42,7 @@ namespace CNC.Common.Global.Players
         /// <summary> 当前充能所需时间 </summary>
         public float castTimeMax;
         /// <summary> 当前充能所需时间 </summary>
-        public float CastTimeMax2 => this.castTimeMax / (1 + MyMath.Clamp(this.castTimeReduction, -.5f, 3f));
+        public float CastTimeMax2 => this.castTimeMax / MyMath.Clamp(this.castTimeReduction, .333f, 3f);
         /// <summary> 当前充能所需时间 </summary>
         public float CastTimePrecent => MyMath.Clamp(this.castTime / this.CastTimeMax2, 0f, 1f);
         /// <summary> 处于充能状态 </summary>
@@ -130,16 +130,16 @@ namespace CNC.Common.Global.Players
             }
             if (this.ignoreMouseTime > 0) this.ignoreMouseTime--;
 
-            if (this.MouseToCast == 1) this.CastTimeToDraw = this.castTime = this.leftCastTime += MyMath.Clamp(this.castingSpeed, .5f, 3f);
-            if (this.MouseToCast == 2) this.CastTimeToDraw = this.castTime = this.rightCastTime += MyMath.Clamp(this.castingSpeed, .5f, 3f);
-            if (this.leftCastTime < 0) this.leftCastTime = MyMath.Max(this.leftCastTime + 1f, -2f);
-            if (this.rightCastTime < 0) this.rightCastTime = MyMath.Max(this.rightCastTime + 1f, -2f);
+            if (this.MouseToCast == 1) this.CastTimeToDraw = this.castTime = this.leftCastTime += MyMath.Clamp(this.castingSpeed, .333f, 3f);
+            if (this.MouseToCast == 2) this.CastTimeToDraw = this.castTime = this.rightCastTime += MyMath.Clamp(this.castingSpeed, .333f, 3f);
+            if (this.leftCastTime < 0) this.leftCastTime = MyMath.Max(this.leftCastTime + 1f, -1f);
+            if (this.rightCastTime < 0) this.rightCastTime = MyMath.Max(this.rightCastTime + 1f, -1f);
 
             for (int i = 0; i < this.CDReduction.Length; i++) this.CDReduction[i] = 1f;
             for (int i = 0; i < this.buff.Length; i++) this.buff[i] = false;
             this.manaReturn = 0;
             this.castingSpeed = 1f;
-            this.castTimeReduction = 0f;
+            this.castTimeReduction = 1f;
             this.Tick = (Tick + 1) % 60;
         }
 
@@ -390,7 +390,7 @@ namespace CNC.Common.Global.Players
                         new drawData(t[1], pos, flip, scale, opacity),
                         new drawData(t[2], pos, flip, scale, opacity, flip ? t[2].TopRight() : t[2].TopLeft(), new Vector2(progress, 1f), color),
                         new drawData(t[3], pos, flip, scale, opacity),
-                        new drawData(ap.castTimeMax > ap.CastTimeMax2 ? t[4] : t[5], pos, flip, scale, opacity),
+                        new drawData(t[4], pos, flip, scale, opacity),
                         new drawData(t[6], pos, flip, scale, opacity),
                     };
                     d[0].Center = d[1].Center;
@@ -402,7 +402,9 @@ namespace CNC.Common.Global.Players
                     d[4].Center = d[3].Left;
                     d[4].pos.X += 8f;
                     d[4].pos.X += (t[3].Width - 10) * line;
-                    for (int i = 0; i < d.Length; i++) d[i].Draw(Main.spriteBatch);
+                    for (int i = 0; i < d.Length; i++)
+                        if (i == 4 && ap.castTimeMax <= ap.CastTimeMax2) continue;
+                        else d[i].Draw(Main.spriteBatch);
                 }
             }
         }
@@ -449,7 +451,7 @@ namespace CNC.Common.Global.Players
 
         public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
         {
-            if (drawInfo.drawPlayer.IsMe() && drawInfo.drawPlayer.HasItem(ModContent.ItemType<Content.Items.Developers.Quartz.Anatta>()))
+            if (drawInfo.drawPlayer.HasItem(ModContent.ItemType<Content.Items.Developers.Quartz.Anatta>()))
                 switch (drawInfo.heldItem.type)
                 {
                     case ItemID.TrueNightsEdge:

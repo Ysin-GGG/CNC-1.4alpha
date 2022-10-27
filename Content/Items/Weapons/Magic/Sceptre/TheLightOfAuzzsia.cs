@@ -13,11 +13,10 @@ using Terraria.GameContent.UI.BigProgressBar;
 using ReLogic.Content;
 using Terraria.Audio;
 
-namespace CNC.Content.Items.Weapons.Magic
+namespace CNC.Content.Items.Weapons.Magic.Sceptre
 {
     public class TheLightOfAuzzsia : CNCWeapon.Magic.Sceptre
     {
-
         public override void ResetDefaults()
         {
             item.width = 48;

@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -29,10 +30,9 @@ namespace CNC.Content.NPCs.SpiritBoss
 
         private Texture2D[] bossAnim =
         {
-            CNC.GetTexture("Content/NPCs/SpiritBoss/" + "breath"),
-            CNC.GetTexture("Content/NPCs/SpiritBoss/" + "raise-hand"),
-            CNC.GetTexture("Content/NPCs/SpiritBoss/" + "slashing"),
-            CNC.GetTexture("Content/NPCs/SpiritBoss/" + "cowered"),
+            CNC.GetTexture("Content/NPCs/SpiritBoss/" + "SpiritBoss"),
+            CNC.GetTexture("Content/NPCs/SpiritBoss/" + "Channel"),
+            CNC.GetTexture("Content/NPCs/SpiritBoss/" + "Attack"),
         };
 
         /// <summary> 暗淡背景透明度 </summary>
@@ -95,13 +95,17 @@ namespace CNC.Content.NPCs.SpiritBoss
         public int Damage_Branch => GetDamage(70, 80, 90);
         /// <summary> 常规背景暗淡程度 </summary>
         public float BlackIntensityCommon => .75f;
+        /// <summary>  </summary>
+        public float AnimTime = 0;
+        /// <summary>  </summary>
+        public bool Channel = false;
 
         private int[] shadowFrame = new int[shadowCount];
         private const int shadowCount = 25;
 
         public override void ResetStaticDefaults()
         {
-            countFrame = 9;
+            countFrame = 18;
             NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData
             {
                 SpecificallyImmuneTo = new int[] {
@@ -123,8 +127,8 @@ namespace CNC.Content.NPCs.SpiritBoss
 
         public override void ResetDefaults()
         {
-            npc.width = 52;
-            npc.height = 100;
+            npc.width = 132;
+            npc.height = 112;
             npc.aiStyle = -1;
             npc.knockBackResist = 0;
             npc.damage = 0;
@@ -180,35 +184,7 @@ namespace CNC.Content.NPCs.SpiritBoss
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            switch (this.ActionState)
-            {
-                case -1:
-                case -3:
-                    this.DrawBoss_Body(spriteBatch, 3, this.ActionTime);
-                    break;
-                case -2:
-                case 0:
-                case 1:
-                case 2:
-                case 6:
-                    this.DrawBoss_Body(spriteBatch, 0, this.ActionTime);
-                    break;
-                case 3:
-                    this.DrawBoss_Body(spriteBatch, 2, this.ActionTime2);
-                    break;
-                case 4:
-                    this.DrawBoss_Body(spriteBatch, 3, this.ActionTime);
-                    break;
-                case 5:
-                    this.DrawBoss_Body(spriteBatch, 2, this.ActionTime);
-                    break;
-                case 7:
-                    if (this.ActionTime > 54) this.DrawBoss_Body(spriteBatch, 2, 0);
-                    else this.DrawBoss_Body(spriteBatch, 0, this.ActionTime);
-                    break;
-
-            }
-
+            this.DrawBoss_Body(spriteBatch, false);
             if (this.ShieldStrength > 0) this.DrawEffect_Shield(spriteBatch, CNCID.Colors.SpiritBoss, (this.ShieldTime < 4 ? (this.ShieldTime / 2) : (this.ShieldTime - 4) / 3 % 5 + 2));
             if (this.MovingTime < 0)
             {
@@ -219,22 +195,31 @@ namespace CNC.Content.NPCs.SpiritBoss
         }
         
         /// <summary> 绘制boss的动画及其自身特效 </summary>
-        private void DrawBoss_Body(SpriteBatch spriteBatch, int type, int tick)
+        private void DrawBoss_Body(SpriteBatch spriteBatch, bool attack)
         {
-            int[] frame = { 9, 9, 6, 5 };//每个动作的帧数
-            int[] tpf = { 6, 6, 5, 8 };//每帧嘀嗒数
+            int type = this.AnimTime < 0 ? 1 : 0;
+            int[] frame = { 18, 18, 14 };//每个动作的帧数
+            int[] tpf = { 4, 4, 3 };//每帧嘀嗒数
             Texture2D t = bossAnim[type];
             int f = frame[type];
             int height = bossAnim[type].Height / f;
             Rectangle source = new Rectangle(0, f * height, t.Width, height);
             Vector2 origin = source.Size() / 2f;
 
-            npc.width = bossAnim[type].Width;
+            npc.width = bossAnim[type].Width / 2;
             npc.height = bossAnim[type].Height / f;
-            
-            if (type == 2) this.Frame = MyMath.Min(tick / tpf[type], f - 1);//挥砍
-            else this.Frame = tick / tpf[type] % f;
-            npc.frame.Y = 0;// this.Frame * t.Height / f;
+
+            if (this.AnimTime < 0) 
+            {
+                int channelAnimFrame = 5;
+                int channelAnimTime = channelAnimFrame * tpf[1];
+                this.Frame = (int)Math.Abs(this.AnimTime) / tpf[1];
+                if (this.Frame >= frame[1] + channelAnimFrame) this.AnimTime += channelAnimTime * 2;//回退动画播放
+                if (this.Frame >= frame[1] - channelAnimFrame)
+                    this.Frame = this.Frame < frame[1] ? this.Frame : (frame[1] + channelAnimFrame - this.Frame) + (frame[1] - channelAnimFrame - 1);
+            }
+            else this.Frame = (int)this.AnimTime / tpf[0] % f;
+            npc.frame.Y = 0;
 
             source.Y = this.Frame * height;
 
@@ -447,6 +432,9 @@ namespace CNC.Content.NPCs.SpiritBoss
                 if (npc.alpha == 0 || npc.alpha == 255) this.Fade = 0;
             }
 
+            if (!this.Channel) this.AnimTime++; 
+            else this.AnimTime = MyMath.Min(this.AnimTime - 1, 0f);
+
             //当盾耐久大于0时，为盾的存在时间计时
             if (this.ShieldStrength > 0) this.ShieldTime++;
             //盾的存在时间超过指定数值后，重置相关数据并生成爆炸弹幕
@@ -547,6 +535,7 @@ namespace CNC.Content.NPCs.SpiritBoss
             this.ActionCooldown = 120 + extraActionCooldown;
             this.ActionTime = 0;
             this.ActionState = 0;
+            this.Channel = false;
         }
 
         /// <summary> 决定下个行动 </summary>
@@ -644,6 +633,7 @@ namespace CNC.Content.NPCs.SpiritBoss
             //蓄力
             if (this.ActionTime < 60)
             {
+                this.Channel = true;
                 //后撤蓄力
                 if (this.ActionTime == 0) npc.velocity = -Vector2.Normalize(Target.position - npc.position) * 8f;
                 else npc.velocity *= .95f;
@@ -768,6 +758,7 @@ namespace CNC.Content.NPCs.SpiritBoss
                 {
                     if (this.ActionTime2++ == 1)
                     {
+                        this.Channel = false;
                         this.NextPosition = this.SpawnPosition;
                         this.Action_Teleport();
                     }
@@ -824,6 +815,7 @@ namespace CNC.Content.NPCs.SpiritBoss
                 this.Rage = true;
                 this.DrawShadow = true;
                 this.AutoTurnAround = false;
+                this.Channel = true;
             }
             else if (this.ActionTime > 30 && BlackAlpha < .7f) BlackAlpha += .01f;
             if (this.ActionTime >= beginTime)
@@ -863,6 +855,7 @@ namespace CNC.Content.NPCs.SpiritBoss
                 //融入黑暗
                 if (this.ActionTime <= 60)
                 {
+                    this.Channel = true;
                     this.ActionTime2 = 0;
                     this.BlackAlpha = MyMath.Min(this.BlackAlpha + .025f, 1f);
                     this.Alpha2 = MyMath.Max(this.Alpha2 - .025f, 0f);
@@ -1010,6 +1003,7 @@ namespace CNC.Content.NPCs.SpiritBoss
             {
                 this.floatData[1] -= 320f;//this.NextPosition.Y -= 320f;
                 this.Action_MoveQuickly(15);
+                this.Channel = true;
                 CNCUtils.PlaySound(SoundID.Item83, npc.Center);
             }
             //生成棘刺
@@ -1039,6 +1033,7 @@ namespace CNC.Content.NPCs.SpiritBoss
         {
             if (this.Alpha2 < 1f)
             {
+                this.Channel = true;
                 if (this.ActionTime > 60) this.Alpha2 += .02f;
                 if (this.ActionTime == 60) CNCUtils.PlaySound(SoundID.Item123, npc);
                 if (this.ActionTime % 10 == 0) CNCUtils.ScreenShake(10, new Vector2(80, 0), new Vector2(10, 0), .9f);
@@ -1120,6 +1115,7 @@ namespace CNC.Content.NPCs.SpiritBoss
             {
                 this.Sky = true;
                 this.Rage = true;
+                this.Channel = true;
                 this.AutoTurnAround = false;
                 if (this.BlackAlpha < 1f) this.BlackAlpha += .01f;
                 if (this.ActionTime < 250)

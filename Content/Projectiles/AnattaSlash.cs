@@ -20,14 +20,13 @@ namespace CNC.Content.Projectiles
         private EffectTimer lightWidth;
         private EffectTimer lightHeight;
         private EffectTimer lightFlash;
+        public float type = 0;
 
         public override void ResetDefaults()
         {
             base.ResetDefaults();
             projectile.DamageType = DamageClass.Melee;
         }
-
-        public override void OnSpawn(IEntitySource source) => this.OnSpawn();
 
         public override void OnSpawn()
         {
@@ -48,7 +47,13 @@ namespace CNC.Content.Projectiles
             var dir = -1;
             var style = 2;
             var fadeMult = .5d;
-            switch (projectile.ai[0])
+            if (projectile.ai[0] != 0)
+            {
+                this.type = this.projectile.ai[0];
+                projectile.netUpdate2 = true;
+                projectile.ai[0] = 0;
+            }
+            switch (type)
             {
                 case 8f:
                     for (int i = 0; i < info.Length; i++)
@@ -200,7 +205,7 @@ namespace CNC.Content.Projectiles
                 case 5.2f:
                     for (int i = 0; i < info.Length; i++)
                     {
-                        int dir2 = (projectile.ai[0] == 5.2f).ToDirectionInt(1);
+                        int dir2 = (type == 5.2f).ToDirectionInt(1);
                         float factor = (float)i / info.Length;
                         float rotation = MyMath.deg01 * (135 - factor * 270) * dir2;
                         Vector2 pos = new Vector2(10f, 0f).RotatedBy(rotation);
@@ -225,7 +230,7 @@ namespace CNC.Content.Projectiles
                 case 5f:
                     for (int i = 0; i < info.Length; i++)
                     {
-                        int dir2 = (projectile.ai[0] == 5f).ToDirectionInt(1);
+                        int dir2 = (type == 5f).ToDirectionInt(1);
                         float factor = (float)i / info.Length;
                         float rotation = MyMath.deg01 * (135 - factor * 270) * dir2;
                         Vector2 pos = new Vector2(12f, 0f).RotatedBy(rotation + dir2 * MyMath.deg15);
@@ -429,7 +434,7 @@ namespace CNC.Content.Projectiles
         public override void HitNPC(NPC target, int damage, float knockback, bool crit)
         {
             base.HitNPC(target, damage, knockback, crit);
-            switch (projectile.ai[0])
+            switch (this.type)
             {
                 case 4f:
                     target.AddBuff(BuffID.OnFire, 180);
@@ -447,11 +452,12 @@ namespace CNC.Content.Projectiles
 
         public override void AI()
         {
+            if (projectile.ai[0] != 0) OnSpawn();
+            if (this.attackInfo == null) return;
             base.AI();
             Color c1 = Color.White;
             Color c2 = CNCID.Colors.Expert;
-            float type = projectile.ai[0];
-            switch (type)
+            switch (this.type)
             {
                 case 8f:
                     c1 = new Color(64, 192, 64);
@@ -523,7 +529,8 @@ namespace CNC.Content.Projectiles
                         Vector2 begin = projectile.Center + (this.hitboxOffset + info.XY()).RotatedBy(rot);
                         Vector2 end = begin + new Vector2(info.Z, 0).RotatedBy(rot);
                         //NewProjectile((begin + end) / 2f, new Vector2(8f, 0f).RotatedBy(rot), CNCID.Projectile.LegacyObject[CNCID.Projectile.FireFlow], projectile.damage, rot, 0f, 0f, 1f, 1f, 0f);
-                        CNCUtils.NewProj(source, (begin + end) / 2f, new Vector2(4f, 0f).RotatedBy(rot), CNCID.Projectile.LegacyObject[CNCID.Projectile.FireFlow], projectile.damage, 0f, ai0: 1f);
+                        var p2 = CNCUtils.NewProj(source, (begin + end) / 2f, new Vector2(4f, 0f).RotatedBy(rot), CNCID.Projectile.LegacyObject[CNCID.Projectile.FireFlow], projectile.damage, 0f, ai0: 1f);
+                        p2.ai[0] = 1f;
                     }
                     break;
                 case 3.3f:
@@ -556,7 +563,9 @@ namespace CNC.Content.Projectiles
                         Vector2 end = begin + new Vector2(info.Z, 0).RotatedBy(rot);
                         rot = (end - begin).ToRotation();
                         //NewProjectile((begin + end) / 2f, new Vector2(6f, 0f).RotatedBy(rot), CNCID.Projectile.LegacyObject[CNCID.Projectile.FireFlow], projectile.damage, rot, 0f, 0f, 1f, 0f, 0f);
-                        CNCUtils.NewProj(source, (begin + end) / 2f, new Vector2(6f, 0f).RotatedBy(rot), CNCID.Projectile.LegacyObject[CNCID.Projectile.FireFlow], projectile.damage / 2, 0f, ai0: 0f);
+                        var p2 = CNCUtils.NewProj(source, (begin + end) / 2f, new Vector2(6f, 0f).RotatedBy(rot), CNCID.Projectile.LegacyObject[CNCID.Projectile.FireFlow], projectile.damage / 2, 0f, ai0: 0f);
+                        p2.ai[0] = 0f;
+                        p2.netUpdate2 = true;
                     }
                     break;
                 case 2f:
@@ -631,6 +640,7 @@ namespace CNC.Content.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
+            if (CNC.IsMPServer || this.attackInfo == null) return false;
             bool flag = base.PreDraw(ref lightColor);
             double time = this.fading ? 1.0d : 1.0d - (double)projectile.timeLeft / this.timeLeft;
             float alpha = MyMath.Lerp(1f, 0f, (float)(Math.Abs(time - .5f) * Math.Abs(time - .5f)) * 4f);
@@ -648,6 +658,7 @@ namespace CNC.Content.Projectiles
 
         public override void PostDraw(Color lightColor)
         {
+            if (CNC.IsMPServer || this.attackInfo == null) return;
             Texture2D[] glow =
             {
                 Mod.Assets.Request<Texture2D>("Assets/Glow/Lamp").Value,

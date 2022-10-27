@@ -68,7 +68,7 @@ namespace CNC.Content.Projectiles.IceTooth
                     Vector2 dustPos = new Vector2(projectile.Center.X - projectile.width, projectile.Center.Y);
                     Dust.NewDust(projectile.Center, projectile.width, projectile.height, DustID.IceTorch, projectile.oldVelocity.X / -2f, projectile.oldVelocity.Y * -2f, 100, Color.LightBlue, 1.5f);
                 }
-                if (target.HasBuff(buff1) && !target.HasBuff(buff2) && Main.rand.Next(10) == 0 && this.frozen) target.AddBuff(buff2, 90);
+                if (this.frozen && target.HasBuff(buff1) && !target.HasBuff(buff2) && Main.rand.Next(10) == 0) target.AddBuff(buff2, 90);
                 else target.AddBuff(buff1, 300);
             }
         }

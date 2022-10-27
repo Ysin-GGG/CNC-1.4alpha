@@ -89,7 +89,7 @@ namespace CNC.Common.Global.Items
         /// <param name="allowRelease">充能时是否不需要按紧（默认true）</param>
         /// <param name="cannotBeCanceled">充能不受被击影响（默认false）</param>
         /// <returns>是否开始充能（默认在castTimeMax大于0时返回true，反之false）</returns>
-        public virtual bool OnCast(Player player, ref int mouse, ref float castTime, ref float castTimeMax, ref bool allowReleasem, ref bool cannotBeCanceled) => castTimeMax > 0;
+        public virtual bool OnCast(Player player, ref int mouse, ref float castTime, ref float castTimeMax, ref bool allowRelease, ref bool cannotBeCanceled) => castTimeMax > 0;
 
         /// <summary> 充能完成后的弹幕发射 </summary>
         /// <param name="player">该弹幕归属的玩家</param>
