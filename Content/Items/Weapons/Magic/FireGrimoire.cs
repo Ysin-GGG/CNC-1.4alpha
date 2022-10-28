@@ -29,7 +29,8 @@ namespace CNC.Content.Items.Weapons.Magic
             item.UseSound = SoundID.DD2_BetsyFireballShot;
             item.shoot = CNCID.Projectile.LegacyObject[CNCID.Projectile.FireBall];
             item.shootSpeed = 16f;
-            staff = true;
+            staff = false;
+            CNCStaff = true;
             clazz = 32;
         }
 
