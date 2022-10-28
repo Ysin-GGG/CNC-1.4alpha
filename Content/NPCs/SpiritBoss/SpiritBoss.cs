@@ -95,10 +95,12 @@ namespace CNC.Content.NPCs.SpiritBoss
         public int Damage_Branch => GetDamage(70, 80, 90);
         /// <summary> 常规背景暗淡程度 </summary>
         public float BlackIntensityCommon => .75f;
-        /// <summary>  </summary>
+        /// <summary> 动画计时器 </summary>
         public float AnimTime = 0;
-        /// <summary>  </summary>
-        public bool Channel = false;
+        /// <summary> 吟唱状态动画 </summary>
+        public bool AnimChannel = false;
+        /// <summary> 攻击状态动画 </summary>
+        public bool AnimAttack = false;
 
         private int[] shadowFrame = new int[shadowCount];
         private const int shadowCount = 25;
@@ -432,7 +434,7 @@ namespace CNC.Content.NPCs.SpiritBoss
                 if (npc.alpha == 0 || npc.alpha == 255) this.Fade = 0;
             }
 
-            if (!this.Channel) this.AnimTime++; 
+            if (!this.AnimChannel) this.AnimTime++; 
             else this.AnimTime = MyMath.Min(this.AnimTime - 1, 0f);
 
             //当盾耐久大于0时，为盾的存在时间计时
@@ -535,7 +537,7 @@ namespace CNC.Content.NPCs.SpiritBoss
             this.ActionCooldown = 120 + extraActionCooldown;
             this.ActionTime = 0;
             this.ActionState = 0;
-            this.Channel = false;
+            this.AnimChannel = false;
         }
 
         /// <summary> 决定下个行动 </summary>
@@ -633,7 +635,7 @@ namespace CNC.Content.NPCs.SpiritBoss
             //蓄力
             if (this.ActionTime < 60)
             {
-                this.Channel = true;
+                this.AnimChannel = true;
                 //后撤蓄力
                 if (this.ActionTime == 0) npc.velocity = -Vector2.Normalize(Target.position - npc.position) * 8f;
                 else npc.velocity *= .95f;
@@ -758,7 +760,7 @@ namespace CNC.Content.NPCs.SpiritBoss
                 {
                     if (this.ActionTime2++ == 1)
                     {
-                        this.Channel = false;
+                        this.AnimChannel = false;
                         this.NextPosition = this.SpawnPosition;
                         this.Action_Teleport();
                     }
@@ -815,7 +817,7 @@ namespace CNC.Content.NPCs.SpiritBoss
                 this.Rage = true;
                 this.DrawShadow = true;
                 this.AutoTurnAround = false;
-                this.Channel = true;
+                this.AnimChannel = true;
             }
             else if (this.ActionTime > 30 && BlackAlpha < .7f) BlackAlpha += .01f;
             if (this.ActionTime >= beginTime)
@@ -855,7 +857,7 @@ namespace CNC.Content.NPCs.SpiritBoss
                 //融入黑暗
                 if (this.ActionTime <= 60)
                 {
-                    this.Channel = true;
+                    this.AnimChannel = true;
                     this.ActionTime2 = 0;
                     this.BlackAlpha = MyMath.Min(this.BlackAlpha + .025f, 1f);
                     this.Alpha2 = MyMath.Max(this.Alpha2 - .025f, 0f);
@@ -1003,7 +1005,7 @@ namespace CNC.Content.NPCs.SpiritBoss
             {
                 this.floatData[1] -= 320f;//this.NextPosition.Y -= 320f;
                 this.Action_MoveQuickly(15);
-                this.Channel = true;
+                this.AnimChannel = true;
                 CNCUtils.PlaySound(SoundID.Item83, npc.Center);
             }
             //生成棘刺
@@ -1033,7 +1035,7 @@ namespace CNC.Content.NPCs.SpiritBoss
         {
             if (this.Alpha2 < 1f)
             {
-                this.Channel = true;
+                this.AnimChannel = true;
                 if (this.ActionTime > 60) this.Alpha2 += .02f;
                 if (this.ActionTime == 60) CNCUtils.PlaySound(SoundID.Item123, npc);
                 if (this.ActionTime % 10 == 0) CNCUtils.ScreenShake(10, new Vector2(80, 0), new Vector2(10, 0), .9f);
@@ -1115,7 +1117,7 @@ namespace CNC.Content.NPCs.SpiritBoss
             {
                 this.Sky = true;
                 this.Rage = true;
-                this.Channel = true;
+                this.AnimChannel = true;
                 this.AutoTurnAround = false;
                 if (this.BlackAlpha < 1f) this.BlackAlpha += .01f;
                 if (this.ActionTime < 250)

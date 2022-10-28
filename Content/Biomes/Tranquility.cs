@@ -36,7 +36,9 @@ namespace CNC.Content.Biomes
         {
             bool b1 = ModContent.GetInstance<TileCount>().blockCount >= 40;
             bool b2 = player.ZoneRockLayerHeight || player.ZoneDirtLayerHeight || player.ZoneOverworldHeight;
-            return player.GetModPlayer<Common.Global.Players.AllPlayer>().zone[0] = b1 && b2;
+            bool res = player.GetModPlayer<Common.Global.Players.AllPlayer>().zone[0] = b1 && b2;
+            CNC.SetSky("Tranquility", res);
+            return res;
         }
 
         class TileCount : ModSystem

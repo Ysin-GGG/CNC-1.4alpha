@@ -46,6 +46,7 @@ namespace CNC.Content
             this.active = true;
             this.visible = true;
             this.opacity = 0f;
+            this.OnActivate();
         }
 
         public sealed override void Deactivate(params object[] args)
@@ -53,23 +54,18 @@ namespace CNC.Content
             this.active = false;
             this.visible = true;
             this.opacity = 1f;
+            this.OnDeactivate();
         }
 
-        public override void Update(GameTime gameTime)
+        public sealed override void Update(GameTime gameTime)
         {
             if (this.active && this.opacity < 1f) this.opacity = MyMath.Min(this.opacity + this.opacityIn, 1f);
             if (!this.active && this.opacity > 0f) this.opacity = MyMath.Max(this.opacity - this.opacityOut, 0f);
             if (this.active && this.opacity >= 0f) this.visible = true;
             if (!this.active && this.opacity <= 0f) this.visible = false;
+            this.Update();
         }
         
-        public void Update()
-        {
-            if (this.active && this.opacity < 1f) this.opacity = MyMath.Min(this.opacity + this.opacityIn, 1f);
-            if (!this.active && this.opacity > 0f) this.opacity = MyMath.Max(this.opacity - this.opacityOut, 0f);
-            if (this.active && this.opacity >= 0f) this.visible = true;
-            if (!this.active && this.opacity <= 0f) this.visible = false;
-        }
 
         public override void Draw(SpriteBatch spriteBatch, float minDepth, float maxDepth)
         {
@@ -84,6 +80,9 @@ namespace CNC.Content
         public override float GetCloudAlpha() => MyMath.Lerp(base.GetCloudAlpha(), this.cloudAlpha, this.opacity);
         public override Color OnTileColor(Color inColor) => (this.visible && this.tileColor.HasValue) ? Color.Lerp(inColor, this.tileColor.Value, this.opacity * this.intensity) : inColor;
 
+        public virtual void Update() { }
         public virtual void SetDefaults() { }
+        public virtual void OnActivate() { }
+        public virtual void OnDeactivate() { }
     }
 }

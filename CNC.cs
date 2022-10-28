@@ -74,8 +74,8 @@ namespace CNC
         public static void SetSky(string name, bool activate)
         {
             name = "CNC:" + name + "Sky";
-            if (activate && !SkyManager.Instance[name].IsActive()) SkyManager.Instance.Activate(name);
-            if (!activate && SkyManager.Instance[name].IsActive()) SkyManager.Instance.Deactivate(name);
+            if (activate && !SkyManager.Instance[name].IsActive() && !(SkyManager.Instance[name] as Content.BiomeSky).active) SkyManager.Instance.Activate(name);
+            if (!activate && SkyManager.Instance[name].IsActive() && (SkyManager.Instance[name] as Content.BiomeSky).active) SkyManager.Instance.Deactivate(name);
         }
 
         public static Filter SetFilter(string name, bool activate)
@@ -220,6 +220,7 @@ namespace CNC
         private void LoadSkies()
         {
             SkyManager.Instance["CNC:SpiritBossSky"] = new Content.Skies.SpiritBossSky();
+            SkyManager.Instance["CNC:TranquilitySky"] = new Content.Skies.TranquilitySky();
         }
 
         private void LoadHooks()
