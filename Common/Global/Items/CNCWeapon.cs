@@ -63,6 +63,7 @@ namespace CNC.Common.Global.Items
                         CNCUtils.NewProj(source, position, velocity, item.shoot, (int)damage, knockback, (int)crit, player.whoAmI, 0f, 1f, 0f, 0f);
                         CNCUtils.PlaySound(item.UseSound.Value, player);
                     }
+                    player.direction = (velocity.X < 0).ToDirectionInt(-1);
                     player.All().ResetCasting(false);
                     player.ApplyItemTime(item);
                     player.ApplyItemAnimation(item);

@@ -17,7 +17,7 @@ namespace CNC.Common.Utils
     {
         public abstract class Buff
         {
-            public const short MaxObject = 10;
+            public const short MaxObject = 12;
             #region ID
             /// <summary> 灵狐 </summary>
             public const short MiracleFox = 1;
@@ -74,7 +74,7 @@ namespace CNC.Common.Utils
                 { Gelid, BuffType<Content.Buffs.Gelid>() },
                 { Glacier, BuffType<Content.Buffs.Glacier>() },
                 { Overloaded, BuffType<Content.Buffs.Overloaded>() },
-                { Surged, BuffType<Content.Buffs.Overloaded>() },
+                { Surged, BuffType<Content.Buffs.Surged>() },
                 { Sanctified, BuffType<Content.Buffs.Sanctified>() },
                 { Dizzy, BuffType<Content.Buffs.Dizzy>() },
                 { Bleeding, BuffType<Content.Buffs.Bleeding>() },
@@ -203,7 +203,7 @@ namespace CNC.Common.Utils
 
         public static class Item
         {
-            public const short MaxObject = 20;
+            public const short MaxObject = 19;
             #region ID
             /// <summary> 静谧宝石 </summary>
             public const short MiracleGem = 1;
@@ -293,7 +293,7 @@ namespace CNC.Common.Utils
 
         public static class Inscription
         {
-            public const short MaxObject = 26 + 34;
+            public const short MaxObject = 26 + 39;
             #region ID
             /// <summary> 伤害增幅 </summary>
             public static Content.Inscription C_Power => new Content.Inscription(0, 0);
@@ -368,16 +368,26 @@ namespace CNC.Common.Utils
             public static Content.Inscription S_FrostWave => new Content.Inscription(4, CNCID.Item.IceTooth);
             /// <summary> 聚集电能 </summary>
             public static Content.Inscription S_Charging => new Content.Inscription(0, CNCID.Item.Superconductor);
-            /// <summary> 咒文闪电链 </summary>
-            public static Content.Inscription S_SpellLightningChain => new Content.Inscription(1, CNCID.Item.Superconductor);
+            /// <summary> 聚变 </summary>
+            public static Content.Inscription S_Fusion => new Content.Inscription(1, CNCID.Item.Superconductor);
+            /// <summary> 过载 </summary>
+            public static Content.Inscription S_Overload => new Content.Inscription(2, CNCID.Item.Superconductor);
+            /// <summary> 爆裂闪电 </summary>
+            public static Content.Inscription S_RadialLightning => new Content.Inscription(3, CNCID.Item.Superconductor);
+            /// <summary> 连锁闪电 </summary>
+            public static Content.Inscription S_ChainedLightning => new Content.Inscription(4, CNCID.Item.Superconductor);
+            /// <summary> 天谴 </summary>
+            public static Content.Inscription S_Thunderstorm => new Content.Inscription(5, CNCID.Item.Superconductor);
+            /// <summary> 电能护盾 </summary>
+            public static Content.Inscription S_ElectricBarrier => new Content.Inscription(6, CNCID.Item.Superconductor);
             /// <summary> 奥术超载 </summary>
-            public static Content.Inscription S_ArcaneOverload => new Content.Inscription(2, CNCID.Item.Superconductor);
-            /// <summary> 咒文增广 </summary>
-            public static Content.Inscription S_SpellReconstruction => new Content.Inscription(3, CNCID.Item.Superconductor);
-            /// <summary> 精进咒文研究 </summary>
-            public static Content.Inscription S_SpellAugmentated => new Content.Inscription(4, CNCID.Item.Superconductor);
-            /// <summary> 法术稳定 </summary>
-            public static Content.Inscription S_StableSpell => new Content.Inscription(5, CNCID.Item.Superconductor);
+            public static Content.Inscription S_ArcaneOverload => new Content.Inscription(7, CNCID.Item.Superconductor);
+            /// <summary> 激化 </summary>
+            public static Content.Inscription S_Intensity => new Content.Inscription(8, CNCID.Item.Superconductor);
+            /// <summary> 活化 </summary>
+            public static Content.Inscription S_Activation => new Content.Inscription(9, CNCID.Item.Superconductor);
+            /// <summary> 同化 </summary>
+            public static Content.Inscription S_Resonance => new Content.Inscription(10, CNCID.Item.Superconductor);
             /// <summary> 银白之矢 </summary>
             public static Content.Inscription S_SilveryArrow => new Content.Inscription(0, CNCID.Item.ArgenteusClaw);
             /// <summary> 破空流光 </summary>
@@ -455,11 +465,16 @@ namespace CNC.Common.Utils
                 { new Point(3, CNCID.Item.IceTooth), "S_Shattering" },
                 { new Point(4, CNCID.Item.IceTooth), "S_FrostWave" },
                 { new Point(0, CNCID.Item.Superconductor), "S_Charging" },
-                { new Point(1, CNCID.Item.Superconductor), "S_SpellLightningChain" },
-                { new Point(2, CNCID.Item.Superconductor), "S_ArcaneOverload" },
-                { new Point(3, CNCID.Item.Superconductor), "S_SpellReconstruction" },
-                { new Point(4, CNCID.Item.Superconductor), "S_SpellAugmentated" },
-                { new Point(5, CNCID.Item.Superconductor), "S_StableSpell" },
+                { new Point(1, CNCID.Item.Superconductor), "S_Fusion" },
+                { new Point(2, CNCID.Item.Superconductor), "S_Overload" },
+                { new Point(3, CNCID.Item.Superconductor), "S_RadialLightning" },
+                { new Point(4, CNCID.Item.Superconductor), "S_ChainedLightning" },
+                { new Point(5, CNCID.Item.Superconductor), "S_Thunderstorm" },
+                { new Point(6, CNCID.Item.Superconductor), "S_ElectricBarrier" },
+                { new Point(7, CNCID.Item.Superconductor), "S_ArcaneOverload" },
+                { new Point(8, CNCID.Item.Superconductor), "S_Intensity" },
+                { new Point(9, CNCID.Item.Superconductor), "S_Activation" },
+                { new Point(10, CNCID.Item.Superconductor), "S_Resonance" },
                 { new Point(0, CNCID.Item.ArgenteusClaw), "S_SilveryArrow" },
                 { new Point(1, CNCID.Item.ArgenteusClaw), "S_Sanctity" },
                 { new Point(2, CNCID.Item.ArgenteusClaw), "S_Exorcism" },
@@ -519,11 +534,16 @@ namespace CNC.Common.Utils
                 { "S_Shattering", S_Shattering },
                 { "S_FrostWave", S_FrostWave },
                 { "S_Charging", S_Charging },
-                { "S_SpellLightningChain", S_SpellLightningChain },
+                { "S_Fusion", S_Fusion },
+                { "S_Overload", S_Overload },
+                { "S_RadialLightning", S_RadialLightning },
+                { "S_ChainedLightning", S_ChainedLightning },
+                { "S_Thunderstorm", S_Thunderstorm },
+                { "S_ElectricBarrier", S_ElectricBarrier },
                 { "S_ArcaneOverload", S_ArcaneOverload },
-                { "S_SpellReconstruction", S_SpellReconstruction },
-                { "S_SpellAugmentated", S_SpellAugmentated },
-                { "S_StableSpell", S_StableSpell },
+                { "S_Intensity", S_Intensity },
+                { "S_Activation", S_Activation },
+                { "S_Resonance", S_Resonance },
                 { "S_SilveryArrow", S_SilveryArrow },
                 { "S_Sanctity", S_Sanctity },
                 { "S_Exorcism", S_Exorcism },
@@ -583,11 +603,16 @@ namespace CNC.Common.Utils
                 { new Point(3, CNCID.Item.IceTooth), S_Shattering },
                 { new Point(4, CNCID.Item.IceTooth), S_FrostWave },
                 { new Point(0, CNCID.Item.Superconductor), S_Charging },
-                { new Point(1, CNCID.Item.Superconductor), S_SpellLightningChain },
-                { new Point(2, CNCID.Item.Superconductor), S_ArcaneOverload },
-                { new Point(3, CNCID.Item.Superconductor), S_SpellReconstruction },
-                { new Point(4, CNCID.Item.Superconductor), S_SpellAugmentated },
-                { new Point(5, CNCID.Item.Superconductor), S_StableSpell },
+                { new Point(1, CNCID.Item.Superconductor), S_Fusion },
+                { new Point(2, CNCID.Item.Superconductor), S_Overload },
+                { new Point(3, CNCID.Item.Superconductor), S_RadialLightning },
+                { new Point(4, CNCID.Item.Superconductor), S_ChainedLightning },
+                { new Point(5, CNCID.Item.Superconductor), S_Thunderstorm },
+                { new Point(6, CNCID.Item.Superconductor), S_ElectricBarrier },
+                { new Point(7, CNCID.Item.Superconductor), S_ArcaneOverload },
+                { new Point(8, CNCID.Item.Superconductor), S_Intensity },
+                { new Point(9, CNCID.Item.Superconductor), S_Activation },
+                { new Point(10, CNCID.Item.Superconductor), S_Resonance },
                 { new Point(0, CNCID.Item.ArgenteusClaw), S_SilveryArrow },
                 { new Point(1, CNCID.Item.ArgenteusClaw), S_Sanctity },
                 { new Point(2, CNCID.Item.ArgenteusClaw), S_Exorcism },
@@ -718,7 +743,7 @@ namespace CNC.Common.Utils
 
         public static class Projectile
         {
-            public const short MaxObject = 29;
+            public const short MaxObject = 36;
             #region ID
             /// <summary> 魔法飞弹 </summary>
             public const short MentorMissile = 1;

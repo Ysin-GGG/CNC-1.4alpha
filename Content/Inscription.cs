@@ -95,11 +95,16 @@ namespace CNC.Content
                     break;
                 case CNCID.Item.Superconductor:
                     if (type == 0) { this.Data = new object[] { }; }
-                    if (type == 1) { this.Data = new object[] { 4, 4, "[damage3=36]" }; this.defCooldown = 300; }
-                    if (type == 2) { this.Data = new object[] { 0.03f, 10, 4, 4, "[damage3=40]" }; }
-                    if (type == 3) { this.Data = new object[] { 0.05f }; }
-                    if (type == 4) { this.Data = new object[] { 1, 6 }; }
-                    if (type == 5) { this.Data = new object[] { 8 }; }
+                    if (type == 1) { this.Data = new object[] { 0.100f, 5, 0.010f, 0.006f, 0.350f }; }
+                    if (type == 2) { this.Data = new object[] { 1, 8, 5, 0.07f, 1, 6 }; }
+                    if (type == 3) { this.Data = new object[] { 4, 4, 25, "[damage3=240]" }; this.defCooldown = 300; }
+                    if (type == 4) { this.Data = new object[] { 3, 4, 25, "[damage3=310]" }; this.defCooldown = 240; }
+                    if (type == 5) { this.Data = new object[] { 0.10f, "[damage3=105]", 0.010f, 0.004f, 0.200f }; }
+                    if (type == 6) { this.Data = new object[] { 5, 50, 1 }; }
+                    if (type == 7) { this.Data = new object[] { 0.500f, 3 }; }
+                    if (type == 8) { this.Data = new object[] { 1, 15, 5, 0.300f }; }
+                    if (type == 9) { this.Data = new object[] { 0.400f }; }
+                    if (type == 10) { this.Data = new object[] { 0.150f, 2, 0.010f, 0.006f, 0.350f }; }
                     break;
                 case CNCID.Item.ArgenteusClaw:
                     if (type == 0) { this.Data = new object[] { }; }
@@ -139,7 +144,7 @@ namespace CNC.Content
                 if (args == null || args.Length <= 0) return this.description;
                 for (int i = 0; i < args.Length; i++)
                 {
-                    if (args[i] is float arg1) args[i] = ((int)(arg1 * 100f)).ToString() + '%';
+                    if (args[i] is float arg1) args[i] = ((float)Math.Round(arg1 * 100f, 1)).ToString() + '%';
                     else if (args[i] is int arg2) args[i] = arg2.ToString();
                     else if (args[i] is string arg3) args[i] = arg3;
                 }

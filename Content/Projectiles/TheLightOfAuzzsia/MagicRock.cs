@@ -119,7 +119,7 @@ namespace CNC.Content.Projectiles.TheLightOfAuzzsia
 
         public override void PostDraw(Color lightColor)
         {
-            Effect ef = Mod.Assets.Request<Effect>("Content/Effects/Trail").Value;
+            var ef = CNC.GetEffect("Trail");
             List<VertexInfo> bars = TrailShaderData.GetBars(projectile, 64, 3f * projectile.scale, 4f * projectile.scale, true, 1f, 2.5f, -1, false);
             if (bars.Count > 2)
             {

@@ -222,7 +222,7 @@ namespace CNC.Content.Projectiles.Remakes
                     ParticleManager.particle[idx].velocityMul = new Vector2(.975f);
                     ParticleManager.particle[idx].scaleAdd = ParticleManager.particle[idx].scale / ParticleManager.particle[idx].timeLeftMax;
                     ParticleManager.particle[idx].scale = Vector2.Zero;
-                    ParticleManager.particle[idx].alphaAdd = -1f / ParticleManager.particle[idx].timeLeftMax; ;
+                    ParticleManager.particle[idx].alphaAdd = -1f / ParticleManager.particle[idx].timeLeftMax;
                     ParticleManager.particle[idx].alpha = 1f;
                 }
             }
@@ -255,6 +255,7 @@ namespace CNC.Content.Projectiles.Remakes
             ef.Parameters["uOffset"].SetValue(new Vector2(-1, 1) * 256f / Main.ScreenSize.ToVector2());
             ef.Parameters["uAlpha"].SetValue(this.Alpha2 * 3);
             ef.Parameters["uTime"].SetValue(Main.GlobalTimeWrappedHourly * 3f);
+            ef.Parameters["uAlphaBlend"].SetValue(false);
             
             float width = CNC.GetTexture(Texture + 2).Width * projectile.scale * MyMath.Lerp(.15f, .02f, timer / (float)time);
             List<VertexInfo> vertex = new List<VertexInfo>();

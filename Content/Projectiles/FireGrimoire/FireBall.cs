@@ -18,7 +18,7 @@ namespace CNC.Content.Projectiles.FireGrimoire
         public int level => data.ContainsKey("level") ? (int)data["level"] : 0;
         public override int countFrame => 7;
         private const int tpf = 4;//Time Per Frame
-        private const int lenMax = 30;
+        private const int lenMax = 15;
         private int len = 0;
         private int pointX = 0;
 
@@ -29,7 +29,7 @@ namespace CNC.Content.Projectiles.FireGrimoire
             projectile.height = 14;
             projectile.timeLeft = 600;
             projectile.knockBack = 2f;
-            projectile.alpha = 0;
+            projectile.alpha = 255;
             projectile.scale = 1.5f;
             projectile.penetrate = 1;
             projectile.aiStyle = 1;
@@ -50,15 +50,14 @@ namespace CNC.Content.Projectiles.FireGrimoire
                 projectile.oldPos[i].X = 0.0f;
                 projectile.oldPos[i].Y = 0.0f;
             }
-            
         }
 
         public override void AI()
         {
             AI001_RollingMissile(projectile, false, true, 90f);
             Anim001_Loop(projectile, tpf);
-            UpdateOldData(projectile, projectile.velocity);
-            projectile.velocity = projectile.oldVelocity;
+            projectile.velocity = Vector2.Normalize(projectile.oldVelocity) * MyMath.Lerp(8f, 20f, this.Alpha2);
+            if (this.Alpha2 < 1f) this.Alpha2 = MyMath.Clamp(this.Alpha2 + .05f, 0f, 1f);
             if (len < lenMax) len++;
             if (projectile.timeLeft < 597)
             {
@@ -112,14 +111,27 @@ namespace CNC.Content.Projectiles.FireGrimoire
 
         public override bool PreDrawExtras()
         {
-            Texture2D glowTrail = ModContent.Request<Texture2D>("CNC/Assets/Effects/Trail4").Value;
-            Texture2D trail = ModContent.Request<Texture2D>("CNC/Assets/Effects/Trail3").Value;
-            Color color = new Color(242, 92, 34, 0);
-            //Main.spriteBatch.Draw(light, projectile.Center - light.Size() / 2f * .5f - Main.screenPosition, null, color, 0, default, .5f, 0, 0f);
-            Drawing.DrawTrailDirect(Main.spriteBatch, glowTrail, len, projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, color, pointX, glowTrail.Height / 2, new Vector2(1, .05f), new Vector2(1, .05f), true, 16, 1);
-            Drawing.DrawTrailDirect(Main.spriteBatch, trail, Math.Max(0, len - 2), projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, color, pointX, trail.Height / 2, new Vector2(1, .19f), new Vector2(1, .05f), true, 16, 2);
-            //Drawing.DrawTrail(Main.spriteBatch, trail, Math.Max(0, len - 2), projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, color, pointX, trail.Height / 2, new Vector2(.15f), 16);
-            pointX = (pointX - 16 + trail.Width) % trail.Width;
+            Texture2D[] image =
+            {
+                CNC.GetTexture("Assets/Effects/GlowTrail2"),
+                CNC.GetTexture("Assets/Effects/Trace7"),
+                CNC.GetTexture("Assets/Effects/Trail/Trail3"),
+            };
+            Texture2D[] image2 =
+            {
+                CNC.GetTexture("Assets/Effects/GlowTrail2"),
+                CNC.GetTexture("Assets/Effects/Trace7"),
+                CNC.GetTexture("Assets/Effects/Trail/Trail5"),
+            };
+            Color[] color =
+            {
+                Color.Red,
+                new Color(242, 92, 34),
+                Color.White,
+                Color.White,
+            };
+            Drawing.DrawTrail(Main.spriteBatch, projectile, image, color, 20, 8, false, .5d, 2d, 1d);
+            Drawing.DrawTrail(Main.spriteBatch, projectile, image2, color, 56, 56, true, 1d, 2d, 0d);
             return true;
         }
 

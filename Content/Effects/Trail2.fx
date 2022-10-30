@@ -8,6 +8,7 @@ float4 uColor1;//亮度低时附加的颜色
 float2 uOffset;//纹理偏移
 float uAlpha;//图像透明度
 float uTime;
+bool uAlphaBlend;
 
 struct VSInput {
 	float2 Pos : POSITION0;
@@ -27,10 +28,15 @@ float4 PixelShaderFunction(PSInput input) : COLOR0
 	float4 color0 = tex2D(uImage0, float2(coord.x, coord.y));
 	float4 color1 = tex2D(uImage1, float2(coord.x, coord.y));
 	float4 color2 = tex2D(uImage2, float2(coord.x, coord.y) + uOffset * uTime);
-	float4 color = color0 * color1 * color2 * (color2.r * uColor0 + (1 - color2.r) * uColor1);
+	float4 color = input.Color * color0 * color1 * color2 * (color2.r * uColor0 + (1 - color2.r) * uColor1);
+	if (uAlphaBlend) 
+	{
+		float4 light = color0 * color1;
+		color = input.Color * color2 * (light.r * uColor0 + (1 - light.r) * uColor1);
+		color.a = 1;
+	}
 	if (color.r < .0001) return float4(0, 0, 0, 0);
-	return input.Color * color * uAlpha;
-
+	return color * uAlpha;
 }
 
 PSInput VertexShaderFunction(VSInput input)  {

@@ -20,23 +20,7 @@ namespace CNC.Content.Projectiles
         public int _stage = 0;
         float rot = 0;
         int len => 20;
-
-        private int pointX = 0;
         private int len2 = 0;
-
-        public override bool PreDrawExtras()
-        {
-            if (frame > 4)
-            {
-                Texture2D tail = Terraria.ModLoader.ModContent.Request<Texture2D>("CNC/Assets/Effects/Trail2").Value;
-                Texture2D glow = Terraria.ModLoader.ModContent.Request<Texture2D>("CNC/Assets/Effects/GlowTrail1").Value;
-                Color _color = color; _color.A = 0;
-                Drawing.DrawTrailDirect(Main.spriteBatch, tail, len2, projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, _color, pointX, tail.Height / 2, new Vector2(1f, .10f), new Vector2(1f, .01f), true, 16);
-                //Drawing.DrawTrailDirect(Main.spriteBatch, glow, len2, projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, _color, pointX, glow.Height / 2, new Vector2(1f, .05f), new Vector2(1f, .01f), true, 16);
-                pointX = (pointX - 15 + tail.Width) % tail.Width;
-            }
-            return true;
-        }
 
         public override void ResetDefaults()
         {
@@ -45,9 +29,10 @@ namespace CNC.Content.Projectiles
             projectile.width = 48;
             projectile.height = 48;
             projectile.timeLeft = 180;
-            projectile.alpha = 255;
+            projectile.alpha = 0;
             projectile.light = .2f;
             projectile.scale = 1;
+            projectile.aiStyle = 1;
             projectile.penetrate = 1;
             projectile.ignoreWater = true;
             projectile.tileCollide = false;
@@ -69,6 +54,7 @@ namespace CNC.Content.Projectiles
         public override void AI()
         {
             Anim001_Loop(projectile, 5, 9);
+            projectile.velocity = projectile.oldVelocity;
             if (_stage == 0)
             {
                 NPC npc = FindClosestTarget(projectile, 800, false);
@@ -83,24 +69,14 @@ namespace CNC.Content.Projectiles
                 projectile.friendly = true;
                 if(frame > 6) projectile.tileCollide = true;
             }
-            AI001_RollingMissile(projectile, true, true, 90);
-            UpdateOldData(projectile, projectile.velocity);
+            AI001_RollingMissile(projectile, false, true, 90);
             Vector2 pos = projectile.Center / 16f;
             float r = color.R / 255f;
             float g = color.G / 255f;
             float b = color.B / 255f;
             Lighting.AddLight((int)pos.X, (int)pos.Y, r, g, b);
         }
-        /*
-        public override void ModifyDamageHitbox(ref Rectangle hitbox)
-        {
-            int[] size = new int[] { 48, 48, 48, 48, 28, 20, 10, 14, 14, 14, 14, 14, 14 };
-            hitbox.Width = size[projectile.frame];
-            hitbox.Height = size[projectile.frame];
-            hitbox.X = (int)(projectile.Center.X - hitbox.Size().X / 2);
-            hitbox.Y = (int)(projectile.Center.X - hitbox.Size().Y / 2);
-        }
-        */
+
         public override void Kill(int timeLeft)
         {
             if (_stage == 0)
@@ -108,7 +84,7 @@ namespace CNC.Content.Projectiles
                 SoundEngine.PlaySound(SoundID.Item20, projectile.position);
                 Vector2 pos = projectile.Center + new Vector2(0, 14);
                 Vector2 vel = MyMath.GetXY(rot) * 16f;
-                int type = CNCID.Projectile.LegacyCollection[Name];
+                int type = CNCID.Projectile.LegacyObject[CNCID.Projectile.MentorMissile];
                 int dmg = projectile.damage;
                 float kb = projectile.knockBack;
                 int owner = projectile.owner;
@@ -137,7 +113,28 @@ namespace CNC.Content.Projectiles
                 new Vector2(24f),
                 1,0,0
                 );
-            return base.PreDraw(ref lightColor);
+            return false;
+        }
+
+        public override bool PreDrawExtras()
+        {
+            if (frame > 4)
+            {
+                Texture2D[] image = {
+                    CNC.GetTexture("Assets/Effects/GlowTrail2"),
+                    CNC.GetTexture("Assets/Effects/Trace1"),
+                    CNC.GetTexture("Assets/Effects/Trail/Trail2"),
+                };
+                Color[] color =
+                {
+                    this.color,
+                    Color.Blue,
+                    Color.White,
+                    Color.White,
+                };
+                Drawing.DrawTrail(Main.spriteBatch, projectile, image, color, 12, 0, true);
+            }
+            return true;
         }
     }
 }

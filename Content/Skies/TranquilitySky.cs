@@ -246,7 +246,7 @@ namespace CNC.Content.Skies
 
             public void Draw(SpriteBatch spriteBatch, float alpha)
             {
-                Texture2D tex1 = CNC.GetTexture("Assets/Particles/Light2");
+                Texture2D tex1 = CNC.GetTexture("Assets/Particles/Light1");
                 Vector2 pos = this.position - Main.screenPosition;
                 Color color = Color.Lerp(Color.Yellow, Color.Green, gradient.GetNextValue() / 300f).NewA(0);
                 spriteBatch.Draw(tex1, pos, null, color * this.opacity * alpha, this.velocity.ToRotation(), tex1.Center(), this.scale, 0, 0f);

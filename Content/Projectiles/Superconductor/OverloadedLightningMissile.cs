@@ -26,7 +26,7 @@ namespace CNC.Content.Projectiles.Superconductor
             projectile.height = 13;
             projectile.timeLeft = 300;
             projectile.knockBack = 2f;
-            projectile.alpha = 255;
+            projectile.alpha = 0;
             projectile.scale = 2f;
             projectile.aiStyle = 1;
             projectile.penetrate = 1;
@@ -49,7 +49,6 @@ namespace CNC.Content.Projectiles.Superconductor
         {
             AI001_RollingMissile(projectile, false, true, 90f);
             Anim001_Loop(projectile, 5, 0);
-            UpdateOldData(projectile, projectile.velocity);
             CNCUtils.AddLight(projectile.Center, Color.DarkCyan, .3f);
             if (len2 < len - 1) len2++;
         }
@@ -65,7 +64,7 @@ namespace CNC.Content.Projectiles.Superconductor
             }
             CNCUtils.PlaySound("Superconductor/Explosion", projectile.Center, 2f, mod);
             CNCUtils.PlaySound("Superconductor/Chain", projectile.Center, 1f, mod);
-            this.NewProjectile(projectile.Center + projectile.oldVelocity, Const._02, CNCID.Projectile.LegacyObject[CNCID.Projectile.OverloadedLightningExplosion], JustGetDamage(CNCID.Inscription.S_ArcaneOverload, 4), projectile.knockBack, CNC.Random.NextFloat(MyMath.pi2));
+            this.NewProjectile(projectile.Center + projectile.oldVelocity, Const._02, CNCID.Projectile.LegacyObject[CNCID.Projectile.OverloadedLightningExplosion], projectile.damage, projectile.knockBack, CNC.Random.NextFloat(MyMath.pi2));
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -81,16 +80,25 @@ namespace CNC.Content.Projectiles.Superconductor
                 projectile.scale,
                 0, 0
                 );
-            return true;
+            return false;
         }
 
         public override bool PreDrawExtras()
         {
-            Texture2D trail = ModContent.Request<Texture2D>("CNC/Assets/Effects/Trail2").Value;
-            Color color = Color.LightBlue; color.A = 0;
-            Drawing.DrawTrailDirect(Main.spriteBatch, trail, len2, projectile.oldPos, projectile.oldRot, projectile.Size / 2, MyMath.deg90, color, pointX, trail.Height / 2, new Vector2(1f, .11f), new Vector2(1f, .01f), true, 32);
-            pointX = (pointX - 8 + trail.Width) % trail.Width;
-            return true;
+            Texture2D[] image =
+            {
+                CNC.GetTexture("Assets/Effects/GlowTrail2"),
+                CNC.GetTexture("Assets/Effects/Trace6"),
+                CNC.GetTexture("Assets/Effects/Trail/Trail2"),
+            };
+            Color[] color =
+            {
+                Color.LightBlue,
+                Color.LightCyan,
+                Color.White,
+                Color.White,
+            };
+            return Drawing.DrawTrail(Main.spriteBatch, projectile, image, color, 12, 0, true);
         }
     }
 }

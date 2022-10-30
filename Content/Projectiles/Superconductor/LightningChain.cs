@@ -77,7 +77,7 @@ namespace CNC.Content.Projectiles.Superconductor
             }
             else
             {
-                if (canHit == 0) canHit = (int)CNCID.Inscription.S_SpellLightningChain.Data[1] + ((bool)data["upgraded"] ? (int)CNCID.Inscription.S_SpellAugmentated.Data[0] : 0);
+                if (canHit == 0) canHit = (int)CNCID.Inscription.S_ChainedLightning.Data[1] + ((bool)data["upgraded"] ? (int)CNCID.Inscription.S_Intensity.Data[2] : 0);
                 if (projectile.penetrate > canHit) { projectile.penetrate = (int)Math.Floor(canHit); }
                 NPC target = foundTarget ? currentTarget : FindTargetAI();
                 projectile.velocity = foundTarget ? projectile.velocity : Const._02;
@@ -191,7 +191,7 @@ namespace CNC.Content.Projectiles.Superconductor
         {
             if (currentTarget != null) { return currentTarget; }
             NPC target = null;
-            float range = 16f * (24f + (upgraded ? (int)CNCID.Inscription.S_SpellAugmentated.Data[1] : 0f));
+            float range = 16f * (24f + (upgraded ? (int)CNCID.Inscription.S_ChainedLightning.Data[3] : 0f));
             float dist = 0;
             float closestDist = range;
             bool closer = false;

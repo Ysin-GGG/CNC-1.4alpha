@@ -74,7 +74,7 @@ namespace CNC.Common.Global.Players
         private int CastTimeBarTime;
         private int preMouse = 0;
         private int mouseTime = 0;
-        private Item heldItem;
+        public Item heldItem;
         public int ignoreMouseTime = 0;
         public bool pressingMouseLeft = false;
         public bool pressingMouseRight = false;

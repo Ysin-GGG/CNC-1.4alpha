@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -6,6 +7,7 @@ using ReLogic.Graphics;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using CNC.Content.DataStructures;
 
 namespace CNC.Common.Utils
 {
@@ -291,25 +293,145 @@ namespace CNC.Common.Utils
                 }
             }
         }
+        
+        /// <summary> 绘制拖尾 </summary>
+        /// <param name="spriteBatch">懂得都懂</param>
+        /// <param name="proj">弹幕</param>
+        /// <param name="image">图像：image[0]为显示区域，image[1]为纹理覆盖，image[2]为拖尾动画纹理</param>
+        /// <param name="color">统一的颜色</param>
+        /// <param name="width">拖尾宽度</param>
+        /// <param name="minWidth">拖尾最小宽度（需配合widthPow使用）</param>
+        /// <param name="updateData">绘制的同时更新拖尾信息</param>
+        /// <param name="coordsPow">纹理变化指数（x^pow(x∈[0,1])）</param>
+        /// <param name="alphaPow">透明度变化指数（x^pow(x∈[0,1])）</param>
+        /// <param name="widthPow">拖尾宽度变化指数（x^pow(x∈[0,1])）</param>
+        public static bool DrawTrail(SpriteBatch spriteBatch, Projectile projectile, Texture2D[] image, Color color, int width = 24, int minWidth = 0, bool updateData = false, double coordsPow = .5d, double alphaPow = 2d, double widthPow = 0d)
+            => Drawing.DrawTrail(spriteBatch, projectile, image, color, new Vector2(-1f, 0f), width, minWidth, updateData, coordsPow, alphaPow, widthPow);
 
-        public static void DrawTrail(SpriteBatch spriteBatch, Texture2D image, int max, Vector2[] oldPos, float[] oldRot, Vector2 extraPos, float extraRot, Color color, int pointX, int originY, Vector2 scaleY, int width = 1)
+        /// <summary> 绘制拖尾 </summary>
+        /// <param name="spriteBatch">懂得都懂</param>
+        /// <param name="proj">弹幕</param>
+        /// <param name="image">图像：image[0]为显示区域，image[1]为纹理覆盖，image[2]为拖尾动画纹理</param>
+        /// <param name="color">统一的颜色</param>
+        /// <param name="width">拖尾宽度</param>
+        /// <param name="minWidth">拖尾最小宽度（需配合widthPow使用）</param>
+        /// <param name="updateData">绘制的同时更新拖尾信息</param>
+        /// <param name="coordsPow">纹理变化指数（x^pow(x∈[0,1])）</param>
+        /// <param name="alphaPow">透明度变化指数（x^pow(x∈[0,1])）</param>
+        /// <param name="widthPow">拖尾宽度变化指数（x^pow(x∈[0,1])）</param>
+        public static bool DrawTrail(SpriteBatch spriteBatch, Projectile projectile, Texture2D[] image, Color color, Vector2 offset, int width = 24, int minWidth = 0, bool updateData = false, double coordsPow = .5d, double alphaPow = 2d, double widthPow = 0d)
+            => Drawing.DrawTrail(spriteBatch, projectile, image, new Color[] { color, color, Color.White, Color.White }, offset, width, minWidth, updateData, coordsPow, alphaPow, widthPow);
+
+        /// <summary> 绘制拖尾 </summary>
+        /// <param name="spriteBatch">懂得都懂</param>
+        /// <param name="proj">弹幕</param>
+        /// <param name="image">图像：image[0]为显示区域，image[1]为纹理覆盖，image[2]为拖尾动画纹理</param>
+        /// <param name="color">颜色：color[0]高亮度的颜色，image[1]低亮度的颜色, color[2]为拖尾头部颜色，color[3]为拖尾尾部颜色</param>
+        /// <param name="width">拖尾宽度</param>
+        /// <param name="minWidth">拖尾最小宽度（需配合widthPow使用）</param>
+        /// <param name="updateData">绘制的同时更新拖尾信息</param>
+        /// <param name="coordsPow">纹理变化指数（x^pow(x∈[0,1])）</param>
+        /// <param name="alphaPow">透明度变化指数（x^pow(x∈[0,1])）</param>
+        /// <param name="widthPow">拖尾宽度变化指数（x^pow(x∈[0,1])）</param>
+        public static bool DrawTrail(SpriteBatch spriteBatch, Projectile projectile, Texture2D[] image, Color[] color, int width = 24, int minWidth = 0, bool updateData = false, double coordsPow = .5d, double alphaPow = 2d, double widthPow = 0d)
+            => Drawing.DrawTrail(spriteBatch, projectile, image, color, new Vector2(-1f, 0f), width, minWidth, updateData, coordsPow, alphaPow, widthPow);
+
+        /// <summary> 绘制拖尾 </summary>
+        /// <param name="spriteBatch">懂得都懂</param>
+        /// <param name="proj">弹幕</param>
+        /// <param name="image">图像：image[0]为显示区域，image[1]为纹理覆盖，image[2]为拖尾动画纹理</param>
+        /// <param name="color">颜色：color[0]高亮度的颜色，image[1]低亮度的颜色, color[2]为拖尾头部颜色，color[3]为拖尾尾部颜色</param>
+        /// <param name="width">拖尾宽度</param>
+        /// <param name="minWidth">拖尾最小宽度（需配合widthPow使用）</param>
+        /// <param name="updateData">绘制的同时更新拖尾信息</param>
+        /// <param name="coordsPow">纹理变化指数（x^pow(x∈[0,1])）</param>
+        /// <param name="alphaPow">透明度变化指数（x^pow(x∈[0,1])）</param>
+        /// <param name="widthPow">拖尾宽度变化指数（x^pow(x∈[0,1])）</param>
+        public static bool DrawTrail(SpriteBatch spriteBatch, Projectile projectile, Texture2D[] image, Color[] color, Vector2 offset, int width = 24, int minWidth = 0, bool updateData = false, double coordsPow = .5d, double alphaPow = 2d, double widthPow = 0d)
         {
-            for (int i = 0; i < max - 1; i++)
+            Effect ef = CNC.GetEffect("Trail2");
+            bool canDraw = false;
+            int max = MyMath.Min(projectile.oldPos.Length, projectile.oldRot.Length);
+            for (int i = 1; i < max; ++i)
             {
-                int origin2 = image.Height - originY;
-                Vector2 pos1 = oldPos[i] - Main.screenPosition;
-                Vector2 pos2 = oldPos[i + 1] - Main.screenPosition;
-                float rot1 = oldRot[i] + extraRot;
-                float rot2 = oldRot[i + 1] + extraRot;
-                Vector2[] vertex = {
-                    pos1 + extraPos - new Vector2(-(float)Math.Sin(rot1), (float)Math.Cos(rot1)) * originY * MyMath.Lerp(scaleY.X, scaleY.Y, (float)i / (max - 1)),
-                    pos2 + extraPos - new Vector2(-(float)Math.Sin(rot1), (float)Math.Cos(rot1)) * originY * MyMath.Lerp(scaleY.X, scaleY.Y, (float)i / (max - 1)),
-                    pos2 + extraPos + new Vector2(-(float)Math.Sin(rot2), (float)Math.Cos(rot2)) * origin2 * MyMath.Lerp(scaleY.X, scaleY.Y, (float)i / (max - 1)),
-                    pos1 + extraPos + new Vector2(-(float)Math.Sin(rot2), (float)Math.Cos(rot2)) * origin2 * MyMath.Lerp(scaleY.X, scaleY.Y, (float)i / (max - 1)),
-                };
-                Rectangle rect = new Rectangle((pointX + i * width) % image.Width, 0, width, image.Height);
-                DrawQuadrilateral(spriteBatch, image, vertex, rect, color, rot1, false, SpriteEffects.FlipHorizontally);
+                if (projectile.oldPos[i] == Vector2.Zero)
+                {
+                    max = i;
+                    break;
+                }
             }
+            if (ef != null && max > 1)
+            {
+                canDraw = true;
+                Matrix projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
+                Matrix model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0)) * Main.GameViewMatrix.ZoomMatrix;
+                ef.Parameters["uTransform"].SetValue(model * projection);
+                ef.Parameters["uColor0"].SetValue(color[0].ToVector4());
+                ef.Parameters["uColor1"].SetValue(color[1].ToVector4());
+                ef.Parameters["uOffset"].SetValue(new Vector2(-1f, 0f));
+                ef.Parameters["uAlpha"].SetValue((1f - projectile.alpha / 255f) * 1.5f);
+                ef.Parameters["uTime"].SetValue(Main.GlobalTimeWrappedHourly + projectile.whoAmI * MyMath.phi * 100f % 200f - 100f);
+                ef.Parameters["uAlphaBlend"].SetValue(true);
+
+                Vector2 normalDir = projectile.position - projectile.oldPos[0];
+                normalDir = Vector2.Normalize(new Vector2(-normalDir.Y, normalDir.X));
+                float w = MathHelper.Lerp(1f, 0.05f, 0);
+
+                List<VertexInfo> vertex = new List<VertexInfo>();
+                vertex.Add(new VertexInfo(projectile.Center + normalDir * width, color[2], new Vector3(0, 1, w)));
+                vertex.Add(new VertexInfo(projectile.Center - normalDir * width, color[2], new Vector3(0, 0, w)));
+                for (int i = 1; i < max; ++i)
+                {
+                    normalDir = projectile.oldPos[i - 1] - projectile.oldPos[i];
+                    normalDir = Vector2.Normalize(new Vector2(-normalDir.Y, normalDir.X));
+
+                    float factor = i / (float)max;
+                    float factor2 = 1f - factor;
+                    float coordsX = (float)Math.Pow(factor, coordsPow);
+                    float colorAlpha = (float)Math.Pow(factor2, alphaPow);
+                    float width2 = MyMath.Lerp(minWidth, width, (float)Math.Pow(factor2, widthPow));
+                    w = MathHelper.Lerp(1f, 0.05f, factor);//头部到尾部的透明度
+
+                    vertex.Add(new VertexInfo(projectile.oldPos[i - 1] + projectile.Size / 2f + normalDir * width2, Color.Lerp(color[2], color[3], factor) * colorAlpha, new Vector3(coordsX, 1, w)));
+                    vertex.Add(new VertexInfo(projectile.oldPos[i - 1] + projectile.Size / 2f - normalDir * width2, Color.Lerp(color[2], color[3], factor) * colorAlpha, new Vector3(coordsX, 0, w)));
+                }
+
+                var blendState = spriteBatch.GraphicsDevice.BlendState;
+                var rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
+                var depthStencilState = spriteBatch.GraphicsDevice.DepthStencilState;
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+
+                for (int i = 0; i < 3; i++)
+                {
+                    if (image[i] != null)
+                    {
+                        Main.graphics.GraphicsDevice.Textures[i] = image[i];
+                        Main.graphics.GraphicsDevice.SamplerStates[i] = SamplerState.PointWrap;
+                    }
+                }
+                ef.CurrentTechnique.Passes[0].Apply();
+                Main.pixelShader.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertex.ToArray(), 0, vertex.Count - 2);
+                
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Immediate, blendState, SamplerState.PointClamp, depthStencilState, rasterizerState, null, Main.GameViewMatrix.TransformationMatrix);
+            }
+
+            if (!Main.gamePaused && updateData)
+            {
+                max = MyMath.Min(projectile.oldPos.Length, projectile.oldRot.Length);
+                List<Vector2> oldPos = new List<Vector2>(projectile.oldPos);
+                List<Vector2> oldPos2 = new List<Vector2>(projectile.oldPos);
+                oldPos.Insert(0, projectile.position);
+                if (oldPos.Count > max) oldPos.RemoveAt(max);
+                projectile.oldPos = oldPos.ToArray();
+
+                List<float> oldRot = new List<float>(projectile.oldRot);
+                oldRot.Insert(0, projectile.rotation);
+                if (oldRot.Count > max) oldRot.RemoveAt(max);
+                projectile.oldRot = oldRot.ToArray();
+            }
+            return canDraw;
         }
 
         /// <summary> 简易拖尾：相当吃性能慎用！ </summary>

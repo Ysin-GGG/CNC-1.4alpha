@@ -12,7 +12,8 @@ namespace CNC.Content.Projectiles.Superconductor
     {
         public override int countFrame => 5;
         public bool overload => this.data.ContainsKey("overload") ? (bool)this.data["overload"] : false;
-        public bool overloadUpgraded => (this.overload && this.data.ContainsKey("overloadUpgraded")) ? (bool)this.data["overloadUpgraded"] : false;
+        public int overloadRequirement => (this.overload && this.data.ContainsKey("overloadRequirement")) ? (int)this.data["overloadRequirement"] : 9999;
+        public bool resonance => (this.overload && this.data.ContainsKey("resonance")) ? (bool)this.data["resonance"] : false;
 
         public override void ResetDefaults()
         {
@@ -34,12 +35,11 @@ namespace CNC.Content.Projectiles.Superconductor
             InscriptionPlayer gp = p.GetModPlayer<InscriptionPlayer>();
             if (this.overload)
             {
-                int time = (int)(overloadUpgraded ? CNCID.Inscription.S_StableSpell.Data[0] : CNCID.Inscription.S_ArcaneOverload.Data[2]) * 60;
-                gp.overloadLevelCounter = time;
-                if (++gp.overloadLevel >= 10)
+                int time = (int)(this.resonance ? CNCID.Inscription.S_Resonance.Data[1] : CNCID.Inscription.S_Overload.Data[2]) * 60;
+                if (this.overload && ++gp.overloadLevel >= this.overloadRequirement)
                 {
-                    p.AddBuff(CNCID.Buff.LegacyObject[CNCID.Buff.Overloaded], time);
-                    gp.overloadLevelCounter = 0;
+                    p.AddBuff(CNCID.Buff.LegacyObject[CNCID.Buff.Surged], time);
+                    gp.overloadLevel = 0;
                 }
             }
         }

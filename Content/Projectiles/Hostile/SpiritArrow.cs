@@ -191,7 +191,7 @@ namespace CNC.Content.Projectiles.Hostile
         public override bool PreDraw(ref Color lightColor)
         {
             lightColor = mainColor * Alpha2;
-            Texture2D trailImage = Mod.Assets.Request<Texture2D>("Assets/Effects/FormalTrail6").Value;
+            Texture2D trailImage = Mod.Assets.Request<Texture2D>("Assets/Effects/Trail/Trail6").Value;
             AfterImages(projectile, mainColor * .75f * Alpha2, len * 2, null, new Vector2(-1f, 1f) / len / 2f / 1.5f, new Vector2(.99f, 1.01f), .01f);
 
             Texture2D glow = Mod.Assets.Request<Texture2D>("Assets/Glow/Refringence").Value;
@@ -202,7 +202,7 @@ namespace CNC.Content.Projectiles.Hostile
 
             if (trailImage != null)
             {
-                var ef = (Effect)Mod.Assets.Request<Effect>("Content/Effects/Trail2").Value;
+                var ef = CNC.GetEffect("Trail2");
                 List<VertexInfo> bars = new List<VertexInfo>();
                 int width = 32;
                 var normalDir = projectile.position - Projectile.oldPos[0];
@@ -256,6 +256,7 @@ namespace CNC.Content.Projectiles.Hostile
                     ef.Parameters["uOffset"].SetValue(new Vector2(-1f, 0f));
                     ef.Parameters["uAlpha"].SetValue((1f - ParentNPC.alpha / 255f) * 5f);
                     ef.Parameters["uTime"].SetValue(Main.GlobalTimeWrappedHourly + rand);
+                    ef.Parameters["uAlphaBlend"].SetValue(true);
                     var trai = new TrailShaderData(ef, projectile, width)
                     {
                         colorBegin = mainColor,
