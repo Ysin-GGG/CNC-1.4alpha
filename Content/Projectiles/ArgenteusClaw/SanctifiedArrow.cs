@@ -65,7 +65,7 @@ namespace CNC.Content.Projectiles.ArgenteusClaw
             }
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             AI001_RollingMissile(projectile, false, true, 90f);
             Color color = Color.PaleGoldenrod;
@@ -135,7 +135,7 @@ namespace CNC.Content.Projectiles.ArgenteusClaw
             return base.OnTileCollide(oldVelocity);
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             if (npc != null) npc.GetGlobalNPC<AllNPC>().sanctifiedLevel--;
             for (int i = 0; i < 15; i++)

@@ -29,7 +29,7 @@ namespace CNC.Content.Projectiles.Superconductor
             projectile.DamageType = DamageClass.Magic;
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             Anim001_Loop(projectile, 4);
             projectile.scale += .01f;

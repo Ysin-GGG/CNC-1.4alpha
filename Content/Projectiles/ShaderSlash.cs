@@ -150,8 +150,7 @@ namespace CNC.Content.Projectiles
             projectile.ignoreWater = true;
             projectile.tileCollide = false;
             projectile.noEnchantmentVisuals = true;
-            projectile.usesLocalNPCImmunity = true;
-            projectile.localNPCHitCooldown = 0;
+            this.CannotHitSameEnemyAgain = true;
         }
 
         public override void OnSpawn(IEntitySource source)
@@ -160,13 +159,7 @@ namespace CNC.Content.Projectiles
             this.OnSpawn();
         }
 
-        public override bool? CanHitNPC(NPC target)
-        {
-            bool flag = base.CanHitNPC(target).HasValue ? base.CanHitNPC(target).Value : !target.friendly;
-            return flag && !haveHit.Contains(target);
-        }
-
-        public override void AI()
+        public override void UpdateAI()
         {
             projectile.velocity = Vector2.Zero;
             projectile.direction = (direction.X >= 0).ToDirectionInt(1);
@@ -382,7 +375,6 @@ namespace CNC.Content.Projectiles
                 hit.SetDefaults(this.imageSlashHit, new Vector2(MyMath.phi - 1f, 1f) * .5f, target.Center, -10, rot * dir, 30);
                 hit.SetColor(this.colorSlashHit.NewA(0), this.colorSlash.NewA(0), .1f);
             }
-            if (!haveHit.Contains(target)) haveHit.Add(target);
         }
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)

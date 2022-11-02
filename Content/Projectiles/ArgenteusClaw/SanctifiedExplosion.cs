@@ -34,7 +34,7 @@ namespace CNC.Content.Projectiles.ArgenteusClaw
             CNCUtils.PlaySound("ArgenteusClaw/Explode", projectile.position, 2f);
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             Anim001_Loop(projectile, 4);
             projectile.scale += .03f;

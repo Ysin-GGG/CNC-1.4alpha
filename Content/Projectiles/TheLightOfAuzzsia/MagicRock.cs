@@ -52,7 +52,7 @@ namespace CNC.Content.Projectiles.TheLightOfAuzzsia
             projectile.oldPosition = projectile.position;
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             UpdateOldData(projectile);
             CNCUtils.NewDust(projectile.Center + new Vector2(0, projectile.height / 2f).RotatedBy(projectile.rotation * projectile.direction), DustId.PurpleShortFx, 1.2f, projectile.velocity * .5f);
@@ -75,7 +75,7 @@ namespace CNC.Content.Projectiles.TheLightOfAuzzsia
             CNCUtils.AddLight(projectile.Center, Color.Purple, 1.5f);
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             float rot = projectile.velocity.ToRotation() + CNC.Random.NextDegree(-16f, 16f);
             float max = 64f;

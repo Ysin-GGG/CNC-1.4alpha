@@ -55,7 +55,7 @@ namespace CNC.Content.Projectiles.Hostile
             return targetHitbox.Bottom < projectile.Bottom.Y && distX < projectile.width / 2f && distY < projectile.height * projectile.scale - distX;
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             projectile.velocity = Vector2.Zero;
             if(!projectile.hostile && this.frame == 0 && this.Alpha1 == 0)

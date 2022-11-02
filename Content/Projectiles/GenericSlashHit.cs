@@ -80,7 +80,7 @@ namespace CNC.Content.Projectiles
             projectile.netUpdate2 = true;
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             float factor = 1 - Math.Abs(projectile.timeLeft - halfTime) / halfTime;
             if (this.lightColor != null && this.lightColor != Color.Transparent && this.light > 0f)

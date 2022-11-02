@@ -179,6 +179,8 @@ namespace CNC.Content.DataStructures
                     triangleList.Add(vertex[i + 3]);
                     //以此类推生成...
                 }
+                //0 2 
+                //1 3
             }
 
             if (useTransform)

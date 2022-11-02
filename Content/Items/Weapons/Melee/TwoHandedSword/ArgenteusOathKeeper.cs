@@ -181,7 +181,7 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
                         CNC.GetTexture("Assets/Projectiles/SlashHit/SlashHit1"),
                     };
                     var s = CNCUtils.CreateShaderSlash(player, velocity.RotatedBy((CNC.Random.NextFloat(30f) - 15f) * MyMath.deg01));
-                    s.OnHitNPCEffect += this.NewOnHitNPC;
+                    s.Player_OnHitNPCEffect += this.NewOnHitNPC;
                     s.SetDefaults(player.Center, velocity, 1200, 8, 10, 7);
                     s.SetColor(Color.White, Color.White, Color.White, Color.White, CNCID.Colors.SpiritBoss * .5f);
                     s.SetDamage(1, DamageClass.Melee, damage, knockback, player.GetWeaponCrit(item));
@@ -192,7 +192,7 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
                 else
                 {
                     var e = CNCUtils.CreateSlash(player, velocity, -1);
-                    e.OnHitNPCEffect += this.NewOnHitNPC;
+                    e.Player_OnHitNPCEffect += this.NewOnHitNPC;
                     e.SetDefaults(CNC.GetTexture("Assets/Projectiles/Slash/SilverSlash"), player.Center, Vector2.One * .85f, velocity, frame[num], 7);
                     e.SetColor(Color.White, Color.Gold, .5f);
                     e.SetDamage(1, DamageClass.Melee, damage, knockback, player.GetWeaponCrit(item));
@@ -209,7 +209,7 @@ namespace CNC.Content.Items.Weapons.Melee.TwoHandedSword
                 player.itemTime /= 2;
                 player.itemAnimation /= 2;
                 int dmg = Inscription.JustGetDamage(damage, (string)CNCID.Inscription.S_SilverySpark.Data[1], 0f, 1f);
-                ((Common.Global.Projectiles.CNCProjectile)CNCUtils.NewProj(player.GetSource_FromThis(), position, velocity, type, dmg, knockback, player.GetWeaponCrit(item), -1, 0f, 1f).ModProjectile).OnHitNPCEffect += this.NewOnHitNPC;
+                ((Common.Global.Projectiles.CNCProjectile)CNCUtils.NewProj(player.GetSource_FromThis(), position, velocity, type, dmg, knockback, player.GetWeaponCrit(item), -1, 0f, 1f).ModProjectile).Player_OnHitNPCEffect += this.NewOnHitNPC;
             }
             modItem.SetInscriptionCooldown(CNCID.Inscription.S_SilverySpark, -1, -1, null);
             hitCd = 1;

@@ -450,11 +450,11 @@ namespace CNC.Content.Projectiles
             }
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             if (projectile.ai[0] != 0) OnSpawn();
             if (this.attackInfo == null) return;
-            base.AI();
+            base.UpdateAI();
             Color c1 = Color.White;
             Color c2 = CNCID.Colors.Expert;
             switch (this.type)

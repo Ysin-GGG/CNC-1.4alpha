@@ -211,7 +211,7 @@ namespace CNC.Content.Projectiles
             projectile.netUpdate2 = true;
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             if (projectile.friendly) owner.itemRotation = this.GetSlashInfo().W;
             projectile.velocity = Vector2.Zero;

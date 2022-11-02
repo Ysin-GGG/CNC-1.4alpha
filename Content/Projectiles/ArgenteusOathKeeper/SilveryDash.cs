@@ -30,7 +30,7 @@ namespace CNC.Content.Projectiles.ArgenteusOathKeeper
             projectile.DamageType = DamageClass.Melee;
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             Anim001_Loop(projectile, tpf);
             projectile.Center = owner.Center;
@@ -81,7 +81,7 @@ namespace CNC.Content.Projectiles.ArgenteusOathKeeper
             CNCUtils.AddLight(projectile.position, CNCID.Colors.SpiritBoss, 1.2f);
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             owner.velocity *= .2f;
         }

@@ -86,7 +86,7 @@ Mods: {
 				Enthused: 狂热
 				Gelid: 寒霜
 				Glacial: 极寒
-				Overloaded: 超载
+				Overloaded: 奥术过载
 				Surged: 电能涌动
 				Sanctified: 圣化
 				Dizzy: 圣化
@@ -100,8 +100,8 @@ Mods: {
 				Enthused: 提高移动速度和攻击速度
 				Gelid: 移动速度大幅降低
 				Glacial: 无法行动
-				Overloaded: 下次攻击发射高能闪电弹
-				Surged: 增加30%魔法伤害
+				Overloaded: 增加50%魔法伤害
+				Surged: 下次攻击发射高能闪电弹
 				Sanctified: 灵魂正在燃烧
 				Dizzy: 无法行动
 				Bleeding: 每秒损失一定生命值

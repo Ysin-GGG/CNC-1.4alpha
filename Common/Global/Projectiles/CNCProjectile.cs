@@ -31,6 +31,8 @@ namespace CNC.Common.Global.Projectiles
         public Projectile projectile => Projectile;
         public Player owner => Main.player[MyMath.Clamp(projectile.owner, 0, 255)];
         public Player Target = null;
+        public bool CannotHitSameEnemyAgain = false;
+        public List<NPC> haveHit = new List<NPC>();
         public float Alpha1 { get => projectile.alpha / 255f; set => projectile.alpha = (int)(255 * value); }
         public float Alpha2 { get => 1 - Alpha1; set => Alpha1 = 1 - value; }
         public IEntitySource source => projectile.GetSource_FromThis();
@@ -72,22 +74,51 @@ namespace CNC.Common.Global.Projectiles
             return t;
         }
 
-        internal delegate void _ModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit);
-        internal delegate void _OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit);
-        internal delegate void _ModifyHitPlayer(Player target, ref int damage, ref bool crit);
-        internal delegate void _OnHitPlayer(Player target, int damage, bool crit);
-        internal delegate void _VanillaModifyHitNPC(NPC target, ref int damage, ref float knockBack, ref bool crit);
-        internal delegate void _VanillaOnHitNPC(NPC target, int damage, float knockBack, bool crit);
-        internal delegate void _VanillaModifyHitPlayer(ref int damage, ref bool crit);
-        internal delegate void _VanillaOnHitPlayer(int damage, bool crit);
-        internal _ModifyHitNPC ModifyHitNPCEffect;
-        internal _OnHitNPC OnHitNPCEffect;
-        internal _ModifyHitPlayer ModifyHitPlayerEffect;
-        internal _OnHitPlayer OnHitPlayerEffect;
-        internal _VanillaModifyHitNPC VanillaModifyHitNPCEffect;
-        internal _VanillaOnHitNPC VanillaOnHitNPCEffect;
-        internal _VanillaModifyHitPlayer VanillaModifyHitPlayerEffect;
-        internal _VanillaOnHitPlayer VanillaOnHitPlayerEffect;
+        internal delegate void Player_ModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit);
+        internal delegate void Player_OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit);
+        internal delegate void Player_ModifyHitPlayer(Player player, Player target, ref int damage, ref bool crit);
+        internal delegate void Player_OnHitPlayer(Player player, Player target, int damage, bool crit);
+
+        internal delegate void Vanilla_ModifyHitNPC(NPC target, ref int damage, ref float knockBack, ref bool crit);
+        internal delegate void Vanilla_OnHitNPC(NPC target, int damage, float knockBack, bool crit);
+        internal delegate void Vanilla_ModifyHitPlayer(Player player, ref int damage, ref bool crit);
+        internal delegate void Vanilla_OnHitPlayer(Player player, int damage, bool crit);
+
+        internal delegate void Projectile_ModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockBack, ref bool crit);
+        internal delegate void Projectile_OnHitNPC(Projectile projectile, NPC target, int damage, float knockBack, bool crit);
+        internal delegate void Projectile_ModifyHitPlayer(Projectile projectile, Player player, ref int damage, ref bool crit);
+        internal delegate void Projectile_OnHitPlayer(Projectile projectile, Player player, int damage, bool crit);
+
+        internal delegate void Vanilla_Kill(int timeLeft);
+        internal delegate bool Vanilla_PreKill(int timeLeft);
+        internal delegate void Projectile_Kill(Projectile projectile, int timeLeft);
+        internal delegate bool Projectile_PreKill(Projectile projectile, int timeLeft);
+
+        internal delegate void Vanilla_Update();
+        internal delegate void Projectile_Update(Projectile projectile);
+
+        internal Player_ModifyHitNPC Player_ModifyHitNPCEffect;
+        internal Player_OnHitNPC Player_OnHitNPCEffect;
+        internal Player_ModifyHitPlayer Player_ModifyHitPlayerEffect;
+        internal Player_OnHitPlayer Player_OnHitPlayerEffect;
+
+        internal Vanilla_ModifyHitNPC Vanilla_ModifyHitNPCEffect;
+        internal Vanilla_OnHitNPC Vanilla_OnHitNPCEffect;
+        internal Vanilla_ModifyHitPlayer Vanilla_ModifyHitPlayerEffect;
+        internal Vanilla_OnHitPlayer Vanilla_OnHitPlayerEffect;
+
+        internal Projectile_ModifyHitNPC Projectile_ModifyHitNPCEffect;
+        internal Projectile_OnHitNPC Projectile_OnHitNPCEffect;
+        internal Projectile_ModifyHitPlayer Projectile_ModifyHitPlayerEffect;
+        internal Projectile_OnHitPlayer Projectile_OnHitPlayerEffect;
+
+        internal Vanilla_Kill Vanilla_KillEffect;
+        internal Vanilla_PreKill Vanilla_PreKillEffect;
+        internal Projectile_Kill Projectile_KillEffect;
+        internal Projectile_PreKill Projectile_PreKillEffect;
+
+        internal Vanilla_Update Vanilla_UpdateEffect;
+        internal Projectile_Update Projectile_UpdateEffect;
 
         public ProjDamageStyle DamageStyle
         {
@@ -194,6 +225,16 @@ namespace CNC.Common.Global.Projectiles
             Texture2D image = this.mod.Assets.Request<Texture2D>(path).Value;
             this.projectile.Resize(image.Width, image.Height / countFrame);
             ResetDefaults();
+        }
+
+        public override bool? CanHitNPC(NPC target)
+        {
+            if (this.CannotHitSameEnemyAgain)
+            {
+                bool flag = base.CanHitNPC(target).HasValue ? base.CanHitNPC(target).Value : !target.friendly;
+                return flag && !haveHit.Contains(target);
+            }
+            return base.CanHitNPC(target);
         }
 
         public void AfterImages(Projectile projectile, Color color, int count, Texture2D image, float scaleAdd, float scaleMult, Rectangle? source = null, float alphaAdd = 0f)
@@ -323,41 +364,70 @@ namespace CNC.Common.Global.Projectiles
 
         public sealed override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
-            this.OnHitNPCEffect?.Invoke(this.owner, target, damage, knockback, crit);
-            this.VanillaOnHitNPCEffect?.Invoke(target, damage, knockback, crit);
-            HitNPC(target, damage, knockback, crit);
-            OnHit(target, damage, knockback, crit);
+            if (!haveHit.Contains(target)) haveHit.Add(target);
+            this.Player_OnHitNPCEffect?.Invoke(this.owner, target, damage, knockback, crit);
+            this.Vanilla_OnHitNPCEffect?.Invoke(target, damage, knockback, crit);
+            this.Projectile_OnHitNPCEffect?.Invoke(projectile, target, damage, knockback, crit);
+            this.HitNPC(target, damage, knockback, crit);
+            this.OnHit(target, damage, knockback, crit);
         }
 
         public sealed override void OnHitPlayer(Player target, int damage, bool crit)
         {
-            this.OnHitPlayerEffect?.Invoke(target, damage, crit);
-            this.VanillaOnHitPlayerEffect?.Invoke(damage, crit);
-            HitPlayer(target, damage, crit);
-            OnHit(target, damage, 0f, crit);
+            this.Player_OnHitPlayerEffect?.Invoke(Main.player[projectile.owner], target, damage, crit);
+            this.Vanilla_OnHitPlayerEffect?.Invoke(target, damage, crit);
+            this.Projectile_OnHitPlayerEffect?.Invoke(projectile, target, damage, crit);
+            this.HitPlayer(target, damage, crit);
+            this.OnHit(target, damage, 0f, crit);
         }
         
         public sealed override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
-            this.ModifyHitNPCEffect?.Invoke(this.owner, target, ref damage, ref knockback, ref crit);
-            this.VanillaModifyHitNPCEffect?.Invoke(target, ref damage, ref knockback, ref crit);
-            HitNPC(target, ref damage, ref knockback, ref crit, ref hitDirection);
-            ModifyHit(target, ref damage, ref knockback, ref crit);
+            if (!haveHit.Contains(target)) haveHit.Add(target);
+            this.Player_ModifyHitNPCEffect?.Invoke(this.owner, target, ref damage, ref knockback, ref crit);
+            this.Vanilla_ModifyHitNPCEffect?.Invoke(target, ref damage, ref knockback, ref crit);
+            this.Projectile_ModifyHitNPCEffect?.Invoke(projectile, target, ref damage, ref knockback, ref crit);
+            this.HitNPC(target, ref damage, ref knockback, ref crit, ref hitDirection);
+            this.ModifyHit(target, ref damage, ref knockback, ref crit);
         }
 
         public sealed override void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
         {
             float knockback = 0f;
-            this.ModifyHitPlayerEffect?.Invoke(target, ref damage, ref crit);
-            this.VanillaModifyHitPlayerEffect?.Invoke(ref damage, ref crit);
-            HitPlayer(target, ref damage, ref crit);
-            ModifyHit(target, ref damage, ref knockback, ref crit);
+            this.Player_ModifyHitPlayerEffect?.Invoke(Main.player[projectile.owner], target, ref damage, ref crit);
+            this.Vanilla_ModifyHitPlayerEffect?.Invoke(target, ref damage, ref crit);
+            this.Projectile_ModifyHitPlayerEffect?.Invoke(projectile, target, ref damage, ref crit);
+            this.HitPlayer(target, ref damage, ref crit);
+            this.ModifyHit(target, ref damage, ref knockback, ref crit);
+        }
+
+        public sealed override void Kill(int timeLeft)
+        {
+            this.Vanilla_KillEffect?.Invoke(timeLeft);
+            this.Projectile_KillEffect?.Invoke(projectile, timeLeft);
+            this.OnKill(timeLeft);
+        }
+
+        public sealed override bool PreKill(int timeLeft)
+        {
+            bool flag = base.PreKill(timeLeft);
+            flag &= this.Vanilla_PreKillEffect == null ? true : (bool)this.Vanilla_PreKillEffect?.Invoke(timeLeft);
+            flag &= this.Projectile_PreKillEffect == null ? true : (bool)this.Projectile_PreKillEffect?.Invoke(projectile, timeLeft);
+            flag &= this.ModifyKill(timeLeft);
+            return flag;
         }
 
         public override void ModifyDamageHitbox(ref Rectangle hitbox)
         {
             if (this.hitBox == null) base.ModifyDamageHitbox(ref hitbox);
             else hitbox = (Rectangle)this.hitBox;
+        }
+
+        public override void AI()
+        {
+            this.UpdateAI();
+            this.Vanilla_UpdateEffect?.Invoke();
+            this.Projectile_UpdateEffect?.Invoke(projectile);
         }
 
         public virtual void ResetDefaults() { }
@@ -369,5 +439,8 @@ namespace CNC.Common.Global.Projectiles
         public virtual void HitPlayer(Player target, ref int damage, ref bool crit) { }
         public virtual void OnHit(Entity target, int damage, float knockback, bool crit) { }
         public virtual void ModifyHit(Entity target, ref int damage, ref float knockback, ref bool crit) { }
+        public virtual void OnKill(int timeLeft) { }
+        public virtual bool ModifyKill(int timeLeft) => base.PreKill(timeLeft);
+        public virtual void UpdateAI() { }
     }
 }

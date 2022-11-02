@@ -29,6 +29,7 @@ namespace CNC
         public static int me => Const.me;
         public static Player Me => Const.Me;
         public static int GameMode => Main.masterMode ? 3 : (Main.expertMode ? 2 : 1);
+        public static Color? CombatTextColor { get; set; } = null;
 
         public static bool IsSPClient => Main.netMode == NetmodeID.SinglePlayer;
         public static bool IsMPClient => Main.netMode == NetmodeID.MultiplayerClient;
@@ -234,6 +235,7 @@ namespace CNC
             On.Terraria.Main.DrawPlayers_AfterProjectiles += new On.Terraria.Main.hook_DrawPlayers_AfterProjectiles(this.DrawVisualEffect);
             On.Terraria.Main.DrawInterface += new On.Terraria.Main.hook_DrawInterface(this.DrawVisualEffect);
             On.Terraria.Player.DropTombstone += new On.Terraria.Player.hook_DropTombstone(this.NoGrave);
+            On.Terraria.CombatText.NewText_Rectangle_Color_string_bool_bool += new On.Terraria.CombatText.hook_NewText_Rectangle_Color_string_bool_bool(this.ReplaceCombatTextColor);
             IL.Terraria.Player.Update += new ILContext.Manipulator((il) => ResetManaMax(il, newStatManaMax2));
         }
 
@@ -245,6 +247,13 @@ namespace CNC
         private void NoGrave(global::On.Terraria.Player.orig_DropTombstone orig, Player self, int coinsOwned, Terraria.Localization.NetworkText deathText, int hitDirection)
         {
             if (!self.All().IsModDeveloper) orig.Invoke(self, coinsOwned, deathText, hitDirection);
+        }
+
+        private int ReplaceCombatTextColor(global::On.Terraria.CombatText.orig_NewText_Rectangle_Color_string_bool_bool orig, Rectangle location, Color color, string text, bool dramatic, bool dot)
+        {
+            color = CNC.CombatTextColor ?? color;
+            CNC.CombatTextColor = null;
+            return orig.Invoke(location, color, text, dramatic, dot);
         }
 
         private void DrawParticle(global::On.Terraria.Main.orig_DrawDust orig, Main self)

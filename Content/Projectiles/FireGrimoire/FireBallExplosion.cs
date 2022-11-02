@@ -28,7 +28,7 @@ namespace CNC.Content.Projectiles.FireGrimoire
             projectile.DamageType = DamageClass.Magic;
         }
         
-        public override void AI()
+        public override void UpdateAI()
         {
             Anim001_Loop(projectile, tpf);
             projectile.scale += .04f;

@@ -26,7 +26,7 @@ namespace CNC.Content.Projectiles.ArgenteusClaw
             projectile.velocity *= 0f;
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             Anim001_Loop(projectile, 5);
         }

@@ -161,7 +161,7 @@ namespace CNC.Content.Projectiles
             projectile.tileCollide = false;
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             if (++this.frameTick > this.tickPerFrame[this.frame])
             {

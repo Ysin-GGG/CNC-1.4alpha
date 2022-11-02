@@ -741,5 +741,8 @@ namespace CNC.Common.Utils
         }
 
         public static AllPlayer All(this Player player) => player.GetModPlayer<AllPlayer>();
+        
+        public static T As<T>(this Projectile projectile) => (T)(object)projectile.ModProjectile;
+        public static T As<T>(this Item item) => (T)(object)item.ModItem;
     }
 }

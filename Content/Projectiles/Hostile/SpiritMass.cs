@@ -28,7 +28,7 @@ namespace CNC.Content.Projectiles.Hostile
             projectile.tileCollide = true;
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             AI001_RollingMissile(p, false, true, 90f);
             for (int i = 0; i < 8; i++)
@@ -66,7 +66,7 @@ namespace CNC.Content.Projectiles.Hostile
             CNCUtils.AddLight(p.Center, color);
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 15; i++)
             {

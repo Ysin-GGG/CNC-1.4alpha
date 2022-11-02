@@ -52,7 +52,7 @@ namespace CNC.Content.Projectiles.FireGrimoire
             }
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             AI001_RollingMissile(projectile, false, true, 90f);
             Anim001_Loop(projectile, tpf);
@@ -86,7 +86,7 @@ namespace CNC.Content.Projectiles.FireGrimoire
             if (this.level > 0) target.AddBuff(CNCID.Buff.LegacyObject[CNCID.Buff.Scorched], 300);
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < len; i++)
             {

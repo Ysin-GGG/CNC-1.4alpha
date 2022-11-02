@@ -413,7 +413,7 @@ namespace CNC.Content.NPCs.SpiritBoss
                     e.SetColor(CNCID.Colors.SpiritBoss, CNCID.Colors.SpiritBoss, .3f);
                     e.SetAlpha(1f, -.025f, 1f);
                     e.SetScale(1.5f, .0125f, 1f);
-                    e.ModifyHitPlayerEffect += this.HitPlayer;
+                    e.Vanilla_OnHitPlayerEffect += this.HitPlayer;
                 }
             }
             else if (this.ActionState == 4) npc.life = this.OldLife;
@@ -454,7 +454,7 @@ namespace CNC.Content.NPCs.SpiritBoss
                 e.SetColor(CNCID.Colors.SpiritBoss, CNCID.Colors.SpiritBoss, .3f);
                 e.SetAlpha(1f, -.025f, 1f);
                 e.SetScale(1.5f, .0125f, 1f);
-                e.ModifyHitPlayerEffect += this.HitPlayer;
+                e.Vanilla_OnHitPlayerEffect += this.HitPlayer;
             }
 
             //每2帧刷新一次残影数据

@@ -44,7 +44,7 @@ namespace CNC.Content.Projectiles.Superconductor
             }
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             AI001_RollingMissile(projectile, false, true, 90f);
             Anim001_Loop(projectile, 5, 0);
@@ -61,7 +61,7 @@ namespace CNC.Content.Projectiles.Superconductor
             return true;
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             CNCUtils.PlaySound("Superconductor/Explosion", projectile.position, 1.2f, 1f, mod);
             this.NewProjectile(projectile.Center + projectile.oldVelocity, Const._02, CNCID.Projectile.LegacyObject[CNCID.Projectile.LightningExplosion], 0, 0, CNC.Random.NextDegree());

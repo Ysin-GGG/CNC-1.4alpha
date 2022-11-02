@@ -49,7 +49,7 @@ namespace CNC.Content.Projectiles.IceTooth
             projectile.Center = center = projectile.position;
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             if (this.stage == 0)//Äý¾Û
             {

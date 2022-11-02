@@ -53,7 +53,7 @@ namespace CNC.Content.Projectiles.Superconductor
             //SpellDamage(p, damage, crit);
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             if (demo)//ÌØÐ§
             {
@@ -191,7 +191,7 @@ namespace CNC.Content.Projectiles.Superconductor
         {
             if (currentTarget != null) { return currentTarget; }
             NPC target = null;
-            float range = 16f * (24f + (upgraded ? (int)CNCID.Inscription.S_ChainedLightning.Data[3] : 0f));
+            float range = 16f * (24f + (upgraded ? (int)CNCID.Inscription.S_ChainedLightning.Data[2] : 0f));
             float dist = 0;
             float closestDist = range;
             bool closer = false;

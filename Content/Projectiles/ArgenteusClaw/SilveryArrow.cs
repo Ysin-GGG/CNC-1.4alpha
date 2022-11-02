@@ -27,7 +27,7 @@ namespace CNC.Content.Projectiles.ArgenteusClaw
             projectile.tileCollide = true;
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             CNCUtils.AddLight(projectile.position, Color.Silver);
             AI001_RollingMissile(projectile, projectile.timeLeft < 560, true, 90f);
@@ -48,7 +48,7 @@ namespace CNC.Content.Projectiles.ArgenteusClaw
             ParticleManager.particle[idx].alpha = 1f;
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item10, projectile.Center);
         }

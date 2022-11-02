@@ -38,7 +38,7 @@ namespace CNC.Content.Projectiles.Hostile
             projectile.tileCollide = false;
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             Color color = CNCID.Colors.SpiritBoss;
             CNCUtils.AddLight(projectile.position, color);

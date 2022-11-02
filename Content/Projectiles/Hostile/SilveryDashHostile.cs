@@ -33,7 +33,7 @@ namespace CNC.Content.Projectiles.Hostile
             projectile.DamageType = DamageClass.Default;
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             if (rage)
             {
@@ -116,13 +116,13 @@ namespace CNC.Content.Projectiles.Hostile
             }
         }
 
-        public override bool PreKill(int timeLeft)
+        public override bool ModifyKill(int timeLeft)
         {
             if (CNC.NotMPClient) ParentNPC.velocity *= 0f;
-            return base.PreKill(timeLeft);
+            return base.ModifyKill(timeLeft);
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             if (CNC.NotMPClient) ParentNPC.velocity *= 0f;
         }

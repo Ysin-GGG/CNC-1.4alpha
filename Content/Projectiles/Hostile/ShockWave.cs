@@ -87,7 +87,7 @@ namespace CNC.Content.Projectiles.Hostile
             return false;
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             CNC.SetFilter("ShockWave", false);
         }

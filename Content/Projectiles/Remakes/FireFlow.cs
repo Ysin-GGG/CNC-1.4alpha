@@ -68,7 +68,7 @@ namespace CNC.Content.Projectiles.Remakes
             upgrade = reader.ReadBoolean();
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             if (projectile.ai[0] != 0f) OnSpawn();
             if (timer < 25 && Alpha2 < 1f) Alpha2 += .04f;
@@ -114,13 +114,13 @@ namespace CNC.Content.Projectiles.Remakes
             return false;
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             if(upgrade)
             {
                 CNCUtils.PlaySound(SoundID.Item14, projectile);
                 GenericExplosion e = CNCUtils.CreateExplosion(projectile);
-                e.VanillaOnHitNPCEffect += OnHitNPC;
+                e.Vanilla_OnHitNPCEffect += OnHitNPC;
                 e.SetDefaults(CNC.GetTexture("Assets/Projectiles/Explosion/FireFlowExplosion"), projectile.Center, Vector2.One * 49, new int[7] { 1, 1, 1, 2, 2, 2, 2 });
                 e.SetDamage(ProjDamageStyle.Friendly, projectile.DamageType, projectile.damage, 0f, projectile.CritChance, 0f, 1f);
                 e.SetColor(mainColor, mainColor, .3f);

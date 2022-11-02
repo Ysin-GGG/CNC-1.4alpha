@@ -815,6 +815,10 @@ namespace CNC.Common.Utils
             public const short PhantomExcalibur = 35;
             /// <summary> Ðé¿ÕÖ®Óü </summary>
             public const short VoidNightsEdge = 36;
+            /// <summary> ÂäÀ× </summary>
+            public const short Thunderbolt = 37;
+            /// <summary> ÉÁµç </summary>
+            public const short Lightning = 38;
             #endregion
             public static Dictionary<string, short> Collection
             {
@@ -875,6 +879,8 @@ namespace CNC.Common.Utils
                 { FireFlow, ProjectileType<Content.Projectiles.Remakes.FireFlow>() },
                 { PhantomExcalibur, ProjectileType<Content.Projectiles.Remakes.PhantomExcalibur>() },
                 { VoidNightsEdge, ProjectileType<Content.Projectiles.Remakes.VoidNightsEdge>() },
+                { Thunderbolt, ProjectileType<Content.Projectiles.Superconductor.Thunderbolt>() },
+                { Lightning, ProjectileType<Content.Projectiles.Superconductor.Lightning>() },
             };
         }
 

@@ -56,7 +56,7 @@ namespace CNC.Content.Projectiles.Remakes
             atkDatas = new List<AtkData>();
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             if (owner.HeldItem != oldItem) projectile.timeLeft = 1;
             if (projectile.timeLeft < 2)

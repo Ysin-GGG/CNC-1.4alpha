@@ -20,8 +20,8 @@ namespace CNC.Content.Skies
             this.skyColor = Color.White;
             this.tileColor = Color.Black;
             this.cloudAlpha = 1f;
-            this.opacityIn = .01f;
-            this.opacityOut = .01f;
+            this.opacityIn = .015f;
+            this.opacityOut = .025f;
             this.intensity = .9f;
             this.skyImage = CNC.GetTexture("Content/Skies/TranquilitySky");
         }

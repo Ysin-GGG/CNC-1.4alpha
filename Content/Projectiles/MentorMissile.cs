@@ -51,7 +51,7 @@ namespace CNC.Content.Projectiles
             }
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             Anim001_Loop(projectile, 5, 9);
             projectile.velocity = projectile.oldVelocity;
@@ -77,7 +77,7 @@ namespace CNC.Content.Projectiles
             Lighting.AddLight((int)pos.X, (int)pos.Y, r, g, b);
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             if (_stage == 0)
             {

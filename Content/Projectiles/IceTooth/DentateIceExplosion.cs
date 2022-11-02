@@ -51,7 +51,7 @@ namespace CNC.Content.Projectiles.IceTooth
             else target.AddBuff(buff1, 300);
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             if (this.stage == 0)
             {

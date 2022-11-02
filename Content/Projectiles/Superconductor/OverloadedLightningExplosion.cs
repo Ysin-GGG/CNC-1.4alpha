@@ -30,17 +30,17 @@ namespace CNC.Content.Projectiles.Superconductor
             projectile.DamageType = DamageClass.Magic;
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             Anim001_Loop(projectile, 6);
             projectile.scale += .02f;
             if (projectile.timeLeft > 14)
-            for (int i = 0; i < 2; i++)
-            {
-                Dust dust = CNCUtils.NewDust(projectile, DustId.ElectricCyan, projectile.rotation, 1.2f, projectile.Size / 4f, CNCUtils.FlashColor(Color.DarkCyan));
-                dust.noGravity = true;
-                CNCUtils.AddLight(projectile.Center, dust.color);
-            }
+                for (int i = 0; i < 2; i++)
+                {
+                    Dust dust = CNCUtils.NewDust(projectile, DustId.ElectricCyan, projectile.rotation, 1.2f, projectile.Size / 4f, CNCUtils.FlashColor(Color.DarkCyan));
+                    dust.noGravity = true;
+                    CNCUtils.AddLight(projectile.Center, dust.color);
+                }
         }
     }
 }

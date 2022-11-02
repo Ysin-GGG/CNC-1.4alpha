@@ -45,7 +45,7 @@ namespace CNC.Content.Projectiles.Superconductor
             }
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             AI001_RollingMissile(projectile, false, true, 90f);
             Anim001_Loop(projectile, 5, 0);
@@ -53,7 +53,7 @@ namespace CNC.Content.Projectiles.Superconductor
             if (len2 < len - 1) len2++;
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < len2; i++)
             {
@@ -64,7 +64,8 @@ namespace CNC.Content.Projectiles.Superconductor
             }
             CNCUtils.PlaySound("Superconductor/Explosion", projectile.Center, 2f, mod);
             CNCUtils.PlaySound("Superconductor/Chain", projectile.Center, 1f, mod);
-            this.NewProjectile(projectile.Center + projectile.oldVelocity, Const._02, CNCID.Projectile.LegacyObject[CNCID.Projectile.OverloadedLightningExplosion], projectile.damage, projectile.knockBack, CNC.Random.NextFloat(MyMath.pi2));
+            Projectile p = this.NewProjectile(projectile.Center + projectile.oldVelocity, Const._02, CNCID.Projectile.LegacyObject[CNCID.Projectile.OverloadedLightningExplosion], projectile.damage, projectile.knockBack, CNC.Random.NextFloat(MyMath.pi2));
+            (p.ModProjectile as CNCProjectile).Projectile_OnHitNPCEffect += this.Projectile_OnHitNPCEffect;
         }
 
         public override bool PreDraw(ref Color lightColor)

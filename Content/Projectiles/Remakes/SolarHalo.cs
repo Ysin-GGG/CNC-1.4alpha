@@ -37,7 +37,7 @@ namespace CNC.Content.Projectiles.Remakes
             scale = new Vector2(1f, .4f) * .1f;
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             if (timer < 25)
             {

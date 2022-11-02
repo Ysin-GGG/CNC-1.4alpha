@@ -44,7 +44,7 @@ namespace CNC.Content.Projectiles.IceTooth
             projectile.frame = Main.rand.Next(0, 4);
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             AI001_RollingMissile(projectile, false, true, 90f);
             Dust dust = Dust.NewDustDirect(projectile.position, 14, 14, DustID.IceTorch, 0f, 0f, 100, Color.LightBlue, 1f);
@@ -79,7 +79,7 @@ namespace CNC.Content.Projectiles.IceTooth
             return base.OnTileCollide(oldVelocity);
         }
         
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item27, projectile.Center);
             for (int i = 0; i < 16; i++)

@@ -32,7 +32,7 @@ namespace CNC.Content.Projectiles
             projectile.tileCollide = false;
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             if (projectile.timeLeft < 2)
             {

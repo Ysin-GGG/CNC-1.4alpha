@@ -72,7 +72,7 @@ namespace CNC.Content.Projectiles.Remakes
             crit = false;
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             if (timer < 25)
             {

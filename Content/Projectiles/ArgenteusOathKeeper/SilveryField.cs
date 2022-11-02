@@ -32,7 +32,7 @@ namespace CNC.Content.Projectiles.ArgenteusOathKeeper
             projectile.DamageType = DamageClass.Melee;
         }
 
-        public override void AI()
+        public override void UpdateAI()
         {
             Anim001_Loop(projectile, tpf, 2);
             projectile.Bottom = owner.Bottom;
@@ -44,7 +44,7 @@ namespace CNC.Content.Projectiles.ArgenteusOathKeeper
             overPlayers.Add(index);
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             CNCUtils.ScreenShake(owner.Center, 160f, 0, new Vector2(0, 40), new Vector2(0, 20), .9f);
             //CNCUtils.PlaySound(SoundID.Item62, projectile);
